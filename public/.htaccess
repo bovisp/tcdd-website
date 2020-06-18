@@ -3,6 +3,8 @@
         Options -MultiViews -Indexes
     </IfModule>
 
+    RewriteBase /tcdd-website/
+
     RewriteEngine On
 
     # Handle Authorization Header
