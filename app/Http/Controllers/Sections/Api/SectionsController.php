@@ -20,4 +20,26 @@ class SectionsController extends Controller
             Section::all()
         );
     }
+
+    public function store()
+    {
+        request()->validate([
+            'name_en' => 'required|min:3',
+            'name_fr' => 'required|min:3'
+        ]);
+
+        Section::create([
+            'name' => [
+                'en' => request('name_en'),
+                'fr' => request('name_fr')
+            ]
+        ]);
+
+        return response()->json([
+            'data' => [
+                'type' => 'success',
+                'message' => 'Section successfully created'
+            ]
+        ], 200);
+    }
 }
