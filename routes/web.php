@@ -20,3 +20,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/sections', 'Sections\SectionsController@index');
+Route::resource('/api/sections', 'Sections\Api\SectionsController');

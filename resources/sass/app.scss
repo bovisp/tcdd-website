@@ -65,6 +65,28 @@ a {
     @apply bg-gray-100 border-gray-400 text-gray-700
 }
 
+.paginate {
+  @apply flex p-2 mt-2 justify-end w-full;
+}
+
+.paginate li:first-child,
+.paginate li:last-child {
+  display: none;
+}
+
+.paginate li a {
+  min-width: 2.25rem;
+  @apply px-3 py-1 border border-gray-200 mr-1 rounded;
+}
+
+.paginate li.active a {
+  @apply text-white border border-blue-500 bg-blue-500;
+}
+
+.paginate li.disabled a {
+  @apply text-gray-400 border-none;
+}
+
 .content li + li {
     margin-top: 0.25em;
   }
