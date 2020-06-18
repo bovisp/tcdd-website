@@ -16,6 +16,15 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <script>
+        window.User = {
+            'name': '{{ auth()->user() ? auth()->user()->moodleuser->firstname : '' }} {{ auth()->user() ? auth()->user()->moodleuser->lastname : '' }}',
+            'id': '{{ auth()->id() }}',
+        };
+        
+        window.urlBase = '{{ env('APP_URL') }}';
+    </script>
 </head>
 <body>
     <div id="app" class="relative">

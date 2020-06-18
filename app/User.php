@@ -16,7 +16,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'email',
+        'password',
+        'moodle_id'
     ];
 
     /**
@@ -36,4 +38,37 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = [
+        'firstname', 'lastname', 'fullname'
+    ];
+
+    public function moodleuser()
+    {
+        return $this->hasOne(MoodleUser::class, 'id', 'moodle_id');
+    }
+
+    public function getFirstnameAttribute()
+    {
+        return $this->moodleProfile('firstname');
+    }
+
+    public function getLastnameAttribute()
+    {
+        return $this->moodleProfile('lastname');
+    }
+
+    public function getFullnameAttribute()
+    {
+        return $this->moodleProfile('firstname') . ' ' . $this->moodleProfile('lastname');
+    }
+
+    protected function moodleProfile($column)
+    {
+        $user = User::find($this->id);
+
+        return MoodleUser::whereId($user->moodle_id)
+            ->first()
+            ->{$column};
+    }
 }
