@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Section;
+use App\Traits\HasSupervisors;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -10,7 +12,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable,
-        HasRoles;
+        HasRoles,
+        HasSupervisors;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +23,8 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
-        'moodle_id'
+        'moodle_id',
+        'section_id'
     ];
 
     /**
@@ -42,12 +46,25 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'firstname', 'lastname', 'fullname'
+        'firstname',
+        'lastname',
+        'fullname',
+        'role'
     ];
 
     public function moodleuser()
     {
         return $this->hasOne(MoodleUser::class, 'id', 'moodle_id');
+    }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
+
+    public function supervisor()
+    {
+        return $this->hasOne(Supervisor::class);
     }
 
     public function getFirstnameAttribute()
@@ -63,6 +80,14 @@ class User extends Authenticatable
     public function getFullnameAttribute()
     {
         return $this->moodleProfile('firstname') . ' ' . $this->moodleProfile('lastname');
+    }
+
+    public function getRoleAttribute()
+    {
+        return $this->roles
+            ->where('name', '!=', 'administrator')
+            ->first()
+            ->name;
     }
 
     protected function moodleProfile($column)

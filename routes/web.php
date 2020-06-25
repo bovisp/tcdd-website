@@ -23,3 +23,15 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/sections', 'Sections\SectionsController@index');
 Route::resource('/api/sections', 'Sections\Api\SectionsController');
+
+Route::get('/users', 'Users\UsersController@index');
+Route::get('/users/{user}', 'Users\UsersController@show');
+Route::get('/api/users/{user}', 'Users\Api\UsersController@show');
+Route::get('/api/users', 'Users\Api\UsersController@index');
+Route::get('/api/users/moodle/create', 'MoodleUsers\Api\MoodleUsersController@create');
+Route::post('/api/users/moodle', 'MoodleUsers\Api\MoodleUsersController@store');
+
+Route::get('/api/roles', 'Roles\Api\RolesController@index');
+
+Route::get('/api/supervisors/{role}', 'Supervisors\Api\SupervisorsController@index');
+Route::post('/api/users/{user}/role/{role}', 'Supervisors\Api\SupervisorsController@store');

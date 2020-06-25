@@ -15,9 +15,9 @@
             v-if="creating"
         />
 
-        <!-- <topics-edit 
+        <sections-edit 
             v-if="updating"
-        /> -->
+        />
 
         <sections-index 
             v-if="!creating && !updating"

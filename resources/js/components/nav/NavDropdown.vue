@@ -21,6 +21,8 @@
 
             <hr class="border-t border-gray-300">
 
+            <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/users`">Manage users</a>
+
             <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/sections`">Manage section names</a>
 
             <hr class="border-t border-gray-300">

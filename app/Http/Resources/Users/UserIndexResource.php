@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Sections;
+namespace App\Http\Resources\Users;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SectionResource extends JsonResource
+class UserIndexResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,10 @@ class SectionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'name_en' => $this->getTranslation('name', 'en'),
-            'name_fr' => $this->getTranslation('name', 'fr'),
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'role' => ucfirst($this->role),
+            'section' => optional($this->section)->name
         ];
     }
 }

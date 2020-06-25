@@ -1,11 +1,11 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Topics
+            Sections
         </h1> 
 
         <datatable 
-            :data="topics"
+            :data="sections"
             :columns="columns"
             :per-page="10"
             :order-keys="['name']"
@@ -32,7 +32,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            topics: 'sections/sections'
+            sections: 'sections/sections'
         })
     },
 

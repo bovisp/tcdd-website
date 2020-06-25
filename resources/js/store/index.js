@@ -8,7 +8,7 @@ import * as mutations from './mutations'
 import * as actions from './actions'
 import * as getters from './getters'
 
-// import user from './modules/user'
+import user from './modules/user'
 import sections from './modules/sections'
 
 export default new Vuex.Store({
@@ -17,7 +17,7 @@ export default new Vuex.Store({
 	actions,
 	getters,
 	modules: {
-		// user,
+		user,
 		sections
 	} 
 })

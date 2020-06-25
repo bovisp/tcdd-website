@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -14,6 +15,11 @@ class Section extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 
     public function toArray()
     {

@@ -16,6 +16,16 @@ Vue.mixin(getUrlBase)
 Vue.mixin(authUser)
 Vue.mixin(error)
 
+import Toasted from 'vue-toasted'
+Vue.use(Toasted, {
+    duration: 3000,
+    position: 'top-center'
+})
+
+window.events.$on('errors-general', error => {
+    Vue.toasted.error(error)
+})
+
 import store from './store'
 
 const files = require.context('./', true, /\.vue$/i)

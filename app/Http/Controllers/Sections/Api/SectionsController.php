@@ -42,4 +42,38 @@ class SectionsController extends Controller
             ]
         ], 200);
     }
+
+    public function update(Section $section)
+    {
+        request()->validate([
+            'name_en' => 'required|min:3',
+            'name_fr' => 'required|min:3'
+        ]);
+
+        $section->update([
+            'name' => [
+                'en' => request('name_en'),
+                'fr' => request('name_fr')
+            ]
+        ]);
+
+        return response()->json([
+            'data' => [
+                'type' => 'success',
+                'message' => 'Section successfully updated'
+            ]
+        ], 200);
+    }
+
+    public function destroy(Section $section)
+    {
+        $section->delete();
+
+        return response()->json([
+            'data' => [
+                'type' => 'success',
+                'message' => 'Section successfully deleted'
+            ]
+        ], 200);
+    }
 }
