@@ -26,6 +26,8 @@ Route::get('/admin/sections', 'Admin\Sections\SectionsController@index');
 Route::resource('/api/admin/sections', 'Admin\Sections\Api\SectionsController');
 Route::get('/admin/portal/languages', 'Admin\Portal\Languages\LanguagesController@index');
 Route::resource('/api/admin/portal/languages', 'Admin\Portal\Languages\Api\LanguagesController');
+Route::get('/admin/portal/categories', 'Admin\Portal\Categories\CategoriesController@index');
+Route::resource('/api/admin/portal/categories', 'Admin\Portal\Categories\Api\CategoriesController');
 Route::get('/admin/portal/courses', 'Admin\Portal\Courses\CoursesController@index');
 Route::resource('/api/admin/portal/courses', 'Admin\Portal\Courses\Api\CoursesController');
 

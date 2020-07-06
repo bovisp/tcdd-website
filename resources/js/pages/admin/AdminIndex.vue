@@ -26,7 +26,7 @@
             </li>
 
             <li>
-                <a :href="`${urlBase}/admin/portal/courses`">
+                <a :href="`${urlBase}/admin/portal/categories`">
                     Manage course categories
                 </a>
             </li>

@@ -11,6 +11,7 @@ import * as getters from './getters'
 import user from './modules/user'
 import sections from './modules/admin/sections'
 import portalLanguages from './modules/admin/portal/langauges'
+import portalCategories from './modules/admin/portal/categories'
 import portalCourses from './modules/admin/portal/courses'
 
 export default new Vuex.Store({
@@ -22,6 +23,7 @@ export default new Vuex.Store({
 		user,
 		sections,
 		portalLanguages,
+		portalCategories,
 		portalCourses
 	} 
 })
