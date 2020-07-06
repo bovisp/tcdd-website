@@ -17,13 +17,13 @@
             style="top: 50px;"
             v-if="isOpen"
         >
-            <span class="pb-2 px-3">Logged in as: <a :href="`${urlBase}/users/${authUser.id}`"><strong>{{ authUser.name }}</strong></a></span>  
+            <span class="pb-2 px-3">Logged in as: <a :href="`${urlBase}/users/${me.id}`"><strong>{{ me.fullname }}</strong></a></span>  
 
             <hr class="border-t border-gray-300">
 
-            <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/users`">Manage users</a>
-
-            <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/sections`">Manage section names</a>
+            <template v-if="hasRole(['administrator'])">
+                <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/admin`">Admin section</a>
+            </template>
 
             <hr class="border-t border-gray-300">
 
@@ -37,19 +37,35 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
     data() {
         return {
             isOpen: false
         }
     },
+
+    computed: {
+        ...mapGetters({
+            me: 'user/me'
+        })
+    },
     
     methods: {
+        ...mapActions({
+            fetchMe: 'user/me'
+        }),
+
         async logout () {
             await axios.post(`${this.urlBase}/logout`)
 
             window.location.href = this.urlBase
         }
+    },
+
+    async mounted () {
+        await this.fetchMe()
     },
 
     created() {

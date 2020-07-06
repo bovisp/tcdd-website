@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            New section
+            New language
         </h1>
 
         <form 
@@ -12,23 +12,23 @@
             >
                 <label 
                     class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.name_en }"
-                    for="name_en"
+                    :class="{ 'text-red-500': errors.language_en }"
+                    for="language_en"
                 >
-                    Name (English)
+                    Language (English)
                 </label>
 
                 <input 
                     type="text" 
-                    v-model="form.name_en"
+                    v-model="form.language_en"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="name_en"
-                    :class="{ 'border-red-500': errors.name_en }"
+                    id="language_en"
+                    :class="{ 'border-red-500': errors.language_en }"
                 >
 
                 <p
-                    v-if="errors.name_en"
-                    v-text="errors.name_en[0]"
+                    v-if="errors.language_en"
+                    v-text="errors.language_en[0]"
                     class="text-red-500 text-sm"
                 ></p>
             </div>
@@ -38,23 +38,23 @@
             >
                 <label 
                     class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.name_fr }"
-                    for="name_fr"
+                    :class="{ 'text-red-500': errors.language_fr }"
+                    for="language_fr"
                 >
-                    Name (French)
+                    Language (French)
                 </label>
 
                 <input 
                     type="text" 
-                    v-model="form.name_fr"
+                    v-model="form.language_fr"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="name_fr"
-                    :class="{ 'border-red-500': errors.name_fr }"
+                    id="language_fr"
+                    :class="{ 'border-red-500': errors.language_fr }"
                 >
 
                 <p
-                    v-if="errors.name_fr"
-                    v-text="errors.name_fr[0]"
+                    v-if="errors.language_fr"
+                    v-text="errors.language_fr[0]"
                     class="text-red-500 text-sm"
                 ></p>
             </div>
@@ -65,7 +65,7 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Add section
+                    Add language
                 </button>
 
                 <button 
@@ -86,28 +86,22 @@ export default {
     data() {
         return {
             form: {
-                name_en: '',
-                name_fr: ''
+                language_en: '',
+                language_fr: ''
             }
         }
     },
 
-    computed: {
-        ...mapGetters({
-            topics: 'sections/sections'
-        })
-    },
-
     methods: {
         cancel () {
-            window.events.$emit('sections:create-cancel')
+            window.events.$emit('portal-languages:create-cancel')
 
-            this.form.name_en = ''
-            this.form.name_fr = ''
+            this.form.language_en = ''
+            this.form.language_fr = ''
         },
 
         async store () {
-            let { data } = await axios.post(`${this.urlBase}/api/sections`, this.form)
+            let { data } = await axios.post(`${this.urlBase}/api/admin/portal/languages`, this.form)
 
             this.cancel()
 

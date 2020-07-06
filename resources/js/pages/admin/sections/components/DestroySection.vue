@@ -51,7 +51,7 @@ export default {
         },
 
         async destroy () {
-            let { data } = await axios.delete(`${this.urlBase}/api/sections/${this.section.id}`)
+            let { data } = await axios.delete(`${this.urlBase}/api/admin/sections/${this.section.id}`)
 
             this.close()
 
