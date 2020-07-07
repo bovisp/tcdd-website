@@ -5,3 +5,11 @@ export const fetch = async ({ commit }, userId) => {
 
     return
 }
+
+export const me = async ({ commit }) => {
+    let { data: user } = await axios.get(`${urlBase}/api/users/me`)
+
+    commit('SET_ME', user.data)
+
+    return
+}

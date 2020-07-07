@@ -1,17 +1,28 @@
+import { mapGetters } from 'vuex'
+import { find, forEach } from 'lodash-es'
+
 export default {
-	data () {
-		return {
-			authUser: window.User
-		}
+	computed: {
+		...mapGetters({
+			authUser: 'user/me'
+		})
 	},
 
 	methods: {
 		hasRole(roles) {
-			if (this.authUser.role === 'administrator') {
+			if (find(this.authUser.roles, ['name', 'administrator'])) {
 				return true
 			}
+
+			let hasRole = false
 			
-			return roles.indexOf(this.authUser.role) > -1
+			forEach(roles, role => {
+				if (find(this.authUser.roles, r => r.name === role)) {
+					hasRole = true
+				}
+			})
+
+			return hasRole
 		}
 	}
 }

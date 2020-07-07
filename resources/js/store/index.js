@@ -9,7 +9,10 @@ import * as actions from './actions'
 import * as getters from './getters'
 
 import user from './modules/user'
-import sections from './modules/sections'
+import sections from './modules/admin/sections'
+import portalLanguages from './modules/admin/portal/langauges'
+import portalCategories from './modules/admin/portal/categories'
+import portalCourses from './modules/admin/portal/courses'
 
 export default new Vuex.Store({
 	state, 
@@ -18,6 +21,9 @@ export default new Vuex.Store({
 	getters,
 	modules: {
 		user,
-		sections
+		sections,
+		portalLanguages,
+		portalCategories,
+		portalCourses
 	} 
 })
