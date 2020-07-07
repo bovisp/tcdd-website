@@ -151,7 +151,7 @@ export default {
             window.events.$emit('portal-categories:create-cancel')
 
             this.form.name_en = ''
-            this.form.name_fr = '',
+            this.form.name_fr = ''
             this.form.moodle_course_category_id = null
             this.form.moodle_parent_course_category_id = null
         },

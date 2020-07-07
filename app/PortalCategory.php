@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\PortalCourse;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -18,6 +19,11 @@ class PortalCategory extends Model
         'moodle_course_category_id',
         'moodle_parent_course_category_id'
     ];
+
+    public function portalCourses()
+    {
+        return $this->hasMany(PortalCourse::class);
+    }
 
     public function toArray()
     {

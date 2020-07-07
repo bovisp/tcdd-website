@@ -2,25 +2,34 @@
 
 namespace App;
 
-use App\PortalCourse;
+use App\PortalCategory;
+use App\PortalLanguage;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class PortalLanguage extends Model
+class PortalCourse extends Model
 {
     use HasTranslations;
 
     public $timestamps = false;
 
-    protected $translatable = ['language'];
+    protected $translatable = ['name'];
 
     protected $fillable = [
-        'language'
+        'name',
+        'moodle_course_id',
+        'portal_category_id',
+        'portal_language_id'
     ];
 
-    public function portalCourses()
+    public function portalLanguage()
     {
-        return $this->hasMany(PortalCourse::class);
+        return $this->belongsTo(PortalLanguage::class);
+    }
+
+    public function portalCategory()
+    {
+        return $this->belongsTo(PortalCategory::class);
     }
 
     public function toArray()

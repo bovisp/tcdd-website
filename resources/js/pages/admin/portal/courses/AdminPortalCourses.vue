@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center w-full lg:w-8/12 py-16 mx-auto">
+    <div class="flex flex-col items-center w-full py-16 mx-auto">
         <nav 
             class="flex justify-end w-full items-center"
             v-if="!creating && !updating"
@@ -11,11 +11,11 @@
             >Add course</a>
         </nav>
 
-        <!-- <admin-portal-courses-create 
+        <admin-portal-courses-create 
             v-if="creating"
         />
 
-        <admin-portal-courses-edit 
+        <!-- <admin-portal-courses-edit 
             v-if="updating"
         /> -->
 
