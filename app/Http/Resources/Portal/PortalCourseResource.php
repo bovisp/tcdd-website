@@ -17,7 +17,9 @@ class PortalCourseResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'portal_category_id' => $this->moodle_course_category_id,
+            'portal_category_id' => $this->portal_category_id,
+            'moodle_course_id' => $this->moodle_course_id,
+            'portal_language_id' => $this->portal_language_id,
             'name_en' => $this->getTranslation('name', 'en'),
             'name_fr' => $this->getTranslation('name', 'fr'),
             'language' => $this->portalLanguage,

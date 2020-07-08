@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center w-full py-16 mx-auto">
+    <div class="flex flex-col items-center w-full lg:w-8/12 py-16 mx-auto">
         <nav 
             class="flex justify-end w-full items-center"
             v-if="!creating && !updating"
@@ -8,18 +8,18 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Add course</a>
+            >Add permission</a>
         </nav>
 
-        <admin-portal-courses-create 
+        <permissions-create 
             v-if="creating"
         />
 
-        <admin-portal-courses-edit 
+        <permissions-edit 
             v-if="updating"
         />
 
-        <admin-portal-courses-index 
+        <permissions-index 
             v-if="!creating && !updating"
         />
     </div>
@@ -35,15 +35,15 @@ export default {
     },
 
     mounted () {
-        window.events.$on('portal-courses:edit', () => {
+        window.events.$on('permissions:edit', () => {
             this.updating = true
         })
 
-        window.events.$on('portal-courses:edit-cancel', () => {
+        window.events.$on('permissions:edit-cancel', () => {
             this.updating = false
         })
 
-        window.events.$on('portal-courses:create-cancel', () => {
+        window.events.$on('permissions:create-cancel', () => {
             this.creating = false
         })
     }

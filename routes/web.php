@@ -15,32 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return collect(DB::connection('mysql2')
-        ->select("SELECT
-                l.courseid,
-                cc.name 'english_category_name',
-                cc.name 'french_category_name',
-                cc.id 'category_id',
-                c.fullname 'english_course_name',
-                c.fullname 'french_course_name',
-                count(l.courseid) as 'views'
-            FROM mdl_logstore_standard_log l
-            LEFT OUTER JOIN mdl_role_assignments a
-                ON l.contextid = a.contextid
-                AND l.userid = a.userid
-            INNER JOIN mdl_course c 
-                ON l.courseid = c.id
-            INNER JOIN `mdl_course_categories` cc 
-                ON c.category = cc.id
-            WHERE l.target = 'course'
-            AND l.action = 'viewed'
-            AND l.courseid > 1
-            AND (a.roleid IN (5, 6, 7) OR l.userid = 1)
-            AND c.category != 29
-            AND c.visible != 0
-            GROUP BY l.courseid
-            ORDER BY count(l.courseid) desc"
-        ));
+    return 'home';
 });
 
 Auth::routes();
@@ -68,3 +43,9 @@ Route::post('/api/users/moodle', 'MoodleUsers\Api\MoodleUsersController@store');
 Route::get('/api/roles', 'Roles\Api\RolesController@index');
 Route::get('/api/supervisors/{role}', 'Supervisors\Api\SupervisorsController@index');
 Route::post('/api/users/{user}/role/{role}', 'Supervisors\Api\SupervisorsController@store');
+
+Route::get('/assessments/assessment-types', 'Assessments\AssessmentTypes\AssessmentTypesController@index');
+Route::resource('/api/assessments/assessment-types', 'Assessments\AssessmentTypes\Api\AssessmentTypesController');
+
+Route::get('/permissions', 'Permissions\PermissionsController@index');
+Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');

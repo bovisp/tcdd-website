@@ -63,16 +63,4 @@ class LanguagesController extends Controller
             ]
         ], 200);
     }
-
-    public function destroy(PortalLanguage $language)
-    {
-        $language->delete();
-
-        return response()->json([
-            'data' => [
-                'type' => 'success',
-                'message' => 'Language successfully deleted'
-            ]
-        ], 200);
-    }
 }

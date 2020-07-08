@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Portal\Categories;
+namespace App\Http\Controllers\Assessments\AssessmentTypes;
 
 use App\Http\Controllers\Controller;
 
-class CategoriesController extends Controller
+class AssessmentTypesController extends Controller
 {
     public function __construct()
     {
@@ -13,6 +13,6 @@ class CategoriesController extends Controller
 
     public function index()
     {
-        return view('admin.portal.categories.index');
+        return view('assessments.assessment-types.index');
     }
 }

@@ -4,7 +4,7 @@
             class="btn btn-text text-red-500 text-sm"
             @click.prevent="modalActive = true"
         >
-            Delete language
+            Delete course
         </button>
 
         <modal 
@@ -13,16 +13,15 @@
             @submit="destroy"
         >
             <template slot="header">
-                Delete language: {{ language.name }}
+                Delete course: {{ course.name }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to do this? Any courses associated with this language will not be deleted. 
-                        However, they will not have a language associated with it. This will affect the course search 
-                        feature.
-                        <strong>Only do this if you are absolutely sure this is what you want.</strong>.
+                        Are you sure you want to do this? No metrics will be collected for this course after 
+                        it has been deleted. This course will still remain on the Training Portal. 
+                        <strong>Only do this if you are absolutely sure this is what you want</strong>.
                     </p>
                 </div>
             </template>
@@ -42,7 +41,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            language: 'portalLanguages/language'
+            course: 'portalCourses/course'
         })
     },
 
@@ -52,7 +51,7 @@ export default {
         },
 
         async destroy () {
-            let { data } = await axios.delete(`${this.urlBase}/api/admin/portal/languages/${this.language.id}`)
+            let { data } = await axios.delete(`${this.urlBase}/api/admin/portal/courses/${this.course.id}`)
 
             this.close()
 

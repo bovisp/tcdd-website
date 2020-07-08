@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Edit: Language - {{ language.name }}
+            Edit: Assessment type - {{ type.name }}
         </h1>
 
         <form 
@@ -12,23 +12,23 @@
             >
                 <label 
                     class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.language_en }"
-                    for="language_en"
+                    :class="{ 'text-red-500': errors.name_en }"
+                    for="name_en"
                 >
-                    Language (English)
+                    Name (English)
                 </label>
 
                 <input 
                     type="text" 
-                    v-model="form.language_en"
+                    v-model="form.name_en"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="language_en"
-                    :class="{ 'border-red-500': errors.language_en }"
+                    id="name_en"
+                    :class="{ 'border-red-500': errors.name_en }"
                 >
 
                 <p
-                    v-if="errors.language_en"
-                    v-text="errors.language_en[0]"
+                    v-if="errors.name_en"
+                    v-text="errors.name_en[0]"
                     class="text-red-500 text-sm"
                 ></p>
             </div>
@@ -38,23 +38,23 @@
             >
                 <label 
                     class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.language_fr }"
-                    for="language_fr"
+                    :class="{ 'text-red-500': errors.name_fr }"
+                    for="name_fr"
                 >
-                    Language (French)
+                    Name (French)
                 </label>
 
                 <input 
                     type="text" 
-                    v-model="form.language_fr"
+                    v-model="form.name_fr"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="language_fr"
-                    :class="{ 'border-red-500': errors.language_fr }"
+                    id="name_fr"
+                    :class="{ 'border-red-500': errors.name_fr }"
                 >
 
                 <p
-                    v-if="errors.language_fr"
-                    v-text="errors.language_fr[0]"
+                    v-if="errors.name_fr"
+                    v-text="errors.name_fr[0]"
                     class="text-red-500 text-sm"
                 ></p>
             </div>
@@ -65,7 +65,7 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Update language
+                    Update assessment type
                 </button>
 
                 <button 
@@ -86,28 +86,28 @@ export default {
     data() {
         return {
             form: {
-                language_en: '',
-                language_fr: ''
+                name_en: '',
+                name_fr: ''
             }
         }
     },
 
     computed: {
         ...mapGetters({
-            language: 'portalLanguages/language'
+            type: 'assessmentTypes/assessmentType'
         })
     },
     
     methods: {
         cancel () {
-            window.events.$emit('portal-languages:edit-cancel')
+            window.events.$emit('assessment-types:edit-cancel')
 
-            this.form.language_en = ''
-            this.form.language_fr = ''
+            this.form.name_en = ''
+            this.form.name_fr = ''
         },
 
         async update () {
-            let { data } = await axios.put(`${this.urlBase}/api/admin/portal/languages/${this.language.id}`, this.form)
+            let { data } = await axios.put(`${this.urlBase}/api/assessments/assessment-types/${this.type.id}`, this.form)
 
             this.cancel()
 
@@ -116,8 +116,8 @@ export default {
     },
 
     async mounted () {
-        this.form.language_en = this.language.language_en
-        this.form.language_fr = this.language.language_fr
+        this.form.name_en = this.type.name_en
+        this.form.name_fr = this.type.name_fr
     }
 }
 </script>
