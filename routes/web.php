@@ -1,21 +1,19 @@
 <?php
 
+use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use Spatie\Permission\Models\Permission;
 
 Route::get('/', function () {
-    return 'home';
+    // return User::with('permissions')
+    //     ->get()
+    //     ->filter(function ($user) {
+    //         return $user->permissions->count() === 0 || $user->permissions->where('name', '!=', 'manage assessments')->count();
+    //     });
+    // $permission = Permission::whereName('test test')->first();
+
+    // return $permission->users;
 });
 
 Auth::routes();
@@ -49,3 +47,6 @@ Route::resource('/api/assessments/assessment-types', 'Assessments\AssessmentType
 
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');
+Route::put('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissionsController@update');
+Route::get('/api/permissions/{permission}/users/create', 'Permissions\Api\UserPermissionsController@create');
+Route::post('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissionsController@store');

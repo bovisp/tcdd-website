@@ -13,6 +13,16 @@
             Edit: Permission - {{ permission.name }}
         </h1>
 
+        <users-permissions-index 
+            v-if="showUsersPermissionsIndex"
+            @create="showUsersPermissionsIndex = false"
+        />
+
+        <users-permissions-create 
+            v-else
+            @cancel="reload"
+        />
+
         <hr class="block w-full mt-6 pt-6 border-t border-gray-200">
 
         <destroy-permission 
@@ -26,6 +36,12 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+    data () {
+        return {
+            showUsersPermissionsIndex: true
+        }
+    },
+
     computed: {
         ...mapGetters({
             permission: 'permissions/permission'
@@ -37,6 +53,12 @@ export default {
             window.events.$emit('permissions:edit-cancel')
         },
 
+        reload () {
+            this.showUsersPermissionsIndex = true
+
+            window.events.$emit('permissions:reload')
+        },
+
         async update () {
             let { data } = await axios.put(`${this.urlBase}/api/permissions/${this.permission.id}`, this.form)
 
@@ -44,10 +66,6 @@ export default {
 
             this.$toasted.success(data.data.message)
         },
-    },
-
-    async mounted () {
-        
     }
 }
 </script>
