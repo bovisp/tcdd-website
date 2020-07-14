@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Users;
 
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserIndexResource extends JsonResource
@@ -14,6 +15,14 @@ class UserIndexResource extends JsonResource
      */
     public function toArray($request)
     {
+        $permissions = [];
+
+        foreach (Permission::all() as $permission) {
+            if (auth()->user()->can($permission->name)) {
+                $permissions[] = $permission->name;
+            }
+        }
+        
         return [
             'id' => $this->id,
             'firstname' => $this->firstname,
@@ -22,7 +31,8 @@ class UserIndexResource extends JsonResource
             'role' => ucfirst($this->role),
             'rank' => $this->roles->where('name', '!=', 'administrator')->first()->rank,
             'roles' => $this->roles->toArray(),
-            'section' => optional($this->section)->name
+            'section' => optional($this->section)->name,
+            'permissions' => $permissions
         ];
     }
 }

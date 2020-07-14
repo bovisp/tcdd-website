@@ -2,29 +2,34 @@
 
 namespace App;
 
-use App\User;
-use App\Assessment;
+use App\Section;
+use App\AssessmentType;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class Section extends Model
+class Assessment extends Model
 {
     use HasTranslations;
 
-    protected $translatable = ['name'];
+    protected $translatable = ['name', 'description'];
 
     protected $fillable = [
-        'name'
+        'name',
+        'description',
+        'assessment_type_id',
+        'section_id',
+        'visible',
+        'total_score'
     ];
 
-    public function users()
+    public function section()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(Section::class);
     }
 
-    public function assessments()
+    public function assessmentType()
     {
-        return $this->hasMany(Assessment::class);
+        return $this->belongsTo(AssessmentType::class);
     }
 
     public function toArray()

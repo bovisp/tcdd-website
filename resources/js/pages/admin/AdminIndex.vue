@@ -45,7 +45,10 @@
         </ul>
 
         
-        <h2 class="font-normal text-3xl mb-2">
+        <h2 
+            class="font-normal text-3xl mb-2"
+            v-if="hasRole(['administrator']) || $can('manage assessments')"
+        >
             Assessments
         </h2>
 
@@ -57,6 +60,12 @@
                     </a>
                 </li>
             </template>
+
+            <li>
+                <a :href="`${urlBase}/assessments`">
+                    Assessments
+                </a>
+            </li>
         </ul>
     </div>
 </template>

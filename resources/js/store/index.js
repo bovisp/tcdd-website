@@ -15,6 +15,7 @@ import portalLanguages from './modules/admin/portal/langauges'
 import portalCategories from './modules/admin/portal/categories'
 import portalCourses from './modules/admin/portal/courses'
 import assessmentTypes from './modules/assessments/assessment-types'
+import assessments from './modules/assessments/assessments'
 
 export default new Vuex.Store({
 	state, 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
 		portalLanguages,
 		portalCategories,
 		portalCourses,
-		assessmentTypes
+		assessmentTypes,
+		assessments
 	} 
 })

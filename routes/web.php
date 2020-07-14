@@ -44,6 +44,8 @@ Route::post('/api/users/{user}/role/{role}', 'Supervisors\Api\SupervisorsControl
 
 Route::get('/assessments/assessment-types', 'Assessments\AssessmentTypes\AssessmentTypesController@index');
 Route::resource('/api/assessments/assessment-types', 'Assessments\AssessmentTypes\Api\AssessmentTypesController');
+Route::get('/assessments', 'Assessments\Assessments\AssessmentsController@index');
+Route::resource('/api/assessments', 'Assessments\Assessments\Api\AssessmentsController');
 
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');

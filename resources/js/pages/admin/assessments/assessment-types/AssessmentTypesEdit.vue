@@ -112,7 +112,7 @@ export default {
             this.cancel()
 
             this.$toasted.success(data.data.message)
-        },
+        }
     },
 
     async mounted () {
