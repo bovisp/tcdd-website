@@ -278,6 +278,17 @@
             v-if="hasRole(['administrator'])"
             @close="cancel"
         />
+
+        <tabs>
+            <tab 
+                v-for="(assessmentTab, index) in assessmentTabs" 
+                :key="assessmentTab.id" 
+                :name="assessmentTab.name" 
+                :selected="index == 0"
+            >
+                <h1>{{assessmentTab.name}}</h1>
+            </tab>
+        </tabs>
     </div>
 </template>
 
@@ -300,6 +311,11 @@ export default {
             visibilities: [
                 { name: 'Hidden', value: 0 },
                 { name: 'Visible', value: 1 }
+            ],
+            assessmentTabs: [
+                { id: 1, name: 'Edit settings' },
+                { id: 2, name: 'Instructors' },
+                { id: 3, name: 'Participants' }
             ]
         }
     },

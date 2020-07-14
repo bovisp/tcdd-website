@@ -1,19 +1,15 @@
 <?php
 
 use App\User;
+use App\Assessment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
 
 Route::get('/', function () {
-    // return User::with('permissions')
-    //     ->get()
-    //     ->filter(function ($user) {
-    //         return $user->permissions->count() === 0 || $user->permissions->where('name', '!=', 'manage assessments')->count();
-    //     });
-    // $permission = Permission::whereName('test test')->first();
+    $assessment = Assessment::find(2);
 
-    // return $permission->users;
+    return $assessment->editors;
 });
 
 Auth::routes();
