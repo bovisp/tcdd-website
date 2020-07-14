@@ -23,6 +23,12 @@ export default {
 			})
 
 			return hasRole
-		}
+		},
+
+		$can(permissionName) {
+			if (typeof this.authUser.permissions !== 'undefined') {
+				return this.authUser.permissions.indexOf(permissionName) !== -1
+			}
+		},
 	}
 }

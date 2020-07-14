@@ -234,15 +234,18 @@ export default {
         matches (item) {
             return item.toString().toLowerCase().indexOf(this.textFilter.toLowerCase()) >= 0
         },
+
         paginate (page) {
             this.currentPage = page
         },
+
         reset () {
             this.selected = []
             this.currentPage = 1
             this.textFilter = ''
             this.pages = 1
         },
+
         emitEvent(event, item) {
             window.events.$emit(event, item)
         }
@@ -252,11 +255,17 @@ export default {
         if (this.selectedValues.length) {
             this.selected = this.selectedValues
         }
+
         window.events.$on('datatable:clear', () => {
             this.reset()
         })
+
         window.events.$on('datatable:cancel', () => {
             this.reset()
+        })
+
+        window.events.$on('datatable:reload-selected', selected => {
+            this.selected = selected
         })
     }
 }

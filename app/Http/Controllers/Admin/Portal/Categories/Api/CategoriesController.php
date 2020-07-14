@@ -88,6 +88,14 @@ class CategoriesController extends Controller
 
     public function destroy(PortalCategory $category)
     {
+        if ($category->id === 1) {
+            abort(422, 'You cannot delete the default Miscelaneous category');
+        }
+
+        $category->courses->each->update([
+            'portal_category_id' => 1
+        ]);
+
         $category->delete();
 
         return response()->json([

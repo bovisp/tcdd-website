@@ -8,7 +8,7 @@ class CategoriesController extends Controller
 {
     public function __construct()
     {
-
+        $this->middleware(['role:administrator']);
     }
 
     public function index()

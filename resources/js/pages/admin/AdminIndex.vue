@@ -7,6 +7,12 @@
 
             <ul class="ml-2 mb-6">
                 <li>
+                    <a :href="`${urlBase}/permissions`">
+                        Permissions
+                    </a>
+                </li>
+
+                <li>
                     <a :href="`${urlBase}/admin/sections`">
                         Section settings
                     </a>
@@ -18,7 +24,7 @@
             Training Portal Settings
         </h2>
 
-        <ul class="ml-2">
+        <ul class="ml-2 mb-6">
             <li>
                 <a :href="`${urlBase}/admin/portal/languages`">
                     Manage course languages
@@ -34,6 +40,30 @@
             <li>
                 <a :href="`${urlBase}/admin/portal/courses`">
                     Manage courses
+                </a>
+            </li>
+        </ul>
+
+        
+        <h2 
+            class="font-normal text-3xl mb-2"
+            v-if="hasRole(['administrator']) || $can('manage assessments')"
+        >
+            Assessments
+        </h2>
+
+        <ul class="ml-2 mb-6">
+            <template v-if="hasRole(['administrator'])">
+                <li>
+                    <a :href="`${urlBase}/assessments/assessment-types`">
+                        Assessment types
+                    </a>
+                </li>
+            </template>
+
+            <li>
+                <a :href="`${urlBase}/assessments`">
+                    Assessments
                 </a>
             </li>
         </ul>

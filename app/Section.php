@@ -3,6 +3,7 @@
 namespace App;
 
 use App\User;
+use App\Assessment;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -19,6 +20,11 @@ class Section extends Model
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+    public function assessments()
+    {
+        return $this->hasMany(Assessment::class);
     }
 
     public function toArray()

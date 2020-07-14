@@ -15,9 +15,9 @@
             v-if="creating"
         />
 
-        <!-- <admin-portal-courses-edit 
+        <admin-portal-courses-edit 
             v-if="updating"
-        /> -->
+        />
 
         <admin-portal-courses-index 
             v-if="!creating && !updating"

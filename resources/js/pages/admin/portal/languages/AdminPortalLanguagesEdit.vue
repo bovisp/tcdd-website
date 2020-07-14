@@ -76,13 +76,6 @@
                 </button>
             </div>
         </form>
-
-        <hr class="block w-full mt-6 pt-6 border-t border-gray-200">
-
-        <destroy-portal-language 
-            v-if="hasRole(['administrator'])"
-            @close="cancel"
-        />
     </div>
 </template>
 
