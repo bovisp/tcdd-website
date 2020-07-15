@@ -7,6 +7,12 @@
 
             <ul class="ml-2 mb-6">
                 <li>
+                    <a :href="`${urlBase}/users`">
+                        Users
+                    </a>
+                </li>
+
+                <li>
                     <a :href="`${urlBase}/permissions`">
                         Permissions
                     </a>
@@ -18,32 +24,31 @@
                     </a>
                 </li>
             </ul>
+
+            <h2 class="font-normal text-3xl mb-2">
+                Training Portal Settings
+            </h2>
+
+            <ul class="ml-2 mb-6">
+                <li>
+                    <a :href="`${urlBase}/admin/portal/languages`">
+                        Manage course languages
+                    </a>
+                </li>
+
+                <li>
+                    <a :href="`${urlBase}/admin/portal/categories`">
+                        Manage course categories
+                    </a>
+                </li>
+
+                <li>
+                    <a :href="`${urlBase}/admin/portal/courses`">
+                        Manage courses
+                    </a>
+                </li>
+            </ul>
         </template>
-
-        <h2 class="font-normal text-3xl mb-2">
-            Training Portal Settings
-        </h2>
-
-        <ul class="ml-2 mb-6">
-            <li>
-                <a :href="`${urlBase}/admin/portal/languages`">
-                    Manage course languages
-                </a>
-            </li>
-
-            <li>
-                <a :href="`${urlBase}/admin/portal/categories`">
-                    Manage course categories
-                </a>
-            </li>
-
-            <li>
-                <a :href="`${urlBase}/admin/portal/courses`">
-                    Manage courses
-                </a>
-            </li>
-        </ul>
-
         
         <h2 
             class="font-normal text-3xl mb-2"

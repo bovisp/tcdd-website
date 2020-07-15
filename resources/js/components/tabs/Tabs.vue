@@ -1,10 +1,11 @@
 <template>
      <div>
-         <nav class="bg-white px-8 pt-2 shadow-md">
-            <div class="-mb-px flex">
-                <a v-for="tab in tabs"
-                   class="no-underline border-b-2 border-transparent uppercase tracking-wide font-bold text-xs py-3 mr-8"
-                   :class="{ 'text-teal-dark': tab.isActive, 'text-grey-dark': tab.isActive == false }"
+         <nav class="bg-white">
+            <div class="flex -mb-px z-10">
+                <a v-for="(tab, index) in tabs"
+                   class="no-underline border rounded rounded-br-none rounded-bl-none tracking-wide p-3"
+                   :class="{ 'bg-gray-100': tab.isActive, 'border-r-0': index !== tabs.length - 1 }"
+                   :style="{ borderBottomColor: tab.isActive ? '#f7fafc': '' }"
                    :href="tab.href" @click="selectTab(tab)"
                    :key="tab.name"
                 >

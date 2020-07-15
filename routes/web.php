@@ -42,6 +42,9 @@ Route::get('/assessments/assessment-types', 'Assessments\AssessmentTypes\Assessm
 Route::resource('/api/assessments/assessment-types', 'Assessments\AssessmentTypes\Api\AssessmentTypesController');
 Route::get('/assessments', 'Assessments\Assessments\AssessmentsController@index');
 Route::resource('/api/assessments', 'Assessments\Assessments\Api\AssessmentsController');
+Route::put('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@update');
+Route::get('/api/assessments/{assessment}/instructors/create', 'Assessments\Assessments\Api\AssessmentInstructorsController@create');
+Route::post('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@store');
 
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');

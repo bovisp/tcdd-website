@@ -1,5 +1,10 @@
 <template>
-    <div v-show="isActive"><slot></slot></div>  
+    <div 
+        v-show="isActive"
+        class="p-6 border border-gray-300 rounded z-0 rounded-tl-none"
+    >
+        <slot></slot>
+    </div>  
 </template>
 
 <script>
