@@ -6,7 +6,7 @@
                     class="ml-auto btn btn-blue btn-sm text-sm"
                     @click.prevent="store"
                 >
-                    Grant editing rights
+                    Add participants
                 </button>
 
                 <button 
@@ -55,7 +55,7 @@ export default {
 
     methods: {
         async store () {
-            let { data } = await axios.post(`${this.urlBase}/api/assessments/${this.assessment.id}/instructors`, {
+            let { data } = await axios.post(`${this.urlBase}/api/assessments/${this.assessment.id}/participants`, {
                 users: this.selected
             })
 
@@ -70,7 +70,7 @@ export default {
     },
 
     async mounted () {
-        let { data: users } = await axios.get(`${this.urlBase}/api/assessments/${this.assessment.id}/instructors/create`)
+        let { data: users } = await axios.get(`${this.urlBase}/api/assessments/${this.assessment.id}/participants/create`)
 
         this.users = users
 

@@ -21,7 +21,7 @@
             <tab  
                 name="Participants" 
             >
-                <h1>Participants</h1>
+                <assessment-participants />
             </tab>
         </tabs>
     </div>

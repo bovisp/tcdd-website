@@ -30,7 +30,8 @@ class AssessmentResource extends JsonResource
             'assessmentType' => $this->assessmentType,
             'section_id' => $this->section_id,
             'total_score' => $this->total_score,
-            'editors' => $this->editors
+            'editors' => $this->editors,
+            'participants' => $this->participants
         ];
     }
 }

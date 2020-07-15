@@ -3,9 +3,9 @@
         <div class="mx-auto w-full lg:w-1/2 mb-4">
             <div class="flex justify-end">
                 <button 
-                    class="ml-auto btn btn-blue btn-sm text-sm"
+                    class="btn btn-blue btn-sm text-sm"
                     @click.prevent="update"
-                    v-if="typeof assessment.editors !== 'undefined' && assessment.editors.length"
+                    v-if="typeof assessment.participants !== 'undefined' && assessment.participants.length"
                 >
                     Update
                 </button>
@@ -13,12 +13,12 @@
                 <button 
                     class="btn btn-text btn-sm text-sm"
                     :class="{ 
-                        'ml-2' : typeof assessment.editors !== 'undefined' && assessment.editors.length,
-                        'ml-auto' : typeof assessment.editors === 'undefined'
+                        'ml-2' : typeof assessment.participants !== 'undefined' && assessment.participants.length,
+                        'ml-auto' : typeof assessment.participants === 'undefined'
                     }"
                     @click.prevent="$emit('create')"
                 >
-                    Add more instructors
+                    Add more participants
                 </button>
             </div>
         </div>
@@ -29,8 +29,7 @@
                 v-if="typeof assessment.participants !== 'undefined' && assessment.participants.length"
             >
                 <datatable 
-                    v-if="typeof assessment.editors !== 'undefined' && assessment.editors.length"
-                    :data="assessment.editors"
+                    :data="assessment.participants"
                     :columns="columns"
                     :selected-items="selectedUsers"
                     :per-page="10"
@@ -39,13 +38,13 @@
                     :has-text-filter="false"
                     :checkable="true"
                 ></datatable>
+            </div>
 
-                <div 
-                    class="alert alert-blue w-full lg:w-1/2"
-                    v-else
-                >
-                    There are currently no users who can edit this assessment.
-                </div>
+            <div 
+                class="alert alert-blue w-full lg:w-1/2"
+                v-else
+            >
+                There are currently no users who can participate in this assessment.
             </div>
         </div>
     </div>
@@ -72,7 +71,7 @@ export default {
         }),
 
         selectedUsers () {
-            return map(this.assessment.editors, user => user.id)
+            return map(this.assessment.participants, user => user.id)
         }
     },
 
@@ -94,7 +93,7 @@ export default {
         }),
 
         async update () {
-            let { data } = await axios.put(`${this.urlBase}/api/assessments/${this.assessment.id}/instructors`, {
+            let { data } = await axios.put(`${this.urlBase}/api/assessments/${this.assessment.id}/participants`, {
                 users: this.selected
             })
 
