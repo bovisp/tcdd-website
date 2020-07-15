@@ -18,13 +18,13 @@ class CreateAssessmentEditorsTable extends Migration
             $table->integer('assessment_id')->unsigned();
             $table->integer('editor_id')->unsigned();
 
-            $table->foreign('assessment_id')
-                ->references('id')
-                ->on('assessments');
+            // $table->foreign('assessment_id')
+            //     ->references('id')
+            //     ->on('assessments');
 
-            $table->foreign('editor_id')
-                ->references('id')
-                ->on('users');
+            // $table->foreign('editor_id')
+            //     ->references('id')
+            //     ->on('users');
         });
     }
 
