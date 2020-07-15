@@ -18,13 +18,13 @@ class CreateAssessmentParticipantsTable extends Migration
             $table->integer('assessment_id')->unsigned();
             $table->integer('participant_id')->unsigned();
 
-            $table->foreign('assessment_id')
-                ->references('id')
-                ->on('assessments');
+            // $table->foreign('assessment_id')
+            //     ->references('id')
+            //     ->on('assessments');
 
-            $table->foreign('participant_id')
-                ->references('id')
-                ->on('users');
+            // $table->foreign('participant_id')
+            //     ->references('id')
+            //     ->on('users');
         });
     }
 
