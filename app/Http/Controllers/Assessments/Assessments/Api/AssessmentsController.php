@@ -10,13 +10,35 @@ class AssessmentsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['can:manage assessments']);
+        $this->middleware(['can:manage assessments'])->only(['index', 'store']);
+
+        $this->middleware(function ($request, $next) {
+            if (auth()->user()->hasRole('administrator')) {
+                return $next($request);
+            }
+
+            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
+
+            $assessment = Assessment::find((int) $matches[1][0]);
+
+            if ($assessment->editors->contains('id', auth()->id())) {
+                return $next($request);
+            }
+            
+            abort(403);
+        })->only(['update', 'destroy']);
     }
 
     public function index()
     {
+        if (auth()->user()->hasRole('administrator')) {
+            return AssessmentResource::collection(
+                Assessment::all()
+            );
+        }
+        
         return AssessmentResource::collection(
-            Assessment::all()
+            auth()->user()->assessmentEditor
         );
     }
 
@@ -33,7 +55,7 @@ class AssessmentsController extends Controller
             'total_score' => 'required|integer|min:0'
         ]);
 
-        Assessment::create([
+        $assessment = Assessment::create([
             'name' => [
                 'en' => request('name_en'),
                 'fr' => request('name_fr')
@@ -47,6 +69,8 @@ class AssessmentsController extends Controller
             'visible' => request('visible'),
             'total_score' => request('total_score')
         ]);
+
+        $assessment->editors()->attach(auth()->id());
 
         return response()->json([
             'data' => [

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use App\Section;
 use App\AssessmentType;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +31,16 @@ class Assessment extends Model
     public function assessmentType()
     {
         return $this->belongsTo(AssessmentType::class);
+    }
+
+    public function editors()
+    {
+        return $this->belongsToMany(User::class, 'assessment_editors', 'assessment_id', 'editor_id');
+    }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'assessment_participants', 'assessment_id', 'participant_id');
     }
 
     public function toArray()

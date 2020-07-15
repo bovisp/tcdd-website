@@ -21,7 +21,7 @@
 
             <hr class="border-t border-gray-300">
 
-            <template v-if="hasRole(['administrator'])">
+            <template v-if="hasRole(['administrator', 'director', 'manager', 'employee'])">
                 <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/admin`">Admin section</a>
             </template>
 

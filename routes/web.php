@@ -1,19 +1,15 @@
 <?php
 
 use App\User;
+use App\Assessment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
 
 Route::get('/', function () {
-    // return User::with('permissions')
-    //     ->get()
-    //     ->filter(function ($user) {
-    //         return $user->permissions->count() === 0 || $user->permissions->where('name', '!=', 'manage assessments')->count();
-    //     });
-    // $permission = Permission::whereName('test test')->first();
+    $assessment = Assessment::find(2);
 
-    // return $permission->users;
+    return $assessment->editors;
 });
 
 Auth::routes();
@@ -46,6 +42,12 @@ Route::get('/assessments/assessment-types', 'Assessments\AssessmentTypes\Assessm
 Route::resource('/api/assessments/assessment-types', 'Assessments\AssessmentTypes\Api\AssessmentTypesController');
 Route::get('/assessments', 'Assessments\Assessments\AssessmentsController@index');
 Route::resource('/api/assessments', 'Assessments\Assessments\Api\AssessmentsController');
+Route::put('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@update');
+Route::get('/api/assessments/{assessment}/instructors/create', 'Assessments\Assessments\Api\AssessmentInstructorsController@create');
+Route::post('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@store');
+Route::put('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@update');
+Route::get('/api/assessments/{assessment}/participants/create', 'Assessments\Assessments\Api\AssessmentParticipantsController@create');
+Route::post('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@store');
 
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');

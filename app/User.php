@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Section;
+use App\Assessment;
 use App\Traits\HasSupervisors;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -66,6 +67,16 @@ class User extends Authenticatable
     public function supervisor()
     {
         return $this->hasOne(Supervisor::class);
+    }
+
+    public function assessmentEditor()
+    {
+        return $this->belongsToMany(Assessment::class, 'assessment_editors', 'editor_id', 'assessment_id');
+    }
+
+    public function assessmentParticipant()
+    {
+        return $this->belongsToMany(Assessment::class, 'assessment_participants', 'participant_id', 'assessment_id');
     }
 
     public function getFirstnameAttribute()
