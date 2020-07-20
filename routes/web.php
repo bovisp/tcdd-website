@@ -2,14 +2,47 @@
 
 use App\User;
 use App\Assessment;
+use App\PortalCourse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
 
 Route::get('/', function () {
-    $assessment = Assessment::find(2);
-
-    return $assessment->editors;
+    // return view('home');
+    return collect(DB::connection('mysql2')
+        ->select("SELECT
+                l.courseid,
+                cc.name 'english_category_name',
+                cc.name 'french_category_name',
+                c.fullname 'english_course_name',
+                c.fullname 'french_course_name',
+                count(l.courseid) as 'views'
+            FROM mdl_logstore_standard_log l
+            LEFT OUTER JOIN mdl_role_assignments a
+                ON l.contextid = a.contextid
+                AND l.userid = a.userid
+            INNER JOIN mdl_course c 
+                ON l.courseid = c.id
+            INNER JOIN `mdl_course_categories` cc 
+                ON c.category = cc.id
+            WHERE l.target = 'course'
+            AND l.action = 'viewed'
+            AND l.courseid > 1
+            AND (a.roleid IN (5, 6, 7) OR l.userid = 1)
+            AND c.category != 29
+            AND c.visible != 0
+            GROUP BY l.courseid
+            ORDER BY count(l.courseid) desc"
+        ))
+        ->map(function ($course) {
+            return [
+                'english_category_name' => PortalCourse::whereMoodleCourseId($course->courseid)->first()->portalCategory->getTranslation('name', 'en'),
+                'french_category_name' => PortalCourse::whereMoodleCourseId($course->courseid)->first()->portalCategory->getTranslation('name', 'en'),
+                'english_course_name' => PortalCourse::whereMoodleCourseId($course->courseid)->first()->getTranslation('name', 'en'),
+                'french_course_name' => PortalCourse::whereMoodleCourseId($course->courseid)->first()->getTranslation('name', 'fr'),
+                'views' => $course->views
+            ];
+        });
 });
 
 Auth::routes();
@@ -25,6 +58,8 @@ Route::get('/admin/portal/categories', 'Admin\Portal\Categories\CategoriesContro
 Route::resource('/api/admin/portal/categories', 'Admin\Portal\Categories\Api\CategoriesController');
 Route::get('/admin/portal/courses', 'Admin\Portal\Courses\CoursesController@index');
 Route::resource('/api/admin/portal/courses', 'Admin\Portal\Courses\Api\CoursesController');
+Route::get('/admin/reports', 'Admin\Reports\ReportController@index');
+Route::post('/api/admin/reports', 'Admin\Reports\Api\ReportController@generate');
 
 Route::get('/users', 'Users\UsersController@index');
 Route::get('/users/{user}', 'Users\UsersController@show');
@@ -41,6 +76,7 @@ Route::post('/api/users/{user}/role/{role}', 'Supervisors\Api\SupervisorsControl
 Route::get('/assessments/assessment-types', 'Assessments\AssessmentTypes\AssessmentTypesController@index');
 Route::resource('/api/assessments/assessment-types', 'Assessments\AssessmentTypes\Api\AssessmentTypesController');
 Route::get('/assessments', 'Assessments\Assessments\AssessmentsController@index');
+Route::get('/assessments/{assessment}', 'Assessments\Assessments\AssessmentsController@show');
 Route::resource('/api/assessments', 'Assessments\Assessments\Api\AssessmentsController');
 Route::put('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@update');
 Route::get('/api/assessments/{assessment}/instructors/create', 'Assessments\Assessments\Api\AssessmentInstructorsController@create');

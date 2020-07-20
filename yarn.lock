@@ -5166,6 +5166,11 @@ pkg-dir@^4.1.0:
   dependencies:
     find-up "^4.0.0"
 
+plotly.js-dist@^1.54.6:
+  version "1.54.6"
+  resolved "https://registry.yarnpkg.com/plotly.js-dist/-/plotly.js-dist-1.54.6.tgz#75828e1dfd91daedba12b4bc0e482421edd31cff"
+  integrity sha512-eOqCTUV3WQXVWWtnU5X2kYRGToUDecBgdekqaqHXXEmE5VFgql437rzpq2oaG+6lmHNj+hmbDY+gk8vV3s3w1Q==
+
 pluralize@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-8.0.0.tgz#1a6fa16a38d12a1901e0320fa017051c539ce3b1"

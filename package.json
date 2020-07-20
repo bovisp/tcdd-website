@@ -24,6 +24,7 @@
         "core-js": "^3.6.5",
         "dayjs": "^1.8.26",
         "lodash-es": "^4.17.15",
+        "plotly.js-dist": "^1.54.6",
         "pluralize": "^8.0.0",
         "tailwindcss": "^1.2.0",
         "vue-toasted": "^1.1.28",

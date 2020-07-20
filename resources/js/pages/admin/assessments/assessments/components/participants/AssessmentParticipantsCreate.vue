@@ -25,7 +25,7 @@
                 :per-page="10"
                 :order-keys="['lastname', 'firstname']"
                 :order-key-directions="['asc', 'asc']"
-                :has-text-filter="false"
+                :has-text-filter="true"
                 :checkable="true"
             ></datatable>
         </div>

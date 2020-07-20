@@ -26,7 +26,6 @@
         <div class="flex justify-center">
             <div 
                 class="w-full lg:w-1/2"
-                v-if="typeof assessment.participants !== 'undefined' && assessment.participants.length"
             >
                 <datatable 
                     v-if="typeof assessment.editors !== 'undefined' && assessment.editors.length"

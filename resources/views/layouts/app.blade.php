@@ -39,5 +39,7 @@
             @yield('content')
         </main>
     </div>
+
+    @yield('jsbottom')
 </body>
 </html>

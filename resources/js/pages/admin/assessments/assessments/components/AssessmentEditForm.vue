@@ -351,7 +351,7 @@ export default {
         this.form.description_fr = this.assessment.description_fr
         this.form.section_id = this.assessment.section_id
         this.form.assessment_type_id = this.assessment.assessment_type_id
-        this.form.visibility = this.assessment.visibility
+        this.form.visible = this.assessment.visible
         this.form.total_score = this.assessment.total_score
     }
 }

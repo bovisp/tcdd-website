@@ -4,6 +4,8 @@
             {{ user.fullname }}
         </h1>
 
+        <user-assessment-participant-list />
+
         <!-- <change-password />
 
         <role /> -->

@@ -14,7 +14,7 @@
         </div>
 
         <div
-            v-if="user.role !== 'director'"
+            v-if="user.role !== 'director' && typeof user.reportingStructure !== 'undefined' && typeof user.reportingStructure['director'] !== 'undefined'"
             class="mb-4"
         >
             <reporting-structure-item
@@ -24,7 +24,7 @@
         </div>
 
         <div
-            v-if="user.role !== 'manager'"
+            v-if="user.role !== 'manager' && typeof user.reportingStructure !== 'undefined' && typeof user.reportingStructure['manager'] !== 'undefined'"
             class="mb-4"
         >
             <reporting-structure-item
@@ -34,7 +34,7 @@
         </div>
 
         <div
-            v-if="user.role !== 'employee'"
+            v-if="user.role !== 'employee' && typeof user.reportingStructure !== 'undefined' && typeof user.reportingStructure['employee'] !== 'undefined'"
             class="mb-4"
         >
             <reporting-structure-item
@@ -44,7 +44,7 @@
         </div>
 
         <div
-            v-if="user.role !== 'intern'"
+            v-if="user.role !== 'intern' && typeof user.reportingStructure !== 'undefined' && typeof user.reportingStructure['intern'] !== 'undefined'"
             class="mb-4"
         >
             <reporting-structure-item
@@ -54,7 +54,7 @@
         </div>
 
         <div
-            v-if="user.role !== 'student'"
+            v-if="user.role !== 'student' && typeof user.reportingStructure !== 'undefined' && typeof user.reportingStructure['student'] !== 'undefined'"
         >
             <reporting-structure-item
                 role="student"
