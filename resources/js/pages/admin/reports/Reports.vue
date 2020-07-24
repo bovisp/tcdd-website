@@ -99,6 +99,7 @@
 import Datepicker from 'vuejs-datepicker'
 import toMySQLDateFormat from '../../../helpers/toMySQLDateFormat'
 import Plotly from 'plotly.js-dist'
+import { trimEnd } from 'lodash-es'
 
 export default {
     components: {
@@ -133,40 +134,73 @@ export default {
                 from: this.form.from ? toMySQLDateFormat(this.form.from) : null,
                 to: this.form.to ? toMySQLDateFormat(this.form.to) : null
             })
-            let { data } = await axios.post(`${this.urlBase}/api/admin/reports`, {
-                type: this.type,
-                from: this.form.from ? toMySQLDateFormat(this.form.from) : null,
-                to: this.form.to ? toMySQLDateFormat(this.form.to) : null
-            }, {responseType: 'blob'})
-
-            const url = window.URL.createObjectURL(new Blob([data]))
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', 'training_portal_views.xlsx')
-            document.body.appendChild(link)
-            link.click()
 
             this.cancel()
 
-        //     let addBreaksAtLength = 20;
+            let addBreaksAtLength = 16;
             
-        //     let dataX = results.slice(0, 5).map(item => item.english_course_name).map(text => {
-        //         let rxp = new RegExp(".{1," + addBreaksAtLength + "}", "g")
+            let dataX = results.slice(0, 5).map(item => item.courseName).map(text => {
+                if (text.length > addBreaksAtLength * 3) {
+                    text = `${text.slice(0, addBreaksAtLength * 3)}...`
+                }
 
-		// 	    return text.match(rxp).join("<br>")
-        //     })
+                let newString = ''
+                let addBreaksAtLength = 16
+                let textArr = text.split(' ')
+                let arrIndex = 0
 
-        //     let dataY = results.slice(0, 5).map(item => item.views)
+                for (let i = 0; i < textArr.length; i++) {
+                    let stringLine = ''
 
-        //     const data = [
-        //         {
-        //             x: dataX,
-        //             y: dataY,
-        //             type: 'bar'
-        //         }
-        //     ];
+                    if (arrIndex > i) {
+                        continue
+                    }
 
-        //     Plotly.newPlot('myDiv', data);
+                    if (textArr[i].length >= 16) {
+                        newString += `${newString}<br>`
+
+                        arrIndex = i
+
+                        continue
+                    }
+
+                    if (textArr.length === 1) {
+                        newString += `${textArr[i]}`
+
+                        break
+                    }
+
+                    for (let j = i; i < textArr.length; j++) {
+                        if (`${stringLine} ${textArr[j]}`.length > 16 ) {
+                            newString += `${trimEnd(stringLine)}<br>`
+
+                            arrIndex = j
+
+                            break
+                        } 
+
+                        stringLine += `${textArr[j]} `
+                    }
+                }
+
+                return newString
+            })
+
+            let dataY = results.slice(0, 5).map(item => item.views)
+
+            const data = [
+                {
+                    x: dataX,
+                    y: dataY,
+                    type: 'bar'
+                }
+            ];
+
+            const layout = {
+                title: 'Top 5 Training Portal Courses by Views',
+            }
+
+            Plotly.newPlot('myDiv', data, layout);
         }
     }
 }
