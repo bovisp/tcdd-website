@@ -72,5 +72,20 @@
                 </a>
             </li>
         </ul>
+
+        <h2 
+            class="font-normal text-3xl mb-2"
+            v-if="hasRole(['administrator']) || $can('manage assessments')"
+        >
+            Reports
+        </h2>
+
+        <ul class="ml-2 mb-6">
+             <li>
+                <a :href="`${urlBase}/admin/reports`">
+                    Views and completion metrics
+                </a>
+            </li>
+        </ul>
     </div>
 </template>

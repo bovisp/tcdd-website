@@ -1,48 +1,10 @@
 <?php
 
-use App\User;
-use App\Assessment;
-use App\PortalCourse;
-use Illuminate\Support\Facades\DB;
+use App\Classes\PortalViews;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Models\Permission;
 
 Route::get('/', function () {
-    // return view('home');
-    return collect(DB::connection('mysql2')
-        ->select("SELECT
-                l.courseid,
-                cc.name 'english_category_name',
-                cc.name 'french_category_name',
-                c.fullname 'english_course_name',
-                c.fullname 'french_course_name',
-                count(l.courseid) as 'views'
-            FROM mdl_logstore_standard_log l
-            LEFT OUTER JOIN mdl_role_assignments a
-                ON l.contextid = a.contextid
-                AND l.userid = a.userid
-            INNER JOIN mdl_course c 
-                ON l.courseid = c.id
-            INNER JOIN `mdl_course_categories` cc 
-                ON c.category = cc.id
-            WHERE l.target = 'course'
-            AND l.action = 'viewed'
-            AND l.courseid > 1
-            AND (a.roleid IN (5, 6, 7) OR l.userid = 1)
-            AND c.category != 29
-            AND c.visible != 0
-            GROUP BY l.courseid
-            ORDER BY count(l.courseid) desc"
-        ))
-        ->map(function ($course) {
-            return [
-                'english_category_name' => PortalCourse::whereMoodleCourseId($course->courseid)->first()->portalCategory->getTranslation('name', 'en'),
-                'french_category_name' => PortalCourse::whereMoodleCourseId($course->courseid)->first()->portalCategory->getTranslation('name', 'en'),
-                'english_course_name' => PortalCourse::whereMoodleCourseId($course->courseid)->first()->getTranslation('name', 'en'),
-                'french_course_name' => PortalCourse::whereMoodleCourseId($course->courseid)->first()->getTranslation('name', 'fr'),
-                'views' => $course->views
-            ];
-        });
+    return view('home');
 });
 
 Auth::routes();
