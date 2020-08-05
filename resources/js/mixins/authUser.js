@@ -26,6 +26,10 @@ export default {
 		},
 
 		$can(permissionName) {
+			if (find(this.authUser.roles, ['name', 'administrator'])) {
+				return true
+			}
+			
 			if (typeof this.authUser.permissions !== 'undefined') {
 				return this.authUser.permissions.indexOf(permissionName) !== -1
 			}

@@ -15,6 +15,12 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->longText('description');
+            $table->integer('author_id')->unsigned();
+            $table->integer('score');
+            $table->integer('question_category_id')->unsigned()->nullable();
+            $table->integer('section_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

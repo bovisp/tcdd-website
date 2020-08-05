@@ -50,32 +50,35 @@
             </ul>
         </template>
         
-        <h2 
-            class="font-normal text-3xl mb-2"
-            v-if="hasRole(['administrator']) || $can('manage assessments')"
-        >
-            Assessments
-        </h2>
+        <template v-if="$can('manage assessments')">
+            <h2 class="font-normal text-3xl mb-2">
+                Assessments
+            </h2>
 
-        <ul class="ml-2 mb-6">
-            <template v-if="hasRole(['administrator'])">
+            <ul class="ml-2 mb-6">
                 <li>
+                    <a :href="`${urlBase}/questions/categories`">
+                        Question bank categories
+                    </a>
+                </li>
+
+                <li v-if="hasRole(['administrator'])">
                     <a :href="`${urlBase}/assessments/assessment-types`">
                         Assessment types
                     </a>
                 </li>
-            </template>
 
-            <li>
-                <a :href="`${urlBase}/assessments`">
-                    Assessments
-                </a>
-            </li>
-        </ul>
+                <li>
+                    <a :href="`${urlBase}/assessments`">
+                        Assessments
+                    </a>
+                </li>
+            </ul>
+        </template>
 
         <h2 
             class="font-normal text-3xl mb-2"
-            v-if="hasRole(['administrator']) || $can('manage assessments')"
+            v-if="hasRole(['administrator'])"
         >
             Reports
         </h2>

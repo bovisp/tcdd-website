@@ -52,3 +52,5 @@ Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');
 Route::put('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissionsController@update');
 Route::get('/api/permissions/{permission}/users/create', 'Permissions\Api\UserPermissionsController@create');
 Route::post('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissionsController@store');
+
+Route::get('/questions/categories', 'Questions\Categories\QuestionCategoriesController@index');

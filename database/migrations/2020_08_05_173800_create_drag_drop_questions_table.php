@@ -15,6 +15,7 @@ class CreateDragDropQuestionsTable extends Migration
     {
         Schema::create('drag_drop_questions', function (Blueprint $table) {
             $table->id();
+            $table->integer('question_id')->unsigned();
             $table->timestamps();
         });
     }

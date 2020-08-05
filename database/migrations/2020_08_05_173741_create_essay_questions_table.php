@@ -15,6 +15,8 @@ class CreateEssayQuestionsTable extends Migration
     {
         Schema::create('essay_questions', function (Blueprint $table) {
             $table->id();
+            $table->integer('question_id')->unsigned();
+            $table->longText('answer_key')->nullable();
             $table->timestamps();
         });
     }
