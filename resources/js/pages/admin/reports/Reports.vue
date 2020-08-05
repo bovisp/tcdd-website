@@ -90,7 +90,35 @@
         </form>
 
         <div class="mt-6">
-            <div id="myDiv"></div>
+            <button 
+                class="btn btn-blue btn-sm text-sm mb-6"
+                v-if="!isEmpty(results)"
+                @click.prevent="download"
+            >
+                Export data as Excel file
+            </button>
+
+            <button 
+                class="btn btn-blue btn-sm text-sm mb-6"
+                v-if="!isEmpty(results)"
+                @click.prevent="downloadImages"
+            >
+                Download images
+            </button>
+
+            <datatable 
+                v-if="!isEmpty(results)"
+                :data="results.data"
+                :columns="results.columns"
+                :per-page="10"
+                :order-keys="results.orderKeys"
+                :order-key-directions="results.orderKeyDirections"
+                :has-text-filter="true"
+            />
+
+            <div id="myDiv" class="mt-6 hidden"></div>
+
+            <img id="jpg-export" />
         </div>
     </div>
 </template>
@@ -99,7 +127,10 @@
 import Datepicker from 'vuejs-datepicker'
 import toMySQLDateFormat from '../../../helpers/toMySQLDateFormat'
 import Plotly from 'plotly.js-dist'
-import { trimEnd } from 'lodash-es'
+import { trimEnd, isEmpty } from 'lodash-es'
+import XLSX from 'xlsx'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 
 export default {
     components: {
@@ -115,12 +146,29 @@ export default {
             },
             types: [
                 { name: 'Training Portal Course Views' }
-            ]
+            ],
+            results: null,
+            imgData: []
         }
     },
 
     methods: {
         toMySQLDateFormat,
+
+        isEmpty,
+
+        async downloadImages () {
+            var zip = new JSZip();
+
+            for await (let [index, values] of this.imgData.entries()) {
+                zip.file(`imag${index}.png`, atob(this.imgData[index].split(',')[1]), {binary: true});
+            }
+
+            zip.generateAsync({type:"blob"})
+                .then(function(content) {
+                    saveAs(content, "example.zip");
+                });
+        },
 
         cancel () {
             this.form.type = ''
@@ -134,6 +182,17 @@ export default {
                 from: this.form.from ? toMySQLDateFormat(this.form.from) : null,
                 to: this.form.to ? toMySQLDateFormat(this.form.to) : null
             })
+
+            this.results = {
+                columns: [
+                    { field: 'categoryName', title: 'Category' },
+                    { field: 'courseName', title: 'Course' },
+                    { field: 'views', title: 'Views' }
+                ],
+                data: results,
+                orderKeys: ['views'],
+                orderKeyDirections: ['desc']
+            }
 
             this.cancel()
 
@@ -188,6 +247,9 @@ export default {
 
             let dataY = results.slice(0, 5).map(item => item.views)
 
+            let d3 = Plotly.d3;
+            let img_jpg = d3.select('#jpg-export');
+
             const data = [
                 {
                     x: dataX,
@@ -200,7 +262,25 @@ export default {
                 title: 'Top 5 Training Portal Courses by Views',
             }
 
-            Plotly.newPlot('myDiv', data, layout);
+            Plotly.newPlot('myDiv', data, layout)
+                .then(gd => {
+                    Plotly.toImage(gd)
+                        .then(url => {
+                            this.imgData.push(url)
+
+                            img_jpg.attr("src", url)
+                        })
+                });
+        },
+
+        download () {
+            let sheetData = XLSX.utils.json_to_sheet(this.results.data)
+
+            let workbook = XLSX.utils.book_new() 
+
+            XLSX.utils.book_append_sheet(workbook, sheetData, 'Binary values')
+
+            XLSX.writeFile(workbook, 'text.xlsx')
         }
     }
 }
