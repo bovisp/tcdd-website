@@ -10,7 +10,9 @@ class QuestionCategoriesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['can:manage assessments'])->only(['index']);
+        $this->middleware(['can:manage assessments'])->only(['index', 'store', 'update']);
+
+        $this->middleware(['role:administrator'])->only(['destroy']);
     }
 
     public function index()

@@ -56,6 +56,12 @@
             </h2>
 
             <ul class="ml-2 mb-6">
+                <li v-if="hasRole(['administrator'])">
+                    <a :href="`${urlBase}/questions/types`">
+                        Question types
+                    </a>
+                </li>
+
                 <li>
                     <a :href="`${urlBase}/questions/categories`">
                         Question bank categories

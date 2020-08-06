@@ -9,9 +9,13 @@ class QuestionType extends Model
 {
     use HasTranslations;
 
-    protected $translatable = ['name'];
+    protected $translatable = [
+        'name',
+        'description'
+    ];
 
     protected $fillable = [
-        'name'
+        'name',
+        'description'
     ];
 }
