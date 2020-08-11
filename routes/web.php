@@ -55,5 +55,7 @@ Route::post('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissi
 
 Route::get('/questions/categories', 'Questions\Categories\QuestionCategoriesController@index');
 Route::resource('/api/questions/categories', 'Questions\Categories\Api\QuestionCategoriesController');
+Route::get('/questions', 'Questions\Questions\QuestionsController@index');
+Route::resource('/api/questions', 'Questions\Questions\Api\QuestionsController');
 Route::get('/questions/types', 'Questions\Types\QuestionTypesController@index');
 Route::resource('/api/questions/types', 'Questions\Types\Api\QuestionTypesController');

@@ -68,6 +68,12 @@
                     </a>
                 </li>
 
+                <li>
+                    <a :href="`${urlBase}/questions`">
+                        Question bank
+                    </a>
+                </li>
+
                 <li v-if="hasRole(['administrator'])">
                     <a :href="`${urlBase}/assessments/assessment-types`">
                         Assessment types

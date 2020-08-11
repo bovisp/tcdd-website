@@ -18,6 +18,7 @@ import assessmentTypes from './modules/assessments/assessment-types'
 import assessments from './modules/assessments/assessments'
 import questionCategories from './modules/questions/categories'
 import questionTypes from './modules/questions/types'
+import questions from './modules/questions/questions'
 
 export default new Vuex.Store({
 	state, 
@@ -34,6 +35,7 @@ export default new Vuex.Store({
 		assessmentTypes,
 		assessments,
 		questionCategories,
-		questionTypes
+		questionTypes,
+		questions
 	} 
 })
