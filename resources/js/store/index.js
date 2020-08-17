@@ -10,6 +10,7 @@ import * as getters from './getters'
 
 import user from './modules/user'
 import sections from './modules/admin/sections'
+import tags from './modules/admin/tags'
 import permissions from './modules/permissions'
 import portalLanguages from './modules/admin/portal/langauges'
 import portalCategories from './modules/admin/portal/categories'
@@ -28,6 +29,7 @@ export default new Vuex.Store({
 	modules: {
 		user,
 		sections,
+		tags,
 		permissions,
 		portalLanguages,
 		portalCategories,

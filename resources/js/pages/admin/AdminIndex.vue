@@ -23,6 +23,12 @@
                         Section settings
                     </a>
                 </li>
+
+                <li>
+                    <a :href="`${urlBase}/admin/tags`">
+                        Manage sitewide tags
+                    </a>
+                </li>
             </ul>
 
             <h2 class="font-normal text-3xl mb-2">

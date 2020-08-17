@@ -59,3 +59,6 @@ Route::get('/questions', 'Questions\Questions\QuestionsController@index');
 Route::resource('/api/questions', 'Questions\Questions\Api\QuestionsController');
 Route::get('/questions/types', 'Questions\Types\QuestionTypesController@index');
 Route::resource('/api/questions/types', 'Questions\Types\Api\QuestionTypesController');
+
+Route::get('/admin/tags', 'Admin\Tags\TagsController@index');
+Route::resource('/api/admin/tags', 'Admin\Tags\Api\TagsController');

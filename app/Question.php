@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Tag;
 use App\User;
 use App\Section;
 use App\QuestionCategory;
@@ -39,6 +40,11 @@ class Question extends Model
     public function questionCategory()
     {
         return $this->belongsTo(QuestionCategory::class);
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     public function toArray()
