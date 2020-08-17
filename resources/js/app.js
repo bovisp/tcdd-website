@@ -11,10 +11,12 @@ window.events = new Vue()
 import getUrlBase from './mixins/urlBase'
 import authUser from './mixins/authUser'
 import error from './mixins/errors'
+import currentLang from './mixins/currentLang'
 
 Vue.mixin(getUrlBase)
 Vue.mixin(authUser)
 Vue.mixin(error)
+Vue.mixin(currentLang)
 
 import Toasted from 'vue-toasted'
 Vue.use(Toasted, {

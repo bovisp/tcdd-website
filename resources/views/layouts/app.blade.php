@@ -14,11 +14,14 @@
 
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <script>
         window.urlBase = '{{ env('APP_URL') }}';
+        window.currentLang = '{{ app()->getLocale() }}';
     </script>
 </head>
 <body>
