@@ -14,6 +14,17 @@ class PortalViews
 
     protected $totalViews = [];
 
+    protected $start;
+
+    protected $end;
+
+    public function __construct($start, $end)
+    {
+        $this->start = $start;
+
+        $this->end = $end;
+    }
+
     public function process()
     {
         $results = $this->getQuery();
@@ -50,12 +61,7 @@ class PortalViews
             AND l.courseid > 1
             AND l.userid NOT IN (2, 3, 1051)";
 
-            if (request()->has('from') && request('from') !== NULL && request()->has('to') && request('to')) {
-                $from = strtotime(request('from'));
-                $to = strtotime(request('to'));
-
-                $query = $query . "AND l.timecreated BETWEEN {$from} AND {$to} ";
-            }
+            $query = $query . "AND l.timecreated BETWEEN {$this->start} AND {$this->end} ";
 
             $query = $query . "AND c.category != 29
             AND c.visible != 0";

@@ -1,6 +1,49 @@
 <template>
-    <div class="w-full lg:w-2/3 mx-auto py-16"> 
-        <h1 class="text-3xl font-bold mb-6">
+    <div class="w-full mx-auto py-16"> 
+        <div style="height: 500px;" class="w-full flex text-sm">
+            <div class="w-2/12 flex flex-col p-2">
+                <!-- <div class="mb-4">
+                    <filters-type />
+                </div> -->
+
+                <div class="mb-4">
+                    <filters-fiscal
+                        :fiscal-years="fiscalYears"
+                    />
+                </div>
+
+                <div 
+                    class="mb-4"
+                    v-show="filters.fiscal.length"
+                >
+                    <filters-quarter />
+                </div>
+            </div>
+
+            <div 
+                class="w-5/12 p-2 overflow-auto" 
+                v-if="isEmpty(stats) === false"
+            >
+                <tables-fiscal
+                    :fiscal-years="fiscalYears"
+                    :fiscal-years-data="stats.overall.totals_by_year"
+                />
+            </div>
+
+            <div 
+                class="w-5/12 p-2 overflow-auto"
+                v-if="isEmpty(stats) === false"
+            >
+                <tables-quarter
+                    :quarters="stats.quarters"
+                />
+            </div>
+        </div>
+
+        <div class="flex w-full">
+            <div id="myDiv" class="mt-6"></div>
+        </div>
+        <!-- <h1 class="text-3xl font-bold mb-6">
             Reports
         </h1>
 
@@ -119,86 +162,165 @@
             <div id="myDiv" class="mt-6 hidden"></div>
 
             <img id="jpg-export" />
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker'
-import toMySQLDateFormat from '../../../helpers/toMySQLDateFormat'
+// import Datepicker from 'vuejs-datepicker'
+// import toMySQLDateFormat from '../../../helpers/toMySQLDateFormat'
 import Plotly from 'plotly.js-dist'
-import { trimEnd, isEmpty } from 'lodash-es'
-import XLSX from 'xlsx'
-import JSZip from 'jszip'
-import { saveAs } from 'file-saver'
+// import { trimEnd, isEmpty } from 'lodash-es'
+// import XLSX from 'xlsx'
+// import JSZip from 'jszip'
+// import { saveAs } from 'file-saver'
+import { map, forEach, filter, sortedUniq, flattenDepth, findIndex, orderBy, reduce, isEmpty, trimEnd } from 'lodash-es'
 
 export default {
-    components: {
-        Datepicker
-    },
-
     data () {
         return {
-            form: {
-                type: '',
-                from: '',
-                to: ''
+            fiscalYears: [],
+            stats: null,
+            filters: {
+                fiscal: [],
+                quarters: []
             },
-            types: [
-                { name: 'Training Portal Course Views' }
-            ],
-            results: null,
-            imgData: []
+            topFive: []
         }
     },
 
+    watch: {
+        filters: {
+            deep: true,
+
+            async handler () {
+                let data = []
+
+                for await (let year of this.filters.fiscal) {
+                    if (this.filters.quarters.length === 0) {
+                        data.push(flattenDepth(filter(this.stats.quarters, quarter => quarter.year === year), 2))
+                    } else {
+                        for await (let quarter of this.filters.quarters) {
+                            data.push(flattenDepth(filter(this.stats.quarters, q => {
+                                return q.year === year && q.quarter === quarter
+                            }), 2))
+                        }
+                    }
+                }
+
+                let temp = []
+
+                for await (let quarter of flattenDepth(data, 2)) {
+                    for await (let course of quarter.data) {
+                        let foundIndex = findIndex(temp, ['courseName', course.courseName])
+
+                        if (foundIndex >= 0) {
+                            temp[foundIndex]['views'] += course.views
+                        } else {
+                            temp.push({
+                                courseName: course.courseName,
+                                views: course.views
+                            })
+                        }
+                    }
+                }
+
+                // console.log(reduce(topFive, (sum, n) => sum + parseInt(n.views), 0))
+
+                this.topFive = orderBy(temp, ['views'], 'desc').slice(0, 5)
+
+                this.generate()
+
+                // console.log(topFive)
+            }
+        }
+    },
+
+    // methods: {
+    //     isEmpty
+    // },
+
+    async mounted () {
+        let { data } = await axios.get(`${this.urlBase}/api/admin/reports`)
+
+        this.stats = data
+
+        this.topFive = this.stats.overall.top_5
+
+        this.fiscalYears = sortedUniq(map(data.quarters, quarter => quarter.year))
+
+        window.events.$on('report:filter-fiscal', fiscal => this.filters.fiscal = fiscal)
+
+        window.events.$on('report:filter-quarter', quarters => this.filters.quarters = quarters)
+
+        this.generate()
+    },
+    // components: {
+    //     Datepicker
+    // },
+
+    // data () {
+    //     return {
+    //         form: {
+    //             type: '',
+    //             from: '',
+    //             to: ''
+    //         },
+    //         types: [
+    //             { name: 'Training Portal Course Views' }
+    //         ],
+    //         results: null,
+    //         imgData: []
+    //     }
+    // },
+
     methods: {
-        toMySQLDateFormat,
+    //     toMySQLDateFormat,
 
         isEmpty,
 
-        async downloadImages () {
-            var zip = new JSZip();
+    //     async downloadImages () {
+    //         var zip = new JSZip();
 
-            for await (let [index, values] of this.imgData.entries()) {
-                zip.file(`imag${index}.png`, atob(this.imgData[index].split(',')[1]), {binary: true});
-            }
+    //         for await (let [index, values] of this.imgData.entries()) {
+    //             zip.file(`imag${index}.png`, atob(this.imgData[index].split(',')[1]), {binary: true});
+    //         }
 
-            zip.generateAsync({type:"blob"})
-                .then(function(content) {
-                    saveAs(content, "example.zip");
-                });
-        },
+    //         zip.generateAsync({type:"blob"})
+    //             .then(function(content) {
+    //                 saveAs(content, "example.zip");
+    //             });
+    //     },
 
-        cancel () {
-            this.form.type = ''
-            this.form.to = ''
-            this.form.from = ''
-        },
+    //     cancel () {
+    //         this.form.type = ''
+    //         this.form.to = ''
+    //         this.form.from = ''
+    //     },
         
         async generate () {
-            let { data: results } = await axios.post(`${this.urlBase}/api/admin/reports`, {
-                type: this.type,
-                from: this.form.from ? toMySQLDateFormat(this.form.from) : null,
-                to: this.form.to ? toMySQLDateFormat(this.form.to) : null
-            })
+    //         let { data: results } = await axios.post(`${this.urlBase}/api/admin/reports`, {
+    //             type: this.type,
+    //             from: this.form.from ? toMySQLDateFormat(this.form.from) : null,
+    //             to: this.form.to ? toMySQLDateFormat(this.form.to) : null
+    //         })
 
-            this.results = {
-                columns: [
-                    { field: 'categoryName', title: 'Category' },
-                    { field: 'courseName', title: 'Course' },
-                    { field: 'views', title: 'Views' }
-                ],
-                data: results,
-                orderKeys: ['views'],
-                orderKeyDirections: ['desc']
-            }
+    //         this.results = {
+    //             columns: [
+    //                 { field: 'categoryName', title: 'Category' },
+    //                 { field: 'courseName', title: 'Course' },
+    //                 { field: 'views', title: 'Views' }
+    //             ],
+    //             data: results,
+    //             orderKeys: ['views'],
+    //             orderKeyDirections: ['desc']
+    //         }
 
-            this.cancel()
+    //         this.cancel()
 
             let addBreaksAtLength = 16;
             
-            let dataX = results.slice(0, 5).map(item => item.courseName).map(text => {
+            let dataX = this.topFive.map(item => item.courseName).map(text => {
                 if (text.length > addBreaksAtLength * 3) {
                     text = `${text.slice(0, addBreaksAtLength * 3)}...`
                 }
@@ -245,10 +367,10 @@ export default {
                 return newString
             })
 
-            let dataY = results.slice(0, 5).map(item => item.views)
+            let dataY = this.topFive.map(item => item.views)
 
-            let d3 = Plotly.d3;
-            let img_jpg = d3.select('#jpg-export');
+    //         let d3 = Plotly.d3;
+    //         let img_jpg = d3.select('#jpg-export');
 
             const data = [
                 {
@@ -263,25 +385,27 @@ export default {
             }
 
             Plotly.newPlot('myDiv', data, layout)
-                .then(gd => {
-                    Plotly.toImage(gd)
-                        .then(url => {
-                            this.imgData.push(url)
 
-                            img_jpg.attr("src", url)
-                        })
-                });
+    //         Plotly.newPlot('myDiv', data, layout)
+    //             .then(gd => {
+    //                 Plotly.toImage(gd)
+    //                     .then(url => {
+    //                         this.imgData.push(url)
+
+    //                         img_jpg.attr("src", url)
+    //                     })
+    //             });
         },
 
-        download () {
-            let sheetData = XLSX.utils.json_to_sheet(this.results.data)
+    //     download () {
+    //         let sheetData = XLSX.utils.json_to_sheet(this.results.data)
 
-            let workbook = XLSX.utils.book_new() 
+    //         let workbook = XLSX.utils.book_new() 
 
-            XLSX.utils.book_append_sheet(workbook, sheetData, 'Binary values')
+    //         XLSX.utils.book_append_sheet(workbook, sheetData, 'Binary values')
 
-            XLSX.writeFile(workbook, 'text.xlsx')
-        }
+    //         XLSX.writeFile(workbook, 'text.xlsx')
+    //     }
     }
 }
 </script>

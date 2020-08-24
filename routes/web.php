@@ -1,6 +1,7 @@
 <?php
 
 use App\Classes\PortalViews;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,7 +22,8 @@ Route::resource('/api/admin/portal/categories', 'Admin\Portal\Categories\Api\Cat
 Route::get('/admin/portal/courses', 'Admin\Portal\Courses\CoursesController@index');
 Route::resource('/api/admin/portal/courses', 'Admin\Portal\Courses\Api\CoursesController');
 Route::get('/admin/reports', 'Admin\Reports\ReportController@index');
-Route::post('/api/admin/reports', 'Admin\Reports\Api\ReportController@generate');
+Route::get('/api/admin/reports', 'Admin\Reports\Api\ReportController@generate');
+// Route::post('/api/admin/reports', 'Admin\Reports\Api\ReportController@generate');
 
 Route::get('/users', 'Users\UsersController@index');
 Route::get('/users/{user}', 'Users\UsersController@show');
