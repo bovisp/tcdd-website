@@ -70,6 +70,8 @@ class QuestionsController extends Controller
             'score' => 'required|integer|min:1',
             'section_id' => 'required|integer|exists:sections,id',
             'question_category_id' => 'required|integer|exists:question_categories,id',
+            'tags' => 'array|present',
+            'tags*' => 'integer|exists:tags,id'
         ]);
 
         $question->update([
@@ -85,6 +87,8 @@ class QuestionsController extends Controller
             'section_id' => request('section_id'),
             'question_category_id' => request('question_category_id')
         ]);
+
+        $question->tags()->sync(Tag::whereIn('id', request('tags'))->get());
 
         return response()->json([
             'data' => [
