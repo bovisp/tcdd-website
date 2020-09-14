@@ -79,6 +79,16 @@ class User extends Authenticatable
         return $this->belongsToMany(Assessment::class, 'assessment_participants', 'participant_id', 'assessment_id');
     }
 
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'author_id');
+    }
+
+    public function questionEditor()
+    {
+        return $this->belongsToMany(Question::class, 'question_editors', 'user_id', 'question_id');
+    }
+
     public function getFirstnameAttribute()
     {
         return $this->moodleProfile('firstname');

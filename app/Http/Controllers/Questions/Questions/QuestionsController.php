@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Questions\Questions;
 
+use App\User;
+use App\Question;
 use App\Http\Controllers\Controller;
 
 class QuestionsController extends Controller

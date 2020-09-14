@@ -1,4 +1,5 @@
 export default {
 	questions: [],
-	question: {}
+	question: {},
+	availableEditors: []
 }

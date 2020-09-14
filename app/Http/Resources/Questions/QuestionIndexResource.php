@@ -30,7 +30,8 @@ class QuestionIndexResource extends JsonResource
             'section' => $this->section,
             'section_id' => $this->section->id,
             'sectionName' => $this->section->name,
-            'tags' => $this->tags
+            'tags' => $this->tags,
+            'editors' => $this->editors
         ];
     }
 }
