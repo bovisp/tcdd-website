@@ -4,9 +4,41 @@
             Edit: Question - {{ question.name }}
         </h1>
 
+        <p class="mb-4 text-gray-700">
+            <strong>Owner:</strong> {{ question.author.fullname }}
+        </p>
+
         <form 
             @submit.prevent="update"
         >
+            <div
+                class="w-full md:w-2/3 lg:w-1/2 mb-4"
+            >
+                <label 
+                    class="block text-gray-700 font-bold mb-2" 
+                    :class="{ 'text-red-500': errors.editors }"
+                    for="editors"
+                >
+                    Editors
+                </label>
+
+                <multiselect 
+                    v-model="form.editors" 
+                    :options="availableEditors" 
+                    :multiple="true" 
+                    placeholder="Search editors"
+                    label="fullname" 
+                    track-by="id" 
+                    :taggable="true"
+                />
+
+                <p
+                    v-if="errors.editors"
+                    v-text="errors.editors[0]"
+                    class="text-red-500 text-sm"
+                ></p>
+            </div>
+
             <div
                 class="w-full lg:w-1/3 mb-4"
             >
@@ -332,7 +364,8 @@ export default {
                 score: null,
                 section_id: '',
                 question_category_id: null,
-                tags: []
+                tags: [],
+                editors: []
             },
             modalAddTag: false,
             tag: '',
@@ -345,6 +378,7 @@ export default {
             question: 'questions/question',
             sections: 'sections/sections',
             avalaibleTags: 'tags/tags',
+            availableEditors: 'questions/availableEditors',
             questionCategories: 'questionCategories/questionCategories'
         })
     },
@@ -353,7 +387,8 @@ export default {
         ...mapActions({
             fetchSections: 'sections/fetch',
             fetchTags: 'tags/fetch',
-            fetchQuestionCategories: 'questionCategories/fetch',
+            fetchAvailableEditors: 'questions/fetchAvailableEditors',
+            fetchQuestionCategories: 'questionCategories/fetch'
         }),
 
         cancel () {
@@ -367,10 +402,13 @@ export default {
             this.form.section_id = null
             this.form.question_category_id = null
             this.form.tags = []
+            this.form.editors = []
         },
 
         async update () {
             this.form.tags = await  Promise.all(map(this.form.tags, async (tag) => tag.id))
+
+            this.form.editors = await  Promise.all(map(this.form.editors, async (editor) => editor.id))
 
             let { data } = await axios.put(`${this.urlBase}/api/questions/${this.question.id}`, this.form)
 
@@ -419,10 +457,12 @@ export default {
         this.form.section_id = this.question.section_id
         this.form.question_category_id = this.question.question_category_id
         this.form.tags = this.question.tags
+        this.form.editors = this.question.editors
 
         await this.fetchSections()
         await this.fetchQuestionCategories()
         await this.fetchTags()
+        await this.fetchAvailableEditors(this.question.id)
     }
 }
 </script>

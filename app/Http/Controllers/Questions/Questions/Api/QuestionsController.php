@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Questions\Questions\Api;
 
 use App\Tag;
+use App\User;
 use App\Question;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Questions\QuestionIndexResource;
@@ -16,8 +17,18 @@ class QuestionsController extends Controller
 
     public function index()
     {
+        if (auth()->user()->hasAnyRole(['administrator', 'director', 'manager'])) {
+            return QuestionIndexResource::collection(
+                Question::all()
+            );
+        }
+
+        $editorForQuestions = auth()->user()->questionEditor->pluck('id')->toArray();
+
+        $authorForQuestions = auth()->user()->questions->pluck('id')->toArray();
+
         return QuestionIndexResource::collection(
-            Question::all()
+            Question::find(array_merge($editorForQuestions, $authorForQuestions))
         );
     }
 
@@ -32,7 +43,7 @@ class QuestionsController extends Controller
             'section_id' => 'required|integer|exists:sections,id',
             'question_category_id' => 'required|integer|exists:question_categories,id',
             'tags' => 'array|present',
-            'tags*' => 'integer|exists:tags,id'
+            'tags.*' => 'integer|exists:tags,id'
         ]);
 
         $question = Question::create([
@@ -71,7 +82,9 @@ class QuestionsController extends Controller
             'section_id' => 'required|integer|exists:sections,id',
             'question_category_id' => 'required|integer|exists:question_categories,id',
             'tags' => 'array|present',
-            'tags*' => 'integer|exists:tags,id'
+            'tags.*' => 'integer|exists:tags,id',
+            'editors' => 'array|present',
+            'editors.*' => 'integer|exists:users,id'
         ]);
 
         $question->update([
@@ -89,6 +102,8 @@ class QuestionsController extends Controller
         ]);
 
         $question->tags()->sync(Tag::whereIn('id', request('tags'))->get());
+
+        $question->editors()->sync(User::whereIn('id', request('editors'))->get());
 
         return response()->json([
             'data' => [

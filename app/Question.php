@@ -24,7 +24,8 @@ class Question extends Model
         'score',
         'author_id',
         'question_category_id',
-        'section_id'
+        'section_id',
+        'owner_id'
     ];
 
     public function author()
@@ -45,6 +46,16 @@ class Question extends Model
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function editors()
+    {
+        return $this->belongsToMany(User::class, 'question_editors', 'question_id', 'user_id');
     }
 
     public function toArray()

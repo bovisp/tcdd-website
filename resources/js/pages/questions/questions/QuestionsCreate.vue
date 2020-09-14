@@ -358,7 +358,7 @@ export default {
             this.form.section_id = null
             this.form.question_category_id = null
             this.form.tags = []
-            this.form.score = nill
+            this.form.score = null
         },
 
         async store () {
