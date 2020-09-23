@@ -880,6 +880,7 @@ a {
   padding-left: 1rem;
   padding-right: 1rem;
   border-radius: 0.25rem;
+  outline: 0;
 }
 
 .btn-blue {
@@ -889,6 +890,10 @@ a {
   --text-opacity: 1;
   color: #fff;
   color: rgba(255, 255, 255, var(--text-opacity));
+  border-width: 1px;
+  --border-opacity: 1;
+  border-color: #4299e1;
+  border-color: rgba(66, 153, 225, var(--border-opacity));
 }
 
 .btn-blue:hover {
@@ -918,6 +923,24 @@ a {
 
 .btn-outline {
   border-width: 1px;
+}
+
+.btn-outline-blue {
+  --border-opacity: 1;
+  border-color: #4299e1;
+  border-color: rgba(66, 153, 225, var(--border-opacity));
+  --text-opacity: 1;
+  color: #2b6cb0;
+  color: rgba(43, 108, 176, var(--text-opacity));
+}
+
+.btn-outline-blue:hover {
+  --text-opacity: 1;
+  color: #fff;
+  color: rgba(255, 255, 255, var(--text-opacity));
+  --bg-opacity: 1;
+  background-color: #2b6cb0;
+  background-color: rgba(43, 108, 176, var(--bg-opacity));
 }
 
 .btn-text:hover {
