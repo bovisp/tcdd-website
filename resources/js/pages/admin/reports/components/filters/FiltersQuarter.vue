@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import { sortedUniq } from 'lodash-es'
-
 export default {
     data () {
         return {

@@ -22,7 +22,8 @@ Route::resource('/api/admin/portal/categories', 'Admin\Portal\Categories\Api\Cat
 Route::get('/admin/portal/courses', 'Admin\Portal\Courses\CoursesController@index');
 Route::resource('/api/admin/portal/courses', 'Admin\Portal\Courses\Api\CoursesController');
 Route::get('/admin/reports', 'Admin\Reports\ReportController@index');
-Route::get('/api/admin/reports', 'Admin\Reports\Api\ReportController@generate');
+Route::post('/api/admin/reports', 'Admin\Reports\Api\ReportController@generate');
+Route::post('/api/admin/report/get-fiscal', 'Admin\Reports\Api\FiscalYearController@index');
 // Route::post('/api/admin/reports', 'Admin\Reports\Api\ReportController@generate');
 
 Route::get('/users', 'Users\UsersController@index');
