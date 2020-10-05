@@ -26,7 +26,7 @@ class CategoriesController extends Controller
             'name_en' => 'required|min:3',
             'name_fr' => 'required|min:3',
             'moodle_course_category_id' => 'integer|unique:portal_categories,id|exists:mysql2.mdl_course_categories,id',
-            'moodle_parent_course_category_id' => 'integer|exists:mysql2.mdl_course_categories,id'
+            'moodle_parent_course_category_id' => 'nullable|integer|exists:mysql2.mdl_course_categories,id'
         ]);
 
         PortalCategory::create([
