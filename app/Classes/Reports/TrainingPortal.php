@@ -162,12 +162,14 @@ class TrainingPortal
         $rankedCoursesArr = [];
 
         foreach ($this->totalViews as $course) {
-            if (PortalCourse::whereMoodleCourseId($course['courseid'])->first()) {
+            $portalCourse = PortalCourse::whereMoodleCourseId($course['courseid'])->first();
+
+            if ($portalCourse) {
                 $rankedCoursesArr[] = [
                     'courseId' => $course['courseid'],
-                    'courseName' => PortalCourse::whereMoodleCourseId($course['courseid'])->first()->name,
-                    'categoryName' => PortalCourse::whereMoodleCourseId($course['courseid'])->first()->portalCategory->name,
-                    'categoryId' => PortalCourse::whereMoodleCourseId($course['courseid'])->first()->portalCategory->id,
+                    'courseName' => $portalCourse->name,
+                    'categoryName' => $portalCourse->portalCategory->name,
+                    'categoryId' => $portalCourse->portalCategory->id,
                     'views' => $course['views']
                 ];
             }
