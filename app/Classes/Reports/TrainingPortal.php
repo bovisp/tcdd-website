@@ -162,13 +162,15 @@ class TrainingPortal
         $rankedCoursesArr = [];
 
         foreach ($this->totalViews as $course) {
-           $rankedCoursesArr[] = [
-                'courseId' => $course['courseid'],
-                'courseName' => PortalCourse::whereMoodleCourseId($course['courseid'])->first()->name,
-                'categoryName' => PortalCourse::whereMoodleCourseId($course['courseid'])->first()->portalCategory->name,
-                'categoryId' => PortalCourse::whereMoodleCourseId($course['courseid'])->first()->portalCategory->id,
-                'views' => $course['views']
-            ];
+            if (PortalCourse::whereMoodleCourseId($course['courseid'])->first()) {
+                $rankedCoursesArr[] = [
+                    'courseId' => $course['courseid'],
+                    'courseName' => PortalCourse::whereMoodleCourseId($course['courseid'])->first()->name,
+                    'categoryName' => PortalCourse::whereMoodleCourseId($course['courseid'])->first()->portalCategory->name,
+                    'categoryId' => PortalCourse::whereMoodleCourseId($course['courseid'])->first()->portalCategory->id,
+                    'views' => $course['views']
+                ];
+            }
         }
 
         return array_reverse(array_values(Arr::sort($rankedCoursesArr, function ($value) {
