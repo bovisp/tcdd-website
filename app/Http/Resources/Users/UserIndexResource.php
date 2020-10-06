@@ -19,7 +19,7 @@ class UserIndexResource extends JsonResource
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'fullname' => $this->fullname,
-            'role' => ucfirst($this->role),
+            'role' => $this->roles->first()->name,
             'section' => optional($this->section)->name
         ];
     }
