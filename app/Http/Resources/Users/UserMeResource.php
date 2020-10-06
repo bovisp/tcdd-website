@@ -29,7 +29,7 @@ class UserMeResource extends JsonResource
             'lastname' => $this->lastname,
             'fullname' => $this->fullname,
             'role' => ucfirst($this->role),
-            'rank' => $this->roles->where('name', '!=', 'administrator')->first()->rank,
+            'rank' => optional($this->roles->where('name', '!=', 'administrator')->first())->rank,
             'roles' => $this->roles->toArray(),
             'section' => optional($this->section)->name,
             'permissions' => $permissions
