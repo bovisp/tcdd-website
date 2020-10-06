@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Users\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Users\UserIndexResource;
+use App\Http\Resources\Users\UserMeResource;
 
 class MeController extends Controller
 {
@@ -14,6 +14,6 @@ class MeController extends Controller
 
     public function me()
     {
-        return new UserIndexResource(auth()->user());
+        return new UserMeResource(auth()->user());
     }
 }

@@ -106,9 +106,9 @@ class User extends Authenticatable
 
     public function getRoleAttribute()
     {
-        return $this->roles
+        return optional($this->roles
             ->where('name', '!=', 'administrator')
-            ->first()
+            ->first())
             ->name;
     }
 
