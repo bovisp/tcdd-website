@@ -5,6 +5,7 @@ namespace App;
 use App\Tag;
 use App\User;
 use App\Section;
+use App\ContentBuilder;
 use App\QuestionCategory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
@@ -14,19 +15,22 @@ class Question extends Model
     use HasTranslations;
 
     protected $translatable = [
-        'name',
-        'description'
+        'name'
     ];
     
     protected $fillable = [
         'name',
-        'description',
         'score',
         'author_id',
         'question_category_id',
         'section_id',
         'owner_id'
     ];
+
+    public function contentBuilder()
+    {
+        return $this->morphMany(ContentBuilder::class, 'contentable');
+    }
 
     public function author()
     {

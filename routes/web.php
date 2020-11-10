@@ -57,6 +57,7 @@ Route::get('/api/permissions/{permission}/users/create', 'Permissions\Api\UserPe
 Route::post('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissionsController@store');
 
 Route::get('/questions/categories', 'Questions\Categories\QuestionCategoriesController@index');
+Route::post('/api/questions/id', 'Questions\Questions\Api\QuestionsController@id');
 Route::resource('/api/questions/categories', 'Questions\Categories\Api\QuestionCategoriesController');
 Route::get('/questions', 'Questions\Questions\QuestionsController@index');
 Route::resource('/api/questions', 'Questions\Questions\Api\QuestionsController');
@@ -66,3 +67,5 @@ Route::resource('/api/questions/types', 'Questions\Types\Api\QuestionTypesContro
 
 Route::get('/admin/tags', 'Admin\Tags\TagsController@index');
 Route::resource('/api/admin/tags', 'Admin\Tags\Api\TagsController');
+
+Route::get('/api/content-builder/{contentBuilder}', 'ContentBuilder\Api\ContentBuilderController@index');

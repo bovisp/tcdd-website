@@ -17,21 +17,18 @@ class QuestionIndexResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
             'name_en' => $this->getTranslation('name', 'en'),
             'name_fr' => $this->getTranslation('name', 'fr'),
-            'description_en' => $this->getTranslation('description', 'en'),
-            'description_fr' => $this->getTranslation('description', 'fr'),
             'score' => $this->score,
             'author' => $this->author,
-            'questionCategory' => $this->questionCategory,
-            'question_category_id' => $this->questionCategory->id,
-            'categoryName' => $this->questionCategory->name,
-            'section' => $this->section,
-            'section_id' => $this->section->id,
-            'sectionName' => $this->section->name,
-            'tags' => $this->tags,
-            'editors' => $this->editors
+            'questionCategory' => optional($this->questionCategory),
+            'question_category_id' => optional($this->questionCategory)->id,
+            'categoryName' => optional($this->questionCategory)->name,
+            'section' => optional($this->section),
+            'section_id' => optional($this->section)->id,
+            'sectionName' => optional($this->section)->name,
+            'tags' => optional($this->tags),
+            'editors' => optional($this->editors)
         ];
     }
 }

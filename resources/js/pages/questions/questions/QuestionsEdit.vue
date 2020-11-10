@@ -179,18 +179,10 @@
                     :class="{ 'text-red-500': errors.description_en }"
                     for="description_en"
                 >
-                    Description (English)
+                    Question text (English)
                 </label>
 
-                <vue-editor 
-                    v-model="form.description_en"
-                ></vue-editor>
-
-                <p
-                    v-if="errors.description_en"
-                    v-text="errors.description_en[0]"
-                    class="text-red-500 text-sm"
-                ></p>
+                English Parts
             </div>
 
             <div
@@ -201,18 +193,10 @@
                     :class="{ 'text-red-500': errors.description_fr }"
                     for="description_fr"
                 >
-                    Description (French)
+                    Question text (French)
                 </label>
 
-                <vue-editor 
-                    v-model="form.description_fr"
-                ></vue-editor>
-
-                <p
-                    v-if="errors.description_fr"
-                    v-text="errors.description_fr[0]"
-                    class="text-red-500 text-sm"
-                ></p>
+                French Parts
             </div>
 
             <div
@@ -344,13 +328,11 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { VueEditor, Quill } from 'vue2-editor'
 import Multiselect from 'vue-multiselect'
 import { map } from'lodash-es'
 
 export default {
     components: {
-        VueEditor,
         Multiselect
     },
 
@@ -359,8 +341,6 @@ export default {
             form: {
                 name_en: '',
                 name_fr: '',
-                description_en: '',
-                description_fr: '',
                 score: null,
                 section_id: '',
                 question_category_id: null,
@@ -396,8 +376,6 @@ export default {
 
             this.form.name_en = ''
             this.form.name_fr = ''
-            this.form.description_en = ''
-            this.form.description_fr = ''
             this.form.score = null
             this.form.section_id = null
             this.form.question_category_id = null
@@ -451,8 +429,6 @@ export default {
     async mounted () {
         this.form.name_en = this.question.name_en
         this.form.name_fr = this.question.name_fr
-        this.form.description_en = this.question.description_en
-        this.form.description_fr = this.question.description_fr
         this.form.score = this.question.score
         this.form.section_id = this.question.section_id
         this.form.question_category_id = this.question.question_category_id

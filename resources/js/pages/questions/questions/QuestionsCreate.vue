@@ -144,21 +144,13 @@
             >
                 <label 
                     class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.description_en }"
-                    for="description_en"
                 >
                     Question text (English)
                 </label>
 
-                <vue-editor 
-                    v-model="form.description_en"
-                ></vue-editor>
-
-                <p
-                    v-if="errors.description_en"
-                    v-text="errors.description_en[0]"
-                    class="text-red-500 text-sm"
-                ></p>
+                <content-builder 
+                    lang="en"
+                />
             </div>
 
             <div
@@ -166,21 +158,13 @@
             >
                 <label 
                     class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.description_fr }"
-                    for="description_fr"
                 >
                     Question text (French)
                 </label>
 
-                <vue-editor 
-                    v-model="form.description_fr"
-                ></vue-editor>
-
-                <p
-                    v-if="errors.description_fr"
-                    v-text="errors.description_fr[0]"
-                    class="text-red-500 text-sm"
-                ></p>
+                <content-builder 
+                    lang="fr"
+                />
             </div>
 
             <div
@@ -305,13 +289,11 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { VueEditor, Quill } from 'vue2-editor'
 import Multiselect from 'vue-multiselect'
 import { map } from'lodash-es'
 
 export default {
     components: {
-        VueEditor,
         Multiselect
     },
 
@@ -320,8 +302,6 @@ export default {
             form: {
                 name_en: '',
                 name_fr: '',
-                description_en: '',
-                description_fr: '',
                 score: null,
                 section_id: null,
                 question_category_id: null,
@@ -346,19 +326,21 @@ export default {
             fetchSections: 'sections/fetch',
             fetchTags: 'tags/fetch',
             fetchQuestionCategories: 'questionCategories/fetch',
+            createTempQuestionId: 'questions/createId',
+            removeTempIds: 'questions/removeTempIds'
         }),
 
-        cancel () {
+        async cancel () {
             window.events.$emit('questions:create-cancel')
 
             this.form.name_en = ''
             this.form.name_fr = ''
-            this.form.description_en = ''
-            this.form.description_fr = ''
             this.form.section_id = null
             this.form.question_category_id = null
             this.form.tags = []
             this.form.score = null
+
+            await this.removeTempIds(this.questionId)
         },
 
         async store () {
@@ -403,9 +385,12 @@ export default {
     },
 
     async mounted () {
+        await this.createTempQuestionId()
         await this.fetchSections()
         await this.fetchTags()
         await this.fetchQuestionCategories()
+
+        window.events.$on('questions:temporary-id', questionId => this.questionId = questionId)
     }
 }
 </script>
