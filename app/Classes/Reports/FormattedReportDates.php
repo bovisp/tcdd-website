@@ -17,17 +17,36 @@ class FormattedReportDates
         [ 'calendar' => 4, 'fiscal' => 2, 'add' => 2 ]
     ];
 
+    protected $fiscalArr, $quartersArr, $type;
+
+    public function __construct()
+    {
+        if (!request('fiscal') && !request('quarters')) {
+            $this->fiscalArr = cache()->get('tp-fiscalyears');
+
+            $this->quartersArr = [];
+
+            $this->type = cache()->get('metric-type');
+        } else {
+            $this->fiscalArr = request('fiscal');
+
+            $this->quartersArr = request('quarters');
+
+            $this->type = request('type');
+        }
+    }
+
     public function getTimestampArray($hasFiscal, $hasQuarters)
     {
         if ($hasFiscal && $hasQuarters) {
-            return $this->calculate(request('fiscal'), request('quarters'));
+            return $this->calculate($this->fiscalArr, $this->quartersArr);
         } elseif ($hasFiscal && !$hasQuarters) {
-            return $this->calculate(request('fiscal'), [1, 2, 3, 4]);
+            return $this->calculate($this->fiscalArr, [1, 2, 3, 4]);
         } elseif (!$hasFiscal && $hasQuarters) {
-            $class = 'App\\Classes\\Reports\\Fiscal\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', request('type')))) . 'FiscalYears';
+            $class = 'App\\Classes\\Reports\\Fiscal\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $this->type))) . 'FiscalYears';
             $years = (new $class)->get();
 
-            return $this->calculate($years, request('quarters'));
+            return $this->calculate($years, $this->quartersArr);
         } else {
             return [];
         }

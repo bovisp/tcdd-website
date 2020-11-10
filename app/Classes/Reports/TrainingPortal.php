@@ -19,10 +19,25 @@ class TrainingPortal
 
     protected $connection = 'mysql2';
 
+    protected $fiscalArr, $quartersArr;
+
+    public function __construct()
+    {
+        if (!request('fiscal') && !request('quarters')) {
+            $this->fiscalArr = cache()->get('tp-fiscalyears');
+
+            $this->quartersArr = [];
+        } else {
+            $this->fiscalArr = request('fiscal');
+
+            $this->quartersArr = request('quarters');
+        }
+    }
+
     public function generate()
     {
         $this->datesArr = (new FormattedReportDates)->getTimestampArray(
-            count(request('fiscal')), count(request('quarters'))
+            count($this->fiscalArr), count($this->quartersArr)
         );
 
         if (!count($this->datesArr)) {
