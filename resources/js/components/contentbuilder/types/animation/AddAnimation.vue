@@ -1,10 +1,11 @@
 <template>
     <div>
         <div
-            class="form-group"
+            class="mb-4"
         >
-            <label 
-                :class="{ 'text-danger': errors.title }"
+            <label
+                class="block text-gray-700 font-bold mb-2" 
+                :class="{ 'text-red-500': errors.title }"
                 for="title"
             >
                 Title (optional)
@@ -13,23 +14,24 @@
             <input 
                 type="text" 
                 v-model="form.title"
-                class="form-control"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
                 id="title"
-                :class="{ 'is-invalid': errors.title }"
+                :class="{ 'border-red-500': errors.title }"
             >
 
             <p
                 v-if="errors.title"
                 v-text="errors.title[0]"
-                class="invalid-feedback"
+                class="text-red-500 text-xs"
             ></p>
         </div>
 
         <div
-            class="form-group"
+            class="mb-4"
         >
             <label 
-                :class="{ 'text-danger': errors.caption }"
+                class="block text-gray-700 font-bold mb-2"
+                :class="{ 'text-red-500': errors.caption }"
                 for="caption"
             >
                 Caption (optional)
@@ -37,15 +39,15 @@
 
             <textarea 
                 v-model="form.caption"
-                class="form-control"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
                 id="caption"
-                :class="{ 'is-invalid': errors.caption }"
+                :class="{ 'border-red-500': errors.caption }"
             ></textarea>
 
             <p
                 v-if="errors.caption"
                 v-text="errors.caption[0]"
-                class="invalid-feedback"
+                class="text-red-500 text-xs"
             ></p>
         </div>
 
@@ -70,14 +72,14 @@
         />
 
         <div 
-            class="mt-n3 mb-4 text-danger small"
+            class="-mt-3 mb-6 text-red-500 text-xs"
             v-if="errors.files"
             v-text="errors.files[0]"
         ></div>
 
-        <div class="form-group mb-0 d-flex">
+        <div class="flex">
             <button 
-                class="btn"
+                class="btn btn-sm text-sm"
                 :class="createButtonClasses"
                 @click.prevent="store"
             >
@@ -85,7 +87,7 @@
             </button>
             
             <button 
-                class="btn btn-text ml-auto"
+                class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="cancel"
             >
                 Cancel
@@ -95,12 +97,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     props: {
-        seriesId: {
-            type: Number,
-            required: true
-        },
         editStatus: {
             type: Boolean,
             required: true
@@ -113,7 +113,7 @@ export default {
         createButtonClasses: {
             type: String,
             required: false,
-            default: 'btn-primary'
+            default: 'btn-blue'
         },
         isTabSectionPart: {
             type: Boolean,
@@ -129,36 +129,45 @@ export default {
             type: String,
             required: false,
             default: null
+        },
+        lang: {
+            type: String,
+            required: true,
         }
     },
 
     data () {
         return {
             form: {
-                content_builder_type_id: 2,
+                content_builder_type_id: 3,
                 files: [],
                 title: '',
                 caption: '',
                 is_tab_section: this.isTabSectionPart
-            },
-            errors: []
+            }
         }
     },
 
-    methods: {
-        store () {
-            axios.post(`/series/${this.seriesId}/animation`, this.form)
-                .then(({data}) => {
-                    if (this.isTabSectionPart === false) {
-                        window.events.$emit('part:created', data)
+    computed: {
+        ...mapGetters({
+            contentIds: 'questions/contentIds'
+        })
+    },
 
-                        this.reset()
-                    } else {
-                        this.$emit('tab-part-section-content:created', data)
-                    }
-                }).catch(error => {
-                    this.errors = error.response.data.errors
+    methods: {
+        async store () {
+            let { data } = await axios.post(`/api/content-builder/${this.contentIds[this.lang]}/animation`, this.form)
+                    
+            if (this.isTabSectionPart === false) {
+                window.events.$emit('part:created', {
+                    data,
+                    contentBuilderId: this.contentIds[this.lang]
                 })
+
+                this.reset()
+            } else {
+                this.$emit('tab-part-section-content:created', data)
+            }
         },
 
         async cancel () {
@@ -176,7 +185,7 @@ export default {
             this.form.title = ''
             this.form.caption = ''
 
-            window.events.$emit('add-part:cancel')
+            window.events.$emit('add-part:cancel', this.contentIds[this.lang])
         }
     },
 

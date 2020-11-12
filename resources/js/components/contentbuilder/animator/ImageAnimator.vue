@@ -12,7 +12,7 @@
 
     <img 
       :src="image.file" 
-      class="d-block mr-auto ml-auto"
+      class="block mr-auto ml-auto"
       :class="{ 'img-fluid': fluid }"
     >
 

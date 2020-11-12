@@ -2,7 +2,7 @@
     <form 
         enctype="multipart/form-data"
         novalidate
-        class="bg-light rounded-lg p-5 d-flex justify-content-center align-items-center mb-4 position-relative"
+        class="bg-gray-100 rounded p-12 flex justify-center items-center mb-6 relative"
         :style="[ dragging ? {'borderColor': 'Gray'} : {'borderColor': 'LightGray'}]"
         style="border: 2px dashed;"
         @dragover.prevent="handleDragOver"
@@ -11,20 +11,20 @@
         <input 
             type="file"
             multiple
-            class="position-absolute w-100 h-100"  
+            class="absolute w-full h-full"  
             style="opacity: 0; top: 0; left: 0;"
             @change="handleFilesChosen"
         >
 
         <template v-if="draggingCount">
             <div>
-                Nearly there. Let go to upload <span class="font-weight-bolder">{{ draggingCount }}</span> items!
+                Nearly there. Let go to upload <span class="font-bold">{{ draggingCount }}</span> items!
             </div>
         </template>
 
         <template v-else>
-           <div class="text-muted">
-                Drop here to upload or <span class="text-info">choose files</span>
+           <div class="text-grey-700">
+                Drop here to upload or <span class="text-blue-400">choose files</span>
             </div>
         </template>
     </form>

@@ -4,7 +4,7 @@
             @chosen="handleFilesChosen"
         />
 
-        <div class="mb-3 d-flex justify-content-between px-3 text-muted small">
+        <div class="mb-4 flex justify-between px-4 text-gray-700 text-sm">
             <span>{{ this.uploads.length }} uploads ({{ currentUploadCount }} in progress) / {{ completedUploadCount }} complete</span>
             <span>{{ overallProgress }}% complete</span>
         </div>

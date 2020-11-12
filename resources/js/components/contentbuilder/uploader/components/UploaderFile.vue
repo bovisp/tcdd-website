@@ -1,6 +1,6 @@
 <template>
-    <div class="bg-light rounded-lg p-4 d-flex align-items-stretch mb-1">
-        <div class="mr-3 position-relative">
+    <div class="bg-gray-100 rounded p-6 flex align-stretch mb-1">
+        <div class="mr-4 relative">
             <radial-progress-bar 
                 :diameter="70"
                 :stroke-width="8"
@@ -13,34 +13,34 @@
             </radial-progress-bar>
 
             <div 
-                class="position-absolute w-100 text-center"
+                class="absolute w-full text-center"
                 style="top: 24px; left: 0;"
             >
                 <span 
-                    class="font-weight-light text-primary"
+                    class="font-light text-blue-700"
                     style="font-size: .8rem;"
                 >{{ progress }}%</span>
             </div>
         </div>
 
-        <div class="d-flex flex-column justify-content-between">
+        <div class="flex flex-col justify-between">
             <div class="mb-2">
                 <div
-                    class="font-weight-bolder mr-3 text-secondary"
+                    class="font-medium mr-4 text-gray-800"
                     style="line-height: 1.25;"
                 >
                     {{ upload.file.name }}
                 </div>
                 
                 <div
-                    class="text-muted"
+                    class="text-gray-700"
                     style="line-height: 1.25;"
                 >
                     <small>{{ sizeDisplay }} MB</small>
                 </div>
             </div>
 
-            <div class="text-muted align-baseline">
+            <div class="text-gray-700 align-baseline">
                 <small>
                     <template v-if="state === states.WAITING">Waiting</template>
 
@@ -51,13 +51,13 @@
                     <template v-if="state === states.CANCELLED">Upload cancelled</template>
 
                     <template v-if="state === states.UNSUPPORTED">
-                        <span class="text-danger">Sorry, this file type isn't supported</span>
+                        <span class="text-red-500">Sorry, this file type isn't supported</span>
                     </template>
 
                     <template v-if="state === states.UPLOADING">
                         <a 
                             href="#"
-                            class="text-link"
+                            class="text-blue-400"
                             @click.prevent="cancel"
                         >Cancel</a>
                     </template>

@@ -1,7 +1,7 @@
 <template>
     <div class="flex my-4">
         <div 
-            :class="[ editingTurnedOn && !editing ? 'w-2/12 flex items-center' : 'hidden' ]"
+            :class="[ editingTurnedOn && !editing ? 'w-2/12 flex items-start' : 'hidden' ]"
         >
             <i class="fas fa-arrows-alt ml-auto cursor-move"></i>
 
