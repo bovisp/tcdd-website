@@ -3,9 +3,8 @@
 namespace App\Http\Resources\ContentBuilder;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\ContentBuilder\PartResource;
 
-class ContentBuilderResource extends JsonResource
+class PartResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +14,13 @@ class ContentBuilderResource extends JsonResource
      */
     public function toArray($request)
     {
+        $className = 'App\Classes\ContentTypes\Build' . ucfirst($this->contentBuilderType->type) . 'Data';
+
         return [
             'id' => $this->id,
-            'parts' => PartResource::collection($this->parts)
+            'builderType' => $this->contentBuilderType,
+            'sort_order' => $this->sort_order,
+            'data' => (new $className($this->resource))->getData()
         ];
     }
 }
