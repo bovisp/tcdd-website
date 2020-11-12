@@ -1,11 +1,11 @@
 <template>
     <div 
-        class="row"
-        :class="[ editing ? 'justify-content-end' : '' ]"
+        class="flex flex-col w-full"
+        :class="[ editing ? 'items-end' : '' ]"
     >
         <template v-if="!editing && !editStatus">
             <p 
-                class="text-center font-weight-light w-100 h5 mb-3"
+                class="mb-4 text-center font-light w-full text-xl"
                 v-if="typeof part.data !== 'undefined' && part.data.title"
             >
                 {{ part.data.title }}
@@ -16,14 +16,14 @@
                     <img 
                         :src="part.data.filename[0].file" 
                         :alt="part.data.caption"
-                        class="d-block mx-auto img-fluid"
+                        class="block mx-auto max-w-full h-auto"
                     >
                 </template>
 
                 <template v-if="fileExtension(part.data.filename[0].file) === 'video'">
                     <video 
                         controls
-                        class="d-block mx-auto img-fluid"
+                        class="block mx-auto max-w-full h-auto"
                     >
                         <source 
                             :src="part.data.filename[0].file"
@@ -34,7 +34,7 @@
             </template>
 
             <p 
-                class="mb-0 mt-2 text-muted font-weight-bold w-75 mx-auto"
+                class="mb-0 mt-2 text-gray-700 w-3/4 mx-auto"
                 v-if="typeof part.data !== 'undefined' && part.data.caption"
             >
                 <small>{{ part.data.caption }}</small>
@@ -43,14 +43,15 @@
 
         <div
             v-else
-            class="my-4"
-            :class="editStatus ? 'col-12' : 'col-10 bg-light p-3 rounded'"
+            class="my-6"
+            :class="editStatus ? 'w-full' : 'w-10/12 bg-gray-100 p-4 rounded'"
         >
             <div
-                class="form-group"
+                class="mb-4"
             >
                 <label 
-                    :class="{ 'text-danger': errors.title }"
+                    class="block text-gray-700 font-bold mb-2"
+                    :class="{ 'text-red-500': errors.title }"
                     :for="`title-${form.id}`"
                 >
                     Title (optional)
@@ -59,23 +60,24 @@
                 <input 
                     type="text" 
                     v-model="form.title"
-                    class="form-control"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
                     :id="`title-${form.id}`"
-                    :class="{ 'is-invalid': errors.title }"
+                    :class="{ 'border-red-500': errors.title }"
                 >
 
                 <p
                     v-if="errors.title"
                     v-text="errors.title[0]"
-                    class="invalid-feedback"
+                    class="text-red-500 text-xs"
                 ></p>
             </div>
 
             <div
-                class="form-group"
+                class="mb-4"
             >
                 <label 
-                    :class="{ 'text-danger': errors.caption }"
+                    class="block text-gray-700 font-bold mb-2"
+                    :class="{ 'text-red-500': errors.caption }"
                     :for="`caption-media-${this.part.id}`"
                 >
                     Caption (optional)
@@ -83,31 +85,31 @@
 
                 <textarea 
                     v-model="form.caption"
-                    class="form-control"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
                     id="`caption-media-${this.part.id}`"
-                    :class="{ 'is-invalid': errors.caption }"
+                    :class="{ 'border-red-500': errors.caption }"
                 ></textarea>
 
                 <p
                     v-if="errors.caption"
                     v-text="errors.caption[0]"
-                    class="invalid-feedback"
+                    class="text-red-500 text-xs"
                 ></p>
             </div>
 
             <div 
-                class="d-flex my-2"
+                class="flex my-2"
                 v-if="!editStatus"
             >
                 <button 
-                    class="btn btn-primary btn-sm"
+                    class="btn btn-blue btn-sm text-sm"
                     @click.prevent="update"
                 >
                     Update
                 </button>
 
                 <button 
-                    class="btn btn-text btn-sm ml-auto"
+                    class="btn btn-text btn-sm text-sm ml-auto"
                     @click.prevent="cancel"
                 >
                     Cancel
@@ -136,6 +138,11 @@ export default {
             type: Number,
             required: false,
             default: null
+        },
+        contentBuilderId: {
+            type: Number,
+            required: false,
+            default: null
         }
     },
 
@@ -144,7 +151,6 @@ export default {
             part: {},
             editingTurnedOn: false,
             editing: false,
-            errors: [],
             form: {
                 title: '',
                 caption: ''
@@ -173,15 +179,12 @@ export default {
     methods: {
         fileExtension,
 
-        update () {
-            axios.patch(`/parts/${this.part.id}/media`, this.form)
-                .then(({data}) => {
-                    this.part = data
+        async update () {
+            let { data } = await axios.patch(`/api/parts/${this.part.id}/media`, this.form)
 
-                    this.cancel()
-                }).catch(error => {
-                    this.errors = error.response.data.errors
-                })
+            this.part = data
+
+            this.cancel()
         },
 
         cancel () {
@@ -192,7 +195,7 @@ export default {
             this.form.title = this.part.data.title
             this.form.caption = this.part.data.caption
 
-            window.events.$emit('part:edit-cancel')
+            window.events.$emit('part:edit-cancel', this.part.id)
         },
     },
 

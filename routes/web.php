@@ -73,10 +73,12 @@ Route::resource('/api/admin/tags', 'Admin\Tags\Api\TagsController');
 
 Route::post('/api/content-builder/{contentBuilder}/content', 'ContentBuilder\Api\ContentPartController@store');
 Route::post('/api/content-builder/{contentBuilder}/animation', 'ContentBuilder\Api\AnimationPartController@store');
+Route::post('/api/content-builder/{contentBuilder}/media', 'ContentBuilder\Api\MediaPartController@store');
 Route::get('/api/content-builder/{contentBuilder}', 'ContentBuilder\Api\ContentBuilderController@index');\
 Route::patch('api/content-builder/{contentBuilder}/change-order', 'ContentBuilder\Api\ContentBuilderController@reorder');
 
 Route::get('/api/parts/types', 'ContentBuilderTypes\Api\ContentBuilderTypesController@index');
 Route::patch('/api/parts/{part}/content', 'ContentBuilder\Api\ContentPartController@update');
 Route::patch('/api/parts/{part}/animation', 'ContentBuilder\Api\AnimationPartController@update');
+Route::patch('/api/parts/{part}/media', 'ContentBuilder\Api\MediaPartController@update');
 Route::delete('/api/parts/{part}', 'ContentBuilder\Api\PartsController@destroy');
