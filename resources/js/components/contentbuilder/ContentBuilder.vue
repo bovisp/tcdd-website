@@ -52,7 +52,6 @@ export default {
         return {
             editing: false,
             parts: [],
-            errors: [],
             form: {},
             addPart: false,
             editing: false

@@ -70,3 +70,5 @@ Route::resource('/api/admin/tags', 'Admin\Tags\Api\TagsController');
 
 Route::get('/api/content-builder/{contentBuilder}', 'ContentBuilder\Api\ContentBuilderController@index');\
 Route::patch('api/content-builder/{contentBuilder}/change-order', 'ContentBuilder\Api\ContentBuilderController@reorder');
+
+Route::get('/api/parts/types', 'ContentBuilderTypes\Api\ContentBuilderTypesController@index');

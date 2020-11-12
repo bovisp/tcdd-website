@@ -1,7 +1,7 @@
 <template>
     <div>
         <button 
-            class="btn btn-primary btn-block mt-4"
+            class="btn btn-blue btn-sm text-sm w-full mt-6"
             v-if="showAddButton"
             @click.prevent="addPartModal"
         >
@@ -11,9 +11,9 @@
         <div 
             v-if="type && !addingPart"
         >
-            <hr class="my-5">
+            <hr class="my-12">
 
-            <h4 class="w-100 font-weight-light text-center mb-4">
+            <h4 class="w-full font-light text-center mb-6">
                  New {{ ucfirst(type) }} Part
             </h4>
 
@@ -26,42 +26,41 @@
 
         <modal 
             v-if="addingPart" 
-            @close="add"
-            @cancel="addingPart = false"
-            class="app-modal"
+            @submit="add"
+            @close="cancel"
+            okButtonText="Create"
         >
-            <h3 slot="header">Add part</h3>
+            <h3 slot="header" class="mb-4">Add part</h3>
 
-            <div slot="body" style="height: 100%;">
-                <div class="row">
-                    <div class="col-md-4 border-right">
+            <div slot="body">
+                <div class="flex mb-4">
+                    <div class="w-4/12 border border-t-0 border-b-0 border-l-0">
                         <form>
-                            <div 
-                                class="form-check mb-2"
+                            <div
+                                class="mb-2"
                                 v-for="t in types"
                                 :key="t.id"
                             >
-                                <input 
-                                    class="form-check-input" 
-                                    type="radio" 
-                                    :id="t.type" 
-                                    :value="t.type"
-                                    v-model="type"
-                                    @dblclick="add"
-                                >
-
-                                <label 
-                                    class="form-check-label" 
+                                <label
                                     :for="t.type"
                                     @dblclick="add"
                                 >
-                                    {{ ucfirst(t.type) }}
+                                    <input 
+                                        type="radio" 
+                                        class="form-radio" 
+                                        :id="t.type" 
+                                        :value="t.type"
+                                        v-model="type"
+                                        @dblclick="add"
+                                    >
+
+                                    <span class="ml-2">{{ ucfirst(t.type) }}</span>
                                 </label>
                             </div>
                         </form>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="w-8/12 px-4">
                         <p v-if="!description">
                             Please select a type
                         </p>
@@ -69,22 +68,10 @@
                         <div 
                             v-else
                             v-html="description"
-                            style="overflow: auto;"
+                            class="content overflow-auto"
                         ></div>
                     </div>
                 </div>
-            </div>
-
-            <div slot="footer" class="d-flex justify-content-end">
-                <button 
-                    class="btn btn-text mr-2" 
-                    @click="cancel"
-                >Cancel</button>
-
-                <button 
-                    class="btn btn-primary" 
-                    @click="add"
-                >Create</button>
             </div>
         </modal>
     </div>
@@ -171,22 +158,3 @@ export default {
     }
 }
 </script>
-
-<style>
-    .form-check:last-child {
-        margin-bottom: 0 !important;
-    }
-
-    .app-modal .modal-container {
-        height: 70%;
-    }
-
-    .app-modal .modal-container .card {
-        height: 100%;
-    }
-
-    .app-modal .modal-container .card .row {
-        height: 100%;
-        overflow: auto;
-    }
-</style>
