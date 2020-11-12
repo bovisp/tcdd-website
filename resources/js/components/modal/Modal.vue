@@ -73,6 +73,12 @@ export default {
             required: false,
             default: 'Cancel'
         }
+    },
+    
+    methods: {
+        close (e) {
+            this.$emit('close')
+        }
     }
 }
 </script>

@@ -22,12 +22,14 @@
                 :key="part.id"
                 :data="part"
                 :editing-on="editing"
+                :lang="lang"
             />
         </draggable>
 
         <add-part
             v-if="editing"
             :edit-status="editing"
+            :lang="lang"
         />
     </div>
 </template>
@@ -35,6 +37,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Draggable from 'vuedraggable'
+import { map, filter } from 'lodash-es'
 
 export default {
     props: {
@@ -54,7 +57,8 @@ export default {
             parts: [],
             form: {},
             addPart: false,
-            editing: false
+            editing: false,
+            contentBuilderId: null
         }
     },
 
@@ -71,15 +75,15 @@ export default {
 
     watch: {
         editing () {
-            window.events.$emit('series:edit')
+            window.events.$emit('series:edit', this.contentBuilderId)
         },
 
         async contentIds () {
             let { data } = await axios.get(`/api/content-builder/${this.contentIds[this.lang]}`)
 
-            console.log(data)
-
             this.parts = data.data.parts
+
+            this.contentBuilderId = data.data.id
         }
     },
 
@@ -101,18 +105,26 @@ export default {
     },
 
     async mounted () {
-        window.events.$on('add-part:cancel', () => this.addPart = false)
+        window.events.$on('add-part:cancel', contentBuilderId => {
+            if (contentBuilderId === this.contentBuilderId) {
+                this.addPart = false
+            }
+        })
 
         window.events.$on('add-part:reload', parts => {
             this.parts = parts
         })
 
-        window.events.$on('part:deleted', partId => {
-            this.parts = filter(this.parts, part => part.id !== partId)
+        window.events.$on('part:deleted', payload => {
+            if (payload.contentBuilderId === this.contentBuilderId) {
+                this.parts = filter(this.parts, part => part.id !== payload.part)
+            }
         })
 
-        window.events.$on('part:created', part => {
-            this.parts.push(part)
+        window.events.$on('part:created', payload => {
+            if (payload.contentBuilderId === this.contentIds[this.lang]) {
+                this.parts.push(payload.data)
+            }
         })
     }
 }

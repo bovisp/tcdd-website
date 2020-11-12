@@ -1,9 +1,9 @@
 <template>
-    <div :class="[ editingTurnedOn ? 'row' : '' ]" class="my-4">
+    <div class="flex my-4">
         <div 
-            :class="[ editingTurnedOn && !editing ? 'col-2 d-flex' : 'd-none' ]"
+            :class="[ editingTurnedOn && !editing ? 'w-2/12 flex items-center' : 'hidden' ]"
         >
-            <i class="fas fa-arrows-alt ml-auto" style="cursor: move"></i>
+            <i class="fas fa-arrows-alt ml-auto cursor-move"></i>
 
             <i 
                 class="fas fa-edit ml-2"
@@ -11,49 +11,39 @@
             ></i>
 
             <i 
-                class="fas fa-trash-alt text-danger ml-2"
+                class="fas fa-trash-alt text-red-500 ml-2"
                 @click="showModal = true"
             ></i>
         </div>
         
         <div
-            :class="[ editingTurnedOn && !editing ? 'col-10' : 'col-12' ]"
+            :class="[ editingTurnedOn && !editing ? 'w-10/12 pl-4' : 'w-full' ]"
             v-if="typeof part !== 'undefined' && typeof part.builderType !== 'undefined'" 
         >
             <component 
                 :is="`Show${formatType}`"
-                :series-id="1"
+                :content-builder-id="contentIds[lang]"
                 :data="part"
             ></component>
         </div>
 
         <modal 
             v-if="showModal" 
-            @close="destroy"
-            @cancel="showModal = false"
+            @submit="destroy"
+            @close="showModal = false"
         >
-            <h3 slot="header">Delete part</h3>
+            <h3 slot="header" class="mb-4">Delete part</h3>
 
-            <p slot="body">
+            <p slot="body" class="mb-4">
                 Are you ure you want to do this? Like, really sure?
             </p>
-
-            <div slot="footer" class="d-flex justify-content-end">
-                <button 
-                    class="btn btn-text mr-2" 
-                    @click="showModal = false"
-                >Cancel</button>
-
-                <button 
-                    class="btn btn-primary" 
-                    @click="destroy"
-                >OK</button>
-            </div>
         </modal>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     props: {
         data: {
@@ -64,6 +54,10 @@ export default {
             type: Boolean,
             required: false,
             default: false
+        },
+        lang: {
+            type: String,
+            required: true
         }
     },
 
@@ -88,25 +82,29 @@ export default {
     },
 
     computed: {
+        ...mapGetters({
+            contentIds: 'questions/contentIds'
+        }),
+
         formatType () {
             return this.part.builderType.type.charAt(0).toUpperCase() + this.part.builderType.type.slice(1)
         }
     },
 
     methods: {
-        destroy () {
-            axios.delete(`/parts/${this.part.id}`, {
+        async destroy () {
+            let { data } = await axios.delete(`/api/parts/${this.part.id}`, {
                 data: {
                     type: this.part.builderType.type
                 }
             })
-                .then(response => {
-                    this.showModal = false
 
-                    window.events.$emit('part:deleted', this.part.id)
-                }).catch(error => {
-                    this.errors = error.response.data.errors
-                })
+            this.showModal = false
+
+            window.events.$emit('part:deleted', {
+                part: this.part.id,
+                contentBuilderId: this.contentIds[this.lang]
+            })
         },
 
         edit () {
@@ -119,11 +117,17 @@ export default {
     mounted () {
         this.part = this.data
 
-        window.events.$on('series:edit', () => this.editingTurnedOn = !this.editingTurnedOn)
+        window.events.$on('series:edit', contentBuilderId => {
+            if (contentBuilderId === this.contentIds[this.lang]) {
+                this.editingTurnedOn = !this.editingTurnedOn
+            }
+        })
 
-        window.events.$on('part:edit-cancel', () => {
-            this.editing = false
-            this.editingTurnedOn = true
+        window.events.$on('part:edit-cancel', partId => {
+            if (partId === this.part.id) {
+                this.editing = false
+                this.editingTurnedOn = true
+            }
         })
 
         this.editingTurnedOn = this.editingOn

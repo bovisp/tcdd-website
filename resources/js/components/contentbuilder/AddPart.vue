@@ -13,14 +13,15 @@
         >
             <hr class="my-12">
 
-            <h4 class="w-full font-light text-center mb-6">
+            <h4 class="w-full font-light text-center mb-6 text-2xl">
                  New {{ ucfirst(type) }} Part
             </h4>
 
             <component 
                 :is="`Add${ucfirst(type)}`"
-                :series-id="1"
+                :content-builder-id="1"
                 :edit-status="editStatus"
+                :lang="lang"
             ></component>
         </div>
 
@@ -85,6 +86,10 @@ export default {
     props: {
         editStatus: {
             type: Boolean,
+            required: true
+        },
+        lang: {
+            type: String,
             required: true
         }
     },

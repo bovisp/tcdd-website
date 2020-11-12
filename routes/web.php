@@ -68,7 +68,10 @@ Route::resource('/api/questions/types', 'Questions\Types\Api\QuestionTypesContro
 Route::get('/admin/tags', 'Admin\Tags\TagsController@index');
 Route::resource('/api/admin/tags', 'Admin\Tags\Api\TagsController');
 
+Route::post('/api/content-builder/{contentBuilder}/content', 'ContentBuilder\Api\ContentPartController@store');
 Route::get('/api/content-builder/{contentBuilder}', 'ContentBuilder\Api\ContentBuilderController@index');\
 Route::patch('api/content-builder/{contentBuilder}/change-order', 'ContentBuilder\Api\ContentBuilderController@reorder');
 
 Route::get('/api/parts/types', 'ContentBuilderTypes\Api\ContentBuilderTypesController@index');
+Route::patch('/api/parts/{part}/content', 'ContentBuilder\Api\ContentPartController@update');
+Route::delete('/api/parts/{part}', 'ContentBuilder\Api\PartsController@destroy');

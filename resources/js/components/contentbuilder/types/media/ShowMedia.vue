@@ -5,7 +5,7 @@
     >
         <template v-if="!editing && !editStatus">
             <p 
-                class="mb-0 text-center font-weight-light w-100 h5 mb-3"
+                class="text-center font-weight-light w-100 h5 mb-3"
                 v-if="typeof part.data !== 'undefined' && part.data.title"
             >
                 {{ part.data.title }}

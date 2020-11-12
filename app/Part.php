@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Part extends Model
 {
     protected $fillable = [
-        'series_id',
+        'content_builder_id',
         'sort_order',
         'content_builder_type_id'
     ];

@@ -1,12 +1,12 @@
 <template>
     <div 
-        class="row"
-        :class="[ editing ? 'justify-content-end' : '' ]"
+        class="flex"
+        :class="[ editing ? 'justify-end' : '' ]"
     >
         <div 
             v-if="editing"
-            class="my-4"
-            :class="editStatus ? 'col-12' : 'col-10 bg-light p-3 rounded'"
+            class="my-6"
+            :class="editStatus ? 'w-full' : 'w-10/12 bg-gray-100 p-4 rounded'"
         >
             <form>
                 <vue-editor 
@@ -16,22 +16,22 @@
                 <p
                     v-if="errors.content"
                     v-text="errors.content[0]"
-                    class="small text-danger mt-2"
+                    class="text-xs text-red-500 mt-2"
                 ></p>
 
                 <div 
-                    class="d-flex my-2"
+                    class="flex my-2"
                     v-if="!editStatus && editing"
                 >
                     <button 
-                        class="btn btn-primary btn-sm"
+                        class="btn btn-blue btn-sm text-sm"
                         @click.prevent="update"
                     >
                         Update
                     </button>
 
                     <button 
-                        class="btn btn-text btn-sm ml-auto"
+                        class="btn btn-text btn-sm text-sm ml-auto"
                         @click.prevent="cancel"
                     >
                         Cancel
@@ -54,8 +54,13 @@
 
 <script>
 import { merge } from 'lodash-es'
+import { VueEditor, Quill } from 'vue2-editor'
 
 export default {
+    components: {
+        VueEditor
+    },
+
     props: {
         data: {
             type: Object,
@@ -70,6 +75,11 @@ export default {
             type: Number,
             required: false,
             default: null
+        },
+        contentBuilderId: {
+            type: Number,
+            required: false,
+            default: null
         }
     },
 
@@ -78,7 +88,6 @@ export default {
             part: {},
             editingTurnedOn: false,
             editing: false,
-            errors: [],
             form: {
                 content: ''
             }
@@ -114,15 +123,12 @@ export default {
     },
 
     methods: {
-        update () {
-            axios.patch(`/parts/${this.part.id}/content`, this.form)
-                .then(({data}) => {
-                    this.part = data
+        async update () {
+            let { data } = await axios.patch(`/api/parts/${this.part.id}/content`, this.form)
 
-                    this.cancel()
-                }).catch(error => {
-                    this.errors = error.response.data.errors
-                })
+            this.part = data
+
+            this.cancel()
         },
 
         cancel () {
@@ -130,7 +136,7 @@ export default {
             
             this.form.content = this.part.data.content
 
-            window.events.$emit('part:edit-cancel')
+            window.events.$emit('part:edit-cancel', this.part.id)
         },
     },
 
