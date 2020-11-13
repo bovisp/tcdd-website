@@ -232,7 +232,7 @@ export default {
                 return
             }
 
-            let { data } = await axios.patch(`/api/parts/${this.part.id}/tab`, this.form)
+            let { data } = await axios.patch(`${this.urlBase}/api/parts/${this.part.id}/tab`, this.form)
 
             this.part = data
 
@@ -326,7 +326,7 @@ export default {
         window.events.$on('tab-content:section-data', async section => {
             this.form.tabSections.push(section)
 
-            let part = await axios.get(`/api/parts/${this.part.id}`)
+            let part = await axios.get(`${this.urlBase}/api/parts/${this.part.id}`)
 
             this.part = part.data
 

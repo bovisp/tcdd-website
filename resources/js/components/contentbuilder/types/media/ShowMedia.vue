@@ -180,7 +180,7 @@ export default {
         fileExtension,
 
         async update () {
-            let { data } = await axios.patch(`/api/parts/${this.part.id}/media`, this.form)
+            let { data } = await axios.patch(`${this.urlBase}/api/parts/${this.part.id}/media`, this.form)
 
             this.part = data
 

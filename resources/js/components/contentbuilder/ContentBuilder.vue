@@ -79,7 +79,7 @@ export default {
         },
 
         async contentIds () {
-            let { data } = await axios.get(`/api/content-builder/${this.contentIds[this.lang]}`)
+            let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}`)
 
             this.parts = data.data.parts
 
@@ -91,7 +91,7 @@ export default {
         update (e) {
             map(this.parts, (part, index) => part.sort_order = index + 1)
 
-            axios.patch(`/api/content-builder/${this.contentIds[this.lang]}/change-order`, {
+            axios.patch(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}/change-order`, {
                 parts: map(this.parts, part => {
                     return {
                         id: part.id,

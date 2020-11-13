@@ -159,7 +159,7 @@ export default {
 
     methods: {
         async store () {
-            let { data } = await axios.post(`/api/content-builder/${this.contentIds[this.lang]}/media`, this.form)
+            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}/media`, this.form)
 
             if (!this.isTabSectionPart) {
                 window.events.$emit('part:created', {
@@ -174,7 +174,7 @@ export default {
         },
 
         async cancel () {
-            await axios.delete('/uploads', {
+            await axios.delete(`${this.urlBase}/uploads`, {
                 data: {
                     files: this.form.filename
                 }

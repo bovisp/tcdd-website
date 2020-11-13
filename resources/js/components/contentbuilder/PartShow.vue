@@ -94,7 +94,7 @@ export default {
 
     methods: {
         async destroy () {
-            let { data } = await axios.delete(`/api/parts/${this.part.id}`, {
+            let { data } = await axios.delete(`${this.urlBase}/api/parts/${this.part.id}`, {
                 data: {
                     type: this.part.builderType.type
                 }

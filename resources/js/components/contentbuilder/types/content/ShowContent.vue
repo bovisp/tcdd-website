@@ -124,7 +124,7 @@ export default {
 
     methods: {
         async update () {
-            let { data } = await axios.patch(`/api/parts/${this.part.id}/content`, this.form)
+            let { data } = await axios.patch(`${this.urlBase}/api/parts/${this.part.id}/content`, this.form)
 
             this.part = data
 

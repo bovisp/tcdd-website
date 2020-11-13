@@ -155,7 +155,7 @@ export default {
     },
 
     async mounted () {
-        let { data: types } = await axios.get('/api/parts/types')
+        let { data: types } = await axios.get(`${this.urlBase}/api/parts/types`)
 
         this.types = types.data
 

@@ -161,7 +161,7 @@ export default {
             this.state = states.UPLOADING
 
             axios.post(
-                `${this.baseURL}${this.endpoint}`, 
+                `${this.urlBase}${this.endpoint}`, 
                 this.makeFormData(this.upload.file),
                 {
                     onUploadProgress: this.handleUploadProgress,

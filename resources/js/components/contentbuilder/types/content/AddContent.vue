@@ -96,7 +96,7 @@ export default {
 
     methods: {
         async store () {
-            let { data } = await axios.post(`/api/content-builder/${this.contentIds[this.lang]}/content`, this.form)
+            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}/content`, this.form)
 
             if (!this.isTabSectionPart) {
                 window.events.$emit('part:created', {

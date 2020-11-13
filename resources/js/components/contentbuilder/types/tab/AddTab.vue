@@ -142,7 +142,7 @@ export default {
         },
 
         async store () {
-            let { data } = await axios.post(`/api/content-builder/${this.contentIds[this.lang]}/tab`, {
+            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}/tab`, {
                 content_builder_type_id: this.form.content_builder_type_id,
                 title: this.form.title,
                 caption: this.form.caption,

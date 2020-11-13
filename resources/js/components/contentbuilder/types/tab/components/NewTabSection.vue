@@ -164,7 +164,7 @@ export default {
             this.form.partId = this.partId
         }
 
-        let { data: types } = await axios.get('/api/parts/types')
+        let { data: types } = await axios.get(`${this.urlBase}/api/parts/types`)
 
         this.types = filter(types.data, type => type.type !== 'tab')
     }
