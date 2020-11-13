@@ -11,7 +11,7 @@
     </p>
 
     <img 
-      :src="image.file" 
+      :src="`${urlBase}/image.file`" 
       class="block mr-auto ml-auto"
       :class="{ 'img-fluid': fluid }"
     >
