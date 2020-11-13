@@ -1,7 +1,5 @@
 <?php
 
-use App\Classes\PortalViews;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,6 +9,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('/uploads', 'FileUpload\Api\FileUploadController@store');
+Route::delete('/uploads', 'FileUpload\Api\FileUploadController@destroy');
 
 Route::get('/admin', 'Admin\AdminController@index');
 Route::get('/admin/sections', 'Admin\Sections\SectionsController@index');
@@ -57,6 +58,7 @@ Route::get('/api/permissions/{permission}/users/create', 'Permissions\Api\UserPe
 Route::post('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissionsController@store');
 
 Route::get('/questions/categories', 'Questions\Categories\QuestionCategoriesController@index');
+Route::post('/api/questions/id', 'Questions\Questions\Api\QuestionsController@id');
 Route::resource('/api/questions/categories', 'Questions\Categories\Api\QuestionCategoriesController');
 Route::get('/questions', 'Questions\Questions\QuestionsController@index');
 Route::resource('/api/questions', 'Questions\Questions\Api\QuestionsController');
@@ -66,3 +68,18 @@ Route::resource('/api/questions/types', 'Questions\Types\Api\QuestionTypesContro
 
 Route::get('/admin/tags', 'Admin\Tags\TagsController@index');
 Route::resource('/api/admin/tags', 'Admin\Tags\Api\TagsController');
+
+Route::post('/api/content-builder/{contentBuilder}/content', 'ContentBuilder\Api\ContentPartController@store');
+Route::post('/api/content-builder/{contentBuilder}/animation', 'ContentBuilder\Api\AnimationPartController@store');
+Route::post('/api/content-builder/{contentBuilder}/media', 'ContentBuilder\Api\MediaPartController@store');
+Route::post('/api/content-builder/{contentBuilder}/tab', 'ContentBuilder\Api\TabPartController@store');
+Route::get('/api/content-builder/{contentBuilder}', 'ContentBuilder\Api\ContentBuilderController@index');\
+Route::patch('api/content-builder/{contentBuilder}/change-order', 'ContentBuilder\Api\ContentBuilderController@reorder');
+
+Route::get('/api/parts/types', 'ContentBuilderTypes\Api\ContentBuilderTypesController@index');
+Route::patch('/api/parts/{part}/content', 'ContentBuilder\Api\ContentPartController@update');
+Route::patch('/api/parts/{part}/animation', 'ContentBuilder\Api\AnimationPartController@update');
+Route::patch('/api/parts/{part}/media', 'ContentBuilder\Api\MediaPartController@update');
+Route::patch('/api/parts/{part}/tab', 'ContentBuilder\Api\TabPartController@update');
+Route::delete('/api/parts/{part}', 'ContentBuilder\Api\PartsController@destroy');
+Route::get('/api/parts/{part}', 'ContentBuilder\Api\PartsController@show');

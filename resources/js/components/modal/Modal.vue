@@ -28,7 +28,7 @@
                 >
                     <button 
                         class="btn btn-outline w-full"
-                        @click.prevent="close"
+                        @click.prevent="$emit('close')"
                     >
                         {{ cancelButtonText }}
                     </button>

@@ -1,5 +1,7 @@
 export default {
 	questions: [],
 	question: {},
-	availableEditors: []
+	availableEditors: [],
+	tempId: null,
+	contentIds: null
 }

@@ -78,3 +78,10 @@ object-assign
  * (c) 2020 Evan You
  * @license MIT
  */
+
+/**!
+ * Sortable 1.10.2
+ * @author	RubaXa   <trash@rubaxa.org>
+ * @author	owenm    <owen23355@gmail.com>
+ * @license MIT
+ */

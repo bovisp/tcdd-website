@@ -19,3 +19,21 @@ export const setEdit = async ({ commit }, question) => {
 
     return
 }
+
+export const createId = async ({ commit }) => {
+    let { data } = await axios.post(`${urlBase}/api/questions/id`)
+
+    await commit('SET_TEMPORARY_ID', data.questionId)
+
+    await commit('SET_CONTENT_ID', data.contentBuilderId)
+}
+
+export const removeTempIds = async ({ commit }, questionId) => {
+    await commit('SET_TEMPORARY_ID', null)
+
+    await commit('SET_CONTENT_ID', null)
+}
+
+export const setContentBuilderIds = async ({commit}, contentBuilderIds) => {
+    await commit('SET_CONTENT_ID', contentBuilderIds)
+}
