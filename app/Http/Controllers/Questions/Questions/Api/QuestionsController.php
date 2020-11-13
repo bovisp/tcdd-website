@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Questions\Questions\Api;
 
 use App\Tag;
+use App\Part;
 use App\User;
 use App\Question;
+use App\ContentBuilder;
+use App\ContentBuilderType;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Questions\QuestionIndexResource;
 
@@ -134,9 +137,30 @@ class QuestionsController extends Controller
 
     public function destroy(Question $question)
     {
-        $question->delete();
+        $question->contentBuilder
+            ->each(function (ContentBuilder $contentBuilder) {
+                $contentBuilder->parts->each(function (Part $part) {
+                    $type = ContentBuilderType::find($part->content_builder_type_id)->type;
+
+                    $typeClassName = 'App\\' . ucfirst($type) . 'Part';
+
+                    $partType = $typeClassName::wherePartId($part->id)->first();
+
+                    $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
+
+                    (new $destroyClassName($partType))->delete();
+
+                    $part->delete();
+                });
+            });
+
+        $question->tags()->detach();
+
+        $question->editors()->detach();
 
         $question->contentBuilder->each->delete();
+
+        $question->delete();
 
         return response()->json([
             'data' => [
