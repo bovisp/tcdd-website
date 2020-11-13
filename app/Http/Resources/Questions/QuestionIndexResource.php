@@ -27,8 +27,12 @@ class QuestionIndexResource extends JsonResource
             'section' => optional($this->section),
             'section_id' => optional($this->section)->id,
             'sectionName' => optional($this->section)->name,
-            'tags' => optional($this->tags),
-            'editors' => optional($this->editors)
+            'tags' => $this->tags,
+            'editors' => $this->editors,
+            'contentBuilder' => [
+                'en' => $this->contentBuilder->where('language', '=', 'en')->first()->id,
+                'fr' => $this->contentBuilder->where('language', '=', 'fr')->first()->id,
+            ]
         ];
     }
 }

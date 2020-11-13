@@ -305,7 +305,8 @@ export default {
                 score: null,
                 section_id: null,
                 question_category_id: null,
-                tags: []
+                tags: [],
+                id: null
             },
             modalAddTag: false,
             tag: '',
@@ -317,7 +318,8 @@ export default {
         ...mapGetters({
             sections: 'sections/sections',
             avalaibleTags: 'tags/tags',
-            questionCategories: 'questionCategories/questionCategories'
+            questionCategories: 'questionCategories/questionCategories',
+            questionId: 'questions/tempId'
         })
     },
 
@@ -389,6 +391,8 @@ export default {
         await this.fetchSections()
         await this.fetchTags()
         await this.fetchQuestionCategories()
+
+        this.form.id = this.questionId
 
         window.events.$on('questions:temporary-id', questionId => this.questionId = questionId)
     }

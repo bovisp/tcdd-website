@@ -33,6 +33,7 @@
                 class="mb-4"
             >
                 <label 
+                    class="block text-gray-700 font-bold mb-2"
                     :class="{ 'text-red-500': errors.title }"
                     for="title-animation"
                 >
@@ -58,6 +59,7 @@
                 class="mb-4"
             >
                 <label 
+                    class="block text-gray-700 font-bold mb-2"
                     :class="{ 'text-red-500': errors.caption }"
                     for="caption-animation"
                 >

@@ -1,10 +1,11 @@
 <template>
     <div>
         <div
-            class="form-group"
+            class="mb-4"
         >
             <label 
-                :class="{ 'text-danger': errors.length > 0 }"
+                class="block text-gray-700 font-bold mb-2"
+                :class="{ 'text-red-500': errors.length > 0 }"
                 :for="`title-${section.id}`"
             >
                 Tab title
@@ -13,28 +14,28 @@
             <input 
                 type="text" 
                 v-model="form.title"
-                class="form-control"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
                 :id="`title-${section.id}`"
-                :class="{ 'is-invalid': errors.length > 0 }"
+                :class="{ 'border-red-500': errors.length > 0 }"
             >
 
             <p
                 v-if="errors.length > 0"
                 v-text="errors[0]"
-                class="invalid-feedback"
+                class="text-red-500 text-xs"
             ></p>
         </div>
 
         <div
-            class="form-group"
+            class="mb-4"
         >
-            <h5 class="mt-4 mb-n3">
+            <h5 class="mt-6 -mb-4 text-2xl">
                 Tab Content ({{ section.type }})
             </h5>
 
             <component 
                 :is="`Show${ucfirst(section.type)}`"
-                :series-id="1"
+                :content-builder-id="contentIds[lang]"
                 :edit-status="editStatus"
                 :data="section.content"
                 :id="section.content_id"
@@ -43,41 +44,51 @@
         </div>
 
         <div
-            class="form-group mt-n4"
+            class="mb-4 -mt-6"
         >
             <button 
-                class="btn btn-sm btn-outline-danger"
+                class="btn btn-sm text-sm btn-outline"
                 @click="deleteTab"
             >
                 Delete tab
             </button>
         </div>
 
-        <hr class="my-4">
+        <hr class="my-6">
     </div>
 </template>
 
 <script>
 import ucfirst from '../../../../../helpers/ucfirst'
 import { merge } from 'lodash-es'
+import { mapGetters } from 'vuex'
 
 export default {
     props: {
         section: {
             type: Object,
             required: true
+        },
+        lang: {
+            type: String,
+            required: true
         }
     },
 
     data () {
         return {
-            errors: [],
             editStatus: true,
             form: {
                 title: '',
                 data: {}
             }
         }
+    },
+
+    computed: {
+        ...mapGetters({
+            contentIds: 'questions/contentIds'
+        })
     },
 
     watch: {

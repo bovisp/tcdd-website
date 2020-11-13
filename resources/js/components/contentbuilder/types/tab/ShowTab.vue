@@ -1,71 +1,38 @@
 <template>
     <div 
-        class="row"
-        :class="[ editing ? 'justify-content-end' : '' ]"
+        class="flex flex-col w-full"
+        :class="[ editing ? 'items-end' : '' ]"
     >
         <template v-if="!editing">
             <p 
-                class="text-center font-weight-light w-100 h5 mb-3"
+                class="mb-4 text-center font-light w-full text-xl"
                 v-if="typeof part.data !== 'undefined' && part.data.title"
             >
                 {{ part.data.title }}
             </p>
 
-            <div class="w-100">
-                <ul 
-                    class="nav nav-tabs" 
-                    :id="`tab-part-${this.part.id}`" 
-                    role="tablist"
+            <div class="w-full">
+                <tabs
                     v-if="typeof part.data !== 'undefined'"
                 >
-                    <li 
-                        class="nav-item"
+                    <tab
                         v-for="(section, index) in part.data.tabSections"
                         :key="section.id"
+                        :name="section.title"
+                        :selected="isActive(section.id, index)"
                     >
-                        <a 
-                            class="nav-link" 
-                            :class="{'active': isActive(section.id, index)}"
-                            :id="`section-${section.id}-tab`"
-                            data-toggle="tab"
-                            :href="`#section-${section.id}`"
-                            role="tab"
-                            :aria-controls="`section-${section.id}`"
-                            :aria-selected="isActive(section.id, index)"
-                            @click="tabClicked = index"
-                        >
-                            {{ section.title }}
-                        </a>
-                    </li>
-                </ul>
-
-                <div 
-                    class="tab-content rounded-bottom border-left border-right border-bottom"
-                    v-if="typeof part.data !== 'undefined'"
-                >
-                    <div 
-                        v-for="(section, index) in part.data.tabSections"
-                        :key="section.id"
-                        class="tab-pane p-3"
-                        :class="{'active': isActive(section.id, index)}"
-                        :id="`section-${section.id}`" 
-                        role="tabpanel" 
-                        :aria-labelledby="`section-${section.id}-tab`"
-                    >
-                        <div class="px-3">
-                            <component 
-                                :is="`Show${ucfirst(section.type)}`"
-                                :series-id="1"
-                                :edit-status="false"
-                                :data="section.content"
-                            ></component>
-                        </div>
-                    </div>
-                </div>
+                        <component 
+                            :is="`Show${ucfirst(section.type)}`"
+                            :content-builder-id="contentBuilderId"
+                            :edit-status="false"
+                            :data="section.content"
+                        ></component>
+                    </tab>
+                </tabs>
             </div>
 
             <p 
-                class="mb-0 mt-2 text-muted font-weight-bold w-75 mx-auto"
+                class="mb-0 mt-2 text-grey-700 font-medium w-3/4 mx-auto"
                 v-if="typeof part.data !== 'undefined' && part.data.caption"
             >
                 <small>{{ part.data.caption }}</small>
@@ -74,13 +41,14 @@
 
         <div
             v-else
-            class="col-10 my-4 bg-light"
+            class="w-10/12 my-6 bg-gray-100 p-4"
         >
             <div
-                class="form-group"
+                class="mb-4"
             >
                 <label 
-                    :class="{ 'text-danger': errors.title }"
+                    class="block text-gray-700 font-bold mb-2"
+                    :class="{ 'text-red-500': errors.title }"
                     for="title-tab"
                 >
                     Tab part title (optional)
@@ -89,23 +57,24 @@
                 <input 
                     type="text" 
                     v-model="form.title"
-                    class="form-control"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
                     id="title-tab"
-                    :class="{ 'is-invalid': errors.title }"
+                    :class="{ 'border-red-500': errors.title }"
                 >
 
                 <p
                     v-if="errors.title"
                     v-text="errors.title[0]"
-                    class="invalid-feedback"
+                    class="text-red-500 text-xs"
                 ></p>
             </div>
 
             <div
-                class="form-group"
+                class="mb-4"
             >
                 <label 
-                    :class="{ 'text-danger': errors.caption }"
+                    class="block text-gray-700 font-bold mb-2"
+                    :class="{ 'text-red-500': errors.caption }"
                     for="caption"
                 >
                     Tab part caption (optional)
@@ -113,19 +82,19 @@
 
                 <textarea 
                     v-model="form.caption"
-                    class="form-control"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
                     id="caption"
-                    :class="{ 'is-invalid': errors.caption }"
+                    :class="{ 'border-red-500': errors.caption }"
                 ></textarea>
 
                 <p
                     v-if="errors.caption"
                     v-text="errors.caption[0]"
-                    class="invalid-feedback"
+                    class="text-red-500 text-xs"
                 ></p>
             </div>
 
-            <hr class="mt-5 mb-3">
+            <hr class="mt-12 mb-4">
 
             <h3>Sections</h3>
 
@@ -133,10 +102,11 @@
                 v-for="section in part.data.tabSections"
                 :key="section.id"
                 :section="section"
+                :lang="lang"
             />
 
             <div 
-                class="alert alert-danger"
+                class="alert alert-red"
                 v-if="form.tabSections.length === 0"
             >
                 You must add some tab content first.
@@ -146,20 +116,21 @@
                 <new-tab-section 
                     :data="newSection"
                     :part-id="part.data.id"
+                    :lang="lang"
                 />
             </template>
 
             <button 
-                class="btn btn-block btn-outline-secondary my-5"
+                class="btn w-full btn-outline btn-sm text-sm my-12"
                 @click="addTabSection"
                 v-if="!addingTabSection"
             >
                 Add a tab
             </button>
 
-            <div class="d-flex my-2">
+            <div class="flex my-2">
                 <button 
-                    class="btn btn-primary btn-sm"
+                    class="btn btn-blue btn-sm text-sm"
                     @click.prevent="update"
                     :disabled="form.tabSections.length === 0"
                 >
@@ -167,7 +138,7 @@
                 </button>
 
                 <button 
-                    class="btn btn-text btn-sm ml-auto"
+                    class="btn btn-text btn-sm text-sm ml-auto"
                     @click.prevent="cancel"
                 >
                     Cancel
@@ -187,6 +158,16 @@ export default {
         data: {
             type: Object,
             required: true
+        },
+        contentBuilderId: {
+            type: Number,
+            required: false,
+            default: null
+        },
+        lang: {
+            type: String,
+            required: false,
+            default: ''
         }
     },
 
@@ -196,7 +177,6 @@ export default {
             editingTurnedOn: false,
             editing: false,
             tabClicked: null,
-            errors: [],
             form: {
                 title: '',
                 caption: '',
@@ -245,42 +225,40 @@ export default {
             return this.tabClicked === index
         },
 
-        update () {
+        async update () {
             if (this.form.tabSections.length === 0) {
                 this.hasTabSections === false
 
                 return
             }
 
-            axios.patch(`/parts/${this.part.id}/tab`, this.form)
-                .then(({data}) => {
-                    this.part = data
+            let { data } = await axios.patch(`/api/parts/${this.part.id}/tab`, this.form)
 
-                    this.isActive(this.part.data.tabSections[0]['id'], 0)
+            this.part = data
 
-                    this.cancel()
-                }).catch(error => {
-                    console.log(error)
-                    this.errors = error.response.data.errors
+            this.isActive(this.part.data.tabSections[0]['id'], 0)
 
-                    forEach(Object.keys(this.errors), error => {
-                        if (error.split('.')[0].indexOf('tabSections') >= 0) {
-                            let index = parseInt(error.split('.')[1])
+            this.cancel()
 
-                            if (error.split('.')[2] === 'data') {
-                                window.events.$emit('tab-content:errors-data', {
-                                    id: this.form.tabSections[index]['id'],
-                                    error: this.errors[error]
-                                })
-                            } else {
-                                window.events.$emit('tab-content:errors', {
-                                    id: this.form.tabSections[index]['id'],
-                                    error: this.errors[error]
-                                })
-                            }
+            if (this.errors) {
+                forEach(Object.keys(this.errors), error => {
+                    if (error.split('.')[0].indexOf('tabSections') >= 0) {
+                        let index = parseInt(error.split('.')[1])
+
+                        if (error.split('.')[2] === 'data') {
+                            window.events.$emit('tab-content:errors-data', {
+                                id: this.form.tabSections[index]['id'],
+                                error: this.errors[error]
+                            })
+                        } else {
+                            window.events.$emit('tab-content:errors', {
+                                id: this.form.tabSections[index]['id'],
+                                error: this.errors[error]
+                            })
                         }
-                    })
+                    }
                 })
+            }
         },
 
         cancel () {
@@ -298,7 +276,7 @@ export default {
 
             this.deletedSections = []
 
-            window.events.$emit('part:edit-cancel')
+            window.events.$emit('part:edit-cancel', this.part.id)
         },
     },
 
@@ -348,7 +326,7 @@ export default {
         window.events.$on('tab-content:section-data', async section => {
             this.form.tabSections.push(section)
 
-            let part = await axios.get(`/parts/${this.part.id}`)
+            let part = await axios.get(`/api/parts/${this.part.id}`)
 
             this.part = part.data
 

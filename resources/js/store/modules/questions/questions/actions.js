@@ -29,9 +29,11 @@ export const createId = async ({ commit }) => {
 }
 
 export const removeTempIds = async ({ commit }, questionId) => {
-    let { data } = await axios.delete(`${urlBase}/api/questions/${questionId}`)
-
     await commit('SET_TEMPORARY_ID', null)
 
     await commit('SET_CONTENT_ID', null)
+}
+
+export const setContentBuilderIds = async ({commit}, contentBuilderIds) => {
+    await commit('SET_CONTENT_ID', contentBuilderIds)
 }

@@ -19,7 +19,6 @@
 
             <component 
                 :is="`Add${ucfirst(type)}`"
-                :content-builder-id="1"
                 :edit-status="editStatus"
                 :lang="lang"
             ></component>
@@ -81,6 +80,7 @@
 <script>
 import ucfirst from '../../helpers/ucfirst'
 import { find } from 'lodash-es'
+import { mapGetters } from 'vuex'
 
 export default {
     props: {
@@ -105,6 +105,10 @@ export default {
     },
 
     computed: {
+        ...mapGetters({
+            contentIds: 'questions/contentIds'
+        }),
+
         showAddButton () {
             return !this.addingPart && this.showButton
         }

@@ -12,7 +12,8 @@ class ContentBuilder extends Model
     protected $table = 'content_builders';
 
     protected $fillable = [
-        'language'
+        'language',
+        'contentable_id'
     ];
     
     public function contentable()

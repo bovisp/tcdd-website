@@ -1,7 +1,5 @@
 <?php
 
-use App\Classes\PortalViews;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -74,6 +72,7 @@ Route::resource('/api/admin/tags', 'Admin\Tags\Api\TagsController');
 Route::post('/api/content-builder/{contentBuilder}/content', 'ContentBuilder\Api\ContentPartController@store');
 Route::post('/api/content-builder/{contentBuilder}/animation', 'ContentBuilder\Api\AnimationPartController@store');
 Route::post('/api/content-builder/{contentBuilder}/media', 'ContentBuilder\Api\MediaPartController@store');
+Route::post('/api/content-builder/{contentBuilder}/tab', 'ContentBuilder\Api\TabPartController@store');
 Route::get('/api/content-builder/{contentBuilder}', 'ContentBuilder\Api\ContentBuilderController@index');\
 Route::patch('api/content-builder/{contentBuilder}/change-order', 'ContentBuilder\Api\ContentBuilderController@reorder');
 
@@ -81,4 +80,6 @@ Route::get('/api/parts/types', 'ContentBuilderTypes\Api\ContentBuilderTypesContr
 Route::patch('/api/parts/{part}/content', 'ContentBuilder\Api\ContentPartController@update');
 Route::patch('/api/parts/{part}/animation', 'ContentBuilder\Api\AnimationPartController@update');
 Route::patch('/api/parts/{part}/media', 'ContentBuilder\Api\MediaPartController@update');
+Route::patch('/api/parts/{part}/tab', 'ContentBuilder\Api\TabPartController@update');
 Route::delete('/api/parts/{part}', 'ContentBuilder\Api\PartsController@destroy');
+Route::get('/api/parts/{part}', 'ContentBuilder\Api\PartsController@show');

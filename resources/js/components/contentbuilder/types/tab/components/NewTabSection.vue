@@ -1,10 +1,11 @@
 <template>
     <div>
         <div
-            class="form-group"
+            class="mb-4"
         >
             <label 
-                :class="{ 'text-danger': errors.title }"
+                class="block text-gray-700 font-bold mb-2"
+                :class="{ 'text-red-500': errors.title }"
                 for="title"
             >
                 Tab title
@@ -13,23 +14,26 @@
             <input 
                 type="text" 
                 v-model="form.title"
-                class="form-control"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
                 id="title"
-                :class="{ 'is-invalid': errors.title }"
+                :class="{ 'border-red-500': errors.title }"
             >
 
             <p
                 v-if="errors.title"
                 v-text="errors.title[0]"
-                class="invalid-feedback"
+                class="text-red-500 text-xs"
             ></p>
         </div>
 
-        <div class="form-group" v-if="!type">
-            <label for="content">Content type</label>
+        <div class="mb-4" v-if="!type">
+            <label 
+                class="block text-gray-700 font-bold mb-2"
+                for="content"
+            >Content type</label>
 
             <select 
-                class="form-control" 
+                class="form-select block w-full" 
                 id="content"
                 v-model="type"
                 @input="creating = true"
@@ -50,13 +54,13 @@
         >
             <component 
                 :is="`Add${ucfirst(type)}`"
-                :series-id="1"
                 :edit-status="true"
                 create-button-text="Save"
-                create-button-classes="btn-sm btn-outline-secondary"
+                create-button-classes="btn-sm text-sm btn-outline"
                 :is-tab-section-part="true"
                 :part-id="partId"
                 :section-title="title"
+                :lang="lang"
                 @tab-part-section-content:created="pushData"
             ></component>
         </div>
@@ -67,7 +71,7 @@
         >
             <component 
                 :is="`Show${ucfirst(type)}`"
-                :series-id="1"
+                :content-builder-id="contentIds[lang]"
                 :edit-status="false"
                 :data="section"
             ></component>
@@ -80,6 +84,7 @@
 <script>
 import ucfirst from '../../../../../helpers/ucfirst'
 import { filter } from 'lodash-es'
+import { mapGetters } from 'vuex'
 
 export default {
     props: {
@@ -91,6 +96,10 @@ export default {
             type: Number,
             required: false,
             default: null
+        },
+        lang: {
+            type: String,
+            required: true,
         }
     },
 
@@ -100,12 +109,17 @@ export default {
                 title: ''
             },
             section: {},
-            errors: [],
             types: [],
             type: null,
             creating: false,
             title: ''
         }
+    },
+
+    computed: {
+        ...mapGetters({
+            contentIds: 'questions/contentIds'
+        }),
     },
 
     watch: {

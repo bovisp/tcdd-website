@@ -182,7 +182,9 @@
                     Question text (English)
                 </label>
 
-                English Parts
+                <content-builder 
+                    lang="en"
+                />
             </div>
 
             <div
@@ -196,7 +198,9 @@
                     Question text (French)
                 </label>
 
-                French Parts
+                <content-builder 
+                    lang="fr"
+                />
             </div>
 
             <div
@@ -368,7 +372,8 @@ export default {
             fetchSections: 'sections/fetch',
             fetchTags: 'tags/fetch',
             fetchAvailableEditors: 'questions/fetchAvailableEditors',
-            fetchQuestionCategories: 'questionCategories/fetch'
+            fetchQuestionCategories: 'questionCategories/fetch',
+            setContentBuilderIds: 'questions/setContentBuilderIds'
         }),
 
         cancel () {
@@ -439,6 +444,7 @@ export default {
         await this.fetchQuestionCategories()
         await this.fetchTags()
         await this.fetchAvailableEditors(this.question.id)
+        await this.setContentBuilderIds(this.question.contentBuilder)
     }
 }
 </script>

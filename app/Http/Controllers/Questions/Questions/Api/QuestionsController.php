@@ -57,6 +57,14 @@ class QuestionsController extends Controller
             'question_category_id' => request('question_category_id')
         ]);
 
+        $tempQuestion = Question::find(request('id'));
+
+        $tempQuestion->contentBuilder->each->update([
+            'contentable_id' => $question->id
+        ]);
+
+        $tempQuestion->delete();
+
         $question->tags()->attach(Tag::whereIn('id', request('tags'))->get());
 
         return response()->json([

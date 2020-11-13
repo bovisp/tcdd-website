@@ -24,6 +24,7 @@
                 :is="`Show${formatType}`"
                 :content-builder-id="contentIds[lang]"
                 :data="part"
+                :lang="lang"
             ></component>
         </div>
 
