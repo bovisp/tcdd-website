@@ -14,7 +14,7 @@
             <template  v-if="typeof part.data !== 'undefined'">
                 <template v-if="fileExtension(part.data.filename[0].file) === 'image'">
                     <img 
-                        :src="`${urlBase}/${part.data.filename[0].file}`" 
+                        :src="`${urlBase}${part.data.filename[0].file}`" 
                         :alt="part.data.caption"
                         class="block mx-auto max-w-full h-auto"
                     >

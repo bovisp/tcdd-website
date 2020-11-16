@@ -8,7 +8,7 @@
                 :class="{ 'text-red-500': errors.title }"
                 for="title"
             >
-                Title (optional)
+                Tab part title (optional)
             </label>
 
             <input 
@@ -34,7 +34,7 @@
                 :class="{ 'text-red-500': errors.caption }"
                 for="caption"
             >
-                Caption (optional)
+                Tab part caption (optional)
             </label>
 
             <textarea 
@@ -51,7 +51,7 @@
             ></p>
         </div>
 
-        <hr class="my-12">
+        <hr class="my-6">
 
         <template v-if="addingTabSection">
             <new-tab-section 
@@ -63,7 +63,7 @@
         </template>
 
         <button 
-            class="btn w-full btn-outline btn-sm text-sm my-12"
+            class="btn w-full btn-outline btn-sm text-sm mb-12"
             @click.prevent="addTabSection"
         >
             Add a tab
@@ -183,6 +183,12 @@ export default {
                 sectionToUpdate.type = section.type
             }
         })
+
+        // window.events.$on('add-part:cancel', contentId => {
+        //     if (this.contentIds[this.lang] === contentId) {
+        //         this.addingTabSection = false
+        //     }
+        // })
     }
 }
 </script>

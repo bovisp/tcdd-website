@@ -32,7 +32,7 @@
             </div>
 
             <p 
-                class="mb-0 mt-2 text-grey-700 font-medium w-3/4 mx-auto"
+                class="mb-0 mt-2 text-grey-700 w-3/4 mx-auto"
                 v-if="typeof part.data !== 'undefined' && part.data.caption"
             >
                 <small>{{ part.data.caption }}</small>

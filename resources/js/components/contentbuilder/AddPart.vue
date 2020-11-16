@@ -11,7 +11,7 @@
         <div 
             v-if="type && !addingPart"
         >
-            <hr class="my-12">
+            <hr class="my-8">
 
             <h4 class="w-full font-light text-center mb-6 text-2xl">
                  New {{ ucfirst(type) }} Part
@@ -155,6 +155,8 @@ export default {
     },
 
     async mounted () {
+        this.type = ''
+        
         let { data: types } = await axios.get(`${this.urlBase}/api/parts/types`)
 
         this.types = types.data
