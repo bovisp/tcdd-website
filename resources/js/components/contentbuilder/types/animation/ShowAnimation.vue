@@ -195,6 +195,10 @@ export default {
         window.events.$on('part:edit', partId => {
             if (this.part.id === partId) {
                 this.editing = true
+
+                this.form.title = this.part.data.title
+                this.form.caption = this.part.data.caption
+                this.form.images = this.part.data.images
             }
         })
 
