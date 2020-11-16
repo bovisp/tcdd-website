@@ -49,6 +49,15 @@
             </select>
         </div>
 
+        <div class="mb-4 flex justify-end" v-if="!type">
+            <button 
+                class="btn btn-text btn-sm text-sm ml-auto"
+                @click.prevent="$emit('canceladd', data.id)"
+            >
+                Cancel adding tab
+            </button>
+        </div>
+
         <div
             v-if="creating"
         >
@@ -62,6 +71,7 @@
                 :section-title="title"
                 :lang="lang"
                 @tab-part-section-content:created="pushData"
+                @tab-content:cancel-add="$emit('canceladd', data.id)"
             ></component>
         </div>
 
@@ -154,6 +164,11 @@ export default {
             window.events.$emit('tab-content:cancel-adding-tab-section')
 
             this.creating = false
+        },
+
+        cancelTab () {
+            this.form.title = '',
+            this.type = ''
         }
     },
 

@@ -26,4 +26,17 @@ class PartsController extends Controller
 
         return;
     }
+
+    public function destroyTabSectionPart()
+    {
+        $typeClassName = 'App\\' . ucfirst(request('tab')['type']) . 'Part';
+
+        $partType = $typeClassName::find(request('tab')['data']['id']);
+
+        $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst(request('tab')['type']);
+
+        (new $destroyClassName($partType))->delete();
+
+        return;
+    }
 }

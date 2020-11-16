@@ -59,6 +59,7 @@
                 :key="section.id"
                 :data="section"
                 :lang="lang"
+                @canceladd="cancelAdd"
             />
         </template>
 
@@ -90,7 +91,7 @@
 
 <script>
 import uuid from 'uuid/v4'
-import { find } from 'lodash-es'
+import { find, filter, isEmpty } from 'lodash-es'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -157,12 +158,28 @@ export default {
             this.reset()
         },
 
-        async cancel () {
+        cancel () {
             this.reset()
         },
 
-        reset () {
+        async reset () {
+            for await (const [index, tab] of this.form.tabSections.entries()) {
+                if (!isEmpty(tab.data)) {
+                    await axios.delete(`${this.urlBase}/api/parts/tab-section-parts`, {
+                        data: { tab }
+                    })
+                }
+            }
+
             window.events.$emit('add-part:cancel', this.contentIds[this.lang])
+        },
+
+        cancelAdd (sectionId) {
+            this.addingTabSection = false
+
+            this.form.tabSections = filter(this.form.tabSections, section => {
+                return sectionId !== section.id
+            })
         }
     },
 
@@ -187,6 +204,10 @@ export default {
         // window.events.$on('add-part:cancel', contentId => {
         //     if (this.contentIds[this.lang] === contentId) {
         //         this.addingTabSection = false
+
+        //         this.form.tabSections = filter(this.form.tabSections, section => {
+        //             return sectionId !== section.id
+        //         })
         //     }
         // })
     }

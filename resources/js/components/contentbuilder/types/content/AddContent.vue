@@ -113,6 +113,12 @@ export default {
         cancel (partId) {
             this.form.content = ''
 
+            if (this.isTabSectionPart) {
+                this.$emit('tab-content:cancel-add')
+
+                return
+            }
+
             window.events.$emit('add-part:cancel', this.contentIds[this.lang])
         }
     },

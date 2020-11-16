@@ -81,5 +81,6 @@ Route::patch('/api/parts/{part}/content', 'ContentBuilder\Api\ContentPartControl
 Route::patch('/api/parts/{part}/animation', 'ContentBuilder\Api\AnimationPartController@update');
 Route::patch('/api/parts/{part}/media', 'ContentBuilder\Api\MediaPartController@update');
 Route::patch('/api/parts/{part}/tab', 'ContentBuilder\Api\TabPartController@update');
+Route::delete('/api/parts/tab-section-parts', 'ContentBuilder\Api\PartsController@destroyTabSectionPart');
 Route::delete('/api/parts/{part}', 'ContentBuilder\Api\PartsController@destroy');
 Route::get('/api/parts/{part}', 'ContentBuilder\Api\PartsController@show');
