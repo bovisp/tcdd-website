@@ -203,6 +203,44 @@
                 />
             </div>
 
+            <div class="mb-4">
+                <label 
+                    class="block text-gray-700 font-bold mb-2" 
+                    :class="{ 'text-red-500': errors.marking_guide_en }"
+                >
+                    Marking guide (English)
+                </label>
+
+                <vue-editor 
+                    v-model="form.marking_guide_en"
+                ></vue-editor>
+
+                <div 
+                    class="mt-1 text-red-500 text-xs"
+                    v-if="errors.marking_guide_en"
+                    v-text="errors.marking_guide_en[0]"
+                ></div>
+            </div>
+
+            <div class="mb-4">
+                <label 
+                    class="block text-gray-700 font-bold mb-2" 
+                    :class="{ 'text-red-500': errors.marking_guide_fr }"
+                >
+                    Marking guide (French)
+                </label>
+
+                <vue-editor 
+                    v-model="form.marking_guide_fr"
+                ></vue-editor>
+
+                <div 
+                    class="mt-1 text-red-500 text-xs"
+                    v-if="errors.marking_guide_fr"
+                    v-text="errors.marking_guide_fr[0]"
+                ></div>
+            </div>
+
             <div
                 class="w-full md:w-1/3 lg:w-1/4 mb-4"
             >
@@ -348,6 +386,8 @@ export default {
                 score: null,
                 section_id: '',
                 question_category_id: null,
+                marking_guide_en: '',
+                marking_guide_fr: '',
                 tags: [],
                 editors: []
             },
@@ -386,6 +426,8 @@ export default {
             this.form.question_category_id = null
             this.form.tags = []
             this.form.editors = []
+            this.form.marking_guide_en = ''
+            this.form.marking_guide_fr = ''
         },
 
         async update () {
@@ -439,6 +481,8 @@ export default {
         this.form.question_category_id = this.question.question_category_id
         this.form.tags = this.question.tags
         this.form.editors = this.question.editors
+        this.form.marking_guide_en = this.question.marking_guide_en
+        this.form.marking_guide_fr = this.question.marking_guide_fr
 
         await this.fetchSections()
         await this.fetchQuestionCategories()

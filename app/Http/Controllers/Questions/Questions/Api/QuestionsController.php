@@ -54,6 +54,10 @@ class QuestionsController extends Controller
                 'en' => request('name_en'),
                 'fr' => request('name_fr')
             ],
+            'marking_guide' => [
+                'en' => request('marking_guide_en'),
+                'fr' => request('marking_guide_fr')
+            ],
             'author_id' => auth()->id(),
             'score' => request('score'),
             'section_id' => request('section_id'),
@@ -117,6 +121,10 @@ class QuestionsController extends Controller
             'name' => [
                 'en' => request('name_en'),
                 'fr' => request('name_fr')
+            ],
+            'marking_guide' => [
+                'en' => request('marking_guide_en'),
+                'fr' => request('marking_guide_fr')
             ],
             'score' => request('score'),
             'section_id' => request('section_id'),

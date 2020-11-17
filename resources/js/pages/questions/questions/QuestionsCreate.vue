@@ -167,6 +167,44 @@
                 />
             </div>
 
+            <div class="mb-4">
+                <label 
+                    class="block text-gray-700 font-bold mb-2" 
+                    :class="{ 'text-red-500': errors.marking_guide_en }"
+                >
+                    Marking guide (English)
+                </label>
+
+                <vue-editor 
+                    v-model="form.marking_guide_en"
+                ></vue-editor>
+
+                <div 
+                    class="mt-1 text-red-500 text-xs"
+                    v-if="errors.marking_guide_en"
+                    v-text="errors.marking_guide_en[0]"
+                ></div>
+            </div>
+
+            <div class="mb-4">
+                <label 
+                    class="block text-gray-700 font-bold mb-2" 
+                    :class="{ 'text-red-500': errors.marking_guide_fr }"
+                >
+                    Marking guide (French)
+                </label>
+
+                <vue-editor 
+                    v-model="form.marking_guide_fr"
+                ></vue-editor>
+
+                <div 
+                    class="mt-1 text-red-500 text-xs"
+                    v-if="errors.marking_guide_fr"
+                    v-text="errors.marking_guide_fr[0]"
+                ></div>
+            </div>
+
             <div
                 class="w-full md:w-1/3 lg:w-1/4 mb-4"
             >
@@ -290,11 +328,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Multiselect from 'vue-multiselect'
+import { VueEditor, Quill } from 'vue2-editor'
 import { map } from'lodash-es'
 
 export default {
     components: {
-        Multiselect
+        Multiselect,
+        VueEditor
     },
 
     data() {
@@ -302,6 +342,8 @@ export default {
             form: {
                 name_en: '',
                 name_fr: '',
+                marking_guide_fr: '',
+                marking_guide_en: '',
                 score: null,
                 section_id: null,
                 question_category_id: null,
@@ -341,6 +383,8 @@ export default {
             this.form.question_category_id = null
             this.form.tags = []
             this.form.score = null
+            this.form.marking_guide_fr = ''
+            this.form.marking_guide_en = ''
 
             await this.removeTempIds(this.questionId)
         },

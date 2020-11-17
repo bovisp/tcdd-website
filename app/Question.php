@@ -15,7 +15,8 @@ class Question extends Model
     use HasTranslations;
 
     protected $translatable = [
-        'name'
+        'name',
+        'marking_guide'
     ];
     
     protected $fillable = [
@@ -24,7 +25,8 @@ class Question extends Model
         'author_id',
         'question_category_id',
         'section_id',
-        'owner_id'
+        'owner_id',
+        'marking_guide'
     ];
 
     public function contentBuilder()
