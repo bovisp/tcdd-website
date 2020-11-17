@@ -225,32 +225,6 @@
             </div>
 
             <div
-                class="w-full lg:w-1/5 mb-4"
-            >
-                <label 
-                    class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.total_score }"
-                    for="total_score"
-                >
-                    Total score
-                </label>
-
-                <input 
-                    type="number" 
-                    v-model="form.total_score"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="total_score"
-                    :class="{ 'border-red-500': errors.total_score }"
-                >
-
-                <p
-                    v-if="errors.total_score"
-                    v-text="errors.total_score[0]"
-                    class="text-red-500 text-sm"
-                ></p>
-            </div>
-
-            <div
                 class="w-full"
             >
                 <button 
@@ -290,8 +264,7 @@ export default {
                 description_fr: '',
                 section_id: null,
                 assessment_type_id: null,
-                visible: 0,
-                total_score: 0
+                visible: 0
             },
             visibilities: [
                 { name: 'Hidden', value: 0 },
@@ -329,7 +302,6 @@ export default {
             this.form.section_id = null
             this.form.type_id = null
             this.form.visibility = 0
-            this.form.total_score = 0
         },
 
         async update () {
@@ -352,7 +324,6 @@ export default {
         this.form.section_id = this.assessment.section_id
         this.form.assessment_type_id = this.assessment.assessment_type_id
         this.form.visible = this.assessment.visible
-        this.form.total_score = this.assessment.total_score
     }
 }
 </script>

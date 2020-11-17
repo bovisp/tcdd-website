@@ -51,8 +51,7 @@ class AssessmentsController extends Controller
             'description_fr' => 'required|min:3',
             'assessment_type_id' => 'required|exists:assessment_types,id',
             'section_id' => 'required|exists:sections,id',
-            'visible' => 'required|boolean',
-            'total_score' => 'required|integer|min:0'
+            'visible' => 'required|boolean'
         ]);
 
         $assessment = Assessment::create([
@@ -66,8 +65,7 @@ class AssessmentsController extends Controller
             ],
             'assessment_type_id' => request('assessment_type_id'),
             'section_id' => request('section_id'),
-            'visible' => request('visible'),
-            'total_score' => request('total_score')
+            'visible' => request('visible')
         ]);
 
         $assessment->editors()->attach(auth()->id());
@@ -89,8 +87,7 @@ class AssessmentsController extends Controller
             'description_fr' => 'required|min:3',
             'assessment_type_id' => 'required|exists:assessment_types,id',
             'section_id' => 'required|exists:sections,id',
-            'visible' => 'required|boolean',
-            'total_score' => 'required|integer|min:0'
+            'visible' => 'required|boolean'
         ]);
 
         $assessment->update([
@@ -104,8 +101,7 @@ class AssessmentsController extends Controller
             ],
             'assessment_type_id' => request('assessment_type_id'),
             'section_id' => request('section_id'),
-            'visible' => request('visible'),
-            'total_score' => request('total_score')
+            'visible' => request('visible')
         ]);
 
         return response()->json([
