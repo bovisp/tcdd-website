@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RemoveScoreColumnFromAssessmentsTable extends Migration
+class DropDragAndDropQuestionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class RemoveScoreColumnFromAssessmentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('assessments', function (Blueprint $table) {
-            $table->dropColumn('total_score');
+        Schema::table('drag_drop_questions', function (Blueprint $table) {
+            $table->drop();
         });
     }
 
@@ -25,8 +25,6 @@ class RemoveScoreColumnFromAssessmentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('assessments', function (Blueprint $table) {
-            $table->integer('total_score')->unsigned();
-        });
+        //
     }
 }
