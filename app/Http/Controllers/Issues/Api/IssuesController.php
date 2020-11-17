@@ -48,7 +48,7 @@ class IssuesController extends Controller
 
         Mail::to(auth()->user())->send(new IssueSubmitted($issue));
 
-        Mail::to(User::whereEmail('paul.bovis2@canada.ca')->first())->send(new AdminIssueSubmitted($issue));
+        Mail::to(User::whereEmail('paul.bovis@canada.ca')->first())->send(new AdminIssueSubmitted($issue));
 
         return response()->json([
             'data' => [
