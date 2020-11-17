@@ -25,6 +25,8 @@
                 <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/admin`">Admin section</a>
             </template>
 
+            <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/issues`">Submit an issue</a>
+
             <hr class="border-t border-gray-300">
 
             <a 

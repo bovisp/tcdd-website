@@ -84,3 +84,6 @@ Route::patch('/api/parts/{part}/tab', 'ContentBuilder\Api\TabPartController@upda
 Route::delete('/api/parts/tab-section-parts', 'ContentBuilder\Api\PartsController@destroyTabSectionPart');
 Route::delete('/api/parts/{part}', 'ContentBuilder\Api\PartsController@destroy');
 Route::get('/api/parts/{part}', 'ContentBuilder\Api\PartsController@show');
+
+Route::get('/issues', 'Issues\IssuesController@index');
+Route::resource('/api/issues', 'Issues\Api\IssuesController');
