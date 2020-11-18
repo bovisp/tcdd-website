@@ -297,6 +297,24 @@
                 ></p>
             </div>
 
+            <hr class="my-6">
+
+            <h3
+                class="text-2xl font-light my-4"
+                v-if="typeof questionTypeData.type !== 'undefined'"
+            >
+                {{ ucfirst(questionTypeData.type) }} Question Settings
+            </h3>
+
+            <template v-if="typeof questionTypeData.type !== 'undefined'">
+                <component 
+                    :is="`${questionTypeData.type}QuestionShow`"
+                    @question-type:update-data="updateQuestionTypeData"
+                ></component>
+            </template>
+
+            <hr class="my-6">
+
             <div
                 class="w-full"
             >
@@ -372,6 +390,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import { map } from'lodash-es'
+import ucfirst from '../../../helpers/ucfirst'
 
 export default {
     components: {
@@ -389,7 +408,8 @@ export default {
                 marking_guide_en: '',
                 marking_guide_fr: '',
                 tags: [],
-                editors: []
+                editors: [],
+                question_type_data: {}
             },
             modalAddTag: false,
             tag: '',
@@ -403,17 +423,21 @@ export default {
             sections: 'sections/sections',
             avalaibleTags: 'tags/tags',
             availableEditors: 'questions/availableEditors',
-            questionCategories: 'questionCategories/questionCategories'
+            questionCategories: 'questionCategories/questionCategories',
+            questionTypeData: 'questions/questionTypeData'
         })
     },
     
     methods: {
+        ucfirst,
+
         ...mapActions({
             fetchSections: 'sections/fetch',
             fetchTags: 'tags/fetch',
             fetchAvailableEditors: 'questions/fetchAvailableEditors',
             fetchQuestionCategories: 'questionCategories/fetch',
-            setContentBuilderIds: 'questions/setContentBuilderIds'
+            setContentBuilderIds: 'questions/setContentBuilderIds',
+            fetchQuestionTypeData: 'questions/fetchQuestionTypeData'
         }),
 
         cancel () {
@@ -428,6 +452,7 @@ export default {
             this.form.editors = []
             this.form.marking_guide_en = ''
             this.form.marking_guide_fr = ''
+            this.form.question_type_data = {}
         },
 
         async update () {
@@ -470,6 +495,10 @@ export default {
             this.close()
 
             this.$toasted.success(data.data.message)
+        },
+
+        updateQuestionTypeData (data) {
+            this.form.question_type_data = data
         }
     },
 
@@ -489,6 +518,7 @@ export default {
         await this.fetchTags()
         await this.fetchAvailableEditors(this.question.id)
         await this.setContentBuilderIds(this.question.contentBuilder)
+        await this.fetchQuestionTypeData(this.question.id)
     }
 }
 </script>

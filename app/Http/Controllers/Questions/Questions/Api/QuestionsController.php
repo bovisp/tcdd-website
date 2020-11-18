@@ -11,6 +11,7 @@ use App\ContentBuilder;
 use App\ContentBuilderType;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Questions\QuestionIndexResource;
+use App\Http\Resources\Questions\QuestionTypeDataResource;
 
 class QuestionsController extends Controller
 {
@@ -121,6 +122,11 @@ class QuestionsController extends Controller
         ];
     }
 
+    public function questionTypeData(Question $question)
+    {
+        return new QuestionTypeDataResource($question);
+    }
+
     public function update(Question $question)
     {
         request()->validate([
@@ -134,6 +140,18 @@ class QuestionsController extends Controller
             'editors' => 'array|present',
             'editors.*' => 'integer|exists:users,id'
         ]);
+
+        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst($question->questionType->code) . 'Question';
+
+        $questionDataValidator = (new $questionTypeClass)->update(
+            request('question_type_data'), $question->id
+        );
+
+        if ($questionDataValidator['passes'] === false) {
+            return response()->json([
+                'errors' => $questionTypeModel['errors']
+            ], 422);
+        }
 
         $question->update([
             'name' => [
@@ -185,6 +203,10 @@ class QuestionsController extends Controller
         $question->editors()->detach();
 
         $question->contentBuilder->each->delete();
+
+        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst($question->questionType->code) . 'Question';
+
+        (new $questionTypeClass)->destroy($question->id);
 
         $question->delete();
 
