@@ -26,7 +26,9 @@ class Question extends Model
         'question_category_id',
         'section_id',
         'owner_id',
-        'marking_guide'
+        'marking_guide',
+        'question_type_model_id',
+        'question_type_id',
     ];
 
     public function contentBuilder()

@@ -14,8 +14,8 @@ class CreateQuestionTypeModelIdAndQuestionTypeIdColumnsOnQuestionsTable extends 
     public function up()
     {
         Schema::table('questions', function (Blueprint $table) {
-            $table->integer('question_type_model_id')->unsigned();
-            $table->integer('question_type_id')->unsigned();
+            $table->integer('question_type_model_id')->unsigned()->nullable();
+            $table->integer('question_type_id')->unsigned()->nullable();
         });
     }
 
