@@ -4,6 +4,7 @@ namespace App\Classes\ContentTypes;
 
 use App\Part;
 use App\TabPart;
+use Illuminate\Support\Arr;
 
 class BuildTabData
 {
@@ -27,19 +28,22 @@ class BuildTabData
 
             if ($section->type === 'content') {
                 $builtContent = [
-                    'content' => $content->content
+                    'content' => $content->content,
+                    'date' => $content->created_at->timestamp
                 ];
             } elseif ($section->type === 'animation') {
                 $builtContent = [
                     'images' => unserialize($content->images),
                     'title' => $content->title,
-                    'caption' => $content->caption
+                    'caption' => $content->caption,
+                    'date' => $content->created_at->timestamp
                 ];
             } elseif ($section->type === 'media') {
                 $builtContent = [
                     'filename' => unserialize($content->filename),
                     'title' => $content->title,
-                    'caption' => $content->caption
+                    'caption' => $content->caption,
+                    'date' => $content->created_at->timestamp
                 ];
             }
 
@@ -59,7 +63,9 @@ class BuildTabData
             'id' => $data->id,
             'title' => $data->title,
             'caption' => $data->caption,
-            'tabSections' => $sections
+            'tabSections' => array_values(Arr::sort($sections, function ($value) {
+                return $value['content']['data']['date'];
+            }))
         ];
     }
 }

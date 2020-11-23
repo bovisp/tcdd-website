@@ -6,10 +6,12 @@ use App\Tag;
 use App\Part;
 use App\User;
 use App\Question;
+use App\QuestionType;
 use App\ContentBuilder;
 use App\ContentBuilderType;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Questions\QuestionIndexResource;
+use App\Http\Resources\Questions\QuestionTypeDataResource;
 
 class QuestionsController extends Controller
 {
@@ -46,19 +48,40 @@ class QuestionsController extends Controller
             'section_id' => 'required|integer|exists:sections,id',
             'question_category_id' => 'required|integer|exists:question_categories,id',
             'tags' => 'array|present',
-            'tags.*' => 'integer|exists:tags,id'
+            'tags.*' => 'integer|exists:tags,id',
+            'question_type_id' => 'required|integer|exists:question_types,id'
         ]);
+
+        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst(QuestionType::find(request('question_type_id'))->code) . 'Question';
+
+        $questionDataValidator = (new $questionTypeClass)->store(
+            request('question_type_data'), request('id')
+        );
+
+        if ($questionDataValidator['passes'] === false) {
+            return response()->json([
+                'errors' => $questionTypeModel['errors']
+            ], 422);
+        }
 
         $question = Question::create([
             'name' => [
                 'en' => request('name_en'),
                 'fr' => request('name_fr')
             ],
+            'marking_guide' => [
+                'en' => request('marking_guide_en'),
+                'fr' => request('marking_guide_fr')
+            ],
             'author_id' => auth()->id(),
             'score' => request('score'),
             'section_id' => request('section_id'),
-            'question_category_id' => request('question_category_id')
+            'question_category_id' => request('question_category_id'),
+            'question_type_id' => request('question_type_id'),
+            'question_type_model_id' => $questionDataValidator['model']->id
         ]);
+
+        $questionDataValidator['model']->update(['question_id' => $question->id]);
 
         $tempQuestion = Question::find(request('id'));
 
@@ -99,6 +122,11 @@ class QuestionsController extends Controller
         ];
     }
 
+    public function questionTypeData(Question $question)
+    {
+        return new QuestionTypeDataResource($question);
+    }
+
     public function update(Question $question)
     {
         request()->validate([
@@ -113,10 +141,26 @@ class QuestionsController extends Controller
             'editors.*' => 'integer|exists:users,id'
         ]);
 
+        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst($question->questionType->code) . 'Question';
+
+        $questionDataValidator = (new $questionTypeClass)->update(
+            request('question_type_data'), $question->id
+        );
+
+        if ($questionDataValidator['passes'] === false) {
+            return response()->json([
+                'errors' => $questionTypeModel['errors']
+            ], 422);
+        }
+
         $question->update([
             'name' => [
                 'en' => request('name_en'),
                 'fr' => request('name_fr')
+            ],
+            'marking_guide' => [
+                'en' => request('marking_guide_en'),
+                'fr' => request('marking_guide_fr')
             ],
             'score' => request('score'),
             'section_id' => request('section_id'),
@@ -159,6 +203,10 @@ class QuestionsController extends Controller
         $question->editors()->detach();
 
         $question->contentBuilder->each->delete();
+
+        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst($question->questionType->code) . 'Question';
+
+        (new $questionTypeClass)->destroy($question->id);
 
         $question->delete();
 

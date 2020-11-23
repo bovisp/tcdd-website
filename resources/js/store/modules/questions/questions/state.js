@@ -3,5 +3,7 @@ export default {
 	question: {},
 	availableEditors: [],
 	tempId: null,
-	contentIds: null
+	contentIds: null,
+	questionTypeData: {},
+	testQuestionData: {}
 }

@@ -37,3 +37,13 @@ export const removeTempIds = async ({ commit }, questionId) => {
 export const setContentBuilderIds = async ({commit}, contentBuilderIds) => {
     await commit('SET_CONTENT_ID', contentBuilderIds)
 }
+
+export const fetchQuestionTypeData = async ({commit}, questionId) => {
+    let { data } = await axios.get(`${urlBase}/api/questions/${questionId}/data`)
+
+    await commit('SET_QUESTION_TYPE_DATA', data)
+}
+
+export const fetchTestQuestionData = async ({commit}) => {
+    await commit('SET_TEST_QUESTION_DATA')
+}

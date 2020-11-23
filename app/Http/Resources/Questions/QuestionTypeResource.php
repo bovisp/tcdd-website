@@ -17,6 +17,7 @@ class QuestionTypeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'code' => $this->code,
             'description' => $this->description,
             'name_en' => $this->getTranslation('name', 'en'),
             'name_fr' => $this->getTranslation('name', 'fr'),

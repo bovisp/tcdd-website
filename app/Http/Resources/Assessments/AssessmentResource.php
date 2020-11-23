@@ -29,7 +29,6 @@ class AssessmentResource extends JsonResource
             'assessment_type_id' => $this->assessment_type_id,
             'assessmentType' => $this->assessmentType,
             'section_id' => $this->section_id,
-            'total_score' => $this->total_score,
             'editors' => $this->editors,
             'participants' => $this->participants
         ];

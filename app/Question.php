@@ -5,6 +5,7 @@ namespace App;
 use App\Tag;
 use App\User;
 use App\Section;
+use App\QuestionType;
 use App\ContentBuilder;
 use App\QuestionCategory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +16,8 @@ class Question extends Model
     use HasTranslations;
 
     protected $translatable = [
-        'name'
+        'name',
+        'marking_guide'
     ];
     
     protected $fillable = [
@@ -24,7 +26,10 @@ class Question extends Model
         'author_id',
         'question_category_id',
         'section_id',
-        'owner_id'
+        'owner_id',
+        'marking_guide',
+        'question_type_model_id',
+        'question_type_id',
     ];
 
     public function contentBuilder()
@@ -60,6 +65,11 @@ class Question extends Model
     public function editors()
     {
         return $this->belongsToMany(User::class, 'question_editors', 'question_id', 'user_id');
+    }
+
+    public function questionType()
+    {
+        return $this->belongsTo(QuestionType::class);
     }
 
     public function toArray()

@@ -167,6 +167,44 @@
                 />
             </div>
 
+            <div class="mb-4">
+                <label 
+                    class="block text-gray-700 font-bold mb-2" 
+                    :class="{ 'text-red-500': errors.marking_guide_en }"
+                >
+                    Marking guide (English)
+                </label>
+
+                <vue-editor 
+                    v-model="form.marking_guide_en"
+                ></vue-editor>
+
+                <div 
+                    class="mt-1 text-red-500 text-xs"
+                    v-if="errors.marking_guide_en"
+                    v-text="errors.marking_guide_en[0]"
+                ></div>
+            </div>
+
+            <div class="mb-4">
+                <label 
+                    class="block text-gray-700 font-bold mb-2" 
+                    :class="{ 'text-red-500': errors.marking_guide_fr }"
+                >
+                    Marking guide (French)
+                </label>
+
+                <vue-editor 
+                    v-model="form.marking_guide_fr"
+                ></vue-editor>
+
+                <div 
+                    class="mt-1 text-red-500 text-xs"
+                    v-if="errors.marking_guide_fr"
+                    v-text="errors.marking_guide_fr[0]"
+                ></div>
+            </div>
+
             <div
                 class="w-full md:w-1/3 lg:w-1/4 mb-4"
             >
@@ -221,6 +259,72 @@
                     v-text="errors.tags[0]"
                     class="text-red-500 text-sm"
                 ></p>
+            </div>
+
+            <div
+                class="w-full lg:w-1/3 mb-4"
+            >
+                <label 
+                    for="question_type_id"
+                    class="block text-gray-700 font-bold mb-2"
+                    :class="{ 'text-red-500': errors.question_type_id }"
+                >
+                    Question type
+                </label>
+
+                <div class="relative">
+                    <select 
+                        id="question_type_id"
+                        v-model="form.question_type_id"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        :class="{ 'border-red-500': errors.question_type_id }"
+                    >
+                        <option value=""></option>
+
+                        <option
+                            :value="questionType.id"
+                            v-for="questionType in questionTypes"
+                            :key="questionType.id"
+                            v-text="questionType.name"
+                        ></option>
+                    </select>
+
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
+
+                <p
+                    v-if="errors.question_type_id"
+                    v-text="errors.question_type_id[0]"
+                    class="text-red-500 text-sm"
+                ></p>
+            </div>
+
+            <template v-if="type">
+                <hr class="my-6">
+
+                <h3
+                    class="text-2xl font-light my-4"
+                >
+                    {{ ucfirst(type) }} Question Settings
+                </h3>
+
+                <component 
+                    :is="`${type}QuestionCreate`"
+                    @question-type:update-data="updateQuestionTypeData"
+                ></component>
+
+                <hr class="my-6">
+            </template>
+
+            <div 
+                class="mb-4"
+                v-if="noQuestionType"
+            >
+                <div class="alert alert-red">
+                    You need to associate this question with a question type.
+                </div>
             </div>
 
             <div
@@ -290,11 +394,14 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Multiselect from 'vue-multiselect'
-import { map } from'lodash-es'
+import { VueEditor, Quill } from 'vue2-editor'
+import { map, find } from 'lodash-es'
+import ucfirst from '../../../helpers/ucfirst'
 
 export default {
     components: {
-        Multiselect
+        Multiselect,
+        VueEditor
     },
 
     data() {
@@ -302,15 +409,21 @@ export default {
             form: {
                 name_en: '',
                 name_fr: '',
+                marking_guide_fr: '',
+                marking_guide_en: '',
                 score: null,
                 section_id: null,
                 question_category_id: null,
                 tags: [],
-                id: null
+                id: null,
+                question_type_id: null,
+                question_type_data: {}
             },
             modalAddTag: false,
             tag: '',
-            tagTranslation: ''
+            tagTranslation: '',
+            type: '',
+            noQuestionType: false
         }
     },
 
@@ -319,17 +432,29 @@ export default {
             sections: 'sections/sections',
             avalaibleTags: 'tags/tags',
             questionCategories: 'questionCategories/questionCategories',
-            questionId: 'questions/tempId'
+            questionId: 'questions/tempId',
+            questionTypes: 'questionTypes/questionTypes',
         })
     },
 
+    watch: {
+        'form.question_type_id' () {
+            this.type = find(this.questionTypes, type => {
+                return type.id === this.form.question_type_id
+            })['code']
+        }
+    },
+
     methods: {
+        ucfirst,
+
         ...mapActions({
             fetchSections: 'sections/fetch',
             fetchTags: 'tags/fetch',
             fetchQuestionCategories: 'questionCategories/fetch',
             createTempQuestionId: 'questions/createId',
-            removeTempIds: 'questions/removeTempIds'
+            removeTempIds: 'questions/removeTempIds',
+            fetchQuestionTypes: 'questionTypes/fetch',
         }),
 
         async cancel () {
@@ -341,11 +466,23 @@ export default {
             this.form.question_category_id = null
             this.form.tags = []
             this.form.score = null
+            this.form.marking_guide_fr = ''
+            this.form.marking_guide_en = ''
+            this.question_type_id = null
+            this.type = ''
 
             await this.removeTempIds(this.questionId)
         },
 
         async store () {
+            if (!this.type) {
+                this.noQuestionType = true
+
+                return
+            }
+
+            this.noQuestionType = false
+
             this.form.tags = await  Promise.all(map(this.form.tags, async (tag) => tag.id))
 
             let { data } = await axios.post(`${this.urlBase}/api/questions`, this.form)
@@ -383,6 +520,12 @@ export default {
             this.close()
 
             this.$toasted.success(data.data.message)
+        },
+
+        updateQuestionTypeData (data) {
+            this.noQuestionType = false
+            
+            this.form.question_type_data = data
         }
     },
 
@@ -391,6 +534,7 @@ export default {
         await this.fetchSections()
         await this.fetchTags()
         await this.fetchQuestionCategories()
+        await this.fetchQuestionTypes()
 
         this.form.id = this.questionId
 

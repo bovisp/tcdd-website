@@ -57,6 +57,7 @@ Route::put('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissio
 Route::get('/api/permissions/{permission}/users/create', 'Permissions\Api\UserPermissionsController@create');
 Route::post('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissionsController@store');
 
+Route::resource('/api/question-types', 'Questions\Types\Api\QuestionTypesController');
 Route::get('/questions/categories', 'Questions\Categories\QuestionCategoriesController@index');
 Route::post('/api/questions/id', 'Questions\Questions\Api\QuestionsController@id');
 Route::resource('/api/questions/categories', 'Questions\Categories\Api\QuestionCategoriesController');
@@ -64,7 +65,7 @@ Route::get('/questions', 'Questions\Questions\QuestionsController@index');
 Route::resource('/api/questions', 'Questions\Questions\Api\QuestionsController');
 Route::get('/api/questions/{question}/editors', 'Questions\Questions\Api\QuestionEditorsController@index');
 Route::get('/questions/types', 'Questions\Types\QuestionTypesController@index');
-Route::resource('/api/questions/types', 'Questions\Types\Api\QuestionTypesController');
+Route::get('api/questions/{question}/data', 'Questions\Questions\Api\QuestionsController@questionTypeData');
 
 Route::get('/admin/tags', 'Admin\Tags\TagsController@index');
 Route::resource('/api/admin/tags', 'Admin\Tags\Api\TagsController');

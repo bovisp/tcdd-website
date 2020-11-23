@@ -1,5 +1,5 @@
 export const fetch = async ({ commit }) => {
-    let { data: questionTypes } = await axios.get(`${urlBase}/api/questions/types`)
+    let { data: questionTypes } = await axios.get(`${urlBase}/api/question-types`)
 
     commit('SET_QUESTION_TYPES', questionTypes.data)
 
