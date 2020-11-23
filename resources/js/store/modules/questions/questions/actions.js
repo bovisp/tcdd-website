@@ -43,3 +43,7 @@ export const fetchQuestionTypeData = async ({commit}, questionId) => {
 
     await commit('SET_QUESTION_TYPE_DATA', data)
 }
+
+export const fetchTestQuestionData = async ({commit}) => {
+    await commit('SET_TEST_QUESTION_DATA')
+}

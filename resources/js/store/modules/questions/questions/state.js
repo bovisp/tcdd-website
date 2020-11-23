@@ -4,5 +4,6 @@ export default {
 	availableEditors: [],
 	tempId: null,
 	contentIds: null,
-	questionTypeData: {}
+	questionTypeData: {},
+	testQuestionData: {}
 }

@@ -24,6 +24,9 @@ Vue.use(Toasted, {
     position: 'top-center'
 })
 
+import VueScrollTo from 'vue-scrollto'
+Vue.use(VueScrollTo)
+
 window.events.$on('errors-general', error => {
     Vue.toasted.error(error)
 })

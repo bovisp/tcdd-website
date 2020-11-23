@@ -164,7 +164,7 @@ export default {
 
         async reset () {
             for await (const [index, tab] of this.form.tabSections.entries()) {
-                if (!isEmpty(tab.data)) {
+                if (isEmpty(tab.data)) {
                     await axios.delete(`${this.urlBase}/api/parts/tab-section-parts`, {
                         data: { tab }
                     })
