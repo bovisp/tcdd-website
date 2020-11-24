@@ -11,9 +11,20 @@
                 @question-preview:cancel="cancelPreview"
             ></component>
         </div>
+
+        <div 
+            :class="duplicating ? 'visible h-auto' : 'invisible h-0'"
+            v-if="typeof questionTypeData.type !== 'undefined'"
+            id="duplicate-pane"
+        >
+            <component 
+                :is="`${questionTypeData.type}QuestionDuplicate`"
+                @question-duplicate:cancel="cancelDuplicate"
+            ></component>
+        </div>
         
         <div
-            :class="!previewing ? 'visible h-auto' : 'invisible h-0'"
+            :class="!previewing && !duplicating ? 'visible h-auto' : 'invisible h-0'"
             id="edit-pane"
         >
             <h1 class="text-3xl font-bold mb-4">
@@ -354,6 +365,14 @@
                     >
                         Preview
                     </button>
+
+                    <button 
+                        class="btn btn-text text-sm"
+                        @click.prevent="duplicate"
+                        v-scroll-to="'#duplicate-pane'"
+                    >
+                        Duplicate
+                    </button>
                 </div>
             </form>
 
@@ -439,7 +458,8 @@ export default {
             modalAddTag: false,
             tag: '',
             tagTranslation: '',
-            previewing: false
+            previewing: false,
+            duplicating: false
         }
     },
 
@@ -478,8 +498,20 @@ export default {
             this.previewing = true
         },
 
+        duplicate () {
+            this.duplicating = true
+
+            window.events.$emit('duplicate-question:duplicate')
+        },
+
         cancelPreview () {
             this.previewing = false
+
+            window.scrollTo(0,0)
+        },
+
+        cancelDuplicate () {
+            this.duplicating = false
 
             window.scrollTo(0,0)
         },
