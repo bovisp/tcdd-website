@@ -11,7 +11,16 @@ class DuplicateQuestionController extends Controller
 {
     public function store(Question $question)
     {
-        $newQuestion = Question::create();
+        $newQuestion = Question::create([
+            'author_id' => auth()->id(),
+            'question_type_id' => $question->questionType->id
+        ]);
+
+        $newQuestion->editors()->sync($question->editors->pluck('id'));
+
+        $duplicateQuestionTypeClass = 'App\\Classes\\QuestionTypes\\Duplicate' . ucfirst($question->questionType->code) . 'Question';
+
+        $duplicateQuestionData = (new $duplicateQuestionTypeClass($question, $newQuestion))->duplicate();
 
         $contentBuilderEn = $newQuestion->contentBuilder()->create([
             'language' => 'en'
@@ -32,5 +41,14 @@ class DuplicateQuestionController extends Controller
                 ))->duplicate();
             });
         });
+
+        return [
+            'contentBuilder' => [
+                'en' => $contentBuilderEn->id,
+                'fr' => $contentBuilderFr->id
+            ],
+            'questionId' => $newQuestion->id,
+            'questionData' => $duplicateQuestionData
+        ];
     }
 }

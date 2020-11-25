@@ -64,8 +64,10 @@ class DuplicateMedia
             MediaPart::create([
                 'part_id' => $newPart->id,
                 'filename' => serialize([
-                    'file' => $newFile,
-                    'original' => unserialize($originalMedia->filename)[0]['original']
+                    [
+                        'file' => $newFile,
+                        'original' => unserialize($originalMedia->filename)[0]['original']
+                    ]
                 ]),
                 'title' => $originalMedia->title,
                 'caption' => $originalMedia->caption
@@ -76,8 +78,10 @@ class DuplicateMedia
 
         $newMedia = MediaPart::create([
             'filename' => serialize([
-                'file' => $newFile,
-                'original' => unserialize($originalMedia->filename)[0]['original']
+                [
+                    'file' => $newFile,
+                    'original' => unserialize($originalMedia->filename)[0]['original']
+                ]
             ]),
             'title' => $originalMedia->title,
             'caption' => $originalMedia->caption

@@ -48,6 +48,12 @@ class DuplicateTab
 
         $originalTab = TabPart::wherePartId($this->part->id)->first();
 
+        $newTabPart = TabPart::create([
+            'part_id' => $newPart->id,
+            'title' => $originalTab->title,
+            'caption' => $originalTab->caption
+        ]);
+
         foreach ($originalTab->tabSections as $section) {
             $contentTypeClass = 'App\\' . ucfirst($section->type) . 'Part';
 
@@ -59,11 +65,15 @@ class DuplicateTab
                 $this->contentBuilderEn, $this->contentBuilderFr, null, true, $section
             ))->duplicate();
 
-            TabPartSection::create([
+            $newTabSection = TabPartSection::create([
                 'title' => $section->title,
-                'tab_part_id' => $newPart->id,
+                'tab_part_id' => $newTabPart->id,
                 'content_id' => $tabPartSectionData['data']->id,
                 'type' => $tabPartSectionData['type']
+            ]);
+
+            $newTabSection->update([
+                'created_at' => $section->created_at
             ]);
         }
     }
