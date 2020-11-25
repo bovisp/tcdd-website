@@ -23,3 +23,13 @@ export const SET_TEST_QUESTION_DATA = (state) => {
 
     state.testQuestionData.questionTypeData = state.questionTypeData.data
 }
+
+export const SET_DUPLICATE_QUESTION_DATA = (state, data) => {
+    state.question.id = data.questionId
+
+    state.contentBuilder = data.contentBuilder
+}
+
+export const SET_DUPLICATE_QUESTION_TYPE_DATA = (state, data) => {
+    state.questionTypeData.data = data
+}

@@ -60,6 +60,7 @@ Route::post('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissi
 Route::resource('/api/question-types', 'Questions\Types\Api\QuestionTypesController');
 Route::get('/questions/categories', 'Questions\Categories\QuestionCategoriesController@index');
 Route::post('/api/questions/id', 'Questions\Questions\Api\QuestionsController@id');
+Route::post('/api/questions/{question}/duplicate', 'Questions\Questions\Api\DuplicateQuestionController@store');
 Route::resource('/api/questions/categories', 'Questions\Categories\Api\QuestionCategoriesController');
 Route::get('/questions', 'Questions\Questions\QuestionsController@index');
 Route::resource('/api/questions', 'Questions\Questions\Api\QuestionsController');

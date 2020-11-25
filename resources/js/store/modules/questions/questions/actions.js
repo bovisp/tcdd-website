@@ -47,3 +47,12 @@ export const fetchQuestionTypeData = async ({commit}, questionId) => {
 export const fetchTestQuestionData = async ({commit}) => {
     await commit('SET_TEST_QUESTION_DATA')
 }
+
+export const duplicateQuestion = async ({commit, state}) => {
+    let { data } = await axios.post(`${urlBase}/api/questions/${state.question.id}/duplicate`)
+
+    await commit('SET_DUPLICATE_QUESTION_DATA', data)
+    await commit('SET_TEMPORARY_ID', data.questionId)
+    await commit('SET_CONTENT_ID', data.contentBuilder)
+    await commit('SET_DUPLICATE_QUESTION_TYPE_DATA', data.questionData)
+}

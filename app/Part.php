@@ -16,7 +16,7 @@ class Part extends Model
 
     public function contentBuilder()
     {
-        return $this->belongsTo(ContentBuilder::class, 'series_id');
+        return $this->belongsTo(ContentBuilder::class, 'content_builder_id');
     }
 
     public function contentBuilderType()
