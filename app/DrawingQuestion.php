@@ -5,11 +5,13 @@ namespace App;
 use App\Question;
 use Illuminate\Database\Eloquent\Model;
 
-class EssayQuestion extends Model
+class DrawingQuestion extends Model
 {
     protected $fillable = [
         'question_id',
-        'rich_text'
+        'rich_text',
+        'text_answer',
+        'drawing_options'
     ];
 
     public function question()
