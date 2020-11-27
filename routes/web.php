@@ -12,6 +12,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/uploads', 'FileUpload\Api\FileUploadController@store');
 Route::delete('/uploads', 'FileUpload\Api\FileUploadController@destroy');
+Route::post('/uploads/drawing', 'FileUpload\Api\FileUploadController@storeDrawing');
 
 Route::get('/admin', 'Admin\AdminController@index');
 Route::get('/admin/sections', 'Admin\Sections\SectionsController@index');
