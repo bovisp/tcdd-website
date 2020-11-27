@@ -2,6 +2,7 @@
 
 namespace App\Classes\QuestionTypes;
 
+use Gregwar\Image\Image;
 use App\DrawingQuestion as Drawing;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,6 +23,10 @@ class DrawingQuestion
         $data['text_answer'] = $data['text_answer'] ? 1 : 0;
         $data['drawing_options']['eraser'] = $data['drawing_options']['eraser'] ? 1 : 0;
         $data['drawing_options']['clear'] = $data['drawing_options']['clear'] ? 1 : 0;
+
+        Image::open(public_path($data['drawing_options']['background_image'][0]['file']))
+            ->cropResize(600, 400)
+            ->save(public_path($data['drawing_options']['background_image'][0]['file']));
 
         $data['drawing_options'] = serialize($data['drawing_options']);
         
@@ -48,6 +53,10 @@ class DrawingQuestion
         $data['text_answer'] = $data['text_answer'] ? 1 : 0;
         $data['drawing_options']['eraser'] = $data['drawing_options']['eraser'] ? 1 : 0;
         $data['drawing_options']['clear'] = $data['drawing_options']['clear'] ? 1 : 0;
+
+        Image::open(public_path($data['drawing_options']['background_image'][0]['file']))
+            ->cropResize(600, 400)
+            ->save(public_path($data['drawing_options']['background_image'][0]['file']));
 
         $data['drawing_options'] = serialize($data['drawing_options']);
         

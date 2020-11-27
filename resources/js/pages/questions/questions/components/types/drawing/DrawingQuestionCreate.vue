@@ -151,7 +151,17 @@
                         endpoint: '/uploads?type=image'
                     }
                 }"
+                :key="rerenderUploader"
             />
+        </div>
+
+        <div class="flex justify-end">
+            <button 
+                class="btn btn-text btn-sm text-sm text-red-500"
+                @click.prevent="forceRerender"
+            >
+                Delete current image
+            </button>
         </div>
     </div>
 </template>
@@ -169,12 +179,13 @@ export default {
                     pen_colors: [],
                     eraser: false,
                     clear: false,
-                    background_image: {}
+                    background_image: []
                 }
             },
             penColors: [
                 'white', 'black', 'red', 'green', 'blue', 'purple', 'brown'
-            ]
+            ],
+            rerenderUploader: 0
         }
     },
 
@@ -195,17 +206,29 @@ export default {
     },
 
     methods: {
-        ucfirst
+        ucfirst,
+
+        async forceRerender() {
+            await axios.delete(`${this.urlBase}/uploads`, {
+                data: {
+                    files: this.data.drawing_options.background_image
+                }
+            })
+
+            this.data.drawing_options.background_image = []
+
+            this.rerenderUploader += 1
+        }
     },
 
     mounted () {
         this.$emit('question-type:update-data', this.data)
 
         window.events.$on('uploads:file', file => {
-            this.data.drawing_options.background_image = {
+            this.data.drawing_options.background_image.push({
                 file: file['file'],
                 original: file['original']
-            }
+            })
         })
     }
 }
