@@ -204,9 +204,11 @@ class QuestionsController extends Controller
 
         $question->contentBuilder->each->delete();
 
-        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst($question->questionType->code) . 'Question';
+        if ($question->questionType !== null) {
+            $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst($question->questionType->code) . 'Question';
 
-        (new $questionTypeClass)->destroy($question->id);
+            (new $questionTypeClass)->destroy($question->id);
+        }
 
         $question->delete();
 

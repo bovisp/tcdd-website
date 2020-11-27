@@ -471,6 +471,8 @@ export default {
             this.question_type_id = null
             this.type = ''
 
+            let { data } = await axios.delete(`${this.urlBase}/api/questions/${this.questionId}`)
+
             await this.removeTempIds(this.questionId)
         },
 
