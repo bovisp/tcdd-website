@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Question;
 use Illuminate\Database\Eloquent\Model;
 
 class EssayQuestion extends Model
@@ -10,4 +11,9 @@ class EssayQuestion extends Model
         'question_id',
         'rich_text'
     ];
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
 }

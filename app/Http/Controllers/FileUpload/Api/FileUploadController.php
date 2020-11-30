@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FileUpload\Api;
 
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -29,6 +30,27 @@ class FileUploadController extends Controller
         return  [
             'file' => '/storage/entries/' . auth()->id() . '/' . $uniqId . '.' . $upload->getClientOriginalExtension(),
             'original' => $upload->getClientOriginalName()
+        ];
+    }
+
+    public function storeDrawing()
+    {
+        request()->validate([
+            'drawing' => 'required'
+        ]);
+
+        $upload = request('drawing');
+
+        $uniqId = uniqid();
+
+        @list($type, $file_data) = explode(';', $upload);
+
+        @list(, $file_data) = explode(',', $file_data); 
+        
+        Storage::put('/public/entries/' . auth()->id() . '/' . $uniqId . '.jpg', base64_decode($file_data));
+
+        return  [
+            'file' => '/storage/entries/' . auth()->id() . '/' . $uniqId . '.jpg'
         ];
     }
 
