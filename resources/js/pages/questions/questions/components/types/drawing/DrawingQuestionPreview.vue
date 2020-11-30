@@ -25,6 +25,7 @@
         <draw-component
             v-if="typeof testQuestionData.questionTypeData !== 'undefined'"
             :background-image="testQuestionData.questionTypeData.drawing_options.background_image[0].file"
+            :pen-colors="testQuestionData.questionTypeData.drawing_options.pen_colors"
         />
 
         <div 

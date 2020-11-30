@@ -1,13 +1,31 @@
 <template>
-    <div class="flex flex-col mt-16">
-        <div class="mx-auto">
-            <button @click.prevent="setStrokeColor('black')">Black</button>
-            <button @click.prevent="setStrokeColor('blue')">Blue</button>
-            <button @click.prevent="setStrokeColor('green')">Green</button>
-            <button @click.prevent="setStrokeColor('purple')">Purple</button>
-            <button @click.prevent="setStrokeColor('red')">Red</button>
-            <button @click.prevent="isEraser = true">Eraser</button>
-            <button @click.prevent="clearCanvas">Clear</button>
+    <div class="flex">
+        <div class="flex flex-col items-center">
+            <p class="font-medium">Pen</p>
+
+            <v-swatches
+                v-model="strokeColor"
+                :swatches="penColors"
+                row-length="3"
+                show-border
+                popover-x="right"
+            ></v-swatches>
+
+            <button 
+                @click.prevent="isEraser = true"
+                class="border rounded-xl px-3 py-2 mt-3"
+                title="Eraser tool"
+            >
+                <i class="fas fa-eraser"></i>
+            </button>
+
+            <button 
+                @click.prevent="clearCanvas"
+                class="border rounded-xl px-3 py-2 mt-3"
+                title="Erase all work"
+            >
+                <i class="fas fa-trash-alt"></i>
+            </button>
         </div>
 
         <canvas 
@@ -21,21 +39,33 @@
 </template>
 
 <script>
+import ucfirst from '../../helpers/ucfirst'
+import VSwatches from 'vue-swatches'
+
 export default {
+    components: { 
+        VSwatches 
+    },
+
     props: {
         backgroundImage: {
             type: String,
             required: true
+        },
+        penColors: {
+            type: Array,
+            required: false,
+            default: () => ['black']
         }
     },
 
     data () {
         return {
+            strokeColor: this.penColors[0],
             vueCanvas: null,
             painting: false,
             canvas: null,
             ctx: null,
-            strokeColor: 'black',
             isEraser: false,
             mouseCoordinates: {
                 x: 0,
@@ -44,15 +74,17 @@ export default {
         }
     },
 
+    watch: {
+        strokeColor () {
+            this.isEraser = false
+        }
+    },
+
     methods: {
+        ucfirst,
+
         clearCanvas () {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-        },
-
-        setStrokeColor(color) {
-            this.isEraser = false
-
-            this.strokeColor = color
         },
 
         getClientOffset (e) {
