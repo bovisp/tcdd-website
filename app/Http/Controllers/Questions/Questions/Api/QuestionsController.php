@@ -9,6 +9,7 @@ use App\Question;
 use App\QuestionType;
 use App\ContentBuilder;
 use App\ContentBuilderType;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Questions\QuestionIndexResource;
 use App\Http\Resources\Questions\QuestionTypeDataResource;
@@ -52,7 +53,7 @@ class QuestionsController extends Controller
             'question_type_id' => 'required|integer|exists:question_types,id'
         ]);
 
-        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst(QuestionType::find(request('question_type_id'))->code) . 'Question';
+        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . Str::studly(QuestionType::find(request('question_type_id'))->code) . 'Question';
 
         $questionDataValidator = (new $questionTypeClass)->store(
             request('question_type_data'), request('id')
@@ -141,7 +142,7 @@ class QuestionsController extends Controller
             'editors.*' => 'integer|exists:users,id'
         ]);
 
-        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst($question->questionType->code) . 'Question';
+        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . Str::studly($question->questionType->code) . 'Question';
 
         $questionDataValidator = (new $questionTypeClass)->update(
             request('question_type_data'), $question->id
@@ -205,7 +206,7 @@ class QuestionsController extends Controller
         $question->contentBuilder->each->delete();
 
         if ($question->questionType !== null) {
-            $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst($question->questionType->code) . 'Question';
+            $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . Str::studly($question->questionType->code) . 'Question';
 
             (new $questionTypeClass)->destroy($question->id);
         }

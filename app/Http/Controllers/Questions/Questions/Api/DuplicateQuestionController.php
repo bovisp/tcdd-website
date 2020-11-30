@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Questions\Questions\Api;
 
 use App\Part;
 use App\Question;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -18,7 +19,7 @@ class DuplicateQuestionController extends Controller
 
         $newQuestion->editors()->sync($question->editors->pluck('id'));
 
-        $duplicateQuestionTypeClass = 'App\\Classes\\QuestionTypes\\Duplicate' . ucfirst($question->questionType->code) . 'Question';
+        $duplicateQuestionTypeClass = 'App\\Classes\\QuestionTypes\\Duplicate' . Str::studly($question->questionType->code) . 'Question';
 
         $duplicateQuestionData = (new $duplicateQuestionTypeClass($question, $newQuestion))->duplicate();
 
@@ -34,7 +35,7 @@ class DuplicateQuestionController extends Controller
             $builder->parts->each(function (Part $part) use ($contentBuilderEn, $contentBuilderFr) {
                 $partType = $part->contentBuilderType->type;
 
-                $duplicatePartClass = 'App\\Classes\\ContentTypes\\Duplicate' . ucfirst($partType);
+                $duplicatePartClass = 'App\\Classes\\ContentTypes\\Duplicate' . Str::studly($partType);
 
                 (new $duplicatePartClass(
                     $contentBuilderEn, $contentBuilderFr, $part, $partType === 'tab' ? true : false, null
