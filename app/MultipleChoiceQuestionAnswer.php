@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class MultipleChoiceQuestionAnswer extends Model
 {
     protected $fillable = [
-        'question_id',
-        'answer',
+        'multiple_choice_question_id',
+        'text',
         'is_correct'
     ];
 }

@@ -23,7 +23,7 @@
         </template>
 
         <draw-component
-            v-if="typeof testQuestionData.questionTypeData !== 'undefined'"
+            v-if="typeof testQuestionData.questionTypeData !== 'undefined' && typeof testQuestionData.questionTypeData.drawing_options !== 'undefined'"
             :background-image="testQuestionData.questionTypeData.drawing_options.background_image[0].file"
             :pen-colors="testQuestionData.questionTypeData.drawing_options.pen_colors"
         />

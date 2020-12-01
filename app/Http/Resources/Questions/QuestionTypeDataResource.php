@@ -5,6 +5,8 @@ namespace App\Http\Resources\Questions;
 use App\Question;
 use App\QuestionType;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use App\MultipleChoiceQuestionAnswer;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class QuestionTypeDataResource extends JsonResource
@@ -25,12 +27,16 @@ class QuestionTypeDataResource extends JsonResource
     {
         $questionType = QuestionType::find($this->question->question_type_id);
         
-        $questionTypeClass = 'App\\' . ucfirst($questionType->code) . 'Question';
+        $questionTypeClass = 'App\\' . ucfirst(Str::studly($questionType->code)) . 'Question';
 
         $questionTypeData = $questionTypeClass::find($this->question->question_type_model_id)->toArray();
 
         if (Arr::has($questionTypeData, 'drawing_options')) {
             $questionTypeData['drawing_options'] = unserialize($questionTypeData['drawing_options']);
+        }
+
+        if (Arr::has($questionTypeData, 'multiple_answers')) {
+            $questionTypeData['answers'] = MultipleChoiceQuestionAnswer::whereMultipleChoiceQuestionId($questionTypeData['id'])->get()->toArray();
         }
 
         return [
