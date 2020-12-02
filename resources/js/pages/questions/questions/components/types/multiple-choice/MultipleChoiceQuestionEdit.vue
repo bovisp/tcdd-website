@@ -86,13 +86,19 @@
                 Add 3 more answers...
             </button>
         </div>
+
+        <div 
+            class="alert alert-red content mt-4"
+            v-if="!isEmpty(errors)"
+            v-text="errors.answers[0]"
+        ></div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import { v4 as uuid_v4 } from 'uuid'
-import { forEach, includes, find, trim, filter } from 'lodash-es'
+import { forEach, includes, find, trim, filter, isEmpty } from 'lodash-es'
 
 export default {
     data () {
@@ -127,6 +133,8 @@ export default {
     },
 
     methods: {
+        isEmpty,
+        
         addAnswers () {
             for (let i = 0; i < this.answerIncrement; i++) {
                 this.form.answers.push({

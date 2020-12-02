@@ -86,24 +86,42 @@ class MultipleChoiceQuestion
 
     protected function validate($data)
     {
-        $data['answers'] = array_filter($data['answers'], function ($answer) {
-            return trim($answer['text']) !== '';
-        });
-
         return Validator::make($data, [
             'multiple_answers' => ['required', 'boolean'],
-            'answers' => 'required|array|min:2',
-            'answers.*.is_correct' => [
-                'boolean',
+            'answers' => [
+                'required',
+                'array',
+                'min:2',
                 function ($attribute, $value, $fail) use ($data) {
                     $correctArr = array_filter($data['answers'], function ($answer) {
                         return $answer['is_correct'];
                     });
 
                     if (count($correctArr) === 0) {
-                        $fail('You must supply at leat one correct answer');
+                        $fail('You must supply at leat one correct answer.');
                     }
                 },
+                function ($attribute, $value, $fail) use ($data) {
+                    $noCorrespondingAnswer = array_filter($data['answers'], function ($answer) {
+                        return $answer['is_correct'] && !trim($answer['text']);
+                    });
+
+                    if (count($noCorrespondingAnswer)) {
+                        $fail('You have chosen a possible answer as correct, but it has no text.');
+                    }
+                },
+                function ($attribute, $value, $fail) use ($data) {
+                    $correctArr = array_filter($data['answers'], function ($answer) {
+                        return $answer['is_correct'] && trim($answer['text']);
+                    });
+
+                    if (count($correctArr) === count($data['answers']) ) {
+                        $fail('You must have more total possible answers that total possible correct answers.');
+                    }
+                },
+            ],
+            'answers.*.is_correct' => [
+                'boolean'
             ]
         ],
         [

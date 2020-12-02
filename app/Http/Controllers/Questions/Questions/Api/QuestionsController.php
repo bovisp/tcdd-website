@@ -61,7 +61,7 @@ class QuestionsController extends Controller
 
         if ($questionDataValidator['passes'] === false) {
             return response()->json([
-                'errors' => $questionTypeModel['errors']
+                'errors' => $questionDataValidator['errors']
             ], 422);
         }
 
@@ -150,7 +150,7 @@ class QuestionsController extends Controller
 
         if ($questionDataValidator['passes'] === false) {
             return response()->json([
-                'errors' => $questionTypeModel['errors']
+                'errors' => $questionDataValidator['errors']
             ], 422);
         }
 

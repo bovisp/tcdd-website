@@ -11,7 +11,6 @@ class MultipleChoiceQuestion extends Model
     protected static function booted() {
         static::updated(function ($question) {
             if ($question->isDirty('question_id')) {
-                dd('inside_if');
                 $answers = array_filter(request('question_type_data')['answers'], function ($answer) {
                     return trim($answer['text']) !== '';
                 });
