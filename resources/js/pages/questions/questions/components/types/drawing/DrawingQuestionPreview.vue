@@ -118,8 +118,6 @@ export default {
     watch: {
         imageSaved () {
             this.submitting = true
-
-            console.log(this.form.answer)
         }
     },
 

@@ -36,7 +36,6 @@ export default {
 
     mounted () {
         window.events.$on('questions:edit', () => {
-            console.log('here')
             this.updating = true
         })
 
