@@ -27,6 +27,29 @@
             ></p>
         </div>
 
+        <div
+            class="mb-4"
+        >
+            <label class="flex items-center">
+                <input 
+                    type="checkbox" 
+                    class="form-checkbox"
+                    v-model="data.shuffle_answers"
+                >
+
+                <span 
+                    class="ml-2"
+                    :class="{ 'text-red-500': errors.shuffle_answers }"
+                >Answers should be randomly shuffled (default: <span class="font-bold">true</span>)</span>
+            </label>
+
+            <p
+                v-if="errors.shuffle_answers"
+                v-text="errors.shuffle_answers[0]"
+                class="text-red-500 text-sm"
+            ></p>
+        </div>
+
         <h4 class="text-lg font-medium mb-3">
             Possible answers
         </h4>
@@ -110,6 +133,7 @@ export default {
         return {
             data: {
                 multiple_answers: false,
+                shuffle_answers: true,
                 answers: []
             },
             answerIncrement: 3,

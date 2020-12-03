@@ -31,7 +31,8 @@ class MultipleChoiceQuestion extends Model
 
     protected $fillable = [
         'question_id',
-        'multiple_answers'
+        'multiple_answers',
+        'shuffle_answers'
     ];
 
     public function answers()

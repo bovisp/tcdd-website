@@ -27,7 +27,7 @@
         >
             <ul>
                 <li
-                    v-for="answer in testQuestionData.questionTypeData.answers"
+                    v-for="answer in shuffleArray(testQuestionData.questionTypeData.answers)"
                     :key="answer.id"
                     class="p-1 rounded mb-1"
                     :class="{ 'bg-green-100' : correctAnswer(answer.id) }"

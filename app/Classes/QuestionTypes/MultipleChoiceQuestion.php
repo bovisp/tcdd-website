@@ -21,6 +21,8 @@ class MultipleChoiceQuestion
         }
 
         $data['multiple_answers'] = $data['multiple_answers'] ? 1 : 0;
+
+        $data['shuffle_answers'] = $data['shuffle_answers'] ? 1 : 0;
         
         return [
             'passes' => true,
@@ -42,6 +44,8 @@ class MultipleChoiceQuestion
         }
 
         $data['multiple_answers'] = $data['multiple_answers'] ? 1 : 0;
+
+        $data['shuffle_answers'] = $data['shuffle_answers'] ? 1 : 0;
 
         $multipleChoiceQuestionModel = MultipleChoice::find(request('question_type_data')['id']);
 
@@ -107,6 +111,7 @@ class MultipleChoiceQuestion
     {
         return Validator::make($data, [
             'multiple_answers' => ['required', 'boolean'],
+            'shuffle_answers' => ['required', 'boolean'],
             'answers' => [
                 'required',
                 'array',
@@ -144,8 +149,10 @@ class MultipleChoiceQuestion
             ]
         ],
         [
-            'multiple_answers.required' => 'The rich multiple answers field is required',
-            'multiple_answers.boolean' => 'The rich multiple answers field is required',
+            'multiple_answers.required' => 'The multiple answers field is required',
+            'multiple_answers.boolean' => 'The multiple answers field is required',
+            'shuffle_answers.required' => 'The shuffle answers field is required',
+            'shuffle_answers.boolean' => 'The shuffle answers field is required',
             'answers.required' => 'You must supply at least two possible answers',
             'answers.array' => 'The answers you supply must be in the form of an array',
             'answers.min' => 'You must supply at least two possible answers',
