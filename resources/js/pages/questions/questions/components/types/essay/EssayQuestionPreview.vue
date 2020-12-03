@@ -63,7 +63,7 @@
 
             <button 
                 class="btn btn-text btn-sm text-sm ml-auto"
-                @click.prevent="$emit('question-preview:cancel')"
+                @click.prevent="cancel"
             >
                 Cancel preview
             </button>
@@ -114,7 +114,14 @@ export default {
 
         ...mapActions({
             fetchTestQuestionData: 'questions/fetchTestQuestionData'
-        })
+        }),
+
+        cancel () {
+            this.form.answer.text = ''
+            this.submitting = false
+            
+            $emit('question-preview:cancel')
+        }
     },
 
     async mounted () {

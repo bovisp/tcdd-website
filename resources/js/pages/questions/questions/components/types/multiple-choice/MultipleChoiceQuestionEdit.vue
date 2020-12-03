@@ -53,17 +53,33 @@
             </div>
 
             <div class="flex-1">
-                <label 
-                    :for="`answer-${answer.id}`"
-                    class="block text-gray-700 font-bold mb-2"
-                >Answer</label>
+                <div class="mb-2">
+                    <label 
+                        :for="`answer-${answer.id}-en`"
+                        class="block text-gray-700 font-bold mb-2"
+                    >Answer (English)</label>
 
-                <textarea 
-                    :id="`answer-${answer.id}`"
-                    rows="3"
-                    class="form-textarea w-full"
-                    @input="updateAnswer(answer.id, $event)"
-                >{{ answer.text }}</textarea>
+                    <textarea 
+                        :id="`answer-${answer.id}-en`"
+                        rows="3"
+                        class="form-textarea w-full"
+                        @input="updateAnswer(answer.id, 'en', $event)"
+                    >{{ answer.text_en }}</textarea>
+                </div>
+
+                <div>
+                    <label 
+                        :for="`answer-${answer.id}-fr`"
+                        class="block text-gray-700 font-bold mb-2"
+                    >Answer (French)</label>
+
+                    <textarea 
+                        :id="`answer-${answer.id}-fr`"
+                        rows="3"
+                        class="form-textarea w-full"
+                        @input="updateAnswer(answer.id, 'fr', $event)"
+                    >{{ answer.text_fr }}</textarea>
+                </div>
 
                 <div class="flex">
                     <button 
@@ -140,17 +156,18 @@ export default {
                 this.form.answers.push({
                     id: uuid_v4(),
                     is_correct: false,
-                    text: ''
+                    text_en: '',
+                    text_fr: ''
                 })
             }
         },
 
-        updateAnswer (answerId, e) {
+        updateAnswer (answerId, lang, e) {
             let answer = find(this.form.answers, answer => {
                 return answer.id === answerId
             })
 
-            answer.text = trim(e.target.value)
+            answer[`text_${lang}`] = trim(e.target.value)
         },
 
         updateCorrect (answerId, e) {

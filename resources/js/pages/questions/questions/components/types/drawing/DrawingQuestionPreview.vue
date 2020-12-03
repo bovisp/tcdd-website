@@ -145,6 +145,10 @@ export default {
                 }
             })
 
+            this.form.answer.text = ''
+            this.form.answer.image = ''
+            this.submitting = false
+
             this.$emit('question-preview:cancel')
         }
     },

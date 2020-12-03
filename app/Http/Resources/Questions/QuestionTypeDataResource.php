@@ -36,7 +36,18 @@ class QuestionTypeDataResource extends JsonResource
         }
 
         if (Arr::has($questionTypeData, 'multiple_answers')) {
-            $questionTypeData['answers'] = MultipleChoiceQuestionAnswer::whereMultipleChoiceQuestionId($questionTypeData['id'])->get()->toArray();
+            $questionTypeData['answers'] = MultipleChoiceQuestionAnswer::whereMultipleChoiceQuestionId($questionTypeData['id'])
+                ->get()
+                ->map(function ($answer) {
+                    return [
+                        'id' => $answer->id,
+                        'text_en' => $answer->getTranslation('text', 'en'),
+                        'text_fr' => $answer->getTranslation('text', 'fr'),
+                        'is_correct' => $answer->is_correct,
+                        'text' => $answer->text
+                    ];
+                })
+                ->toArray();
         }
 
         return [

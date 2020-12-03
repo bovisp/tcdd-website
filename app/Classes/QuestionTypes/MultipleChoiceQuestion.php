@@ -49,23 +49,38 @@ class MultipleChoiceQuestion
 
         $UUIDv4 = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
 
-        $answerIdsFromRequest = Arr::pluck(array_filter(request('question_type_data')['answers'], function ($answer) use ($UUIDv4) {
+        $answersFromRequest = array_filter(request('question_type_data')['answers'], function ($answer) use ($UUIDv4) {
             return !preg_match($UUIDv4, $answer['id']);
-        }), 'id');
+        });
+
+        foreach ($answersFromRequest as $answer) {
+            MultipleChoiceQuestionAnswer::find($answer['id'])->update([
+                'is_correct' => $answer['is_correct'] ? 1 : 0,
+                'text' => [
+                    'en' => array_key_exists('text_en', $answer) ? $answer['text_en'] : 'No translation added',
+                    'fr' => array_key_exists('text_fr', $answer) ? $answer['text_fr'] : 'No translation added'
+                ]
+            ]);
+        }
+
+        $answerIdsFromRequest = Arr::pluck($answersFromRequest, 'id');
 
         $answersToDelete = array_diff($answerIds, $answerIdsFromRequest);
 
         MultipleChoiceQuestionAnswer::find($answersToDelete)->each->delete();
 
         $newAnswers = array_filter(request('question_type_data')['answers'], function ($answer) use ($UUIDv4) {
-            return preg_match($UUIDv4, $answer['id']) && $answer['text'];
+            return preg_match($UUIDv4, $answer['id']) && (array_key_exists('text_fr', $answer) || array_key_exists('text_en', $answer));
         });
 
         foreach ($newAnswers as $answer) {
             MultipleChoiceQuestionAnswer::create([
                 'multiple_choice_question_id' =>$multipleChoiceQuestionModel->id,
                 'is_correct' => $answer['is_correct'] ? 1 : 0,
-                'text' => $answer['text']
+                'text' => [
+                    'en' => array_key_exists('text_en', $answer) && !is_null($answer['text_en']) ? $answer['text_en'] : 'No translation added',
+                    'fr' => array_key_exists('text_fr', $answer) && !is_null($answer['text_en']) ? $answer['text_fr'] : 'No translation added'
+                ]
             ]);
         }
         
@@ -79,7 +94,11 @@ class MultipleChoiceQuestion
 
     public function destroy($questionId)
     {
-        $questionTypeModel = MultipleChoice::whereQuestionId($questionId)->first()->delete();
+        $questionTypeModel = MultipleChoice::whereQuestionId($questionId)->first();
+
+        $questionTypeModel->answers->each->delete();
+
+        $questionTypeModel->delete();
 
         return;
     }
@@ -103,7 +122,7 @@ class MultipleChoiceQuestion
                 },
                 function ($attribute, $value, $fail) use ($data) {
                     $noCorrespondingAnswer = array_filter($data['answers'], function ($answer) {
-                        return $answer['is_correct'] && !trim($answer['text']);
+                        return $answer['is_correct'] && !trim($answer['text_en']) && !trim($answer['text_fr']);
                     });
 
                     if (count($noCorrespondingAnswer)) {
@@ -112,7 +131,7 @@ class MultipleChoiceQuestion
                 },
                 function ($attribute, $value, $fail) use ($data) {
                     $correctArr = array_filter($data['answers'], function ($answer) {
-                        return $answer['is_correct'] && trim($answer['text']);
+                        return $answer['is_correct'] && (trim($answer['text_en']) || trim($answer['text_fr']));
                     });
 
                     if (count($correctArr) === count($data['answers']) ) {

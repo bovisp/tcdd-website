@@ -35,7 +35,7 @@
                     <label class="flex items-center">
                         <span
                             v-if="submitting"
-                            class="mr-2"
+                            class="mr-2 w-4"
                         >
                             <i 
                                 class="fas fa-check fa-sm text-green-500"
@@ -61,6 +61,13 @@
                     </label>
                 </li>
             </ul>
+        </div>
+
+        <div 
+            class="alert alert-blue mt-4"
+            v-if="submitting"
+        >
+            The correct answers are highlighted in green. Please click the "Cancel preview" button to finish.
         </div>
 
         <div class="flex w-full mt-4">
@@ -128,6 +135,9 @@ export default {
         },
 
         cancel () {
+            this.form.answer.answers = []
+            this.submitting = false
+
             this.$emit('question-preview:cancel')
         },
 
@@ -136,10 +146,18 @@ export default {
         },
 
         answeredCorrectly (answerId) {
+            if (typeof this.form.answer.answers === 'number') {
+                return this.submitting && this.form.answer.answers === answerId && this.correct.indexOf(answerId) >= 0
+            }
+
             return this.submitting && this.form.answer.answers.indexOf(answerId) >= 0 && this.correct.indexOf(answerId) >= 0
         },
 
         answeredIncorrectly (answerId) {
+            if (typeof this.form.answer.answers === 'number') {
+                return this.submitting && this.form.answer.answers === answerId && this.correct.indexOf(answerId) === -1
+            }
+
             return this.submitting && this.form.answer.answers.indexOf(answerId) >= 0 && this.correct.indexOf(answerId) === -1
         }
     },
