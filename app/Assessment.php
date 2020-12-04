@@ -4,6 +4,7 @@ namespace App;
 
 use App\User;
 use App\Section;
+use App\Question;
 use App\AssessmentType;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
@@ -41,6 +42,15 @@ class Assessment extends Model
     public function participants()
     {
         return $this->belongsToMany(User::class, 'assessment_participants', 'assessment_id', 'participant_id');
+    }
+
+    public function questions() {
+        return $this->belongsToMany(Question::class, 'assessment_questions', 'assessment_id', 'question_id')
+            ->using('App\Pivots\AssessmentQuestion')
+            ->withPivot([
+                'order',
+                'page'
+            ]);
     }
 
     public function toArray()

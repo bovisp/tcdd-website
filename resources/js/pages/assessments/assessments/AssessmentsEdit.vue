@@ -23,6 +23,12 @@
             >
                 <assessment-participants />
             </tab>
+
+            <tab  
+                name="Questions" 
+            >
+                <assessment-questions />
+            </tab>
         </tabs>
     </div>
 </template>

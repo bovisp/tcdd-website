@@ -8,6 +8,7 @@ use App\Section;
 use App\QuestionType;
 use App\ContentBuilder;
 use App\QuestionCategory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -30,6 +31,21 @@ class Question extends Model
         'marking_guide',
         'question_type_model_id',
         'question_type_id',
+    ];
+
+    protected $with = [
+        'author',
+        'contentBuilder',
+        'section',
+        'questionCategory',
+        'tags',
+        'owner',
+        'editors',
+        'questionType'
+    ];
+
+    protected $appends = [
+        'question_data'
     ];
 
     public function contentBuilder()
@@ -70,6 +86,15 @@ class Question extends Model
     public function questionType()
     {
         return $this->belongsTo(QuestionType::class);
+    }
+
+    public function getQuestionDataAttribute()
+    {
+        $questionTypeName = Str::studly($this->questionType->code);
+
+        $questionTypeDataClass = 'App\\' . $questionTypeName . 'Question';
+
+        return $questionTypeDataClass::find($this->question_type_model_id);
     }
 
     public function toArray()
