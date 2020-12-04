@@ -135,8 +135,10 @@ export default {
         },
 
         getPosition (e) {
-            this.mouseCoordinates.x = e.clientX - this.canvas.offsetLeft; 
-            this.mouseCoordinates.y = e.clientY - this.canvas.offsetTop + 115; 
+            let rect = this.canvas.getBoundingClientRect()
+
+            this.mouseCoordinates.x = e.clientX - rect.left 
+            this.mouseCoordinates.y = e.clientY - rect.top
         }
     },
 

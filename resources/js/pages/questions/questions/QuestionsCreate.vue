@@ -307,11 +307,11 @@
                 <h3
                     class="text-2xl font-light my-4"
                 >
-                    {{ ucfirst(type) }} Question Settings
+                    {{ capitalCase(type) }} Question Settings
                 </h3>
 
                 <component 
-                    :is="`${type}QuestionCreate`"
+                    :is="`${pascalCase(type)}QuestionCreate`"
                     @question-type:update-data="updateQuestionTypeData"
                 ></component>
 
@@ -338,7 +338,7 @@
 
                 <button 
                     class="btn btn-text text-sm"
-                    @click.prevent="cancel"
+                    @click.prevent="remove"
                 >
                     Cancel
                 </button>
@@ -397,6 +397,7 @@ import Multiselect from 'vue-multiselect'
 import { VueEditor, Quill } from 'vue2-editor'
 import { map, find } from 'lodash-es'
 import ucfirst from '../../../helpers/ucfirst'
+import { capitalCase, pascalCase } from 'change-case'
 
 export default {
     components: {
@@ -446,6 +447,10 @@ export default {
     },
 
     methods: {
+        capitalCase,
+
+        pascalCase,
+
         ucfirst,
 
         ...mapActions({
@@ -456,6 +461,12 @@ export default {
             removeTempIds: 'questions/removeTempIds',
             fetchQuestionTypes: 'questionTypes/fetch',
         }),
+
+        async remove () {
+            let { data } = await axios.delete(`${this.urlBase}/api/questions/${this.questionId}`)
+
+            this.cancel()
+        },
 
         async cancel () {
             window.events.$emit('questions:create-cancel')
@@ -471,8 +482,6 @@ export default {
             this.question_type_id = null
             this.type = ''
 
-            let { data } = await axios.delete(`${this.urlBase}/api/questions/${this.questionId}`)
-
             await this.removeTempIds(this.questionId)
         },
 
@@ -484,8 +493,6 @@ export default {
             }
 
             this.noQuestionType = false
-
-            this.form.tags = await  Promise.all(map(this.form.tags, async (tag) => tag.id))
 
             let { data } = await axios.post(`${this.urlBase}/api/questions`, this.form)
 

@@ -9,6 +9,7 @@ use App\Question;
 use App\QuestionType;
 use App\ContentBuilder;
 use App\ContentBuilderType;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Questions\QuestionIndexResource;
 use App\Http\Resources\Questions\QuestionTypeDataResource;
@@ -48,11 +49,11 @@ class QuestionsController extends Controller
             'section_id' => 'required|integer|exists:sections,id',
             'question_category_id' => 'required|integer|exists:question_categories,id',
             'tags' => 'array|present',
-            'tags.*' => 'integer|exists:tags,id',
+            'tags.*.id' => 'integer|exists:tags,id',
             'question_type_id' => 'required|integer|exists:question_types,id'
         ]);
 
-        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst(QuestionType::find(request('question_type_id'))->code) . 'Question';
+        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . Str::studly(QuestionType::find(request('question_type_id'))->code) . 'Question';
 
         $questionDataValidator = (new $questionTypeClass)->store(
             request('question_type_data'), request('id')
@@ -60,7 +61,7 @@ class QuestionsController extends Controller
 
         if ($questionDataValidator['passes'] === false) {
             return response()->json([
-                'errors' => $questionTypeModel['errors']
+                'errors' => $questionDataValidator['errors']
             ], 422);
         }
 
@@ -91,7 +92,11 @@ class QuestionsController extends Controller
 
         $tempQuestion->delete();
 
-        $question->tags()->attach(Tag::whereIn('id', request('tags'))->get());
+        $tags = array_map(function ($tag) {
+            return $tag['id'];
+        }, request('tags'));
+
+        $question->tags()->attach(Tag::whereIn('id', $tags)->get());
 
         return response()->json([
             'data' => [
@@ -136,12 +141,12 @@ class QuestionsController extends Controller
             'section_id' => 'required|integer|exists:sections,id',
             'question_category_id' => 'required|integer|exists:question_categories,id',
             'tags' => 'array|present',
-            'tags.*' => 'integer|exists:tags,id',
+            'tags.*.id' => 'integer|exists:tags,id',
             'editors' => 'array|present',
-            'editors.*' => 'integer|exists:users,id'
+            'editors.*.id' => 'integer|exists:users,id'
         ]);
 
-        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst($question->questionType->code) . 'Question';
+        $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . Str::studly($question->questionType->code) . 'Question';
 
         $questionDataValidator = (new $questionTypeClass)->update(
             request('question_type_data'), $question->id
@@ -149,7 +154,7 @@ class QuestionsController extends Controller
 
         if ($questionDataValidator['passes'] === false) {
             return response()->json([
-                'errors' => $questionTypeModel['errors']
+                'errors' => $questionDataValidator['errors']
             ], 422);
         }
 
@@ -167,9 +172,17 @@ class QuestionsController extends Controller
             'question_category_id' => request('question_category_id')
         ]);
 
-        $question->tags()->sync(Tag::whereIn('id', request('tags'))->get());
+        $tags = array_map(function ($tag) {
+            return $tag['id'];
+        }, request('tags'));
 
-        $question->editors()->sync(User::whereIn('id', request('editors'))->get());
+        $question->tags()->sync(Tag::whereIn('id', $tags)->get());
+
+        $editors = array_map(function ($editor) {
+            return $editor['id'];
+        }, request('editors'));
+
+        $question->editors()->sync(User::whereIn('id', $editors)->get());
 
         return response()->json([
             'data' => [
@@ -205,7 +218,7 @@ class QuestionsController extends Controller
         $question->contentBuilder->each->delete();
 
         if ($question->questionType !== null) {
-            $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . ucfirst($question->questionType->code) . 'Question';
+            $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . Str::studly($question->questionType->code) . 'Question';
 
             (new $questionTypeClass)->destroy($question->id);
         }

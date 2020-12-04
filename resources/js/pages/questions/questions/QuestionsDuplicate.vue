@@ -303,11 +303,11 @@
                 class="text-2xl font-light my-4"
                 v-if="typeof questionTypeData.type !== 'undefined'"
             >
-                {{ ucfirst(questionTypeData.type) }} Question Settings
+                {{ capitalCase(questionTypeData.type) }} Question Settings
             </h3>
 
             <component 
-                :is="`${questionTypeData.type}QuestionEdit`"
+                :is="`${pascalCase(questionTypeData.type)}QuestionEdit`"
                 @question-type:update-data="updateQuestionTypeData"
             ></component>
 
@@ -382,6 +382,7 @@ import { mapActions, mapGetters } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import ucfirst from '../../../helpers/ucfirst'
 import { map } from'lodash-es'
+import { capitalCase, pascalCase } from 'change-case'
 
 export default {
     components: {
@@ -436,6 +437,10 @@ export default {
     methods: {
         ucfirst,
 
+        capitalCase,
+        
+        pascalCase,
+
         ...mapActions({
             duplicateQuestion: 'questions/duplicateQuestion',
             fetchAvailableEditors: 'questions/fetchAvailableEditors',
@@ -443,10 +448,6 @@ export default {
         }),
         
         async store () {
-            this.form.tags = await  Promise.all(map(this.form.tags, async (tag) => tag.id))
-
-            this.form.editors = await  Promise.all(map(this.form.editors, async (editor) => editor.id))
-
             let { data } = await axios.put(`${this.urlBase}/api/questions/${this.question.id}`, this.form)
 
             window.location.href = `${this.urlBase}/questions`

@@ -23,7 +23,7 @@
         </template>
 
         <draw-component
-            v-if="typeof testQuestionData.questionTypeData !== 'undefined'"
+            v-if="typeof testQuestionData.questionTypeData !== 'undefined' && typeof testQuestionData.questionTypeData.drawing_options !== 'undefined'"
             :background-image="testQuestionData.questionTypeData.drawing_options.background_image[0].file"
             :pen-colors="testQuestionData.questionTypeData.drawing_options.pen_colors"
         />
@@ -118,8 +118,6 @@ export default {
     watch: {
         imageSaved () {
             this.submitting = true
-
-            console.log(this.form.answer)
         }
     },
 
@@ -146,6 +144,10 @@ export default {
                     ]
                 }
             })
+
+            this.form.answer.text = ''
+            this.form.answer.image = ''
+            this.submitting = false
 
             this.$emit('question-preview:cancel')
         }

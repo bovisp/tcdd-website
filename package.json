@@ -22,6 +22,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "change-case": "^4.1.1",
         "core-js": "^3.6.5",
         "dayjs": "^1.8.26",
         "file-saver": "^2.0.2",

@@ -13,7 +13,7 @@
                 id="preview-pane"
             >
                 <component 
-                    :is="`${questionTypeData.type}QuestionPreview`"
+                    :is="`${pascalCase(questionTypeData.type)}QuestionPreview`"
                     :content-id="question.contentBuilder[currentLang]"
                     @question-preview:cancel="cancelPreview"
                 ></component>
@@ -326,12 +326,12 @@
                         class="text-2xl font-light my-4"
                         v-if="typeof questionTypeData.type !== 'undefined'"
                     >
-                        {{ ucfirst(questionTypeData.type) }} Question Settings
+                        {{ capitalCase(questionTypeData.type) }} Question Settings
                     </h3>
 
                     <template v-if="typeof questionTypeData.type !== 'undefined'">
                         <component 
-                            :is="`${questionTypeData.type}QuestionEdit`"
+                            :is="`${pascalCase(questionTypeData.type)}QuestionEdit`"
                             @question-type:update-data="updateQuestionTypeData"
                         ></component>
                     </template>
@@ -432,6 +432,7 @@ import { mapGetters, mapActions } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import { map } from'lodash-es'
 import ucfirst from '../../../helpers/ucfirst'
+import { pascalCase, capitalCase } from 'change-case'
 
 export default {
     components: {
@@ -482,6 +483,10 @@ export default {
     methods: {
         ucfirst,
 
+        pascalCase,
+        
+        capitalCase,
+
         ...mapActions({
             fetchSections: 'sections/fetch',
             fetchTags: 'tags/fetch',
@@ -527,11 +532,7 @@ export default {
         },
 
         async update () {
-            this.form.tags = await  Promise.all(map(this.form.tags, async (tag) => tag.id))
-
-            this.form.editors = await  Promise.all(map(this.form.editors, async (editor) => editor.id))
-
-            let { data } = await axios.put(`${this.urlBase}/api/questions/${this.question.id}`, this.form)
+           let { data } = await axios.put(`${this.urlBase}/api/questions/${this.question.id}`, this.form)
 
             this.cancel()
 
