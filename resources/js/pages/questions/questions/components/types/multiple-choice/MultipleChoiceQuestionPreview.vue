@@ -22,12 +22,10 @@
             ></component>
         </template>
 
-        <div
-            v-if="typeof testQuestionData.questionTypeData !== 'undefined' && typeof testQuestionData.questionTypeData.answers !== 'undefined'"
-        >
+        <div>
             <ul>
                 <li
-                    v-for="answer in shuffleArray(testQuestionData.questionTypeData.answers)"
+                    v-for="answer in answers"
                     :key="answer.id"
                     class="p-1 rounded mb-1"
                     :class="{ 'bg-green-100' : correctAnswer(answer.id) }"
@@ -111,7 +109,8 @@ export default {
                 }
             },
             submitting: false,
-            correct: []
+            correct: [],
+            answers: []
         }
     },
 
@@ -169,8 +168,10 @@ export default {
 
         await this.fetchTestQuestionData()
 
+        this.answers = this.testQuestionData.questionTypeData.answersShuffled
+
         this.correct = map(
-            filter(this.testQuestionData.questionTypeData.answers, answer => {
+            filter(this.answers, answer => {
                 return answer.is_correct
             }), answer => answer.id
         )

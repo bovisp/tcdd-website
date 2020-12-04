@@ -12,7 +12,11 @@ class MultipleChoiceQuestion extends Model
         static::updated(function ($question) {
             if ($question->isDirty('question_id')) {
                 $answers = array_filter(request('question_type_data')['answers'], function ($answer) {
-                    return array_key_exists('text_en', $answer) || array_key_exists('text_fr', $answer);
+                    if (trim($answer['text_en']) === '' && trim($answer['text_fr']) === '') {
+                        return false;
+                    }
+
+                    return true;
                 });
 
                 foreach ($answers as $answer) {
@@ -20,11 +24,13 @@ class MultipleChoiceQuestion extends Model
                         'multiple_choice_question_id' => $question->id,
                         'is_correct' => $answer['is_correct'] ? 1 : 0,
                         'text' => [
-                            'en' => array_key_exists('text_en', $answer) && !is_null($answer['text_en']) ? $answer['text_en'] : 'No translation added',
-                            'fr' => array_key_exists('text_fr', $answer) && !is_null($answer['text_fr']) ? $answer['text_fr'] : 'No translation added',
+                            'en' => trim($answer['text_en']) ? $answer['text_en'] : '**No translation added**',
+                            'fr' => trim($answer['text_fr']) ? $answer['text_fr'] : '**No translation added**'
                         ]
                     ]);
                 }
+
+                return;
             }
         });
     }

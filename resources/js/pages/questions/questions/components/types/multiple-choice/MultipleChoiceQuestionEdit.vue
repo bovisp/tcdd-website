@@ -143,7 +143,8 @@ export default {
     data () {
         return {
             form: {},
-            answerIncrement: 3
+            answerIncrement: 3,
+            count: 0
         }
     },
 
@@ -167,6 +168,14 @@ export default {
 
             handler () {
                 this.form = this.questionTypeData.data
+            }
+        },
+
+        async 'form.multiple_answers' (newVal, oldVal) {
+            if (oldVal) {
+                for await (let answer of this.form.answers) {
+                    answer.is_correct = false
+                }
             }
         }
     },
@@ -193,7 +202,13 @@ export default {
             answer[`text_${lang}`] = trim(e.target.value)
         },
 
-        updateCorrect (answerId, e) {
+        async updateCorrect (answerId, e) {
+            if (!this.questionTypeData.data.multiple_answers) {
+                for await (let answer of this.form.answers) {
+                    answer.is_correct = false
+                }
+            }
+
             let answer = find(this.form.answers, answer => {
                 return answer.id === answerId
             })

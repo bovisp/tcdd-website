@@ -49,7 +49,7 @@ class QuestionsController extends Controller
             'section_id' => 'required|integer|exists:sections,id',
             'question_category_id' => 'required|integer|exists:question_categories,id',
             'tags' => 'array|present',
-            'tags.*' => 'integer|exists:tags,id',
+            'tags.*.id' => 'integer|exists:tags,id',
             'question_type_id' => 'required|integer|exists:question_types,id'
         ]);
 
@@ -92,7 +92,11 @@ class QuestionsController extends Controller
 
         $tempQuestion->delete();
 
-        $question->tags()->attach(Tag::whereIn('id', request('tags'))->get());
+        $tags = array_map(function ($tag) {
+            return $tag['id'];
+        }, request('tags'));
+
+        $question->tags()->attach(Tag::whereIn('id', $tags)->get());
 
         return response()->json([
             'data' => [
@@ -137,9 +141,9 @@ class QuestionsController extends Controller
             'section_id' => 'required|integer|exists:sections,id',
             'question_category_id' => 'required|integer|exists:question_categories,id',
             'tags' => 'array|present',
-            'tags.*' => 'integer|exists:tags,id',
+            'tags.*.id' => 'integer|exists:tags,id',
             'editors' => 'array|present',
-            'editors.*' => 'integer|exists:users,id'
+            'editors.*.id' => 'integer|exists:users,id'
         ]);
 
         $questionTypeClass = 'App\\Classes\\QuestionTypes\\' . Str::studly($question->questionType->code) . 'Question';
@@ -168,9 +172,17 @@ class QuestionsController extends Controller
             'question_category_id' => request('question_category_id')
         ]);
 
-        $question->tags()->sync(Tag::whereIn('id', request('tags'))->get());
+        $tags = array_map(function ($tag) {
+            return $tag['id'];
+        }, request('tags'));
 
-        $question->editors()->sync(User::whereIn('id', request('editors'))->get());
+        $question->tags()->sync(Tag::whereIn('id', $tags)->get());
+
+        $editors = array_map(function ($editor) {
+            return $editor['id'];
+        }, request('editors'));
+
+        $question->editors()->sync(User::whereIn('id', $editors)->get());
 
         return response()->json([
             'data' => [

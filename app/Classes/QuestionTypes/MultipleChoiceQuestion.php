@@ -54,6 +54,10 @@ class MultipleChoiceQuestion
         $UUIDv4 = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
 
         $answersFromRequest = array_filter(request('question_type_data')['answers'], function ($answer) use ($UUIDv4) {
+            if (trim($answer['text_en']) === '' && trim($answer['text_fr']) === '') {
+                return false;
+            }
+                
             return !preg_match($UUIDv4, $answer['id']);
         });
 
@@ -61,8 +65,8 @@ class MultipleChoiceQuestion
             MultipleChoiceQuestionAnswer::find($answer['id'])->update([
                 'is_correct' => $answer['is_correct'] ? 1 : 0,
                 'text' => [
-                    'en' => array_key_exists('text_en', $answer) ? $answer['text_en'] : 'No translation added',
-                    'fr' => array_key_exists('text_fr', $answer) ? $answer['text_fr'] : 'No translation added'
+                    'en' => trim($answer['text_en']) ? $answer['text_en'] : '**No translation added**',
+                    'fr' => trim($answer['text_fr']) ? $answer['text_fr'] : '**No translation added**'
                 ]
             ]);
         }
@@ -74,7 +78,11 @@ class MultipleChoiceQuestion
         MultipleChoiceQuestionAnswer::find($answersToDelete)->each->delete();
 
         $newAnswers = array_filter(request('question_type_data')['answers'], function ($answer) use ($UUIDv4) {
-            return preg_match($UUIDv4, $answer['id']) && (array_key_exists('text_fr', $answer) || array_key_exists('text_en', $answer));
+            if (is_null($answer['text_en']) && is_null($answer['text_fr'])) {
+                return false;
+            }
+
+            return preg_match($UUIDv4, $answer['id']);
         });
 
         foreach ($newAnswers as $answer) {
@@ -82,8 +90,8 @@ class MultipleChoiceQuestion
                 'multiple_choice_question_id' =>$multipleChoiceQuestionModel->id,
                 'is_correct' => $answer['is_correct'] ? 1 : 0,
                 'text' => [
-                    'en' => array_key_exists('text_en', $answer) && !is_null($answer['text_en']) ? $answer['text_en'] : 'No translation added',
-                    'fr' => array_key_exists('text_fr', $answer) && !is_null($answer['text_en']) ? $answer['text_fr'] : 'No translation added'
+                    'en' => !is_null($answer['text_en']) ? $answer['text_en'] : '**No translation added**',
+                    'fr' => !is_null($answer['text_fr']) ? $answer['text_fr'] : '**No translation added**'
                 ]
             ]);
         }

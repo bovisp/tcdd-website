@@ -36,7 +36,7 @@ class QuestionTypeDataResource extends JsonResource
         }
 
         if (Arr::has($questionTypeData, 'multiple_answers')) {
-            $questionTypeData['answers'] = MultipleChoiceQuestionAnswer::whereMultipleChoiceQuestionId($questionTypeData['id'])
+            $questionTypeDataAnswers = MultipleChoiceQuestionAnswer::whereMultipleChoiceQuestionId($questionTypeData['id'])
                 ->get()
                 ->map(function ($answer) {
                     return [
@@ -48,6 +48,9 @@ class QuestionTypeDataResource extends JsonResource
                     ];
                 })
                 ->toArray();
+
+            $questionTypeData['answers'] = $questionTypeDataAnswers;
+            $questionTypeData['answersShuffled'] = Arr::shuffle($questionTypeDataAnswers);
         }
 
         return [

@@ -448,10 +448,6 @@ export default {
         }),
         
         async store () {
-            this.form.tags = await  Promise.all(map(this.form.tags, async (tag) => tag.id))
-
-            this.form.editors = await  Promise.all(map(this.form.editors, async (editor) => editor.id))
-
             let { data } = await axios.put(`${this.urlBase}/api/questions/${this.question.id}`, this.form)
 
             window.location.href = `${this.urlBase}/questions`

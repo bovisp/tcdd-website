@@ -494,8 +494,6 @@ export default {
 
             this.noQuestionType = false
 
-            this.form.tags = await  Promise.all(map(this.form.tags, async (tag) => tag.id))
-
             let { data } = await axios.post(`${this.urlBase}/api/questions`, this.form)
 
             this.cancel()
