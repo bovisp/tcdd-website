@@ -5,6 +5,7 @@ namespace App;
 use App\User;
 use App\Section;
 use App\Question;
+use App\AssessmentPage;
 use App\AssessmentType;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
@@ -51,6 +52,12 @@ class Assessment extends Model
                 'order',
                 'page'
             ]);
+    }
+
+    public function pages()
+    {
+        return $this->hasMany(AssessmentPage::class)
+            ->oderBy('number', 'asc');
     }
 
     public function toArray()
