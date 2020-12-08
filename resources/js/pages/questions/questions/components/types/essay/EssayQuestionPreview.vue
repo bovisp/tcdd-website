@@ -120,7 +120,7 @@ export default {
             this.form.answer.text = ''
             this.submitting = false
             
-            $emit('question-preview:cancel')
+            this.$emit('question-preview:cancel')
         }
     },
 
