@@ -1,10 +1,16 @@
 <?php
 
+use App\Question;
+use App\Assessment;
+use App\QuestionType;
+use App\AssessmentPageContentType;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
 });
+
+Route::get('/test/{assessment}', 'TestController@index');
 
 Auth::routes();
 

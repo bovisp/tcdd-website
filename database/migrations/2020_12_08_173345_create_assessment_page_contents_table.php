@@ -15,12 +15,8 @@ class CreateAssessmentPageContentsTable extends Migration
     {
         Schema::create('assessment_page_contents', function (Blueprint $table) {
             $table->id();
-            $table->integer('assessment_page_content_type_id')->unsigned();
-            $table->string('content_model');
             $table->integer('order')->unsigned();
             $table->integer('assessment_page_id')->unsigned();
-            $table->integer('question_number')->unsigned()->nullable();
-            $table->integer('question_score')->unsigned()->nullable();
             $table->timestamps();
         });
     }

@@ -33,21 +33,6 @@ class Question extends Model
         'question_type_id',
     ];
 
-    protected $with = [
-        'author',
-        'contentBuilder',
-        'section',
-        'questionCategory',
-        'tags',
-        'owner',
-        'editors',
-        'questionType'
-    ];
-
-    protected $appends = [
-        'question_data'
-    ];
-
     public function contentBuilder()
     {
         return $this->morphMany(ContentBuilder::class, 'contentable');

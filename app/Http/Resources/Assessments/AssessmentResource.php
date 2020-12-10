@@ -30,11 +30,7 @@ class AssessmentResource extends JsonResource
             'assessmentType' => $this->assessmentType,
             'section_id' => $this->section_id,
             'editors' => $this->editors,
-            'participants' => $this->participants,
-            'questions' => $this->questions,
-            'pages' => $this->questions->map(function ($question) {
-                return $question->pivot->page;
-            })->unique()
+            'participants' => $this->participants
         ];
     }
 }

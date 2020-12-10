@@ -25,7 +25,16 @@ class QuestionsController extends Controller
     {
         if (auth()->user()->hasAnyRole(['administrator', 'director', 'manager'])) {
             return QuestionIndexResource::collection(
-                Question::where('name', '!=', null)->get()
+                Question::with(
+                    'author',
+                    'contentBuilder',
+                    'section',
+                    'questionCategory',
+                    'tags',
+                    'owner',
+                    'editors',
+                    'questionType'
+                )->where('name', '!=', null)->get()
             );
         }
 
@@ -34,9 +43,22 @@ class QuestionsController extends Controller
         $authorForQuestions = auth()->user()->questions->pluck('id')->toArray();
 
         return QuestionIndexResource::collection(
-            Question::whereIn('id', array_merge($editorForQuestions, $authorForQuestions))
+            Question::with(
+                'author',
+                'contentBuilder',
+                'section',
+                'questionCategory',
+                'tags',
+                'owner',
+                'editors',
+                'questionType'
+            )   
+                ->whereIn('id', array_merge($editorForQuestions, $authorForQuestions))
                 ->where('name', '!=', null)
                 ->get()
+                ->each(function ($question) {
+                    $question->append('question_data');
+                })
         );
     }
 

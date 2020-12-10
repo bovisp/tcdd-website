@@ -45,19 +45,10 @@ class Assessment extends Model
         return $this->belongsToMany(User::class, 'assessment_participants', 'assessment_id', 'participant_id');
     }
 
-    public function questions() {
-        return $this->belongsToMany(Question::class, 'assessment_questions', 'assessment_id', 'question_id')
-            ->using('App\Pivots\AssessmentQuestion')
-            ->withPivot([
-                'order',
-                'page'
-            ]);
-    }
-
     public function pages()
     {
         return $this->hasMany(AssessmentPage::class)
-            ->oderBy('number', 'asc');
+            ->orderBy('number', 'asc');
     }
 
     public function toArray()
