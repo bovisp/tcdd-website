@@ -10,8 +10,6 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/test/{assessment}', 'TestController@index');
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -57,6 +55,10 @@ Route::post('/api/assessments/{assessment}/instructors', 'Assessments\Assessment
 Route::put('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@update');
 Route::get('/api/assessments/{assessment}/participants/create', 'Assessments\Assessments\Api\AssessmentParticipantsController@create');
 Route::post('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@store');
+
+Route::post('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@store');
+Route::get('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@index');
+Route::post('/api/assessments/page/{page}/content', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@store');
 
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');

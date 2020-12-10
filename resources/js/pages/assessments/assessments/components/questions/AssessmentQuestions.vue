@@ -1,21 +1,31 @@
 <template>
     <div>
-        <assessment-questions-index 
-            v-if="showIndex"
+        <assessment-pages />
+        <!-- <assessment-questions-content-picker 
+            @content:type="changeType"
+            v-if="!type"
         />
 
-        <assessment-questions-create 
-            v-else
-        />
+        <assessment-questions-content-add
+            v-if="type"
+            :type="type"
+            @content-add:cancel="type = ''"
+        /> -->
     </div>
 </template>
 
 <script>
 export default {
-    data () {
-        return {
-            showIndex: true
-        }
-    }
+    // data () {
+    //     return {
+    //         type: ''
+    //     }
+    // },
+
+    // methods: {
+    //     changeType (type) {
+    //         this.type = type
+    //     }
+    // }
 }
 </script>
