@@ -1,6 +1,20 @@
 <template>
     <div>
-        content builder
+        <template v-if="data">
+            <div class="mb-6">
+                <assessment-page-content-builder 
+                    :content-builder-id="data.contentBuilderItemEn.content.id"
+                    lang="en"
+                />
+            </div>
+            
+            <div>
+                <assessment-page-content-builder 
+                    :content-builder-id="data.contentBuilderItemFr.content.id"
+                    lang="fr"
+                />
+            </div>
+        </template>
     </div>
 </template>
 
@@ -13,10 +27,16 @@ export default {
         }
     },
 
+    data () {
+        return {
+            data: null
+        }
+    },
+
     async mounted () {
         let { data } = await axios.post(`${this.urlBase}/api/assessments/page/${this.page.id}/content`)
 
-        console.log(data)
+        this.data = data
     }
 }
 </script>

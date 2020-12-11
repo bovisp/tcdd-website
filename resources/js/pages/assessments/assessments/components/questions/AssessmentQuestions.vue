@@ -1,31 +1,38 @@
 <template>
     <div>
-        <assessment-pages />
-        <!-- <assessment-questions-content-picker 
-            @content:type="changeType"
-            v-if="!type"
+        <assessment-pages 
+            :pages="pages"
+            @assessment-pages:add="addPage"
         />
-
-        <assessment-questions-content-add
-            v-if="type"
-            :type="type"
-            @content-add:cancel="type = ''"
-        /> -->
     </div>
 </template>
 
 <script>
-export default {
-    // data () {
-    //     return {
-    //         type: ''
-    //     }
-    // },
+import { mapGetters } from 'vuex'
 
-    // methods: {
-    //     changeType (type) {
-    //         this.type = type
-    //     }
-    // }
+export default {
+    data () {
+        return {
+            pages: []
+        }
+    },
+
+    computed: {
+        ...mapGetters({
+            assessment: 'assessments/assessment'
+        })
+    },
+
+    methods: {
+        addPage (page) {
+            this.pages.push(page)
+        }
+    },
+
+    async mounted () {
+        let { data } = await axios.get(`${this.urlBase}/api/assessments/${this.assessment.id}/page`)
+
+        this.pages = data.data
+    }
 }
 </script>

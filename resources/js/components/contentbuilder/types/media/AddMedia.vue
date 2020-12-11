@@ -136,6 +136,11 @@ export default {
         lang: {
             type: String,
             required: true,
+        },
+        contentBuilderId: {
+            type: Number,
+            required: false,
+            default: null
         }
     },
 
@@ -147,7 +152,8 @@ export default {
                 title: '',
                 caption: '',
                 is_tab_section: this.isTabSectionPart
-            }
+            },
+            builderId: null
         }
     },
 
@@ -159,12 +165,12 @@ export default {
 
     methods: {
         async store () {
-            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}/media`, this.form)
+            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/media`, this.form)
 
             if (!this.isTabSectionPart) {
                 window.events.$emit('part:created', {
                     data,
-                    contentBuilderId: this.contentIds[this.lang]
+                    contentBuilderId: this.builderId
                 })
 
                 this.reset()
@@ -194,11 +200,13 @@ export default {
                 return
             }
 
-            window.events.$emit('add-part:cancel', this.contentIds[this.lang])
+            window.events.$emit('add-part:cancel', this.builderId)
         }
     },
 
     mounted () {
+        this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
+
         if (this.partId) {
             this.form.part_id = this.partId
         }

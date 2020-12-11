@@ -122,7 +122,7 @@ export default {
         })
 
         window.events.$on('part:created', payload => {
-            if (payload.contentBuilderId === this.contentIds[this.lang]) {
+            if (payload.contentBuilderId === this.contentBuilderId) {
                 this.parts.push(payload.data)
             }
         })

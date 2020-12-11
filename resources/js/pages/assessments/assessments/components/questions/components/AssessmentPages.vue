@@ -25,6 +25,8 @@
                         v-model="page"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     >
+                        <option value=""></option>
+
                         <option
                             :value="p.number"
                             v-for="p in orderedPages"
@@ -40,22 +42,31 @@
             </div>
         </div>
 
-        <assessment-page 
-            v-if="page"
-            :page="find(pages, p => p.number = page)"
-        />
+        <template v-if="page !== null">
+            <assessment-page 
+                :page="page"
+                :pages="orderedPages"
+            />
+        </template>
     </div>
 </template>
 
 <script>
+import { orderBy } from 'lodash-es'
 import { mapGetters } from 'vuex'
-import { orderBy, find } from 'lodash-es'
 
 export default {
+    props: {
+        pages: {
+            type: Array,
+            required: true
+        }
+    },
+
     data () {
         return {
-            pages: [],
-            page: null
+            page: null,
+            added: false
         }
     },
 
@@ -69,24 +80,32 @@ export default {
         }
     },
 
-    methods: {
-        find,
-        
-        async add () {
-            let { data } = await axios.post(`${this.urlBase}/api/assessments/${this.assessment.id}/page`)
+    watch: {
+        orderedPages () {
+            if (this.orderedPages.length !== 0 && this.added === false) {
+                this.page = this.orderedPages[0].number
 
-            this.pages.push(data.data)
+                return
+            }
 
-            this.page = data.data.number
+            this.page = this.orderedPages[this.orderedPages.length - 1].number
+        },
+
+        page () {
+            window.events.$emit('assessment-page:change', this.page)
         }
     },
 
-    async mounted () {
-        let { data } = await axios.get(`${this.urlBase}/api/assessments/${this.assessment.id}/page`)
+    methods: {
+        find,
 
-        this.pages = data.data
+        async add () {
+            let { data } = await axios.post(`${this.urlBase}/api/assessments/${this.assessment.id}/page`)
 
-        this.page = this.orderedPages[0].number
+            this.$emit('assessment-pages:add', data.data)
+
+            this.added = true
+        }
     }
 }
 </script>

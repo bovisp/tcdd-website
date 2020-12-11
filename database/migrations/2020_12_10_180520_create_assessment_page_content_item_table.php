@@ -15,7 +15,8 @@ class CreateAssessmentPageContentItemTable extends Migration
     {
         Schema::create('assessment_page_content_items', function (Blueprint $table) {
             $table->id();
-            $table->morphs('itemable');
+            $table->integer('model_id')->unsigned();
+            $table->string('type');
             $table->integer('assessment_page_content_id')->unsigned();
             $table->integer('question_number')->unsigned()->nullable();
             $table->integer('question_score')->unsigned()->nullable();
