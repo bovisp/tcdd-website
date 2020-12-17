@@ -24,8 +24,8 @@ class AssessmentPageContent extends Model
         return $this->morphMany(ContentBuilder::class, 'contentable');
     }
 
-    // public function assessmentPageContentItems()
-    // {
-    //     return $this->morphMany(AssessmentPageContentItem::class, 'itemable');
-    // }
+    public function assessmentPageContentItems()
+    {
+        return $this->hasMany(AssessmentPageContentItem::class);
+    }
 }

@@ -58,7 +58,10 @@ Route::post('/api/assessments/{assessment}/participants', 'Assessments\Assessmen
 
 Route::post('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@store');
 Route::get('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@index');
+Route::get('/api/assessment/page/{page}', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@index');
 Route::post('/api/assessments/page/{page}/content', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@store');
+Route::delete('/api/assessments/page/{page}/content', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@destroy');
+Route::patch('/api/assessment/page/{page}/change-order', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@reorder');
 
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');

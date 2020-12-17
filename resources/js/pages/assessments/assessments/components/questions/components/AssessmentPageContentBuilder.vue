@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4 border rounded">
+    <div class="p-4 border rounded mb-2">
         <div class="flex">
             <button 
                 class="btn btn-sm text-sm ml-auto"

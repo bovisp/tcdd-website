@@ -26,13 +26,17 @@ export default {
     methods: {
         addPage (page) {
             this.pages.push(page)
+        },
+
+        async fetch () {
+            let { data } = await axios.get(`${this.urlBase}/api/assessments/${this.assessment.id}/page`)
+
+            this.pages = data.data
         }
     },
 
     async mounted () {
-        let { data } = await axios.get(`${this.urlBase}/api/assessments/${this.assessment.id}/page`)
-
-        this.pages = data.data
+        await this.fetch()
     }
 }
 </script>

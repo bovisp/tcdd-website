@@ -1,0 +1,49 @@
+<template>
+    <div class="flex my-4">
+        <div 
+            class="w-2/12 flex items-start"
+        >
+            <i class="fas fa-arrows-alt ml-auto cursor-move"></i>
+
+            <i 
+                class="fas fa-edit ml-2"
+            ></i>
+
+            <i 
+                class="fas fa-trash-alt text-red-500 ml-2"
+            ></i>
+        </div>
+
+        <div
+            class="w-10/12 pl-4"
+        >
+            <template v-if="data.type === 'ContentBuilder'">
+                <div class="mb-6">
+                    <assessment-page-content-builder 
+                        v-for="item in orderBy(data.items, ['id'], ['asc'])"
+                        :key="item.id"
+                        :content-builder-id="item.id"
+                        :lang="item.lang"
+                    />
+                </div>
+            </template>
+        </div>
+    </div>
+</template>
+
+<script>
+import { orderBy } from 'lodash-es'
+
+export default {
+    props: {
+        data: {
+            type: Object,
+            required: true
+        }
+    },
+
+    methods: {
+        orderBy
+    }
+}
+</script>

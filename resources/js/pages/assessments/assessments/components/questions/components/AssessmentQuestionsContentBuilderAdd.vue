@@ -37,6 +37,10 @@ export default {
         let { data } = await axios.post(`${this.urlBase}/api/assessments/page/${this.page.id}/content`)
 
         this.data = data
+
+        this.$emit('content-builder:add', {
+            data
+        })
     }
 }
 </script>

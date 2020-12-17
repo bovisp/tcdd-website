@@ -17,13 +17,32 @@
             @content-add:cancel="type = ''"
             :page="currentPage"
         />
+
+        <draggable
+            :list="data"
+            handle='.fa-arrows-alt'
+            @start="drag = true"
+            @end="drag = false"
+            @change="update"
+        >
+            <assessment-page-content-list
+                v-for="d in data"
+                :key="d.order"
+                :data="d"
+            />
+        </draggable>
     </div>
 </template>
 
 <script>
-import { find } from 'lodash-es'
+import { find, map, orderBy } from 'lodash-es'
+import Draggable from 'vuedraggable'
 
 export default {
+    components: {
+        Draggable
+    },
+
     props: {
         page: {
             type: Number,
@@ -38,21 +57,63 @@ export default {
     data () {
         return {
             type: '',
-            currentPage: null
+            currentPage: null,
+            data: []
+        }
+    },
+
+    watch: {
+        currentPage: {
+            deep: true,
+
+            async handler () {
+                this.currentPage = find(this.pages, page => page.number === this.page)
+                
+                await this.fetch()
+            }
         }
     },
 
     methods: {
         setType (type) {
             this.type = type
+        },
+
+        update (e) {
+            map(this.data, (d, index) => d.order = index + 1)
+
+            axios.patch(`${this.urlBase}/api/assessment/page/${this.currentPage.id}/change-order`, {
+                data: map(this.data, d => {
+                    return {
+                        id: d.model.id,
+                        order: d.order
+                    }
+                })
+            }).then(({data}) => {
+                this.data = orderBy(data.data, ['order'], ['asc'])
+            })
+        },
+
+        async fetch () {
+            let { data } = await axios.get(`${this.urlBase}/api/assessment/page/${this.currentPage.id}`)
+
+            this.data = orderBy(data.data, ['order'], ['asc'])
         }
     },
 
-    mounted () {
+    async mounted () {
         this.currentPage = find(this.pages, page => page.number === this.page)
+
+        // let { data } = await axios.get(`${this.urlBase}/api/assessment/page/${this.currentPage.id}`)
+
+        this.data = orderBy(this.currentPage.data, ['order'], ['asc'])
 
         window.events.$on('assessment-page:change', page => {
             this.currentPage = find(this.pages, p => p.number === page)
+        })
+
+        window.events.$on('content-add:push', async (payload) => {
+            await this.fetch()
         })
     }
 }

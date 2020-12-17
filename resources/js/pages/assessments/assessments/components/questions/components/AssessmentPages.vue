@@ -102,7 +102,7 @@ export default {
         async add () {
             let { data } = await axios.post(`${this.urlBase}/api/assessments/${this.assessment.id}/page`)
 
-            this.$emit('assessment-pages:add', data.data)
+            this.$emit('assessment-pages:add', data)
 
             this.added = true
         }
