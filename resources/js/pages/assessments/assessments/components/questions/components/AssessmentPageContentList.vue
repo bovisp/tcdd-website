@@ -27,6 +27,14 @@
                     />
                 </div>
             </template>
+
+            <template v-if="data.type === 'Question'">
+                <div class="mb-6">
+                    <assessment-page-question 
+                        :question="data"
+                    />
+                </div>
+            </template>
         </div>
     </div>
 </template>

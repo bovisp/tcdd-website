@@ -82,6 +82,10 @@ export default {
 
     watch: {
         orderedPages () {
+            if (this.orderedPages.length === 0) {
+                return
+            }
+
             if (this.orderedPages.length !== 0 && this.added === false) {
                 this.page = this.orderedPages[0].number
 

@@ -17,7 +17,10 @@
         </div>
 
         <template v-if="type === 'question'">
-            <p>question</p>
+            <assessment-questions-add 
+                :page="page"
+                @content-builder:add="addQuestion"
+            />
         </template>
 
         <template v-if="type === 'content'">
@@ -70,23 +73,49 @@ export default {
         },
 
         async destroy () {
-            let { data } = await axios.delete(`${this.urlBase}/api/assessments/page/${this.page.id}/content`, {
-                data: {
-                    type: this.type,
-                    data: this.data
-                }
-            })
+            if (this.type === 'content') {
+                let { data } = await axios.delete(`${this.urlBase}/api/assessments/page/${this.page.id}/content`, {
+                    data: {
+                        type: this.type,
+                        data: this.data
+                    }
+                })
+            }
 
             this.$emit('content-add:cancel')
+
+            window.events.$emit('content:adding', false)
         },
 
         add () {
-            window.events.$emit('content-add:push', {
-                order: this.data.data.assessmentPageContent.order,
-                data: this.data.data
-            })
+            if (this.type === 'content') {
+                window.events.$emit('content-add:push', {
+                    order: this.data.data.assessmentPageContent.order,
+                    type: this.type,
+                    data: this.data.data
+                })
+            }
 
             this.$emit('content-add:cancel')
+
+            window.events.$emit('content:adding', false)
+        },
+
+        async addQuestion (payload) {
+            let { data } = await axios.post(`${this.urlBase}/api/assessments/page/${this.page.id}/content`, {
+                type: 'question',
+                question_score: payload.score,
+                question_id: payload.question.id
+            })
+
+            window.events.$emit('content-add:push', {
+                order: data.assessmentPageContent.order,
+                type: this.type,
+                data: {
+                    model: data.assessmentPageContentItem,
+                    content: payload.question
+                }
+            })
         }
     }
 }

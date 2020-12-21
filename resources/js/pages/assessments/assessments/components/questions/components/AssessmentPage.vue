@@ -19,6 +19,7 @@
         />
 
         <draggable
+            v-if="!adding"
             :list="data"
             handle='.fa-arrows-alt'
             @start="drag = true"
@@ -58,7 +59,8 @@ export default {
         return {
             type: '',
             currentPage: null,
-            data: []
+            data: [],
+            adding: false
         }
     },
 
@@ -68,7 +70,7 @@ export default {
 
             async handler () {
                 this.currentPage = find(this.pages, page => page.number === this.page)
-                
+
                 await this.fetch()
             }
         }
@@ -114,6 +116,10 @@ export default {
 
         window.events.$on('content-add:push', async (payload) => {
             await this.fetch()
+        })
+
+        window.events.$on('content:adding', adding => {
+            this.adding = adding
         })
     }
 }

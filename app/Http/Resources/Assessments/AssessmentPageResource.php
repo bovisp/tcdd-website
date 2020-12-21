@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Assessments;
 
+use App\Question;
 use App\ContentBuilder;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,6 +26,25 @@ class AssessmentPageResource extends JsonResource
                         return [
                             'id' => $item->model_id,
                             'lang' => ContentBuilder::find($item->model_id)->language
+                        ];
+                    }
+
+                    if ($item->type === 'Question') {
+                        return [
+                            'id' => $item->model_id,
+                            'question' => Question::with(
+                                'author',
+                                'contentBuilder',
+                                'section',
+                                'questionCategory',
+                                'tags',
+                                'owner',
+                                'editors',
+                                'questionType'
+                            )
+                                ->whereId($item->model_id)
+                                ->first()
+                                ->append('question_data')
                         ];
                     }
                 });

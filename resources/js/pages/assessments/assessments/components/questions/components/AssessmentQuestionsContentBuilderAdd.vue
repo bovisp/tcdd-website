@@ -34,7 +34,9 @@ export default {
     },
 
     async mounted () {
-        let { data } = await axios.post(`${this.urlBase}/api/assessments/page/${this.page.id}/content`)
+        let { data } = await axios.post(`${this.urlBase}/api/assessments/page/${this.page.id}/content`, {
+            type: 'content'
+        })
 
         this.data = data
 

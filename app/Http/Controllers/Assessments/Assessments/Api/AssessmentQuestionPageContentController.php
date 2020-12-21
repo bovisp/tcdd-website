@@ -39,41 +39,68 @@ class AssessmentQuestionPageContentController extends Controller
             'order' => $order
         ]);
 
-        // Persist the English content builder.
-        $contentBuilderEn = $assessmentPageContent->contentBuilder()->create([
-            'language' => 'en'
-        ]);
+        if (request('type') === 'question') {
+            $maxQuestionNumber = $page->assessmentPageContents->map(function ($assessmentPageContent) {
+                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map->question_number;
+            })->flatten()->max();
 
-        // Add $contentBuilderEn as a content item
-        $contentBuilderItemEn = AssessmentPageContentItem::create([
-            'type' => 'ContentBuilder',
-            'model_id' => $contentBuilderEn->id,
-            'assessment_page_content_id' => $assessmentPageContent->id
-        ]);
+            if (!$maxQuestionNumber) {
+                $questionNumber = 1;
+            } else {
+                $questionNumber = $maxQuestionNumber + 1;
+            }
 
-        // Persist the French content builder.
-        $contentBuilderFr = $assessmentPageContent->contentBuilder()->create([
-            'language' => 'fr'
-        ]);
+            $assessmentPageContentItem = AssessmentPageContentItem::create([
+                'type' => 'Question',
+                'model_id' => request('question_id'),
+                'assessment_page_content_id' => $assessmentPageContent->id,
+                'question_number' => $questionNumber,
+                'question_score' => request('question_score')
+            ]);
 
-        // Add $contentBuilderFr as a content item
-        $contentBuilderItemFr = AssessmentPageContentItem::create([
-            'type' => 'ContentBuilder',
-            'model_id' => $contentBuilderFr->id,
-            'assessment_page_content_id' => $assessmentPageContent->id
-        ]);
+            return [
+                'assessmentPageContent' => $assessmentPageContent,
+                'assessmentPageContentItem' => $assessmentPageContentItem
+            ]; 
+        }
 
-        return [
-            'assessmentPageContent' => $assessmentPageContent,
-            'contentBuilderItemEn' => [
-                'model' => $contentBuilderItemEn,
-                'content' => $contentBuilderEn
-            ],
-            'contentBuilderItemFr' => [
-                'model' => $contentBuilderItemFr,
-                'content' => $contentBuilderFr
-            ]
-        ];
+        if (request('type') === 'content') {
+            // Persist the English content builder.
+            $contentBuilderEn = $assessmentPageContent->contentBuilder()->create([
+                'language' => 'en'
+            ]);
+
+            // Add $contentBuilderEn as a content item
+            $contentBuilderItemEn = AssessmentPageContentItem::create([
+                'type' => 'ContentBuilder',
+                'model_id' => $contentBuilderEn->id,
+                'assessment_page_content_id' => $assessmentPageContent->id
+            ]);
+
+            // Persist the French content builder.
+            $contentBuilderFr = $assessmentPageContent->contentBuilder()->create([
+                'language' => 'fr'
+            ]);
+
+            // Add $contentBuilderFr as a content item
+            $contentBuilderItemFr = AssessmentPageContentItem::create([
+                'type' => 'ContentBuilder',
+                'model_id' => $contentBuilderFr->id,
+                'assessment_page_content_id' => $assessmentPageContent->id
+            ]);
+
+            return [
+                'assessmentPageContent' => $assessmentPageContent,
+                'contentBuilderItemEn' => [
+                    'model' => $contentBuilderItemEn,
+                    'content' => $contentBuilderEn
+                ],
+                'contentBuilderItemFr' => [
+                    'model' => $contentBuilderItemFr,
+                    'content' => $contentBuilderFr
+                ]
+            ];
+        }
     }
 
     public function reorder(AssessmentPage $page)
