@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Assessments\Assessments\Api;
 
 use App\Part;
+use App\Assessment;
 use App\AssessmentPage;
 use App\ContentBuilder;
 use App\ContentBuilderType;
@@ -26,7 +27,7 @@ class AssessmentQuestionPageContentController extends Controller
             ->sortBy('order');
 
         // If there is no current page content, the order is one.
-        // Else, the order in the value of the highest order number plus one.
+        // Else, the order is the value of the highest order number plus one.
         if ($content->count() === 0) {
             $order = 1;
         } else {
@@ -40,23 +41,37 @@ class AssessmentQuestionPageContentController extends Controller
         ]);
 
         if (request('type') === 'question') {
-            $maxQuestionNumber = $page->assessmentPageContents->map(function ($assessmentPageContent) {
-                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map->question_number;
-            })->flatten()->max();
-
-            if (!$maxQuestionNumber) {
-                $questionNumber = 1;
-            } else {
-                $questionNumber = $maxQuestionNumber + 1;
-            }
-
             $assessmentPageContentItem = AssessmentPageContentItem::create([
                 'type' => 'Question',
                 'model_id' => request('question_id'),
                 'assessment_page_content_id' => $assessmentPageContent->id,
-                'question_number' => $questionNumber,
+                'question_number' => 999,
                 'question_score' => request('question_score')
             ]);
+
+            $assessment = Assessment::find($page->assessment_id);
+
+            $assessmentQuestions = $assessment->pages->map(function ($page) {
+                return $page->assessmentPageContents->map(function ($assessmentPageContent) {
+                    return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
+                        return [
+                            'id' => $item->id,
+                            'question' => $item->question_number,
+                            'order' => $assessmentPageContent->order
+                        ];
+                    });
+                });
+            })
+            ->flatten(2)
+            ->sortBy('order');
+
+            for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
+                $item = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
+
+                $item->update([
+                    'question_number' => $i +1
+                ]);
+            }
 
             return [
                 'assessmentPageContent' => $assessmentPageContent,
@@ -108,6 +123,30 @@ class AssessmentQuestionPageContentController extends Controller
         foreach(request('data') as $part) {
             AssessmentPageContent::find($part['id'])->update([
                 'order' => $part['order']
+            ]);
+        }
+
+        $assessment = Assessment::find($page->assessment_id);
+
+        $assessmentQuestions = $assessment->pages->map(function ($page) {
+            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
+                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
+                    return [
+                        'id' => $item->id,
+                        'question' => $item->question_number,
+                        'order' => $assessmentPageContent->order
+                    ];
+                });
+            });
+        })
+        ->flatten(2)
+        ->sortBy('order');
+
+        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
+            $assessmentPageContentItem = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
+
+            $assessmentPageContentItem->update([
+                'question_number' => $i +1
             ]);
         }
 

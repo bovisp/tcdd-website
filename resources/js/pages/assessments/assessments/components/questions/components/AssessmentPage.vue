@@ -3,7 +3,7 @@
         <hr class="border my-6">
 
         <h2 class="text-2xl font-light">
-            Page {{ currentPage.number }}
+            Page {{ currentPage.number }} ({{ totalPagePoints }} points)
         </h2>
 
         <assessment-questions-content-picker
@@ -60,7 +60,8 @@ export default {
             type: '',
             currentPage: null,
             data: [],
-            adding: false
+            adding: false,
+            totalPagePoints: 0
         }
     },
 
@@ -106,9 +107,13 @@ export default {
     async mounted () {
         this.currentPage = find(this.pages, page => page.number === this.page)
 
-        // let { data } = await axios.get(`${this.urlBase}/api/assessment/page/${this.currentPage.id}`)
-
         this.data = orderBy(this.currentPage.data, ['order'], ['asc'])
+
+        for await (let pageItem of this.data) {
+            if (pageItem.type === 'Question') {
+                this.totalPagePoints += pageItem.model.assessment_page_content_items[0].question_score
+            }
+        }
 
         window.events.$on('assessment-page:change', page => {
             this.currentPage = find(this.pages, p => p.number === page)

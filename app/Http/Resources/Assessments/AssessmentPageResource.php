@@ -20,7 +20,7 @@ class AssessmentPageResource extends JsonResource
             'id' => $this->id,
             'assessment_id' => $this->id,
             'number' => $this->number,
-            'data' => $this->assessmentPageContents->map(function ($content) {
+            'data' => $this->assessmentPageContents->count() ? $this->assessmentPageContents->map(function ($content) {
                 $pageContentItems = $content->assessmentPageContentItems->map(function ($item) {
                     if ($item->type === 'ContentBuilder') {
                         return [
@@ -55,7 +55,7 @@ class AssessmentPageResource extends JsonResource
                     'items' => $pageContentItems,
                     'type' => $content->assessmentPageContentItems->first()->type
                 ];
-            })
+            }) : []
         ];
     }
 }

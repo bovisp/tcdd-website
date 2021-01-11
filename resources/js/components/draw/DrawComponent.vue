@@ -30,6 +30,7 @@
 
         <canvas 
             id="canvas"
+            ref="canvas"
             class="border-2 mx-auto"
             @mousedown="startPainting" 
             @mouseup="finishedPainting"
@@ -143,11 +144,11 @@ export default {
     },
 
     mounted () {
-        this.canvas = document.getElementById("canvas")
+        this.canvas = this.$refs.canvas
 
         this.canvas.style.backgroundImage = `url('${this.urlBase}${this.backgroundImage}')`
 
-        this.ctx = canvas.getContext("2d")
+        this.ctx = this.canvas.getContext("2d")
 
         let background = new Image()
 

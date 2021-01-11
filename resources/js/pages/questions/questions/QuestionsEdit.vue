@@ -517,6 +517,14 @@ export default {
         },
 
         cancel () {
+            let params = (new URL(document.location)).searchParams;
+
+            if (params.get('question')) {
+                window.location.href = `${this.urlBase}/questions`
+
+                return 
+            }
+
             window.events.$emit('questions:edit-cancel')
 
             this.form.name_en = ''

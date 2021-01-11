@@ -6,7 +6,10 @@
             <i class="fas fa-arrows-alt ml-auto cursor-move"></i>
 
             <i 
+                v-if="data.type === 'Question'"
                 class="fas fa-edit ml-2"
+                title="Edit question"
+                @click.prevent="editQuestion"
             ></i>
 
             <i 
@@ -51,7 +54,13 @@ export default {
     },
 
     methods: {
-        orderBy
+        orderBy,
+
+        editQuestion () {
+            let questionId = this.data.items[0].question.id
+
+            window.location.href = `${this.urlBase}/questions?question=${questionId}`
+        }
     }
 }
 </script>

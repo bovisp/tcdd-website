@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div>
+            <strong>Total score:</strong> {{ totalPoints }}
+        </div>
+
         <div class="flex items-end">
             <div class="mr-auto">
                 <button 
@@ -66,7 +70,8 @@ export default {
     data () {
         return {
             page: null,
-            added: false
+            added: false,
+            totalPoints: 0
         }
     },
 
@@ -110,6 +115,12 @@ export default {
 
             this.added = true
         }
+    },
+
+    mounted () {
+        window.events.$on('assessment:total-score', totalScore => {
+            this.totalPoints = totalScore
+        })
     }
 }
 </script>

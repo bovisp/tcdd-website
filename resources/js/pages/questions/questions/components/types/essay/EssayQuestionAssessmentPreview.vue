@@ -20,7 +20,35 @@
                     :part="part"
                 ></component>
 
-                <strong class="text-gray-700">Points:</strong> {{ totalPoints }}
+                <div class="flex items-center">
+                    <strong class="text-gray-700 mr-1">Points:</strong> 
+                    
+                    <template v-if="!editingScore">
+                        {{ totalPoints }} 
+                        <button 
+                            class="btn btn-text text-sm btn-sm text-blue-500 ml-2"
+                            @click.prevent="editScore"
+                        >Edit</button>
+                    </template>
+
+                    <template v-else>
+                        <input 
+                            type="text"
+                            class="shadow appearance-none border rounded w-32 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
+                            v-model="score"
+                        >
+
+                        <button 
+                            class="btn btn-blue text-sm btn-sm ml-2"
+                            @click.prevent="changeScore"
+                        >Change</button>
+
+                        <button 
+                            class="btn btn-text text-sm btn-sm ml-2"
+                            @click.prevent="cancelEditScore"
+                        >Cancel</button>
+                    </template>
+                </div>
 
                 <div 
                     class="mt-6"
@@ -92,7 +120,9 @@ export default {
                     text: ''
                 }
             },
-            submitting: false
+            submitting: false,
+            editingScore: false,
+            score: null
         }
     },
 
@@ -122,6 +152,30 @@ export default {
         cancel () {
             this.form.answer.text = ''
             this.submitting = false
+        },
+        
+        editScore () {
+            this.editingScore = true
+
+            this.score = this.question.model.assessment_page_content_items[0].question_score
+        },
+
+        cancelEditScore () {
+            this.editingScore = false
+
+            this.score = null
+        },
+
+        async changeScore () {
+            let assessmentPageContentItemId = this.question.model.assessment_page_content_items[0].id
+
+            let { data } = await axios.patch(`${this.urlBase}/api/assessments/questions/${assessmentPageContentItemId}/change-score`, {
+                score: this.score
+            })
+
+            this.question.model.assessment_page_content_items[0].question_score = data
+
+            this.cancelEditScore()
         }
     },
 

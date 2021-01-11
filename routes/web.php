@@ -63,6 +63,8 @@ Route::post('/api/assessments/page/{page}/content', 'Assessments\Assessments\Api
 Route::delete('/api/assessments/page/{page}/content', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@destroy');
 Route::patch('/api/assessment/page/{page}/change-order', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@reorder');
 
+Route::patch('/api/assessments/questions/{item}/change-score', 'Assessments\Assessments\Api\AssessmentQuestionContentController@changeScore');
+
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');
 Route::put('/api/permissions/{permission}/users', 'Permissions\Api\UserPermissionsController@update');

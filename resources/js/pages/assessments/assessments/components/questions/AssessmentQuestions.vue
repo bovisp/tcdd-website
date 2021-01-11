@@ -9,6 +9,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { map } from 'lodash-es'
 
 export default {
     data () {
@@ -32,6 +33,24 @@ export default {
             let { data } = await axios.get(`${this.urlBase}/api/assessments/${this.assessment.id}/page`)
 
             this.pages = data.data
+
+            await this.getTotalScore()
+        },
+
+        async getTotalScore () {
+            let totalScore = 0
+
+            for await (let page of this.pages) {
+                let pageItems = page.data
+
+                for await (let pageItem of pageItems) {
+                    if (pageItem.type === 'Question') {
+                        totalScore += pageItem.model.assessment_page_content_items[0].question_score
+                    }
+                }
+            }
+
+            window.events.$emit('assessment:total-score', totalScore)
         }
     },
 
