@@ -4,6 +4,7 @@
             <button 
                 class="btn btn-blue text-sm btn-sm"
                 @click.prevent="add"
+                v-if="(type === 'content') || (type === 'question' && questionAdded)"
             >
                 Add to page
             </button>
@@ -20,6 +21,7 @@
             <assessment-questions-add 
                 :page="page"
                 @content-builder:add="addQuestion"
+                v-if="(type === 'content') || (type === 'question' && questionAdded)"
             />
         </template>
 
@@ -34,6 +36,7 @@
             <button 
                 class="btn btn-blue text-sm btn-sm"
                 @click.prevent="add"
+                v-if="(type === 'content') || (type === 'question' && questionAdded)"
             >
                 Add to page
             </button>
@@ -63,7 +66,8 @@ export default {
 
     data () {
         return {
-            data: {}
+            data: {},
+            questionAdded: false
         }
     },
 
@@ -102,6 +106,8 @@ export default {
         },
 
         async addQuestion (payload) {
+            this.questionAdded = true
+
             let { data } = await axios.post(`${this.urlBase}/api/assessments/page/${this.page.id}/content`, {
                 type: 'question',
                 question_score: payload.score,
