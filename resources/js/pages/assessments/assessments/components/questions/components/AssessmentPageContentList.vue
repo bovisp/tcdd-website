@@ -14,7 +14,7 @@
 
             <i 
                 class="fas fa-trash-alt text-red-500 ml-2"
-                @click.prevent="destroy"
+                @click.prevent="confirmDestroy"
             ></i>
         </div>
 
@@ -40,6 +40,24 @@
                 </div>
             </template>
         </div>
+
+        <modal 
+            v-show="modalActive"
+            @close="close"
+            @submit="destroy"
+        >
+            <template slot="header">
+                Delete assessment {{ data.type === 'ContentBuilder' ? 'content' : 'question' }}
+            </template>
+
+            <template slot="body">
+                <div class="my-4">
+                    <p class="text-red-500">
+                        Are you sure you want to delete this {{ data.type === 'ContentBuilder' ? 'content' : 'question' }}?
+                    </p>
+                </div>
+            </template>
+        </modal>
     </div>
 </template>
 
@@ -54,6 +72,12 @@ export default {
         }
     },
 
+    data () {
+        return {
+            modalActive: false
+        }
+    },
+
     methods: {
         orderBy,
 
@@ -61,6 +85,14 @@ export default {
             let questionId = this.data.items[0].question.id
 
             window.location.href = `${this.urlBase}/questions?question=${questionId}`
+        },
+
+        confirmDestroy () {
+            this.modalActive = true
+        },
+
+        close () {
+            this.modalActive = false
         },
 
         async destroy () {

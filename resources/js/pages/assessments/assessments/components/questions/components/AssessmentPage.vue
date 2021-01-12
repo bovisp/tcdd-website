@@ -101,6 +101,14 @@ export default {
             let { data } = await axios.get(`${this.urlBase}/api/assessment/page/${this.currentPage.id}`)
 
             this.data = orderBy(data.data, ['order'], ['asc'])
+
+            this.totalPagePoints = 0
+
+            for await (let pageItem of this.data) {
+                if (pageItem.type === 'Question') {
+                    this.totalPagePoints += pageItem.model.assessment_page_content_items[0].question_score
+                }
+            }
         }
     },
 

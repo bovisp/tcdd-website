@@ -121,6 +121,10 @@ export default {
         window.events.$on('assessment:total-score', totalScore => {
             this.totalPoints = totalScore
         })
+
+        window.events.$on('assessments:update-score', score => {
+            this.totalPoints += parseInt(score)
+        })
     }
 }
 </script>

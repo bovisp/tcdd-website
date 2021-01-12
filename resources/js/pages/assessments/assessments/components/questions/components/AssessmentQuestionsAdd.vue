@@ -93,6 +93,8 @@ export default {
                 question: this.question,
                 score: this.score
             })
+
+            window.events.$emit('assessments:update-score', this.score)
         }
     },
     
