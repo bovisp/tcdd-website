@@ -21,7 +21,6 @@
             <assessment-questions-add 
                 :page="page"
                 @content-builder:add="addQuestion"
-                v-if="(type === 'content') || (type === 'question' && questionAdded)"
             />
         </template>
 

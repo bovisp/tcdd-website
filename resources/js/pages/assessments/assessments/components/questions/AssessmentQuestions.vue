@@ -56,6 +56,10 @@ export default {
 
     async mounted () {
         await this.fetch()
+
+        window.events.$on('assessment-pages:reload', async () => {
+            await this.fetch()
+        })
     }
 }
 </script>

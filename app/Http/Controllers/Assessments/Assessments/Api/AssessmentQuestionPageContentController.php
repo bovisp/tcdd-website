@@ -153,7 +153,7 @@ class AssessmentQuestionPageContentController extends Controller
         return new AssessmentPageResource($page);
     }
 
-    public function destroy (AssessmentPage $page)
+    public function destroyTempItem (AssessmentPage $page)
     {
         if (request('type') === 'content') {
             ContentBuilder::find([
@@ -185,5 +185,60 @@ class AssessmentQuestionPageContentController extends Controller
         }
         
         AssessmentPageContent::find(request('data')['data']['assessmentPageContent']['id'])->delete();
+    }
+
+    public function destroy(AssessmentPage $page, AssessmentPageContent $content)
+    {
+        $contentItems = $content->assessmentPageContentItems->each(function($item) {
+            if ($item->type === 'ContentBuilder') {
+                $contentBuilder = ContentBuilder::find($item->model_id);
+
+                $contentBuilder->parts->each(function (Part $part) {
+                    $type = ContentBuilderType::find($part->content_builder_type_id)->type;
+
+                    $typeClassName = 'App\\' . ucfirst($type) . 'Part';
+
+                    $partType = $typeClassName::wherePartId($part->id)->first();
+
+                    $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
+
+                    (new $destroyClassName($partType))->delete();
+
+                    $part->delete();
+                });
+
+                $contentBuilder->delete();
+            }
+        });
+
+        $contentItems->each->delete();
+
+        $content->delete();
+
+        $assessment = Assessment::find($page->assessment_id);
+
+        $assessmentQuestions = $assessment->pages->map(function ($page) {
+            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
+                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
+                    return [
+                        'id' => $item->id,
+                        'question' => $item->question_number,
+                        'order' => $assessmentPageContent->order
+                    ];
+                });
+            });
+        })
+        ->flatten(2)
+        ->sortBy('order');
+
+        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
+            $assessmentPageContentItem = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
+
+            $assessmentPageContentItem->update([
+                'question_number' => $i +1
+            ]);
+        }
+
+        return;
     }
 }

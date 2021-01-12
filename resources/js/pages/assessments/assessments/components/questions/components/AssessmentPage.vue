@@ -123,6 +123,10 @@ export default {
             await this.fetch()
         })
 
+        window.events.$on('assessment-pages:reload', async () => {
+            await this.fetch()
+        })
+
         window.events.$on('content:adding', adding => {
             this.adding = adding
         })

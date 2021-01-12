@@ -14,6 +14,7 @@
 
             <i 
                 class="fas fa-trash-alt text-red-500 ml-2"
+                @click.prevent="destroy"
             ></i>
         </div>
 
@@ -60,6 +61,14 @@ export default {
             let questionId = this.data.items[0].question.id
 
             window.location.href = `${this.urlBase}/questions?question=${questionId}`
+        },
+
+        async destroy () {
+            let type = this.data.type === 'ContentBuilder' ? 'content' : 'question'
+
+            let { data } = await axios.delete(`${this.urlBase}/api/assessments/page/${this.data.model.assessment_page_id}/content/${this.data.model.id}`)
+
+            window.events.$emit('assessment-pages:reload')
         }
     }
 }
