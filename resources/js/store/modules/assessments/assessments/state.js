@@ -1,4 +1,8 @@
 export default {
 	assessments: [],
-	assessment: {}
+	assessment: {},
+	pages: [],
+	totalScore: null,
+	currentPage: null,
+	currentPageScore: null
 }

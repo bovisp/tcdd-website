@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <strong>Total score:</strong> {{ totalPoints }}
+            <strong>Total score:</strong> {{ totalScore }}
         </div>
 
         <div class="flex items-end">
@@ -29,11 +29,9 @@
                         v-model="page"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     >
-                        <option value=""></option>
-
                         <option
                             :value="p.number"
-                            v-for="p in orderedPages"
+                            v-for="p in pages"
                             :key="p.id"
                             v-text="`Page ${p.number}`"
                         ></option>
@@ -46,84 +44,50 @@
             </div>
         </div>
 
-        <template v-if="page !== null">
-            <assessment-page 
-                :page="page"
-                :pages="orderedPages"
-            />
+        <template v-if="currentPage !== null">
+            <assessment-page />
         </template>
     </div>
 </template>
 
 <script>
-import { orderBy } from 'lodash-es'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-    props: {
-        pages: {
-            type: Array,
-            required: true
-        }
-    },
-
     data () {
         return {
-            page: null,
-            added: false,
-            totalPoints: 0
+            page: null
         }
     },
 
     computed: {
         ...mapGetters({
-            assessment: 'assessments/assessment'
-        }),
-
-        orderedPages () {
-            return orderBy(this.pages, ['number'], ['asc'])
-        }
+            pages: 'assessments/pages',
+            totalScore: 'assessments/totalScore',
+            currentPage: 'assessments/currentPage'
+        })
     },
 
     watch: {
-        orderedPages () {
-            if (this.orderedPages.length === 0) {
-                return
-            }
-
-            if (this.orderedPages.length !== 0 && this.added === false) {
-                this.page = this.orderedPages[0].number
-
-                return
-            }
-
-            this.page = this.orderedPages[this.orderedPages.length - 1].number
+        page () {
+            this.setCurrentPage(this.page)
         },
 
-        page () {
-            window.events.$emit('assessment-page:change', this.page)
+        currentPage () {
+            if (!this.currentPage) {
+                this.page = null
+
+                return
+            }
+            
+            this.page = this.currentPage.number
         }
     },
 
     methods: {
-        find,
-
-        async add () {
-            let { data } = await axios.post(`${this.urlBase}/api/assessments/${this.assessment.id}/page`)
-
-            this.$emit('assessment-pages:add', data)
-
-            this.added = true
-        }
-    },
-
-    mounted () {
-        window.events.$on('assessment:total-score', totalScore => {
-            this.totalPoints = totalScore
-        })
-
-        window.events.$on('assessments:update-score', score => {
-            this.totalPoints += parseInt(score)
+        ...mapActions({
+            add: 'assessments/addPage',
+            setCurrentPage: 'assessments/setCurrentPage'
         })
     }
 }

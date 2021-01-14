@@ -57,6 +57,7 @@ Route::get('/api/assessments/{assessment}/participants/create', 'Assessments\Ass
 Route::post('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@store');
 
 Route::post('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@store');
+Route::delete('/api/assessments/page/{page}', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@destroy');
 Route::get('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@index');
 Route::get('/api/assessments/{assessment}/questions', 'Assessments\Assessments\Api\AssessmentQuestionsController@index');
 Route::get('/api/assessment/page/{page}', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@index');

@@ -15,6 +15,7 @@
             <i 
                 class="fas fa-trash-alt text-red-500 ml-2"
                 @click.prevent="confirmDestroy"
+                :title="`Delete ${data.type === 'ContentBuilder' ? 'content' : 'question'}`"
             ></i>
         </div>
 
@@ -74,7 +75,8 @@ export default {
 
     data () {
         return {
-            modalActive: false
+            modalActive: false,
+            currentPage: null
         }
     },
 

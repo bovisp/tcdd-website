@@ -1,12 +1,20 @@
 <template>
-    <div v-if="currentPage">
+    <div>
         <hr class="border my-6">
 
         <h2 class="text-2xl font-light">
-            Page {{ currentPage.number }} ({{ totalPagePoints }} points)
+            <span v-if="currentPage">Page {{ currentPage.number }}</span> 
+            
+            <span v-if="currentPageScore">({{ currentPageScore }} points) </span>
+
+            <i 
+                class="fas fa-trash-alt text-red-500 ml-2"
+                title="Delete page"
+                @click.prevent="confirmDestroy"
+            ></i>
         </h2>
 
-        <assessment-questions-content-picker
+        <!-- <assessment-questions-content-picker
             @content:type="setType"
             v-if="!type"
         />
@@ -30,114 +38,116 @@
                 v-for="d in data"
                 :key="d.order"
                 :data="d"
+                :page="currentPage"
             />
-        </draggable>
+        </draggable> -->
+
+        <modal 
+            v-show="modalActive"
+            @close="close"
+            @submit="destroyPage"
+        >
+            <template slot="header">
+                Delete page
+            </template>
+
+            <template slot="body">
+                <div class="my-4">
+                    <p class="text-red-500">
+                        Are you sure you want to delete this page? 
+                        All content and questions on this page will also be removed from the assessment. 
+                        This operation cannot be undone.
+                    </p>
+                </div>
+            </template>
+        </modal>
     </div>
 </template>
 
 <script>
-import { find, map, orderBy } from 'lodash-es'
-import Draggable from 'vuedraggable'
+import { mapGetters, mapActions } from 'vuex'
+// import { find, map, orderBy } from 'lodash-es'
+// import Draggable from 'vuedraggable'
 
 export default {
-    components: {
-        Draggable
+    computed: {
+        ...mapGetters({
+            currentPage: 'assessments/currentPage',
+            currentPageScore: 'assessments/currentPageScore'
+        })
     },
-
-    props: {
-        page: {
-            type: Number,
-            required: true
-        },
-        pages: {
-            type: Array,
-            required: true
-        }
-    },
+    // components: {
+    //     Draggable
+    // },
 
     data () {
         return {
             type: '',
-            currentPage: null,
-            data: [],
-            adding: false,
-            totalPagePoints: 0
-        }
-    },
-
-    watch: {
-        currentPage: {
-            deep: true,
-
-            async handler () {
-                this.currentPage = find(this.pages, page => page.number === this.page)
-
-                await this.fetch()
-            }
+            modalActive: false
         }
     },
 
     methods: {
-        setType (type) {
-            this.type = type
+        ...mapActions({
+            destroy: 'assessments/destroyPage'
+        }),
+
+        close () {
+            this.modalActive = false
         },
 
-        update (e) {
-            map(this.data, (d, index) => d.order = index + 1)
-
-            axios.patch(`${this.urlBase}/api/assessment/page/${this.currentPage.id}/change-order`, {
-                data: map(this.data, d => {
-                    return {
-                        id: d.model.id,
-                        order: d.order
-                    }
-                })
-            }).then(({data}) => {
-                this.data = orderBy(data.data, ['order'], ['asc'])
-            })
+        confirmDestroy () {
+            this.modalActive = true
         },
 
-        async fetch () {
-            let { data } = await axios.get(`${this.urlBase}/api/assessment/page/${this.currentPage.id}`)
+        async destroyPage () {
+            this.modalActive = false
 
-            this.data = orderBy(data.data, ['order'], ['asc'])
+            this.destroy(this.currentPage.id)
+        },
 
-            this.totalPagePoints = 0
+    //     setType (type) {
+    //         this.type = type
+    //     },
 
-            for await (let pageItem of this.data) {
-                if (pageItem.type === 'Question') {
-                    this.totalPagePoints += pageItem.model.assessment_page_content_items[0].question_score
-                }
-            }
-        }
+    //     update (e) {
+    //         map(this.data, (d, index) => d.order = index + 1)
+
+    //         axios.patch(`${this.urlBase}/api/assessment/page/${this.currentPage.id}/change-order`, {
+    //             data: map(this.data, d => {
+    //                 return {
+    //                     id: d.model.id,
+    //                     order: d.order
+    //                 }
+    //             })
+    //         }).then(({data}) => {
+    //             this.data = orderBy(data.data, ['order'], ['asc'])
+    //         })
+    //     },
     },
 
-    async mounted () {
-        this.currentPage = find(this.pages, page => page.number === this.page)
+    // async mounted () {
+    //     this.currentPage = find(this.pages, page => page.number === this.page)
 
-        this.data = orderBy(this.currentPage.data, ['order'], ['asc'])
+    //     this.data = orderBy(this.currentPage.data, ['order'], ['asc'])
 
-        for await (let pageItem of this.data) {
-            if (pageItem.type === 'Question') {
-                this.totalPagePoints += pageItem.model.assessment_page_content_items[0].question_score
-            }
-        }
+    //     for await (let pageItem of this.data) {
+    //         if (pageItem.type === 'Question') {
+    //             this.totalPagePoints += pageItem.model.assessment_page_content_items[0].question_score
+    //         }
+    //     }
 
-        window.events.$on('assessment-page:change', page => {
-            this.currentPage = find(this.pages, p => p.number === page)
-        })
+    //     window.events.$on('assessment-page:change', page => {
+    //         this.currentPage = find(this.pages, p => p.number === page)
+    //     })
 
-        window.events.$on('content-add:push', async (payload) => {
-            await this.fetch()
-        })
+    //     window.events.$on('content-add:push', async (payload) => {
+    //         await this.fetch()
+    //     })
 
-        window.events.$on('assessment-pages:reload', async () => {
-            await this.fetch()
-        })
-
-        window.events.$on('content:adding', adding => {
-            this.adding = adding
-        })
-    }
+    //     window.events.$on('content:adding', adding => {
+    //         this.adding = adding
+    //     })
+    // }
 }
 </script>
