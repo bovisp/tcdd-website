@@ -69,3 +69,14 @@ export const destroyPage = async ({ dispatch, commit, state }, pageId) => {
 
     await dispatch('fetchPages', state.assessment.id)
 }
+
+export const updatePageNumber = async ({ dispatch, commit, state }, payload) => {
+    await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/page`, {
+        newPageNumber: payload.newPageNumber,
+        oldPageNumber: payload.oldPageNumber
+    })
+
+    await dispatch('fetchPages', state.assessment.id)
+
+    await commit('SET_CURRENT_PAGE', payload.newPageNumber)
+}

@@ -25,6 +25,23 @@ class AssessmentQuestionPagesController extends Controller
         return new AssessmentPageResource($assessmentPage);
     }
 
+    public function update(Assessment $assessment)
+    {
+        AssessmentPage::whereAssessmentId($assessment->id)
+            ->whereNumber((int) request('oldPageNumber'))
+            ->first()
+            ->update([
+                'number' => (int) request('newPageNumber')
+            ]);
+
+        AssessmentPage::whereAssessmentId($assessment->id)
+            ->whereNumber((int) request('newPageNumber'))
+            ->first()
+            ->update([
+                'number' => (int) request('oldPageNumber')
+            ]);
+    }
+
     public function destroy(AssessmentPage $page)
     {
         $assessmentPageContents = $page->assessmentPageContents;
