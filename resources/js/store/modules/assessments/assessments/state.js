@@ -4,5 +4,6 @@ export default {
 	pages: [],
 	totalScore: null,
 	currentPage: null,
-	currentPageScore: null
+	currentPageScore: null,
+	availableQuestions: null
 }

@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <!-- <assessment-questions-content-picker
+        <assessment-questions-content-picker
             @content:type="setType"
             v-if="!type"
         />
@@ -80,10 +80,9 @@
             v-if="type"
             :type="type"
             @content-add:cancel="type = ''"
-            :page="currentPage"
         />
 
-        <draggable
+        <!-- <draggable
             v-if="!adding"
             :list="data"
             handle='.fa-arrows-alt'
@@ -179,9 +178,9 @@ export default {
             this.destroy(this.currentPage.id)
         },
 
-    //     setType (type) {
-    //         this.type = type
-    //     },
+        setType (type) {
+            this.type = type
+        },
 
     //     update (e) {
     //         map(this.data, (d, index) => d.order = index + 1)
@@ -197,6 +196,12 @@ export default {
     //             this.data = orderBy(data.data, ['order'], ['asc'])
     //         })
     //     },
+    },
+
+    mounted () {
+        window.events.$on('assessment-page:content-added', () => {
+            this.type = ''
+        })
     }
 }
 </script>

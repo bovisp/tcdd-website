@@ -19,7 +19,7 @@ class AssessmentQuestionPageContentController extends Controller
         return new AssessmentPageResource($page);
     }
 
-    public function store(AssessmentPage $page)
+    public function addQuestion(AssessmentPage $page)
     {
         // Get any existing page content to determine the order placing of the new content.
         $content = AssessmentPageContent::whereAssessmentPageId($page->id)
@@ -40,84 +40,97 @@ class AssessmentQuestionPageContentController extends Controller
             'order' => $order
         ]);
 
-        if (request('type') === 'question') {
-            $assessmentPageContentItem = AssessmentPageContentItem::create([
-                'type' => 'Question',
-                'model_id' => request('question_id'),
-                'assessment_page_content_id' => $assessmentPageContent->id,
-                'question_number' => 999,
-                'question_score' => request('question_score')
-            ]);
+        $assessmentPageContentItem = AssessmentPageContentItem::create([
+            'type' => 'Question',
+            'model_id' => request('payload')['question']['id'],
+            'assessment_page_content_id' => $assessmentPageContent->id,
+            'question_number' => 999,
+            'question_score' => (int) request('payload')['score']
+        ]);
 
-            $assessment = Assessment::find($page->assessment_id);
+        $assessment = Assessment::find($page->assessment_id);
 
-            $assessmentQuestions = $assessment->pages->map(function ($page) {
-                return $page->assessmentPageContents->map(function ($assessmentPageContent) {
-                    return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
-                        return [
-                            'id' => $item->id,
-                            'question' => $item->question_number,
-                            'order' => $assessmentPageContent->order
-                        ];
-                    });
+        $assessmentQuestions = $assessment->pages->map(function ($page) {
+            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
+                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
+                    return [
+                        'id' => $item->id,
+                        'question' => $item->question_number,
+                        'order' => $assessmentPageContent->order
+                    ];
                 });
-            })
-            ->flatten(2)
-            ->sortBy('order');
+            });
+        })
+        ->flatten(2)
+        ->sortBy('order');
 
-            for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
-                $item = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
+        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
+            $item = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
 
-                $item->update([
-                    'question_number' => $i +1
-                ]);
-            }
-
-            return [
-                'assessmentPageContent' => $assessmentPageContent,
-                'assessmentPageContentItem' => $assessmentPageContentItem
-            ]; 
-        }
-
-        if (request('type') === 'content') {
-            // Persist the English content builder.
-            $contentBuilderEn = $assessmentPageContent->contentBuilder()->create([
-                'language' => 'en'
+            $item->update([
+                'question_number' => $i +1
             ]);
-
-            // Add $contentBuilderEn as a content item
-            $contentBuilderItemEn = AssessmentPageContentItem::create([
-                'type' => 'ContentBuilder',
-                'model_id' => $contentBuilderEn->id,
-                'assessment_page_content_id' => $assessmentPageContent->id
-            ]);
-
-            // Persist the French content builder.
-            $contentBuilderFr = $assessmentPageContent->contentBuilder()->create([
-                'language' => 'fr'
-            ]);
-
-            // Add $contentBuilderFr as a content item
-            $contentBuilderItemFr = AssessmentPageContentItem::create([
-                'type' => 'ContentBuilder',
-                'model_id' => $contentBuilderFr->id,
-                'assessment_page_content_id' => $assessmentPageContent->id
-            ]);
-
-            return [
-                'assessmentPageContent' => $assessmentPageContent,
-                'contentBuilderItemEn' => [
-                    'model' => $contentBuilderItemEn,
-                    'content' => $contentBuilderEn
-                ],
-                'contentBuilderItemFr' => [
-                    'model' => $contentBuilderItemFr,
-                    'content' => $contentBuilderFr
-                ]
-            ];
         }
     }
 
+    public function addContent(AssessmentPage $page)
+    {
+        // Get any existing page content to determine the order placing of the new content.
+        $content = AssessmentPageContent::whereAssessmentPageId($page->id)
+            ->get()
+            ->sortBy('order');
+
+        // If there is no current page content, the order is one.
+        // Else, the order is the value of the highest order number plus one.
+        if ($content->count() === 0) {
+            $order = 1;
+        } else {
+            $order = $content->last()->order + 1;
+        }
+
+        // Persist the new content.
+        $assessmentPageContent = AssessmentPageContent::create([
+            'assessment_page_id' => $page->id,
+            'order' => $order
+        ]);
+
+        // Persist the English content builder.
+        $contentBuilderEn = $assessmentPageContent->contentBuilder()->create([
+            'language' => 'en'
+        ]);
+
+        // Add $contentBuilderEn as a content item
+        $contentBuilderItemEn = AssessmentPageContentItem::create([
+            'type' => 'ContentBuilder',
+            'model_id' => $contentBuilderEn->id,
+            'assessment_page_content_id' => $assessmentPageContent->id
+        ]);
+
+        // Persist the French content builder.
+        $contentBuilderFr = $assessmentPageContent->contentBuilder()->create([
+            'language' => 'fr'
+        ]);
+
+        // Add $contentBuilderFr as a content item
+        $contentBuilderItemFr = AssessmentPageContentItem::create([
+            'type' => 'ContentBuilder',
+            'model_id' => $contentBuilderFr->id,
+            'assessment_page_content_id' => $assessmentPageContent->id
+        ]);
+
+        return [
+            'assessmentPageContent' => $assessmentPageContent,
+            'contentBuilderItemEn' => [
+                'model' => $contentBuilderItemEn,
+                'content' => $contentBuilderEn
+            ],
+            'contentBuilderItemFr' => [
+                'model' => $contentBuilderItemFr,
+                'content' => $contentBuilderFr
+            ]
+        ];
+    }
+    
     public function reorder(AssessmentPage $page)
     {      
         foreach(request('data') as $part) {
@@ -157,8 +170,8 @@ class AssessmentQuestionPageContentController extends Controller
     {
         if (request('type') === 'content') {
             ContentBuilder::find([
-                request('data')['data']['contentBuilderItemEn']['content']['id'],
-                request('data')['data']['contentBuilderItemFr']['content']['id']
+                request('data')['contentBuilderItemEn']['content']['id'],
+                request('data')['contentBuilderItemFr']['content']['id']
             ])
             ->each(function (ContentBuilder $contentBuilder) {
                 $contentBuilder->parts->each(function (Part $part) {
@@ -179,12 +192,12 @@ class AssessmentQuestionPageContentController extends Controller
             });
 
             AssessmentPageContentItem::find([
-                request('data')['data']['contentBuilderItemEn']['model']['id'],
-                request('data')['data']['contentBuilderItemFr']['model']['id']
+                request('data')['contentBuilderItemEn']['model']['id'],
+                request('data')['contentBuilderItemFr']['model']['id']
             ])->each->delete();
         }
         
-        AssessmentPageContent::find(request('data')['data']['assessmentPageContent']['id'])->delete();
+        AssessmentPageContent::find(request('data')['assessmentPageContent']['id'])->delete();
     }
 
     public function destroy(AssessmentPage $page, AssessmentPageContent $content)

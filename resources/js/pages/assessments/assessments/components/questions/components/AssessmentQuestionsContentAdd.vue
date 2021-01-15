@@ -4,7 +4,6 @@
             <button 
                 class="btn btn-blue text-sm btn-sm"
                 @click.prevent="add"
-                v-if="(type === 'content') || (type === 'question' && questionAdded)"
             >
                 Add to page
             </button>
@@ -18,24 +17,17 @@
         </div>
 
         <template v-if="type === 'question'">
-            <assessment-questions-add 
-                :page="page"
-                @content-builder:add="addQuestion"
-            />
+            <assessment-questions-add />
         </template>
 
         <template v-if="type === 'content'">
-            <assessment-questions-content-builder-add 
-                :page="page"
-                @content-builder:add="setData"
-            />
+            <assessment-questions-content-builder-add />
         </template>
 
         <div class="flex mt-6">
             <button 
                 class="btn btn-blue text-sm btn-sm"
                 @click.prevent="add"
-                v-if="(type === 'content') || (type === 'question' && questionAdded)"
             >
                 Add to page
             </button>
@@ -51,33 +43,36 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
     props: {
         type: {
             type: String,
-            required: true
-        },
-        page: {
-            type: Object,
             required: true
         }
     },
 
     data () {
         return {
-            data: {},
-            questionAdded: false
+            data: null
         }
     },
 
+    computed: {
+        ...mapGetters({
+            currentPage: 'assessments/currentPage'
+        })
+    },
+
     methods: {
-        setData (data) {
-            this.data = data
-        },
+        ...mapActions({
+            fetchPages: 'assessments/fetchPages'
+        }),
 
         async destroy () {
             if (this.type === 'content') {
-                let { data } = await axios.delete(`${this.urlBase}/api/assessments/page/${this.page.id}/content`, {
+                let { data } = await axios.delete(`${this.urlBase}/api/assessments/page/${this.currentPage.id}/content`, {
                     data: {
                         type: this.type,
                         data: this.data
@@ -90,38 +85,17 @@ export default {
             window.events.$emit('content:adding', false)
         },
 
-        add () {
-            if (this.type === 'content') {
-                window.events.$emit('content-add:push', {
-                    order: this.data.data.assessmentPageContent.order,
-                    type: this.type,
-                    data: this.data.data
-                })
-            }
+        async add () {  
+            await this.fetchPages(this.currentPage.assessment_id)
 
-            this.$emit('content-add:cancel')
-
-            window.events.$emit('content:adding', false)
-        },
-
-        async addQuestion (payload) {
-            this.questionAdded = true
-
-            let { data } = await axios.post(`${this.urlBase}/api/assessments/page/${this.page.id}/content`, {
-                type: 'question',
-                question_score: payload.score,
-                question_id: payload.question.id
-            })
-
-            window.events.$emit('content-add:push', {
-                order: data.assessmentPageContent.order,
-                type: this.type,
-                data: {
-                    model: data.assessmentPageContentItem,
-                    content: payload.question
-                }
-            })
+            window.events.$emit('assessment-page:content-added')
         }
+    },
+
+    mounted () {
+        window.events.$on('assessment-page:content-builder-data', data => {
+            this.data = data
+        })
     }
 }
 </script>

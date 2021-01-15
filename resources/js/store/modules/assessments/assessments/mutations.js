@@ -40,3 +40,5 @@ export const SET_CURRENT_PAGE_SCORE = async (state) => {
 export const ADD_PAGE = (state, page) => state.pages.push(page)
 
 export const SET_TOTAL_SCORE = (state, totalScore) => state.totalScore = totalScore
+
+export const SET_AVAILABLE_QUESTIONS = (state, questions) => state.availableQuestions = questions

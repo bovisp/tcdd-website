@@ -19,30 +19,27 @@
 </template>
 
 <script>
-export default {
-    props: {
-        page: {
-            type: Object,
-            required: true
-        }
-    },
+import { mapActions } from 'vuex'
 
+export default {
     data () {
         return {
             data: null
         }
     },
 
-    async mounted () {
-        let { data } = await axios.post(`${this.urlBase}/api/assessments/page/${this.page.id}/content`, {
-            type: 'content'
+    methods: {
+        ...mapActions({
+            addContentToPage: 'assessments/addContentToPage'
         })
+    },
+
+    async mounted () {
+        let { data } = await this.addContentToPage()
 
         this.data = data
 
-        this.$emit('content-builder:add', {
-            data
-        })
+        window.events.$emit('assessment-page:content-builder-data', this.data)
     }
 }
 </script>

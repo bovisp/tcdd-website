@@ -66,8 +66,6 @@ export default {
     methods: {
         add () {
             this.adding = true
-
-            window.events.$emit('content:adding', this.adding)
         }
     }
 }

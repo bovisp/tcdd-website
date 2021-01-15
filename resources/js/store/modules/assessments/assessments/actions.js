@@ -80,3 +80,23 @@ export const updatePageNumber = async ({ dispatch, commit, state }, payload) => 
 
     await commit('SET_CURRENT_PAGE', payload.newPageNumber)
 }
+
+export const fetchAvailableQuestions = async ({ commit }, assessmentId) => {
+    let { data: questions } = await axios.get(`${urlBase}/api/assessments/${assessmentId}/questions`)
+
+    await commit('SET_AVAILABLE_QUESTIONS', questions.data)
+}
+
+export const addQuestionToPage = async ({ commit, state, dispatch }, payload) => {
+    await axios.post(`${urlBase}/api/assessments/page/${state.currentPage.id}/add-question`, { payload })
+
+    await dispatch('fetchPages', state.assessment.id)
+
+    await commit('SET_CURRENT_PAGE', state.currentPage.number)
+
+    await commit('SET_CURRENT_PAGE_SCORE')
+}
+
+export const addContentToPage = async ({ state }) => {
+    return axios.post(`${urlBase}/api/assessments/page/${state.currentPage.id}/add-content`)
+}

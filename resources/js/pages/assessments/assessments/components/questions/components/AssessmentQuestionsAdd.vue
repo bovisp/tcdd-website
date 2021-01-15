@@ -2,8 +2,8 @@
     <div>
         <template v-if="!showQuestionSettings">
             <datatable 
-                v-if="questions && questions.length"
-                :data="questions"
+                v-if="availableQuestions && availableQuestions.length"
+                :data="availableQuestions"
                 :columns="columns"
                 :per-page="10"
                 :order-keys="['categoryName', 'name']"
@@ -63,17 +63,11 @@
 </template>
 
 <script>
-export default {
-    props: {
-        page: {
-            type: Object,
-            required: true
-        }
-    },
+import { mapGetters, mapActions } from 'vuex'
 
+export default {
     data () {
         return {
-            questions: [],
             columns: [
                 { field: 'categoryName', title: 'Category', sortable: true },
                 { field: 'name', title: 'Name', sortable: true }
@@ -85,29 +79,39 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters({
+            currentPage: 'assessments/currentPage',
+            availableQuestions: 'assessments/availableQuestions'
+        })
+    },
+
     methods: {
+        ...mapActions({
+            fetchAvailableQuestions: 'assessments/fetchAvailableQuestions',
+            addQuestionToPage: 'assessments/addQuestionToPage'
+        }),
+
         add () {
             this.scoreLogged = true
 
-            this.$emit('content-builder:add', {
+            window.events.$emit('assessment-page:content-added')
+
+            this.addQuestionToPage({
                 question: this.question,
                 score: this.score
             })
-
-            window.events.$emit('assessments:update-score', this.score)
         }
     },
-    
-    async mounted () {
-        let { data } = await axios.get(`${this.urlBase}/api/assessments/${this.page.assessment_id}/questions`)
 
-        this.questions = data.data
+    async mounted () {
+        await this.fetchAvailableQuestions(this.currentPage.assessment_id)
 
         window.events.$on('questions:add', item => {
             this.showQuestionSettings = true
 
             this.question = item
         })
-    },
+    }
 }
 </script>

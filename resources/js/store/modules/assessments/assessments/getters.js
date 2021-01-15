@@ -9,3 +9,5 @@ export const currentPage = state => state.currentPage
 export const totalScore = state => state.totalScore
 
 export const currentPageScore = state => state.currentPageScore
+
+export const availableQuestions = state => state.availableQuestions
