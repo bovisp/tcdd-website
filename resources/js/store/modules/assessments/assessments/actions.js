@@ -100,3 +100,11 @@ export const addQuestionToPage = async ({ commit, state, dispatch }, payload) =>
 export const addContentToPage = async ({ state }) => {
     return axios.post(`${urlBase}/api/assessments/page/${state.currentPage.id}/add-content`)
 }
+
+export const changeCurrentPageItemOrder = async ({ state, dispatch, commit }, payload) => {
+    await axios.patch(`${urlBase}/api/assessment/page/${state.currentPage.id}/change-order`, payload)
+
+    await dispatch('fetchPages', state.assessment.id)
+
+    await commit('SET_CURRENT_PAGE', state.currentPage.number)
+}

@@ -82,21 +82,20 @@
             @content-add:cancel="type = ''"
         />
 
-        <!-- <draggable
-            v-if="!adding"
-            :list="data"
+        <draggable
+            v-if="!type"
+            :list="currentPage.data"
             handle='.fa-arrows-alt'
             @start="drag = true"
             @end="drag = false"
-            @change="update"
+            @change="updateOrder"
         >
             <assessment-page-content-list
-                v-for="d in data"
-                :key="d.order"
-                :data="d"
-                :page="currentPage"
+                v-for="data in currentPage.data"
+                :key="data.order"
+                :data="data"
             />
-        </draggable> -->
+        </draggable>
 
         <modal 
             v-show="modalActive"
@@ -122,20 +121,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { filter } from 'lodash-es'
-// import Draggable from 'vuedraggable'
+import { filter, map, orderBy } from 'lodash-es'
+import Draggable from 'vuedraggable'
 
 export default {
-    computed: {
-        ...mapGetters({
-            currentPage: 'assessments/currentPage',
-            currentPageScore: 'assessments/currentPageScore',
-            pages: 'assessments/pages'
-        })
+    components: {
+        Draggable
     },
-    // components: {
-    //     Draggable
-    // },
 
     data () {
         return {
@@ -146,12 +138,23 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters({
+            currentPage: 'assessments/currentPage',
+            currentPageScore: 'assessments/currentPageScore',
+            pages: 'assessments/pages',
+            assessment: 'assessments/assessment'
+        })
+    },
+
     methods: {
         filter,
 
         ...mapActions({
             destroy: 'assessments/destroyPage',
-            updatePageNumber: 'assessments/updatePageNumber'
+            updatePageNumber: 'assessments/updatePageNumber',
+            fetchPages: 'assessments/fetchPages',
+            changeCurrentPageItemOrder: 'assessments/changeCurrentPageItemOrder'
         }),
 
         async update () {
@@ -182,20 +185,14 @@ export default {
             this.type = type
         },
 
-    //     update (e) {
-    //         map(this.data, (d, index) => d.order = index + 1)
-
-    //         axios.patch(`${this.urlBase}/api/assessment/page/${this.currentPage.id}/change-order`, {
-    //             data: map(this.data, d => {
-    //                 return {
-    //                     id: d.model.id,
-    //                     order: d.order
-    //                 }
-    //             })
-    //         }).then(({data}) => {
-    //             this.data = orderBy(data.data, ['order'], ['asc'])
-    //         })
-    //     },
+        async updateOrder (e) {
+            await this.changeCurrentPageItemOrder({
+                moved: e.moved.element.model.id,
+                newOrderNumber: e.moved.newIndex + 1,
+                oldOrderNumber: e.moved.oldIndex + 1,
+            })
+        }
+        
     },
 
     mounted () {

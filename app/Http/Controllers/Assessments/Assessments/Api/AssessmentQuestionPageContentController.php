@@ -132,13 +132,21 @@ class AssessmentQuestionPageContentController extends Controller
     }
     
     public function reorder(AssessmentPage $page)
-    {      
-        foreach(request('data') as $part) {
-            AssessmentPageContent::find($part['id'])->update([
-                'order' => $part['order']
-            ]);
-        }
+    {   
+        $moved = AssessmentPageContent::find(request('moved'));
 
+        $replacement = AssessmentPageContent::where('assessment_page_id', '=', $page->id)
+            ->where('order', '=', request('newOrderNumber'))
+            ->first();
+
+        $moved->update([
+            'order' => request('newOrderNumber')
+        ]);
+
+        $replacement->update([
+            'order' => request('oldOrderNumber')
+        ]);
+        
         $assessment = Assessment::find($page->assessment_id);
 
         $assessmentQuestions = $assessment->pages->map(function ($page) {
@@ -159,11 +167,9 @@ class AssessmentQuestionPageContentController extends Controller
             $assessmentPageContentItem = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
 
             $assessmentPageContentItem->update([
-                'question_number' => $i +1
+                'question_number' => $i + 1
             ]);
         }
-
-        return new AssessmentPageResource($page);
     }
 
     public function destroyTempItem (AssessmentPage $page)

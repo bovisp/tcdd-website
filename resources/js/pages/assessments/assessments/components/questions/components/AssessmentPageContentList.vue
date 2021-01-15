@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { orderBy } from 'lodash-es'
 
 export default {
@@ -73,10 +74,15 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters({
+            assessment: 'assessments/assessment'
+        })
+    },
+
     data () {
         return {
-            modalActive: false,
-            currentPage: null
+            modalActive: false
         }
     },
 
@@ -102,7 +108,7 @@ export default {
 
             let { data } = await axios.delete(`${this.urlBase}/api/assessments/page/${this.data.model.assessment_page_id}/content/${this.data.model.id}`)
 
-            window.events.$emit('assessment-pages:reload')
+            this.fetchPages(this.assessment.id)
         }
     }
 }
