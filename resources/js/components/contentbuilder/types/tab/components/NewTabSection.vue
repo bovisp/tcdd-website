@@ -72,6 +72,7 @@
                 :lang="lang"
                 @tab-part-section-content:created="pushData"
                 @tab-content:cancel-add="$emit('canceladd', data.id)"
+                :content-builder-id="builderId"
             ></component>
         </div>
 
@@ -81,7 +82,7 @@
         >
             <component 
                 :is="`Show${ucfirst(type)}`"
-                :content-builder-id="contentIds[lang]"
+                :content-builder-id="builderId"
                 :edit-status="false"
                 :data="section"
             ></component>
@@ -110,6 +111,11 @@ export default {
         lang: {
             type: String,
             required: true,
+        },
+        contentBuilderId: {
+            type: Number,
+            required: false,
+            default: null
         }
     },
 
@@ -122,7 +128,8 @@ export default {
             types: [],
             type: null,
             creating: false,
-            title: ''
+            title: '',
+            builderId: null
         }
     },
 
@@ -173,6 +180,8 @@ export default {
     },
 
     async mounted () {
+        this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
+
         this.section = this.data
 
         if (this.partId) {

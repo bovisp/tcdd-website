@@ -1,5 +1,9 @@
 <?php
 
+use App\Question;
+use App\Assessment;
+use App\QuestionType;
+use App\AssessmentPageContentType;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -51,6 +55,20 @@ Route::post('/api/assessments/{assessment}/instructors', 'Assessments\Assessment
 Route::put('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@update');
 Route::get('/api/assessments/{assessment}/participants/create', 'Assessments\Assessments\Api\AssessmentParticipantsController@create');
 Route::post('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@store');
+
+Route::post('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@store');
+Route::delete('/api/assessments/page/{page}', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@destroy');
+Route::patch('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@update');
+Route::get('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@index');
+Route::get('/api/assessments/{assessment}/questions', 'Assessments\Assessments\Api\AssessmentQuestionsController@index');
+Route::get('/api/assessment/page/{page}', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@index');
+Route::post('/api/assessments/page/{page}/add-question', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@addQuestion');
+Route::post('/api/assessments/page/{page}/add-content', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@addContent');
+Route::delete('/api/assessments/page/content/{content}', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@destroy');
+Route::delete('/api/assessments/page/{page}/content', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@destroyTempItem');
+Route::patch('/api/assessment/page/{page}/change-order', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@reorder');
+
+Route::patch('/api/assessments/questions/{item}/change-score', 'Assessments\Assessments\Api\AssessmentQuestionContentController@changeScore');
 
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');

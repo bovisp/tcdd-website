@@ -75,6 +75,11 @@ export default {
         lang: {
             type: String,
             required: true,
+        },
+        contentBuilderId: {
+            type: Number,
+            required: false,
+            default: null
         }
     },
 
@@ -84,7 +89,8 @@ export default {
                 content: '',
                 content_builder_type_id: 2,
                 is_tab_section: this.isTabSectionPart
-            }
+            },
+            builderId: null
         }
     },
 
@@ -96,12 +102,12 @@ export default {
 
     methods: {
         async store () {
-            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}/content`, this.form)
+            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/content`, this.form)
 
             if (!this.isTabSectionPart) {
                 window.events.$emit('part:created', {
                     data,
-                    contentBuilderId: this.contentIds[this.lang]
+                    contentBuilderId: this.builderId
                 })
 
                 this.cancel()
@@ -119,11 +125,13 @@ export default {
                 return
             }
 
-            window.events.$emit('add-part:cancel', this.contentIds[this.lang])
+            window.events.$emit('add-part:cancel', this.builderId)
         }
     },
 
     mounted () {
+        this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
+
         if (this.partId) {
             this.form.part_id = this.partId
         }

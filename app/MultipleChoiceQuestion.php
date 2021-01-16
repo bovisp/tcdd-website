@@ -41,6 +41,10 @@ class MultipleChoiceQuestion extends Model
         'shuffle_answers'
     ];
 
+    protected $with = [
+        'answers'
+    ];
+
     public function answers()
     {
         return $this->hasMany(MultipleChoiceQuestionAnswer::class);

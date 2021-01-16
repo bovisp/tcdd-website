@@ -60,6 +60,7 @@
                 :data="section"
                 :lang="lang"
                 @canceladd="cancelAdd"
+                :content-builder-id="contentBuilderId"
             />
         </template>
 
@@ -103,6 +104,11 @@ export default {
         lang: {
             type: String,
             required: true,
+        },
+        contentBuilderId: {
+            type: Number,
+            required: false,
+            default: null
         }
     },
 
@@ -115,7 +121,8 @@ export default {
                 tabSections: []
             },
             addingTabSection: false,
-            order: 1
+            order: 1,
+            builderId: null
         }
     },
 
@@ -143,7 +150,7 @@ export default {
         },
 
         async store () {
-            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}/tab`, {
+            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/tab`, {
                 content_builder_type_id: this.form.content_builder_type_id,
                 title: this.form.title,
                 caption: this.form.caption,
@@ -152,7 +159,7 @@ export default {
 
             window.events.$emit('part:created', {
                 data,
-                contentBuilderId: this.contentIds[this.lang]
+                contentBuilderId: this.builderId
             })
 
             this.reset()
@@ -171,7 +178,7 @@ export default {
                 }
             }
 
-            window.events.$emit('add-part:cancel', this.contentIds[this.lang])
+            window.events.$emit('add-part:cancel', this.builderId)
         },
 
         cancelAdd (sectionId) {
@@ -184,6 +191,8 @@ export default {
     },
 
     mounted () {
+        this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
+
         window.events.$on('tab-content:section', section => {
             let sectionToUpdate = find(this.form.tabSections, s => section.id === s.id)
 
@@ -200,16 +209,6 @@ export default {
                 sectionToUpdate.type = section.type
             }
         })
-
-        // window.events.$on('add-part:cancel', contentId => {
-        //     if (this.contentIds[this.lang] === contentId) {
-        //         this.addingTabSection = false
-
-        //         this.form.tabSections = filter(this.form.tabSections, section => {
-        //             return sectionId !== section.id
-        //         })
-        //     }
-        // })
     }
 }
 </script>

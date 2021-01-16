@@ -8,6 +8,7 @@ use App\Section;
 use App\QuestionType;
 use App\ContentBuilder;
 use App\QuestionCategory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -70,6 +71,15 @@ class Question extends Model
     public function questionType()
     {
         return $this->belongsTo(QuestionType::class);
+    }
+
+    public function getQuestionDataAttribute()
+    {
+        $questionTypeName = Str::studly($this->questionType->code);
+
+        $questionTypeDataClass = 'App\\' . $questionTypeName . 'Question';
+
+        return $questionTypeDataClass::find($this->question_type_model_id);
     }
 
     public function toArray()

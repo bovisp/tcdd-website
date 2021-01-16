@@ -20,7 +20,7 @@
             </button>
 
             <button 
-                @click.prevent="clearCanvas"
+                @click.prevent="clearCanvasConfirm"
                 class="border rounded-xl px-3 py-2 mt-3"
                 title="Erase all work"
             >
@@ -30,11 +30,27 @@
 
         <canvas 
             id="canvas"
+            ref="canvas"
             class="border-2 mx-auto"
             @mousedown="startPainting" 
             @mouseup="finishedPainting"
             @mousemove="draw"
         ></canvas>
+
+        <modal 
+            v-show="modalActive"
+            @close="close"
+            @submit="clearCanvas"
+        >
+            <template slot="body">
+                <div class="my-4">
+                    <p class="text-red-500">
+                        Are you sure you want to erase all of your work? 
+                        This operation cannot be undone.
+                    </p>
+                </div>
+            </template>
+        </modal>
     </div>
 </template>
 
@@ -70,7 +86,8 @@ export default {
             mouseCoordinates: {
                 x: 0,
                 y: 0
-            }
+            },
+            modalActive: false
         }
     },
 
@@ -83,7 +100,17 @@ export default {
     methods: {
         ucfirst,
 
+        close () {
+            this.modalActive = false
+        },
+
+        clearCanvasConfirm () {
+            this.modalActive = true
+        },
+
         clearCanvas () {
+            this.modalActive = false
+
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         },
 
@@ -143,11 +170,11 @@ export default {
     },
 
     mounted () {
-        this.canvas = document.getElementById("canvas")
+        this.canvas = this.$refs.canvas
 
         this.canvas.style.backgroundImage = `url('${this.urlBase}${this.backgroundImage}')`
 
-        this.ctx = canvas.getContext("2d")
+        this.ctx = this.canvas.getContext("2d")
 
         let background = new Image()
 

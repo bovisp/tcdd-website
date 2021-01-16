@@ -22,7 +22,7 @@
         >
             <component 
                 :is="`Show${formatType}`"
-                :content-builder-id="contentIds[lang]"
+                :content-builder-id="builderId"
                 :data="part"
                 :lang="lang"
             ></component>
@@ -59,6 +59,11 @@ export default {
         lang: {
             type: String,
             required: true
+        },
+        contentBuilderId: {
+            type: Number,
+            required: false,
+            default: null
         }
     },
 
@@ -70,7 +75,8 @@ export default {
                 content: ''
             },
             part: {},
-            showModal: false
+            showModal: false,
+            builderId: null
         }
     },
 
@@ -104,7 +110,7 @@ export default {
 
             window.events.$emit('part:deleted', {
                 part: this.part.id,
-                contentBuilderId: this.contentIds[this.lang]
+                contentBuilderId: this.builderId
             })
         },
 
@@ -116,10 +122,12 @@ export default {
     },
 
     mounted () {
+        this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
+
         this.part = this.data
 
         window.events.$on('series:edit', contentBuilderId => {
-            if (contentBuilderId === this.contentIds[this.lang]) {
+            if (contentBuilderId === this.builderId) {
                 this.editingTurnedOn = !this.editingTurnedOn
             }
         })
