@@ -4,6 +4,7 @@
             <button 
                 class="btn btn-blue text-sm btn-sm"
                 @click.prevent="add"
+                v-if="type === 'content'"
             >
                 Add to page
             </button>
@@ -28,6 +29,7 @@
             <button 
                 class="btn btn-blue text-sm btn-sm"
                 @click.prevent="add"
+                v-if="type === 'content'"
             >
                 Add to page
             </button>
@@ -67,7 +69,8 @@ export default {
 
     methods: {
         ...mapActions({
-            fetchPages: 'assessments/fetchPages'
+            fetchPages: 'assessments/fetchPages',
+            setCurrentPage: 'assessments/setCurrentPage'
         }),
 
         async destroy () {
@@ -87,6 +90,8 @@ export default {
 
         async add () {  
             await this.fetchPages(this.currentPage.assessment_id)
+
+            await this.setCurrentPage(this.currentPage.number)
 
             window.events.$emit('assessment-page:content-added')
         }

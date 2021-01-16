@@ -27,19 +27,21 @@ class AssessmentQuestionPagesController extends Controller
 
     public function update(Assessment $assessment)
     {
-        AssessmentPage::whereAssessmentId($assessment->id)
+        $moved = AssessmentPage::whereAssessmentId($assessment->id)
             ->whereNumber((int) request('oldPageNumber'))
-            ->first()
-            ->update([
-                'number' => (int) request('newPageNumber')
-            ]);
+            ->first();
 
-        AssessmentPage::whereAssessmentId($assessment->id)
+        $replaced = AssessmentPage::whereAssessmentId($assessment->id)
             ->whereNumber((int) request('newPageNumber'))
-            ->first()
-            ->update([
-                'number' => (int) request('oldPageNumber')
-            ]);
+            ->first();
+
+        $moved->update([
+            'number' => (int) request('newPageNumber')
+        ]);
+
+        $replaced->update([
+            'number' => (int) request('oldPageNumber')
+        ]);
     }
 
     public function destroy(AssessmentPage $page)
@@ -51,7 +53,7 @@ class AssessmentQuestionPagesController extends Controller
                 if ($item->type === 'ContentBuilder') {
                     $contentBuilder = ContentBuilder::find($item->model_id);
     
-                    $contentBuilder->parts->each(function (Part $part) {
+                    $contentBuilder->parts->each(function ($part) {
                         $type = ContentBuilderType::find($part->content_builder_type_id)->type;
     
                         $typeClassName = 'App\\' . ucfirst($type) . 'Part';

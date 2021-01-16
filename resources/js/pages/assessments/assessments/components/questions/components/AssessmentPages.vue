@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <template v-if="currentPage !== null">
+        <template v-if="currentPage">
             <assessment-page />
         </template>
     </div>

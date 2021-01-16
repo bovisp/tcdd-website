@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { orderBy } from 'lodash-es'
 
 export default {
@@ -87,6 +87,10 @@ export default {
     },
 
     methods: {
+        ...mapActions({
+            deleteAssessmentPageItem: 'assessments/deleteAssessmentPageItem'
+        }),
+
         orderBy,
 
         editQuestion () {
@@ -104,11 +108,9 @@ export default {
         },
 
         async destroy () {
-            let type = this.data.type === 'ContentBuilder' ? 'content' : 'question'
-
-            let { data } = await axios.delete(`${this.urlBase}/api/assessments/page/${this.data.model.assessment_page_id}/content/${this.data.model.id}`)
-
-            this.fetchPages(this.assessment.id)
+            this.close()
+            
+            await this.deleteAssessmentPageItem(this.data.model.id)
         }
     }
 }

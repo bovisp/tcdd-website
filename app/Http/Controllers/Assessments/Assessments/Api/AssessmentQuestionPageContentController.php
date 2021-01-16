@@ -206,7 +206,7 @@ class AssessmentQuestionPageContentController extends Controller
         AssessmentPageContent::find(request('data')['assessmentPageContent']['id'])->delete();
     }
 
-    public function destroy(AssessmentPage $page, AssessmentPageContent $content)
+    public function destroy(AssessmentPageContent $content)
     {
         $contentItems = $content->assessmentPageContentItems->each(function($item) {
             if ($item->type === 'ContentBuilder') {
@@ -234,7 +234,7 @@ class AssessmentQuestionPageContentController extends Controller
 
         $content->delete();
 
-        $assessment = Assessment::find($page->assessment_id);
+        $assessment = Assessment::find($content->assessmentPage->assessment_id);
 
         $assessmentQuestions = $assessment->pages->map(function ($page) {
             return $page->assessmentPageContents->map(function ($assessmentPageContent) {

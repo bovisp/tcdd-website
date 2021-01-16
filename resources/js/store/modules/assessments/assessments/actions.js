@@ -65,12 +65,11 @@ export const setCurrentPage = async ({ commit }, page) => {
 export const destroyPage = async ({ dispatch, commit, state }, pageId) => {
     await axios.delete(`${urlBase}/api/assessments/page/${pageId}`)
 
-    await commit('SET_CURRENT_PAGE', {})
-
     await dispatch('fetchPages', state.assessment.id)
 }
 
 export const updatePageNumber = async ({ dispatch, commit, state }, payload) => {
+    console.log(payload)
     await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/page`, {
         newPageNumber: payload.newPageNumber,
         oldPageNumber: payload.oldPageNumber
@@ -103,6 +102,14 @@ export const addContentToPage = async ({ state }) => {
 
 export const changeCurrentPageItemOrder = async ({ state, dispatch, commit }, payload) => {
     await axios.patch(`${urlBase}/api/assessment/page/${state.currentPage.id}/change-order`, payload)
+
+    await dispatch('fetchPages', state.assessment.id)
+
+    await commit('SET_CURRENT_PAGE', state.currentPage.number)
+}
+
+export const deleteAssessmentPageItem = async ({ state, dispatch, commit }, itemId) => {
+    await axios.delete(`${urlBase}/api/assessments/page/content/${itemId}`)
 
     await dispatch('fetchPages', state.assessment.id)
 

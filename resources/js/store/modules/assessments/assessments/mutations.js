@@ -6,13 +6,31 @@ export const SET_ASSESSMENT = (state, assessment) => state.assessment = assessme
 
 export const SET_PAGES = (state, pages) => state.pages = orderBy(pages, ['number'], ['asc'])
 
-export const SET_CURRENT_PAGE = (state, page = null) => {
+export const SET_CURRENT_PAGE = async (state, page = null) => {
     if (!state.currentPage && state.pages.length === 0) {
         state.currentPage = null
     }
 
     if (!state.currentPage && state.pages.length !== 0) {
         state.currentPage = state.pages[0]
+    }
+
+    if (state.currentPage && state.pages.length === 0) {
+        state.currentPage = null
+    }
+
+    if (state.currentPage && !page) {
+        let pageFound = false
+
+        for await (let p of state.pages) {
+            if (p.id === state.currentPage.id) {
+                pageFound = true
+            }
+        }
+
+        if (pageFound === false) {
+            state.currentPage = state.pages[0]
+        }
     }
 
     if (page) {
