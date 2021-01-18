@@ -20,9 +20,7 @@ class Assessment extends Model
         'name',
         'description',
         'assessment_type_id',
-        'section_id',
-        'visible',
-        'total_score'
+        'section_id'
     ];
 
     public function section()
