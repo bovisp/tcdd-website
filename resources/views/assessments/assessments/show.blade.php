@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <assessment-take
+    <assessment-home
         :assessment="{{ json_encode($assessment) }}"
     />
 

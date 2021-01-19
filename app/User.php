@@ -76,7 +76,9 @@ class User extends Authenticatable
 
     public function assessmentParticipant()
     {
-        return $this->belongsToMany(Assessment::class, 'assessment_participants', 'participant_id', 'assessment_id');
+        return $this->belongsToMany(Assessment::class, 'assessment_participants', 'participant_id', 'assessment_id')
+            ->wherePivot('activated', 1)
+            ->withPivot('id', 'assessment_id', 'participant_id', 'activated');
     }
 
     public function questions()

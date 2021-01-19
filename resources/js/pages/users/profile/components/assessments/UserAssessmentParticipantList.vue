@@ -1,6 +1,6 @@
 <template>
     <div 
-        v-if="typeof user.assessmentParticipant !== 'undefined' && user.assessmentParticipant.length"
+        v-if="user.assessments"
         class="w-full"
     >
         <h2 class="text-2xl">
@@ -9,7 +9,7 @@
 
         <ul class="ml-2">
             <li
-                v-for="assessment in user.assessmentParticipant"
+                v-for="assessment in user.assessments"
                 :key="assessment.id"
                 class="my-1"
             >
