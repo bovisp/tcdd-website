@@ -40,7 +40,8 @@ class Assessment extends Model
 
     public function participants()
     {
-        return $this->belongsToMany(User::class, 'assessment_participants', 'assessment_id', 'participant_id');
+        return $this->belongsToMany(User::class, 'assessment_participants', 'assessment_id', 'participant_id')
+            ->withPivot('id', 'assessment_id', 'participant_id', 'activated');
     }
 
     public function pages()

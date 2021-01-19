@@ -37,6 +37,11 @@
                     :order-key-directions="['asc', 'asc']"
                     :has-text-filter="false"
                     :checkable="true"
+                    :has-event="true"
+                    event-text-boolean="pivot.activated"
+                    event-text-true="Deactivate"
+                    event-text-false="Activate"
+                    event="assessment:activate"
                 ></datatable>
             </div>
 
@@ -89,7 +94,8 @@ export default {
 
     methods: {
         ...mapActions({
-            fetchAssessments: 'assessments/fetch'
+            fetchAssessments: 'assessments/fetch',
+            activateParticipant: 'assessments/activateParticipant'
         }),
 
         async update () {
@@ -116,6 +122,15 @@ export default {
 
         window.events.$on('assessments:reload', async () => {
             await this.reload()
+        })
+
+        window.events.$on('assessment:activate', async (participant) => {
+            await this.activateParticipant({
+                participantId: participant.pivot.id,
+                isActivated: participant.pivot.activated
+            })
+
+            this.$toasted.success(`${participant.fullname} has been successfully ${participant.pivot.activated ? 'deactivated' : 'activated'}.`)
         })
     }
 }

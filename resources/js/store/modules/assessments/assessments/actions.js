@@ -115,3 +115,9 @@ export const deleteAssessmentPageItem = async ({ state, dispatch, commit }, item
 
     await commit('SET_CURRENT_PAGE', state.currentPage.number)
 }
+
+export const activateParticipant = async ({ dispatch, state }, payload) => {
+    await axios.patch(`${urlBase}/api/assessments/participants/activate?id=${payload.participantId}&activated=${payload.isActivated}`)
+
+    await dispatch('fetch')
+}
