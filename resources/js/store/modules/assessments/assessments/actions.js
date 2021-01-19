@@ -63,7 +63,7 @@ export const setCurrentPage = async ({ commit }, page) => {
 }
 
 export const destroyPage = async ({ dispatch, commit, state }, pageId) => {
-    await axios.delete(`${urlBase}/api/assessments/page/${pageId}`)
+    await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/page/${pageId}`)
 
     await dispatch('fetchPages', state.assessment.id)
 }
@@ -87,7 +87,7 @@ export const fetchAvailableQuestions = async ({ commit }, assessmentId) => {
 }
 
 export const addQuestionToPage = async ({ commit, state, dispatch }, payload) => {
-    await axios.post(`${urlBase}/api/assessments/page/${state.currentPage.id}/add-question`, { payload })
+    await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/page/${state.currentPage.id}/add-question`, { payload })
 
     await dispatch('fetchPages', state.assessment.id)
 
@@ -97,11 +97,11 @@ export const addQuestionToPage = async ({ commit, state, dispatch }, payload) =>
 }
 
 export const addContentToPage = async ({ state }) => {
-    return axios.post(`${urlBase}/api/assessments/page/${state.currentPage.id}/add-content`)
+    return axios.post(`${urlBase}/api/assessments/${state.assessment.id}/page/${state.currentPage.id}/add-content`)
 }
 
 export const changeCurrentPageItemOrder = async ({ state, dispatch, commit }, payload) => {
-    await axios.patch(`${urlBase}/api/assessment/page/${state.currentPage.id}/change-order`, payload)
+    await axios.patch(`${urlBase}/api/assessment/${state.assessment.id}/page/${state.currentPage.id}/change-order`, payload)
 
     await dispatch('fetchPages', state.assessment.id)
 
@@ -109,7 +109,7 @@ export const changeCurrentPageItemOrder = async ({ state, dispatch, commit }, pa
 }
 
 export const deleteAssessmentPageItem = async ({ state, dispatch, commit }, itemId) => {
-    await axios.delete(`${urlBase}/api/assessments/page/content/${itemId}`)
+    await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/page/content/${itemId}`)
 
     await dispatch('fetchPages', state.assessment.id)
 
@@ -117,7 +117,7 @@ export const deleteAssessmentPageItem = async ({ state, dispatch, commit }, item
 }
 
 export const activateParticipant = async ({ dispatch, state }, payload) => {
-    await axios.patch(`${urlBase}/api/assessments/participants/activate?id=${payload.participantId}&activated=${payload.isActivated}`)
+    await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/participants/activate?id=${payload.participantId}&activated=${payload.isActivated}`)
 
     await dispatch('fetch')
 }

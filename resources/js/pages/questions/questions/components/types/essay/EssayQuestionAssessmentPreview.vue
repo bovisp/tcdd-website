@@ -103,6 +103,7 @@
 <script>
 import { find, orderBy } from 'lodash-es'
 import { pascalCase } from 'change-case'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
     props: {
@@ -127,6 +128,10 @@ export default {
     },
 
     computed: {
+        ...mapGetters({
+            assessment: 'assessments/assessment'
+        }),
+
         questionNumber () {
             return this.question.model.assessment_page_content_items[0].question_number
         },
@@ -149,6 +154,15 @@ export default {
 
         pascalCase,
 
+        ...mapActions({
+            fetchPages: 'assessments/fetchPages'
+        }),
+
+        ...mapMutations({
+            updatePage: 'assessments/SET_CURRENT_PAGE',
+            updatePageScore: 'assessments/SET_CURRENT_PAGE_SCORE'
+        }),
+
         cancel () {
             this.form.answer.text = ''
             this.submitting = false
@@ -169,9 +183,15 @@ export default {
         async changeScore () {
             let assessmentPageContentItemId = this.question.model.assessment_page_content_items[0].id
 
-            let { data } = await axios.patch(`${this.urlBase}/api/assessments/questions/${assessmentPageContentItemId}/change-score`, {
+            let { data } = await axios.patch(`${this.urlBase}/api/assessments/${this.assessment.id}/questions/${assessmentPageContentItemId}/change-score`, {
                 score: this.score
             })
+
+            await this.fetchPages(this.assessment.id)
+
+            await this.updatePage()
+
+            await this. updatePageScore()
 
             this.question.model.assessment_page_content_items[0].question_score = data
 

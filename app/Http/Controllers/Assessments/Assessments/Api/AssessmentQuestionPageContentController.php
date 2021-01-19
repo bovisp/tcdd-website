@@ -14,12 +14,26 @@ use App\Http\Resources\Assessments\AssessmentPageResource;
 
 class AssessmentQuestionPageContentController extends Controller
 {
-    public function index(AssessmentPage $page)
-    {      
-        return new AssessmentPageResource($page);
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (auth()->user()->hasRole('administrator')) {
+                return $next($request);
+            }
+
+            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
+
+            $assessment = Assessment::find((int) $matches[1][0]);
+
+            if ($assessment->editors->contains('id', auth()->id())) {
+                return $next($request);
+            }
+            
+            abort(403);
+        });
     }
 
-    public function addQuestion(AssessmentPage $page)
+    public function addQuestion(Assessment $assessment, AssessmentPage $page)
     {
         // Get any existing page content to determine the order placing of the new content.
         $content = AssessmentPageContent::whereAssessmentPageId($page->id)
@@ -73,7 +87,7 @@ class AssessmentQuestionPageContentController extends Controller
         }
     }
 
-    public function addContent(AssessmentPage $page)
+    public function addContent(Assessment $assessment, AssessmentPage $page)
     {
         // Get any existing page content to determine the order placing of the new content.
         $content = AssessmentPageContent::whereAssessmentPageId($page->id)
@@ -131,7 +145,7 @@ class AssessmentQuestionPageContentController extends Controller
         ];
     }
     
-    public function reorder(AssessmentPage $page)
+    public function reorder(Assessment $assessment, AssessmentPage $page)
     {   
         $moved = AssessmentPageContent::find(request('moved'));
 
@@ -172,7 +186,7 @@ class AssessmentQuestionPageContentController extends Controller
         }
     }
 
-    public function destroyTempItem (AssessmentPage $page)
+    public function destroyTempItem (Assessment $assessment, AssessmentPage $page)
     {
         if (request('type') === 'content') {
             ContentBuilder::find([
@@ -206,7 +220,7 @@ class AssessmentQuestionPageContentController extends Controller
         AssessmentPageContent::find(request('data')['assessmentPageContent']['id'])->delete();
     }
 
-    public function destroy(AssessmentPageContent $content)
+    public function destroy(Assessment $assessment, AssessmentPageContent $content)
     {
         $contentItems = $content->assessmentPageContentItems->each(function($item) {
             if ($item->type === 'ContentBuilder') {

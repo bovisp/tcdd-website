@@ -63,7 +63,8 @@ export default {
 
     computed: {
         ...mapGetters({
-            currentPage: 'assessments/currentPage'
+            currentPage: 'assessments/currentPage',
+            assessment: 'assessments/assessment'
         })
     },
 
@@ -75,7 +76,7 @@ export default {
 
         async destroy () {
             if (this.type === 'content') {
-                let { data } = await axios.delete(`${this.urlBase}/api/assessments/page/${this.currentPage.id}/content`, {
+                let { data } = await axios.delete(`${this.urlBase}/api/assessments/${this.assessment.id}/page/${this.currentPage.id}/content`, {
                     data: {
                         type: this.type,
                         data: this.data

@@ -11,6 +11,25 @@ use App\Http\Resources\Assessments\AssessmentPageResource;
 
 class AssessmentQuestionPagesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (auth()->user()->hasRole('administrator')) {
+                return $next($request);
+            }
+
+            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
+
+            $assessment = Assessment::find((int) $matches[1][0]);
+
+            if ($assessment->editors->contains('id', auth()->id())) {
+                return $next($request);
+            }
+            
+            abort(403);
+        });
+    }
+
     public function index(Assessment $assessment) {
         return AssessmentPageResource::collection($assessment->pages);
     }
@@ -44,7 +63,7 @@ class AssessmentQuestionPagesController extends Controller
         ]);
     }
 
-    public function destroy(AssessmentPage $page)
+    public function destroy(Assessment $assessment, AssessmentPage $page)
     {
         $assessmentPageContents = $page->assessmentPageContents;
 
