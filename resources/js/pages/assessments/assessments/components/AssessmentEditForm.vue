@@ -186,6 +186,33 @@
             </div>
 
             <div
+                class="w-full mb-4"
+            >
+                <label 
+                    class="block text-gray-700 font-bold mb-2" 
+                    :class="{ 'text-red-500': errors.completion_time }"
+                    for="completion_time"
+                >
+                    Completion time (minutes)
+                </label>
+
+                <input 
+                    type="number" 
+                    min="1"
+                    v-model="form.completion_time"
+                    class="shadow appearance-none border rounded w-full md:w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
+                    id="completion_time"
+                    :class="{ 'border-red-500': errors.completion_time }"
+                >
+
+                <p
+                    v-if="errors.completion_time"
+                    v-text="errors.completion_time[0]"
+                    class="text-red-500 text-sm"
+                ></p>
+            </div>
+
+            <div
                 class="w-full"
             >
                 <button 
@@ -225,12 +252,8 @@ export default {
                 description_fr: '',
                 section_id: null,
                 assessment_type_id: null,
-                visible: 0
+                completion_time: null
             },
-            visibilities: [
-                { name: 'Hidden', value: 0 },
-                { name: 'Visible', value: 1 }
-            ],
             assessmentTabs: [
                 { id: 1, name: 'Edit settings' },
                 { id: 2, name: 'Instructors' },
@@ -262,7 +285,7 @@ export default {
             this.form.description_fr = ''
             this.form.section_id = null
             this.form.type_id = null
-            this.form.visibility = 0
+            this.form.completion_time = null
         },
 
         async update () {
@@ -284,7 +307,7 @@ export default {
         this.form.description_fr = this.assessment.description_fr
         this.form.section_id = this.assessment.section_id
         this.form.assessment_type_id = this.assessment.assessment_type_id
-        this.form.visible = this.assessment.visible
+        this.form.completion_time = this.assessment.completion_time
     }
 }
 </script>

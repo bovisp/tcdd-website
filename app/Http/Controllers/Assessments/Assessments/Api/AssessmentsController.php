@@ -50,7 +50,8 @@ class AssessmentsController extends Controller
             'description_en' => 'required|min:3',
             'description_fr' => 'required|min:3',
             'assessment_type_id' => 'required|exists:assessment_types,id',
-            'section_id' => 'required|exists:sections,id'
+            'section_id' => 'required|exists:sections,id',
+            'completion_time' => 'nullable|integer|min:1'
         ]);
 
         $assessment = Assessment::create([
@@ -63,7 +64,8 @@ class AssessmentsController extends Controller
                 'fr' => request('description_fr')
             ],
             'assessment_type_id' => request('assessment_type_id'),
-            'section_id' => request('section_id')
+            'section_id' => request('section_id'),
+            'completion_time' => request('completion_time')
         ]);
 
         $assessment->editors()->attach(auth()->id());
@@ -84,7 +86,8 @@ class AssessmentsController extends Controller
             'description_en' => 'required|min:3',
             'description_fr' => 'required|min:3',
             'assessment_type_id' => 'required|exists:assessment_types,id',
-            'section_id' => 'required|exists:sections,id'
+            'section_id' => 'required|exists:sections,id',
+            'completion_time' => 'nullable|integer|min:1'
         ]);
 
         $assessment->update([
@@ -97,7 +100,8 @@ class AssessmentsController extends Controller
                 'fr' => request('description_fr')
             ],
             'assessment_type_id' => request('assessment_type_id'),
-            'section_id' => request('section_id')
+            'section_id' => request('section_id'),
+            'completion_time' => request('completion_time')
         ]);
 
         return response()->json([

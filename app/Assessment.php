@@ -20,7 +20,8 @@ class Assessment extends Model
         'name',
         'description',
         'assessment_type_id',
-        'section_id'
+        'section_id',
+        'completion_time'
     ];
 
     public function section()
