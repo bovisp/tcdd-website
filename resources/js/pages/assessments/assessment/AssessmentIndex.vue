@@ -68,7 +68,7 @@ export default {
 
             let { data: attempt } = await this.start(this.assessment.id)
 
-            window.location.href = `${this.urlBase}/assessment/${this.assessment.id}/attempt/${attempt.id}`
+            window.location.href = `${this.urlBase}/assessment/${this.assessment.id}/attempt/${attempt.data.id}`
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Assessments\Assessment;
 
+use Carbon\Carbon;
 use App\Assessment;
 use App\AssessmentAttempt;
 use App\Http\Controllers\Controller;
@@ -24,7 +25,7 @@ class AssessmentAttemptController extends Controller
                 ->first();
 
             if (!$participantActive) {
-                abort(403, 'You are not authorized to view this exam');
+                return redirect(env('APP_URL') . "/users/" . auth()->id());
             }
 
             $attempt = AssessmentAttempt::whereAssessmentParticipantId(
@@ -32,6 +33,16 @@ class AssessmentAttemptController extends Controller
             )->first();
             
             if ($attempt) {
+                $time_remaining = $assessment->completion_time - Carbon::now()->diffInMinutes($attempt->created_at);
+
+                if ($time_remaining <= 0) {
+                    $participantActive->pivot->activated = 0;
+
+                    $participantActive->pivot->save();
+                    
+                    return redirect(env('APP_URL') . "/users/{$participantActive->id}");
+                }
+
                 return redirect(env('APP_URL') . "/assessment/{$assessment->id}/attempt/{$attempt->id}");
             }
 
@@ -50,18 +61,28 @@ class AssessmentAttemptController extends Controller
                 ->first();
 
             if (!$participantActive) {
-                abort(403, 'You are not authorized to view this exam');
+                return redirect(env('APP_URL') . "/users/" . auth()->id());
             }
 
             preg_match_all("/\/attempt\/([\d]+)/",request()->url(),$matches);
 
             $attempt = AssessmentAttempt::find((int) $matches[1][0]);
 
-            if ($attempt) {
-                return $next($request);
+            if (!$attempt) {
+                return redirect(env('APP_URL') . "/assessment/{$assessment->id}");    
             }
 
-            return redirect("{env('APP_URL')}/assessment/{$assessment->id}");
+            $time_remaining = $assessment->completion_time - Carbon::now()->diffInMinutes($attempt->created_at);
+
+            if ($time_remaining <= 0) {
+                $participantActive->pivot->activated = 0;
+
+                $participantActive->pivot->save();
+
+                return redirect(env('APP_URL') . "/users/{$participantActive->id}");
+            }
+
+            return $next($request);
         })->only(['show']);
     }
 
@@ -72,6 +93,6 @@ class AssessmentAttemptController extends Controller
 
     public function show(Assessment $assessment, AssessmentAttempt $attempt)
     {
-        return view('assessments.assessment.show', compact('attempt'));
+        return view('assessments.assessment.show', compact('attempt', 'assessment'));
     }
 }

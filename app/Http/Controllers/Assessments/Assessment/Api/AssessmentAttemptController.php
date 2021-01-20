@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Assessments\Assessment\Api;
 use App\Assessment;
 use App\AssessmentAttempt;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Assessments\AssessmentAttemptResource;
 
 class AssessmentAttemptController extends Controller
 {
@@ -44,8 +46,8 @@ class AssessmentAttemptController extends Controller
                 return $next($request);
             }
 
-            return redirect("{env('APP_URL')}/assessments/{$assessment->id}");
-        })->only(['show']);
+            return response()->json('You are not authorized to view this exam', 422);
+        })->only(['show', 'update']);
     }
 
     public function store(Assessment $assessment)
@@ -57,9 +59,24 @@ class AssessmentAttemptController extends Controller
             ->first();
             
         $assessmentAttempt = AssessmentAttempt::create([
-            'assessment_participant_id' => $participantActive->pivot->id
+            'assessment_participant_id' => $participantActive->pivot->id,
+            'time_remaining' => $assessment->completion_time ? $assessment->completion_time : null
         ]);
 
-        return $assessmentAttempt;
+        return new AssessmentAttemptResource($assessmentAttempt);
+    }
+
+    public function show(Assessment $assessment, AssessmentAttempt $attempt)
+    {
+        return new AssessmentAttemptResource($attempt); 
+    }
+
+    public function update(Assessment $assessment, AssessmentAttempt $attempt)
+    {
+        DB::table('assessment_participants')
+            ->where('id', $attempt->assessment_participant_id)
+            ->update([
+                'activated' => 0
+            ]);
     }
 }

@@ -3,7 +3,8 @@
 @section('content')
 
     <assessment-show
-        :attempt="{{ json_encode($attempt) }}"
+        :assessment-attempt="{{ json_encode($attempt) }}"
+        :assessment="{{ json_encode($assessment) }}"
     />
 
 @endsection
