@@ -1,6 +1,6 @@
 <template>
     <div 
-        v-if="user.assessments"
+        v-if="user.assessments && user.assessments.length"
         class="w-full"
     >
         <h2 class="text-2xl">
@@ -14,7 +14,7 @@
                 class="my-1"
             >
                 <a 
-                    :href="`${urlBase}/assessments/${assessment.id}`"
+                    :href="`${urlBase}/assessment/${assessment.id}`"
                 >
                     {{ assessment.name }}
                 </a>

@@ -47,7 +47,6 @@ Route::post('/api/users/{user}/role/{role}', 'Supervisors\Api\SupervisorsControl
 Route::get('/assessments/assessment-types', 'Assessments\AssessmentTypes\AssessmentTypesController@index');
 Route::resource('/api/assessments/assessment-types', 'Assessments\AssessmentTypes\Api\AssessmentTypesController');
 Route::get('/assessments', 'Assessments\Assessments\AssessmentsController@index');
-Route::get('/assessments/{assessment}', 'Assessments\Assessments\AssessmentsController@show');
 Route::resource('/api/assessments', 'Assessments\Assessments\Api\AssessmentsController');
 Route::put('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@update');
 Route::get('/api/assessments/{assessment}/instructors/create', 'Assessments\Assessments\Api\AssessmentInstructorsController@create');
@@ -67,8 +66,11 @@ Route::post('/api/assessments/{assessment}/page/{page}/add-content', 'Assessment
 Route::delete('/api/assessments/{assessment}/page/content/{content}', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@destroy');
 Route::delete('/api/assessments/{assessment}/page/{page}/content', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@destroyTempItem');
 Route::patch('/api/assessment/{assessment}/page/{page}/change-order', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@reorder');
-
 Route::patch('/api/assessments/{assessment}/questions/{item}/change-score', 'Assessments\Assessments\Api\AssessmentQuestionContentController@changeScore');
+
+Route::get('/assessment/{assessment}', 'Assessments\Assessment\AssessmentAttemptController@index');
+Route::post('/api/assessment/{assessment}/attempt', 'Assessments\Assessment\Api\AssessmentAttemptController@store');
+Route::get('/assessment/{assessment}/attempt/{attempt}', 'Assessments\Assessment\AssessmentAttemptController@show');
 
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');
