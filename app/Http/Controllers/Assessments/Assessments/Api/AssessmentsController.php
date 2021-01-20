@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Assessments\Assessments\Api;
 
 use App\Assessment;
+use App\ContentBuilder;
+use App\ContentBuilderType;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Assessments\AssessmentResource;
 
@@ -114,6 +117,46 @@ class AssessmentsController extends Controller
 
     public function destroy(Assessment $assessment)
     {
+        DB::table('assessment_participants')->where('assessment_id', '=', $assessment->id)->delete();
+
+        DB::table('assessment_editors')->where('assessment_id', '=', $assessment->id)->delete();
+
+        foreach($assessment->pages as $page) {
+            $assessmentPageContents = $page->assessmentPageContents;
+
+            $assessmentPageContents->each(function ($contentItem) {
+                $contentItem->assessmentPageContentItems->each(function ($item) {
+                    if ($item->type === 'ContentBuilder') {
+                        $contentBuilder = ContentBuilder::find($item->model_id);
+        
+                        $contentBuilder->parts->each(function ($part) {
+                            $type = ContentBuilderType::find($part->content_builder_type_id)->type;
+        
+                            $typeClassName = 'App\\' . ucfirst($type) . 'Part';
+        
+                            $partType = $typeClassName::wherePartId($part->id)->first();
+        
+                            $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
+        
+                            (new $destroyClassName($partType))->delete();
+        
+                            $part->delete();
+                        });
+        
+                        $contentBuilder->delete();
+                    }
+                });
+            });
+
+            $assessmentPageContents->each(function ($content) {
+                $content->assessmentPageContentItems->each->delete();
+            });
+
+            $assessmentPageContents->each->delete();
+
+            $page->delete();
+        }
+
         $assessment->delete();
 
         return response()->json([
