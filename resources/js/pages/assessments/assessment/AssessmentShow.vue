@@ -1,6 +1,22 @@
 <template>
-    <div>
-        {{ attempt }}
+    <div v-if="attempt">
+        <div class="flex items-center mt-8">
+            <h1 
+                class="font-normal text-4xl"
+                v-if="attempt.assessment"
+            >
+                {{ attempt.assessment.name }}
+            </h1>
+
+            <span
+                class="ml-auto text-xl"
+                v-if="totalScore"
+            ><strong>Total score:</strong> {{ totalScore }} points</span>
+        </div>
+
+        <assessment-attempt-page />
+
+        <assessment-attempt-footer />
     </div>
 </template>
 
@@ -21,14 +37,16 @@ export default {
 
     computed: {
         ...mapGetters({
-            attempt: 'assessment/attempt'
+            attempt: 'assessment/attempt',
+            totalScore: 'assessment/totalScore'
         })
     },
 
     methods: {
         ...mapActions({
             checkTimeRemaining: 'assessment/checkTimeRemaining',
-            fetch: 'assessment/fetch'
+            fetch: 'assessment/fetch',
+            getTotalScore: 'assessment/getTotalScore'
         })
     },
 
@@ -37,6 +55,8 @@ export default {
             attempt: this.assessmentAttempt,
             assessment: this.assessment
         })
+
+        await this.getTotalScore()
 
         console.log(this.attempt)
 

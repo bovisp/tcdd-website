@@ -1,3 +1,5 @@
 export default {
-    attempt: {}
+    attempt: {},
+    currentPage: {},
+    totalScore: null
 }

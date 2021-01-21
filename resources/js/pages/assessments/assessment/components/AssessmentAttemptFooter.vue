@@ -1,0 +1,73 @@
+<template>
+    <div
+        class="fixed h-16 w-full bottom-0 left-0 mx-auto flex items-center px-8 bg-gray-100"
+        style="box-shadow: 0px 0 10px rgba(0, 0, 0, 0.1);"
+        v-if="attempt"
+    >
+        <span
+            class="text-lg"
+            v-if="attempt.time_remaining"
+        >
+            <strong>Time remaining:</strong> {{ attempt.time_remaining }} minutes
+        </span>
+
+        <template v-if="attempt.pages">
+            <button 
+                class="btn btn-blue ml-auto"
+                :class="hasPrevPage ? '' : 'btn-disabled'"
+                :disabled="!hasPrevPage"
+                @click.prevent="changePage(currentPage.number - 1)"
+            >
+                <i class="fas fa-chevron-left"></i>
+
+                Save all and previous page
+            </button>
+
+            <button 
+                class="btn btn-blue ml-4"
+                :class="hasNextPage ? '' : 'btn-disabled'"
+                :disabled="!hasNextPage"
+                @click.prevent="changePage(currentPage.number + 1)"
+            >
+                Save all and next page
+
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </template>
+    </div>
+</template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+    computed: {
+        ...mapGetters({
+            attempt: 'assessment/attempt',
+            currentPage: 'assessment/currentPage'
+        }),
+
+        hasPrevPage () {
+            if (this.attempt.pages.length === 1 || this.currentPage.number === 1) {
+                return false
+            }
+
+            return true
+        },
+
+        hasNextPage () {
+            if (this.attempt.pages.length === 1 || this.currentPage.number === this.attempt.pages.length) {
+                return false
+            }
+
+            return true
+        }
+    },
+
+    methods: {
+        ...mapActions({
+            changePage: 'assessment/changePage'
+        })
+    }
+}
+</script>

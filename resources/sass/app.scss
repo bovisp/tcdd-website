@@ -57,6 +57,14 @@ a {
     @apply px-2 py-1;
 }
 
+.btn-disabled {
+  @apply opacity-50 cursor-not-allowed bg-gray-600 border-gray-600;
+}
+
+.btn-disabled:hover {
+  @apply opacity-50 cursor-not-allowed  bg-gray-600  border-gray-600;
+}
+
 .alert {
     @apply px-4 py-3 rounded border;
 }
