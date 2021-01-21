@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Assessments\Assessment\Api;
 
+use Carbon\Carbon;
 use App\Assessment;
 use App\AssessmentAttempt;
 use Illuminate\Http\Request;
@@ -38,15 +39,35 @@ class AssessmentAttemptController extends Controller
 
             $assessment = Assessment::find((int) $matches[1][0]);
 
+            $participantActive = $assessment->participants
+                ->filter(function ($participant) {
+                    return $participant->pivot->activated && $participant->id === auth()->id();
+                })
+                ->first();
+
+            if (!$participantActive) {
+                abort(403, 'You are not authorized to view this exam');
+            }
+
             preg_match_all("/\/attempt\/([\d]+)/",request()->url(),$matches);
 
             $attempt = AssessmentAttempt::find((int) $matches[1][0]);
 
-            if ($attempt) {
-                return $next($request);
+            if (!$attempt) {
+                abort(403, 'You are not authorized to view this exam');
             }
 
-            return response()->json('You are not authorized to view this exam', 422);
+            $time_remaining = $assessment->completion_time - Carbon::now()->diffInMinutes($attempt->created_at);
+
+            if ($time_remaining <= 0) {
+                $participantActive->pivot->activated = 0;
+
+                $participantActive->pivot->save();
+
+                abort(403, 'You are not authorized to view this exam');
+            }
+
+            return $next($request);
         })->only(['show', 'update']);
     }
 
