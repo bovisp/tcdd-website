@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Assessments;
 
+use App\ContentBuilder;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AssessmentAttemptResource extends JsonResource
@@ -50,6 +51,7 @@ class AssessmentAttemptResource extends JsonResource
                                     'type' => $item->type,
                                     'id' => $item->id,
                                     'model_id' => $item->model_id,
+                                    'lang' => ContentBuilder::find($item->model_id)->language,
                                     'assessment_page_content_id' => $item->assessment_page_content_id
                                 ];
                             })
