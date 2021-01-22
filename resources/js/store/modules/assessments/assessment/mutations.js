@@ -13,3 +13,5 @@ export const SET_CURRENT_PAGE = async (state, page = 1) => {
 }
 
 export const SET_TOTAL_SCORE = (state, totalScore) => state.totalScore = totalScore
+
+export const SET_CURRENT_PAGE_SCORE = (state, currentPageScore) => state.currentPageScore = currentPageScore

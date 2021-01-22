@@ -49,3 +49,15 @@ export const getTotalScore = async ({ state, commit }) => {
 
     await commit('SET_TOTAL_SCORE', totalScore)
 }
+
+export const getCurrentPageScore = async ({ state, commit }) => {
+    let currentPageScore = 0
+
+    for await (let item of state.currentPage.content) {
+        if (item.items[0].type === 'Question') {
+            currentPageScore += item.items[0].question_score
+        }
+    }
+
+    await commit('SET_CURRENT_PAGE_SCORE', currentPageScore)
+}
