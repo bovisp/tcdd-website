@@ -75,6 +75,7 @@ Route::get('/api/assessment/{assessment}/attempt/{attempt}', 'Assessments\Assess
 Route::patch('/api/assessment/{assessment}/attempt/{attempt}', 'Assessments\Assessment\Api\AssessmentAttemptController@update');
 
 Route::get('/api/assessment/{assessment}/attempt/{attempt}/time', 'Assessments\Assessment\Api\AttemptTimeController@index');
+Route::get('/api/assessment/{assessment}/assessment/{attempt}/question/{question}', 'Assessments\Assessment\Api\AttemptQuestionController@show');
 
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');

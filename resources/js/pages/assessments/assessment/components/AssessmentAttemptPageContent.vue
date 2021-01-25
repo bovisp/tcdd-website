@@ -13,10 +13,9 @@
 
         <template v-if="content.items[0].type === 'Question'">
             <div class="mb-6">
-                Question
-                <!-- <assessment-page-question 
-                    :question="data"
-                /> -->
+                <assessment-attempt-question 
+                    :data="content"
+                />
             </div>
         </template>
     </div>
