@@ -2,5 +2,6 @@ export default {
     attempt: {},
     currentPage: {},
     totalScore: null,
-    currentPageScore: null
+    currentPageScore: null,
+    form: {}
 }

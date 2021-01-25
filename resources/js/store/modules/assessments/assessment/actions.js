@@ -61,3 +61,13 @@ export const getCurrentPageScore = async ({ state, commit }) => {
 
     await commit('SET_CURRENT_PAGE_SCORE', currentPageScore)
 }
+
+export const updateAttemptForm = async ({ commit }, payload) => {
+    await commit('UPDATE_ATTEMPT_FORM', payload)
+}
+
+export const fetchAttemptForm = async ({ commit, state }) => {
+    if (localStorage.getItem(`assessment_${state.attempt.id}`)) {
+        await commit('SET_ATTEMPT_FORM', JSON.parse(localStorage.getItem(`assessment_${state.attempt.id}`)))
+    }
+}

@@ -16,6 +16,8 @@
             v-if="data.data.drawing_options"
             :background-image="data.data.drawing_options.background_image[0].file"
             :pen-colors="data.data.drawing_options.pen_colors"
+            :question-id="data.id"
+            :canvas-data="form.drawing"
         />
 
         <div 
@@ -44,8 +46,9 @@
 </template>
 
 <script>
-import { orderBy } from 'lodash-es'
+import { orderBy, get } from 'lodash-es'
 import { pascalCase } from 'change-case'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     props: {
@@ -58,15 +61,43 @@ export default {
     data () {
         return {
             form: {
-                text: ''
-            }
+                text: '',
+                drawing: ''
+            },
+            canvasData: null
         }
     },
 
+    computed: {
+        ...mapGetters({
+            attemptForm: 'assessment/form'
+        })
+    },
+
     methods: {
+        ...mapActions({
+            updateAttemptForm: 'assessment/updateAttemptForm'
+        }),
+
         orderBy,
 
         pascalCase
+    },
+
+    mounted () {
+        if (this.attemptForm && get(this.attemptForm, `question_${this.data.id}.drawing`)) {
+            this.form.drawing = this.attemptForm[`question_${this.data.id}`]['drawing']
+        }
+
+        window.events.$on('draw:data', data => {
+            this.updateAttemptForm({
+                id: this.data.id,
+                key: 'drawing',
+                data
+            })
+
+            this.form.drawing = data
+        })
     }
 }
 </script>

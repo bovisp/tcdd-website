@@ -72,6 +72,14 @@ export default {
             type: Array,
             required: false,
             default: () => ['black']
+        },
+        canvasData: {
+            type: String,
+            required: false
+        },
+        questionId: {
+            type: Number,
+            required: false
         }
     },
 
@@ -112,6 +120,10 @@ export default {
             this.modalActive = false
 
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+            if (this.questionId) {
+                window.events.$emit('draw:data', canvas.toDataURL())
+            }
         },
 
         getClientOffset (e) {
@@ -134,6 +146,10 @@ export default {
 
         finishedPainting() {
             this.painting = false
+
+            if (this.questionId) {
+                window.events.$emit('draw:data', canvas.toDataURL())
+            }
         },
 
         draw(e) {
@@ -185,9 +201,17 @@ export default {
         background.onload = function() {
             that.canvas.height = this.height
             that.canvas.width = this.width
-        }
 
-        this.vueCanvas = this.ctx
+            if (that.questionId && that.canvasData) {
+                let img = new Image()
+
+                img.onload = function(){
+                    that.ctx.drawImage(img,0,0)
+                }
+
+                img.src = that.canvasData
+            }
+        }
 
         window.events.$on('draw:save', async () => {
             let can2 = document.createElement('canvas')

@@ -46,7 +46,8 @@ export default {
         ...mapActions({
             checkTimeRemaining: 'assessment/checkTimeRemaining',
             fetch: 'assessment/fetch',
-            getTotalScore: 'assessment/getTotalScore'
+            getTotalScore: 'assessment/getTotalScore',
+            fetchAttemptForm: 'assessment/fetchAttemptForm'
         })
     },
 
@@ -55,6 +56,8 @@ export default {
             attempt: this.assessmentAttempt,
             assessment: this.assessment
         })
+
+        await this.fetchAttemptForm()
 
         await this.getTotalScore()
 
