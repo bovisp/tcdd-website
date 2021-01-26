@@ -330,4 +330,12 @@ a {
   border-radius: 0.75rem;
 }
 
+.assessment-attempt-item {
+  margin-bottom: 5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
 @tailwind utilities;

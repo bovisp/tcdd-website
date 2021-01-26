@@ -1,6 +1,8 @@
 <template>
-    <div v-if="attempt">
-        <div class="flex items-center mt-8">
+    <div v-if="attempt"
+        class="mt-8 mb-32"
+    >
+        <div class="flex items-center">
             <h1 
                 class="font-normal text-4xl"
                 v-if="attempt.assessment"

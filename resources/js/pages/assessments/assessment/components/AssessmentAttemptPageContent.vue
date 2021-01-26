@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="assessment-attempt-item">
         <template v-if="content.items[0].type === 'ContentBuilder'">
             <div class="mb-6">
                 <component 

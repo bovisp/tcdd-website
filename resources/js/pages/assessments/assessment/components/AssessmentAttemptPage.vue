@@ -1,5 +1,7 @@
 <template>
-    <div v-if="currentPage">
+    <div 
+        v-if="currentPage"
+    >
         <h2 class="font-normal text-2xl my-6">
             Page {{ currentPage.number }} 
             <span v-if="currentPageScore">({{ currentPageScore }} points)</span>
