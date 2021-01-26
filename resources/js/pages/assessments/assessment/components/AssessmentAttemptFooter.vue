@@ -33,6 +33,13 @@
 
                 <i class="fas fa-chevron-right"></i>
             </button>
+
+            <button 
+                class="btn btn-green ml-4"
+                @click.prevent="review"
+            >
+                Review all and submit
+            </button>
         </template>
     </div>
 </template>
@@ -66,8 +73,13 @@ export default {
 
     methods: {
         ...mapActions({
-            changePage: 'assessment/changePage'
-        })
+            changePage: 'assessment/changePage',
+            setReviewStatus: 'assessment/setReviewStatus'
+        }),
+
+        review () {
+            this.setReviewStatus(true)
+        }
     }
 }
 </script>

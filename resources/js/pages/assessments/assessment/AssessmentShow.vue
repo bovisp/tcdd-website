@@ -16,9 +16,21 @@
             ><strong>Total score:</strong> {{ totalScore }} points</span>
         </div>
 
-        <assessment-attempt-page />
+        <assessment-attempt-page 
+            v-if="!reviewStatus"
+        />
 
-        <assessment-attempt-footer />
+        <assessment-attempt-footer 
+            v-if="!reviewStatus"
+        />
+
+        <assessment-attempt-review 
+            v-if="reviewStatus"
+        />
+
+        <assessment-review-footer 
+            v-if="reviewStatus"
+        />
     </div>
 </template>
 
@@ -40,7 +52,8 @@ export default {
     computed: {
         ...mapGetters({
             attempt: 'assessment/attempt',
-            totalScore: 'assessment/totalScore'
+            totalScore: 'assessment/totalScore',
+            reviewStatus: 'assessment/reviewStatus'
         })
     },
 

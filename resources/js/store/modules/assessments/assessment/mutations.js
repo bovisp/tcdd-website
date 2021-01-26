@@ -29,3 +29,65 @@ export const UPDATE_ATTEMPT_FORM = (state, payload) => {
 export const SET_ATTEMPT_FORM = (state, payload) => {
     state.form = payload
 }
+
+export const SET_REVIEW_STATUS = (state, reviewStatus) => state.reviewStatus = reviewStatus
+
+export const SET_ATTEMPT_REVIEW = async (state) => {
+    let attemptReviewQuestionsArr = []
+
+    let attemptObj = JSON.parse(localStorage.getItem(`assessment_${state.attempt.id}`))
+    
+    for await (let page of state.attempt.pages) {
+        if (page.content.length) {
+            for await (let item of page.content) {
+                if (item.items[0].type === 'Question') {
+                    let { data: question } = await axios.get(`
+                        ${urlBase}/api/assessment/${state.attempt.assessment.id}/attempt/${state.attempt.id}/question/${item.items[0].model_id}
+                    `)
+
+                    let requiredQuestionKeys = []
+
+                    switch (question.data.type) {
+                        case 'essay':
+                            requiredQuestionKeys.push('text')
+                            break
+                        case 'multiple_choice':
+                            requiredQuestionKeys.push('answers')
+                            break
+                        case 'drawing':
+                            if (question.data.data.text_answer) {
+                                requiredQuestionKeys.push('drawing', 'text')
+                                break
+                            } else {
+                                requiredQuestionKeys.push('drawing')
+                                break
+                            }
+                    }
+
+                    let existingQuestionKeys = []
+
+                    if (attemptObj[`question_${item.items[0].model_id}`]) {
+                        existingQuestionKeys.push(...Object.keys(attemptObj[`question_${item.items[0].model_id}`]))
+                    }
+
+                    attemptReviewQuestionsArr.push({
+                        question_number: item.items[0].question_number,
+                        question_score: item.items[0].question_score,
+                        question_id: item.items[0].model_id,
+                        page: page.number,
+                        required_answer_keys: requiredQuestionKeys,
+                        existing_question_keys: existingQuestionKeys
+                    })
+                }
+            }
+        }
+    }
+
+    state.attemptReview.questions = attemptReviewQuestionsArr
+}
+
+export const SET_ATTEMPT_STORAGE = (state) => {
+    if (!localStorage.getItem(`assessment_${state.attempt.id}`)) {
+        localStorage.setItem(`assessment_${state.attempt.id}`, JSON.stringify({}))
+    }
+}

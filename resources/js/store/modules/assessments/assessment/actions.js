@@ -24,6 +24,8 @@ export const fetch = async ({ commit, dispatch }, payload) => {
     await dispatch('checkTimeRemaining')
 
     await commit('SET_CURRENT_PAGE')
+
+    await commit('SET_ATTEMPT_STORAGE')
 }
 
 export const deactivateParticipant = async ({ state }) => {
@@ -62,12 +64,34 @@ export const getCurrentPageScore = async ({ state, commit }) => {
     await commit('SET_CURRENT_PAGE_SCORE', currentPageScore)
 }
 
-export const updateAttemptForm = async ({ commit }, payload) => {
+export const updateAttemptForm = async ({ commit, state, dispatch }, payload) => {
     await commit('UPDATE_ATTEMPT_FORM', payload)
+
+    await dispatch('submitUpdatedForm', localStorage.getItem(`assessment_${state.attempt.id}`))
 }
 
 export const fetchAttemptForm = async ({ commit, state }) => {
     if (localStorage.getItem(`assessment_${state.attempt.id}`)) {
         await commit('SET_ATTEMPT_FORM', JSON.parse(localStorage.getItem(`assessment_${state.attempt.id}`)))
     }
+}
+
+export const submitUpdatedForm = async ({ state }, answers) => {
+    await axios.patch(`${urlBase}/api/assessment/${state.attempt.assessment.id}/attempt/${state.attempt.id}/answers`, {
+        answers
+    })
+}
+
+export const setReviewStatus = async ({ commit }, reviewStatus) => {
+    await commit('SET_REVIEW_STATUS', reviewStatus)
+}
+
+export const fetchReviewData = async ({ commit }) => {
+    await commit('SET_ATTEMPT_REVIEW')
+}
+
+export const goToQuestion = async ({ commit }, question) => {
+    await commit('SET_REVIEW_STATUS', false)
+
+    await commit('SET_CURRENT_PAGE', question.page) 
 }

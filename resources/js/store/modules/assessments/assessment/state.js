@@ -3,5 +3,9 @@ export default {
     currentPage: {},
     totalScore: null,
     currentPageScore: null,
-    form: {}
+    form: {},
+    reviewStatus: false,
+    attemptReview: {
+        questions: {}
+    }
 }

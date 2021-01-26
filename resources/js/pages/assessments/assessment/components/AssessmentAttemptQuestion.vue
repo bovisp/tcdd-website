@@ -47,7 +47,7 @@ export default {
 
     async mounted () {
         let { data: question } = await axios.get(`
-            ${this.urlBase}/api/assessment/${this.attempt.assessment.id}/assessment/${this.attempt.id}/question/${this.data.items[0].model_id}
+            ${this.urlBase}/api/assessment/${this.attempt.assessment.id}/attempt/${this.attempt.id}/question/${this.data.items[0].model_id}
         `)
 
         this.question = question.data

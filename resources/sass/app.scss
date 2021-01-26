@@ -25,6 +25,14 @@ a {
     @apply bg-blue-700;
 }
 
+.btn-green {
+  @apply bg-green-500 text-white border border-green-500;
+}
+
+.btn-green:hover {
+  @apply bg-green-700;
+}
+
 .btn-red {
   @apply bg-red-500 text-white;
 }
