@@ -29,7 +29,7 @@
         </div>
 
         <canvas 
-            id="canvas"
+            :id="`canvas${canvasId}`"
             ref="canvas"
             class="border-2 mx-auto"
             @mousedown="startPainting" 
@@ -57,6 +57,7 @@
 <script>
 import ucfirst from '../../helpers/ucfirst'
 import VSwatches from 'vue-swatches'
+import uuidv4 from '../../helpers/uuidv4'
 
 export default {
     components: { 
@@ -86,7 +87,7 @@ export default {
     data () {
         return {
             strokeColor: this.penColors[0],
-            vueCanvas: null,
+            canvasId: uuidv4(),
             painting: false,
             canvas: null,
             ctx: null,
@@ -122,7 +123,10 @@ export default {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
             if (this.questionId) {
-                window.events.$emit('draw:data', canvas.toDataURL())
+                window.events.$emit('draw:data', {
+                    data: this.canvas.toDataURL(),
+                    id: this.questionId
+                })
             }
         },
 
@@ -148,7 +152,10 @@ export default {
             this.painting = false
 
             if (this.questionId) {
-                window.events.$emit('draw:data', canvas.toDataURL())
+                window.events.$emit('draw:data', {
+                    data: this.canvas.toDataURL(),
+                    id: this.questionId
+                })
             }
         },
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="data">
+    <div v-if="data">
         <div 
             v-if="data.data.parts"
             class="mb-8"
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { orderBy, get } from 'lodash-es'
+import { orderBy, get, debounce } from 'lodash-es'
 import { pascalCase } from 'change-case'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -74,6 +74,18 @@ export default {
         })
     },
 
+    watch: {
+        'form.text': {
+            handler: debounce(function (data) {
+                this.updateAttemptForm({
+                    id: this.data.id,
+                    key: 'text',
+                    data
+                })
+            }, 1000)
+        }
+    },
+
     methods: {
         ...mapActions({
             updateAttemptForm: 'assessment/updateAttemptForm'
@@ -89,14 +101,20 @@ export default {
             this.form.drawing = this.attemptForm[`question_${this.data.id}`]['drawing']
         }
 
-        window.events.$on('draw:data', data => {
-            this.updateAttemptForm({
-                id: this.data.id,
-                key: 'drawing',
-                data
-            })
+        if (this.attemptForm && get(this.attemptForm, `question_${this.data.id}.text`)) {
+            this.form.text = this.attemptForm[`question_${this.data.id}`]['text']
+        }
 
-            this.form.drawing = data
+        window.events.$on('draw:data', data => {
+            if (this.data.id === data.id) {
+                this.updateAttemptForm({
+                    id: this.data.id,
+                    key: 'drawing',
+                    data: data.data
+                })
+
+                this.form.drawing = data.data
+            }
         })
     }
 }

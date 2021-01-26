@@ -61,8 +61,6 @@ export default {
 
         await this.getTotalScore()
 
-        console.log(this.attempt)
-
         if (this.assessment.completion_time) {
             await this.checkTimeRemaining()
 

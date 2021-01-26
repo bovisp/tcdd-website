@@ -50,7 +50,7 @@ export default {
             ${this.urlBase}/api/assessment/${this.attempt.assessment.id}/assessment/${this.attempt.id}/question/${this.data.items[0].model_id}
         `)
 
-        this.question = question
+        this.question = question.data
     }
 }
 </script>
