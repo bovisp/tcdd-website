@@ -112,60 +112,31 @@
 </template>
 
 <script>
-import { find, orderBy } from 'lodash-es'
-import { pascalCase } from 'change-case'
 import unserialize from 'locutus/php/var/unserialize'
 import { VueEditor, Quill } from 'vue2-editor'
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import questionAssessmentPreview from '../../../../../../mixins/questionAssessmentPreview'
 
 export default {
+    mixins: [
+        questionAssessmentPreview
+    ],
+
     components: {
         VueEditor
     },
 
-    props: {
-        question: {
-            type: Object,
-            required: true
-        }
-    },
-
     data () {
         return {
-            parts: [],
             form: {
                 answer: {
                     text: ''
                 }
             },
-            submitting: false,
-            imageSaved: false,
-            editingScore: false,
-            score: null
+            imageSaved: false
         }
     },
 
     computed: {
-        ...mapGetters({
-            assessment: 'assessments/assessment'
-        }),
-
-        questionNumber () {
-            return this.question.model.assessment_page_content_items[0].question_number
-        },
-
-        contentIdForLang () {
-            return find(this.question.items[0].question.content_builder, builder => builder.language === this.currentLang)['id']
-        },
-
-        totalPoints () {
-            return this.question.model.assessment_page_content_items[0].question_score
-        },
-
-        questionData () {
-            return this.question.items[0].question.question_data
-        },
-
         drawingOptions () {
             return unserialize(this.question.items[0].question.question_data.drawing_options)
         }
@@ -178,19 +149,6 @@ export default {
     },
 
     methods: {
-        orderBy,
-
-        pascalCase,
-
-        ...mapActions({
-            fetchPages: 'assessments/fetchPages'
-        }),
-
-        ...mapMutations({
-            updatePage: 'assessments/SET_CURRENT_PAGE',
-            updatePageScore: 'assessments/SET_CURRENT_PAGE_SCORE'
-        }),
-
         async submit () {
             window.events.$emit('draw:save')
         },
@@ -209,44 +167,10 @@ export default {
             this.form.answer.text = ''
             this.form.answer.image = ''
             this.submitting = false
-        },
-
-        editScore () {
-            this.editingScore = true
-
-            this.score = this.question.model.assessment_page_content_items[0].question_score
-        },
-
-        cancelEditScore () {
-            this.editingScore = false
-
-            this.score = null
-        },
-
-        async changeScore () {
-            let assessmentPageContentItemId = this.question.model.assessment_page_content_items[0].id
-
-            let { data } = await axios.patch(`${this.urlBase}/api/assessments/${this.assessment.id}/questions/${assessmentPageContentItemId}/change-score`, {
-                score: this.score
-            })
-
-            await this.fetchPages(this.assessment.id)
-
-            await this.updatePage()
-
-            await this. updatePageScore()
-
-            this.question.model.assessment_page_content_items[0].question_score = data
-
-            this.cancelEditScore()
         }
     },
 
     async mounted () {
-        let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.contentIdForLang}`)
-
-        this.parts = data.data.parts
-
         window.events.$on('draw:saved', file => {
             this.form.answer.image = file
 

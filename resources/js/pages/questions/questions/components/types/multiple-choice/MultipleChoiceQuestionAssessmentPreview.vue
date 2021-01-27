@@ -111,70 +111,27 @@
 </template>
 
 <script>
-import { find, orderBy, map, filter, some } from 'lodash-es'
-import { pascalCase } from 'change-case'
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { map, filter, some } from 'lodash-es'
+import questionAssessmentPreview from '../../../../../../mixins/questionAssessmentPreview'
 
 export default {
-    props: {
-        question: {
-            type: Object,
-            required: true
-        }
-    },
+    mixins: [
+        questionAssessmentPreview
+    ],
 
     data () {
         return {
-            parts: [],
             form: {
                 answer: {
                     answers: []
                 }
             },
-            submitting: false,
             correct: [],
-            answers: [],
-            editingScore: false,
-            score: null
-        }
-    },
-
-    computed: {
-        ...mapGetters({
-            assessment: 'assessments/assessment'
-        }),
-        
-        questionNumber () {
-            return this.question.model.assessment_page_content_items[0].question_number
-        },
-
-        contentIdForLang () {
-            return find(this.question.items[0].question.content_builder, builder => builder.language === this.currentLang)['id']
-        },
-
-        questionData () {
-            return this.question.items[0].question.question_data
-        },
-
-        totalPoints () {
-            return this.question.model.assessment_page_content_items[0].question_score
+            answers: []
         }
     },
 
     methods: {
-        orderBy,
-
-        pascalCase,
-
-        ...mapActions({
-            fetchPages: 'assessments/fetchPages'
-        }),
-
-        ...mapMutations({
-            updatePage: 'assessments/SET_CURRENT_PAGE',
-            updatePageScore: 'assessments/SET_CURRENT_PAGE_SCORE'
-        }),
-
         cancel () {
             this.form.answer.answers = []
             this.submitting = false
@@ -202,44 +159,10 @@ export default {
             }
 
             return this.submitting && this.form.answer.answers.indexOf(answerId) >= 0 && this.correct.indexOf(answerId) === -1
-        },
-
-        editScore () {
-            this.editingScore = true
-
-            this.score = this.question.model.assessment_page_content_items[0].question_score
-        },
-
-        cancelEditScore () {
-            this.editingScore = false
-
-            this.score = null
-        },
-
-        async changeScore () {
-            let assessmentPageContentItemId = this.question.model.assessment_page_content_items[0].id
-
-            let { data } = await axios.patch(`${this.urlBase}/api/assessments/${this.assessment.id}/questions/${assessmentPageContentItemId}/change-score`, {
-                score: this.score
-            })
-
-            await this.fetchPages(this.assessment.id)
-
-            await this.updatePage()
-
-            await this. updatePageScore()
-
-            this.question.model.assessment_page_content_items[0].question_score = data
-
-            this.cancelEditScore()
         }
     },
 
     async mounted () {
-        let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.contentIdForLang}`)
-
-        this.parts = data.data.parts
-
         this.answers = this.shuffleArray(this.question.items[0].question.question_data.answers)
 
         this.correct = map(
