@@ -34,6 +34,12 @@ import { mapGetters, mapActions } from 'vuex'
 import { orderBy } from 'lodash-es'
 
 export default {
+    data () {
+        return {
+            modalActive: false
+        }
+    },
+
     computed: {
         ...mapGetters({
             attemptReview: 'assessment/attemptReview'

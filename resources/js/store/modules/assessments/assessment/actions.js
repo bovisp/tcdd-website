@@ -95,3 +95,13 @@ export const goToQuestion = async ({ commit }, question) => {
 
     await commit('SET_CURRENT_PAGE', question.page) 
 }
+
+export const submitAssessment = async ({ state }) => {
+    await axios.patch(`${urlBase}/api/assessment/${state.attempt.assessment.id}/attempt/${state.attempt.id}/answers`, {
+        answers: localStorage.getItem(`assessment_${state.attempt.id}`)
+    })
+
+    localStorage.removeItem(`assessment_${state.attempt.id}`)
+
+    window.location.href = `${urlBase}/users/31`
+}
