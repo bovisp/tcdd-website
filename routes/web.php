@@ -67,6 +67,7 @@ Route::delete('/api/assessments/{assessment}/page/content/{content}', 'Assessmen
 Route::delete('/api/assessments/{assessment}/page/{page}/content', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@destroyTempItem');
 Route::patch('/api/assessment/{assessment}/page/{page}/change-order', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@reorder');
 Route::patch('/api/assessments/{assessment}/questions/{item}/change-score', 'Assessments\Assessments\Api\AssessmentQuestionContentController@changeScore');
+Route::patch('/api/assessments/{assessment}/questions/{item}/change-page', 'Assessments\Assessments\Api\AssessmentQuestionContentController@changePage');
 
 Route::get('/assessment/{assessment}', 'Assessments\Assessment\AssessmentAttemptController@index');
 Route::post('/api/assessment/{assessment}/attempt', 'Assessments\Assessment\Api\AssessmentAttemptController@store');
