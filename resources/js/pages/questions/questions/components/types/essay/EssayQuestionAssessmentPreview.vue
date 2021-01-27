@@ -20,35 +20,9 @@
                     :part="part"
                 ></component>
 
-                <div class="flex items-center">
-                    <strong class="text-gray-700 mr-1">Points:</strong> 
-                    
-                    <template v-if="!editingScore">
-                        {{ totalPoints }} 
-                        <button 
-                            class="btn btn-text text-sm btn-sm text-blue-500 ml-2"
-                            @click.prevent="editScore"
-                        >Edit</button>
-                    </template>
-
-                    <template v-else>
-                        <input 
-                            type="text"
-                            class="shadow appearance-none border rounded w-32 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
-                            v-model="score"
-                        >
-
-                        <button 
-                            class="btn btn-blue text-sm btn-sm ml-2"
-                            @click.prevent="changeScore"
-                        >Change</button>
-
-                        <button 
-                            class="btn btn-text text-sm btn-sm ml-2"
-                            @click.prevent="cancelEditScore"
-                        >Cancel</button>
-                    </template>
-                </div>
+                <question-edit-score 
+                    :question="question"
+                />
 
                 <div 
                     class="mt-6"
