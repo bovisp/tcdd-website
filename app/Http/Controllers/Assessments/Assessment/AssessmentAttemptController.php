@@ -56,9 +56,9 @@ class AssessmentAttemptController extends Controller
 
             $participantActive = $assessment->participants
                 ->filter(function ($participant) {
-                    return $participant->pivot->activated && $participant->id === auth()->id();
+                    return $participant->pivot->activated && $participant->pivot->participant_id === auth()->id();
                 })
-                ->first();
+                ->count();
 
             if (!$participantActive) {
                 return redirect(env('APP_URL') . "/users/" . auth()->id());
