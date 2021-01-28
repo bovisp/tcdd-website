@@ -17,7 +17,7 @@
             </button>
         </div>
 
-        <template v-if="type === 'question'">
+        <template v-if="type === 'question' && !lockStatus">
             <assessment-questions-add />
         </template>
 
@@ -64,7 +64,8 @@ export default {
     computed: {
         ...mapGetters({
             currentPage: 'assessments/currentPage',
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            lockStatus: 'assessments/lockStatus'
         })
     },
 

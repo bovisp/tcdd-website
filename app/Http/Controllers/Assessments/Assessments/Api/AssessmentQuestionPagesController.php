@@ -28,6 +28,22 @@ class AssessmentQuestionPagesController extends Controller
             
             abort(403);
         });
+
+        $this->middleware(function ($request, $next) {
+            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
+
+            $assessment = Assessment::find((int) $matches[1][0]);
+
+            if ($assessment->locked) {
+                return response()->json([
+                    'data' => [
+                        'message' => 'You cannot do this when the assessment is locked.'
+                    ]
+                ], 403);
+            }
+
+            return $next($request);
+        })->except(['index']);
     }
 
     public function index(Assessment $assessment) {

@@ -12,8 +12,10 @@ export const fetch = async ({ commit, state }) => {
     return
 }
 
-export const setEdit = async ({ commit }, assessment) => {
+export const setEdit = async ({ commit, state }, assessment) => {
     await commit('SET_ASSESSMENT', assessment)
+
+    await commit('SET_LOCK_STATUS', state.assessment.locked)
 
     return
 }
@@ -115,8 +117,16 @@ export const deleteAssessmentPageItem = async ({ state, dispatch, commit }, item
     await commit('SET_CURRENT_PAGE', state.currentPage.number)
 }
 
-export const activateParticipant = async ({ dispatch, state }, payload) => {
-    await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/participants/activate?id=${payload.participantId}&activated=${payload.isActivated}`)
+export const activateParticipant = async ({ dispatch, state, commit }, payload) => {
+    let { data } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/participants/activate?id=${payload.participantId}&activated=${payload.isActivated}`)
 
     await dispatch('fetch')
+
+    await commit('SET_LOCK_STATUS', data > 0 ? true : false)
+}
+
+export const setAssessmentLockStatus = async ({ commit, state }) => {
+    let { data: status } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/lock`)
+
+    await commit('SET_LOCK_STATUS', status)
 }

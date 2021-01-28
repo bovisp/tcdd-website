@@ -32,7 +32,12 @@ class AssessmentParticipantsActivationController extends Controller
         $participant = DB::table('assessment_participants')
             ->where('id', (int) request()->query('id'))
             ->update([
-                'activated' => (int) request()->query('activated') ? 0 : 1
+                'activated' => (int) request()->query('activated') ? 0 : 1,
             ]);
+
+        return DB::table('assessment_participants')
+            ->where('assessment_id', $assessment->id)
+            ->where('activated', 1)
+            ->count();
     }
 }

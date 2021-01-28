@@ -1,5 +1,15 @@
 <template>
     <div class="w-full">
+        <div class="mb-4 flex justify-end">
+            <button 
+                class="btn"
+                :class="lockStatus ? 'btn-red' : 'btn-green'"
+                @click.prevent="setAssessmentLockStatus"
+            >
+                {{ lockText }}
+            </button>
+        </div>
+
         <h1 class="text-3xl font-bold mb-4">
             Edit: Assessment - {{ assessment.name }}
         </h1>
@@ -34,12 +44,23 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     computed: {
         ...mapGetters({
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            lockStatus: 'assessments/lockStatus'
+        }),
+
+        lockText () {
+            return this.lockStatus ? 'Assessment locked' : 'Lock assessment'
+        }
+    },
+
+    methods: {
+        ...mapActions({
+            setAssessmentLockStatus: 'assessments/setAssessmentLockStatus'
         })
     }
 }

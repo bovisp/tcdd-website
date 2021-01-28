@@ -81,7 +81,8 @@ class AssessmentAttemptController extends Controller
             
         $assessmentAttempt = AssessmentAttempt::create([
             'assessment_participant_id' => $participantActive->pivot->id,
-            'time_remaining' => $assessment->completion_time ? $assessment->completion_time : null
+            'time_remaining' => $assessment->completion_time ? $assessment->completion_time : null,
+            'assessment_id' => $assessment->id
         ]);
 
         return new AssessmentAttemptResource($assessmentAttempt);

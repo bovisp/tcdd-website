@@ -19,13 +19,13 @@ class AssessmentAttemptResource extends JsonResource
             'id' => $this->id,
             'assessment_participant_id' => $this->assessment_participant_id,
             'time_remaining' => $this->time_remaining,
-            'assessment' => $this->assessment()->only([
+            'assessment' => $this->assessment->only([
                 'completion_time', 'id', 'name'
             ]),
             'participant' => $this->participant()->only([
                 'fullname', 'id', 'pivot'
             ]),
-            'pages' => $this->assessment()->pages->map(function ($page) {
+            'pages' => $this->assessment->pages->map(function ($page) {
                 return [
                     'id' => $page->id,
                     'assessment_id' => $page->assessment_id,

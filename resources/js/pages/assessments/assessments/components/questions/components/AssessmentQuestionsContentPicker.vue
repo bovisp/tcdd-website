@@ -45,12 +45,29 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     data () {
         return {
             adding: false,
-            contentType: '',
-            types: [
+            contentType: ''
+        }
+    },
+
+    computed: {
+        ...mapGetters({
+            lockStatus: 'assessments/lockStatus'
+        }),
+
+        types () {
+            if (this.lockStatus) {
+                return  [
+                    { code: 'content', name: 'Explanitory content' }
+                ]
+            }
+
+            return [
                 { code: 'question', name: 'Question' },
                 { code: 'content', name: 'Explanitory content' },
             ]

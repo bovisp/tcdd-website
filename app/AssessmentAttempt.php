@@ -11,7 +11,8 @@ class AssessmentAttempt extends Model
 {
     protected $fillable = [
         'assessment_participant_id',
-        'answers'
+        'answers',
+        'assessment_id'
     ];
 
     public function participant()
@@ -39,8 +40,6 @@ class AssessmentAttempt extends Model
 
     public function assessment()
     {
-        $assessmentParticipant = $this->getAssessmentParticipant();
-
-        return Assessment::find($assessmentParticipant->assessment_id);
+        return $this->belongsTo(Assessment::class);
     }
 }

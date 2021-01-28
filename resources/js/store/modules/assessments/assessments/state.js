@@ -5,5 +5,6 @@ export default {
 	totalScore: null,
 	currentPage: null,
 	currentPageScore: null,
-	availableQuestions: null
+	availableQuestions: null,
+	lockStatus: false
 }

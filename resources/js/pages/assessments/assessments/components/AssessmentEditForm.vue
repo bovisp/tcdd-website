@@ -233,9 +233,13 @@
         <hr class="block w-full mt-6 pt-6 border-t border-gray-200">
 
         <destroy-assessment 
-            v-if="hasRole(['administrator'])"
+            v-if="hasRole(['administrator']) && !lockStatus"
             @close="cancel"
         />
+
+        <div class="alert alert-red">
+            You cannot delete this assessment when it has been locked and/or when there are one or more attempts that have been saved to the database.
+        </div>
     </div>
 </template>
 
@@ -266,7 +270,8 @@ export default {
         ...mapGetters({
             sections: 'sections/sections',
             types: 'assessmentTypes/assessmentTypes',
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            lockStatus: 'assessments/lockStatus'
         })
     },
 

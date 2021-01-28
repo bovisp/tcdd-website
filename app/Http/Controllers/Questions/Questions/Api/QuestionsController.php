@@ -216,6 +216,14 @@ class QuestionsController extends Controller
 
     public function destroy(Question $question)
     {
+        if ($question->inAssessment()) {
+            return response()->json([
+                'data' => [
+                    'message' => 'This question belongs to at least one exam. It cannot be deleted.'
+                ]
+            ], 403);
+        }
+
         $question->contentBuilder
             ->each(function (ContentBuilder $contentBuilder) {
                 $contentBuilder->parts->each(function (Part $part) {

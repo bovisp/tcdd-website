@@ -121,6 +121,8 @@ class AssessmentsController extends Controller
 
         DB::table('assessment_editors')->where('assessment_id', '=', $assessment->id)->delete();
 
+        $assessment->attempts->each->delete();
+
         foreach($assessment->pages as $page) {
             $assessmentPageContents = $page->assessmentPageContents;
 

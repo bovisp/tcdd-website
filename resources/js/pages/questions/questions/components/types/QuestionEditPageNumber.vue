@@ -7,10 +7,11 @@
             <button 
                 class="btn btn-text text-sm btn-sm text-blue-500 ml-2"
                 @click.prevent="editPageNumber"
+                v-if="!lockStatus"
             >Edit</button>
         </template>
 
-        <template v-else>
+        <template v-if="editingPageNumber && !lockStatus">
             <div class="relative">
                 <select 
                     id="question_category_id"
@@ -68,7 +69,8 @@ export default {
         ...mapGetters({
             currentPage: 'assessments/currentPage',
             assessment: 'assessments/assessment',
-            pages: 'assessments/pages'
+            pages: 'assessments/pages',
+            lockStatus: 'assessments/lockStatus'
         }),
 
         pageNumber () {

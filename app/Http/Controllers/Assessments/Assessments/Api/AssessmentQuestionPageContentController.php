@@ -31,6 +31,22 @@ class AssessmentQuestionPageContentController extends Controller
             
             abort(403);
         });
+
+        $this->middleware(function ($request, $next) {
+            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
+
+            $assessment = Assessment::find((int) $matches[1][0]);
+
+            if ($assessment->locked) {
+                return response()->json([
+                    'data' => [
+                        'message' => 'You cannot do this when the assessment is locked.'
+                    ]
+                ], 403);
+            }
+
+            return $next($request);
+        })->only(['addQuestion']);
     }
 
     public function addQuestion(Assessment $assessment, AssessmentPage $page)
@@ -149,6 +165,14 @@ class AssessmentQuestionPageContentController extends Controller
     {   
         $moved = AssessmentPageContent::find(request('moved'));
 
+        if ($assessment->locked && $moved->assessmentPageContentItems->first()->type === 'Question') {
+            return response()->json([
+                'data' => [
+                    'message' => 'You cannot do this when the assessment is locked.'
+                ]
+            ], 403);
+        }
+
         $replacement = AssessmentPageContent::where('assessment_page_id', '=', $page->id)
             ->where('order', '=', request('newOrderNumber'))
             ->first();
@@ -222,6 +246,14 @@ class AssessmentQuestionPageContentController extends Controller
 
     public function destroy(Assessment $assessment, AssessmentPageContent $content)
     {
+        if ($assessment->locked && $content->assessmentPageContentItems->first()->type === 'Question') {
+            return response()->json([
+                'data' => [
+                    'message' => 'You cannot do this when the assessment is locked.'
+                ]
+            ], 403);
+        }
+
         $contentItems = $content->assessmentPageContentItems->each(function($item) {
             if ($item->type === 'ContentBuilder') {
                 $contentBuilder = ContentBuilder::find($item->model_id);
