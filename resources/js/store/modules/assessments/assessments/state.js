@@ -6,5 +6,6 @@ export default {
 	currentPage: null,
 	currentPageScore: null,
 	availableQuestions: null,
-	lockStatus: false
+	lockStatus: false,
+	isDuplicate: false
 }

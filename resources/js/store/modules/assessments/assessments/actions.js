@@ -1,9 +1,9 @@
-import { isEmpty, find, orderBy } from 'lodash-es'
+import { isEmpty, find, map } from 'lodash-es'
 
 export const fetch = async ({ commit, state }) => {
     let { data: assessments } = await axios.get(`${urlBase}/api/assessments`)
 
-    commit('SET_ASSESSMENTS', assessments.data)
+    await commit('SET_ASSESSMENTS', assessments.data)
 
     if (!isEmpty(state.assessment)) {
         commit('SET_ASSESSMENT', find(assessments.data, p => p.id === state.assessment.id))
@@ -129,4 +129,18 @@ export const setAssessmentLockStatus = async ({ commit, state }) => {
     let { data: status } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/lock`)
 
     await commit('SET_LOCK_STATUS', status)
+}
+
+export const duplicateAssesment = async ({ state, commit }, form) => {
+    let { data: assessment } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/duplicate`, form)
+
+    await commit('SET_ASSESSMENT', assessment.data)
+
+    await commit('SET_LOCK_STATUS', state.assessment.locked)
+
+    await commit('SET_DUPLICATE_STATUS', true)
+
+    window.events.$emit('users:selected', map(state.assessment.editors, editor => editor.id))
+
+    window.events.$emit('datatable:reload-selected', map(state.assessment.editors, editor => editor.id))
 }

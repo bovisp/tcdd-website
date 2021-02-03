@@ -4,7 +4,7 @@
             class="btn btn-text text-red-500 text-sm"
             @click.prevent="modalActive = true"
         >
-            Delete assessment
+            Delete {{ isDuplicate ? 'duplicate ': '' }}assessment
         </button>
 
         <modal 
@@ -13,7 +13,7 @@
             @submit="destroy"
         >
             <template slot="header">
-                Delete assessment: {{ assessment.name }}
+                Delete {{ isDuplicate ? 'duplicate ': '' }}assessment: {{ assessment.name }}
             </template>
 
             <template slot="body">
@@ -41,7 +41,8 @@ export default {
 
     computed: {
         ...mapGetters({
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            isDuplicate: 'assessments/isDuplicate'
         })
     },
 

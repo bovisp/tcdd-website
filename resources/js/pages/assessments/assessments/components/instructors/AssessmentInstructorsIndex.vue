@@ -104,6 +104,8 @@ export default {
 
         async reload () {
             await this.fetchAssessments()
+
+            window.events.$emit('datatable:reload-selected', map(this.assessment.editors, editor => editor.id))
         }
     },
 

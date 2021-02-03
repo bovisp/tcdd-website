@@ -105,6 +105,10 @@ export default {
 
             await this.reload()
 
+            window.events.$emit('datatable:reload-selected', map(
+                this.assessment.participants, participant => participant.id
+            ))
+
             this.$toasted.success(data.data.message)
         },
 

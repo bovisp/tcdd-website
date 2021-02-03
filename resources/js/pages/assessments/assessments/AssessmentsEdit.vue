@@ -49,7 +49,6 @@
         <assessments-duplicate 
             v-else
             :duplicate-form="duplicateForm"
-            @assessments:duplicate-cancel="cancelDuplication"
         />
     </div>
 </template>
@@ -85,12 +84,6 @@ export default {
             this.duplicating = true
 
             this.duplicateForm = form
-        },
-
-        cancelDuplication () {
-            this.duplicating = false
-
-            this.duplicateForm = {}
         }
     }
 }

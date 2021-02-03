@@ -218,12 +218,13 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Update assessment
+                    {{ isDuplicate ? 'Save' : 'Update' }} assessment
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="duplicate"
+                    v-if="!isDuplicate"
                 >
                     Duplicate
                 </button>
@@ -244,14 +245,17 @@
             @close="cancel"
         />
 
-        <div class="alert alert-red">
+        <div 
+            class="alert alert-red"
+            v-if="lockStatus"
+        >
             You cannot delete this assessment when it has been locked and/or when there are one or more attempts that have been saved to the database.
         </div>
     </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
     data() {
@@ -278,7 +282,8 @@ export default {
             sections: 'sections/sections',
             types: 'assessmentTypes/assessmentTypes',
             assessment: 'assessments/assessment',
-            lockStatus: 'assessments/lockStatus'
+            lockStatus: 'assessments/lockStatus',
+            isDuplicate: 'assessments/isDuplicate'
         })
     },
 
@@ -286,6 +291,10 @@ export default {
         ...mapActions({
             fetchSections: 'sections/fetch',
             fetchTypes: 'assessmentTypes/fetch'
+        }),
+
+        ...mapMutations({
+            cancelDuplication: 'assessments/SET_DUPLICATE_STATUS'
         }),
 
         duplicate () {
@@ -302,6 +311,8 @@ export default {
             this.form.section_id = null
             this.form.type_id = null
             this.form.completion_time = null
+
+            this.cancelDuplication(false)
         },
 
         async update () {
