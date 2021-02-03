@@ -58,7 +58,7 @@ class AssessmentAttemptController extends Controller
                 ->filter(function ($participant) {
                     return $participant->pivot->activated && $participant->pivot->participant_id === auth()->id();
                 })
-                ->count();
+                ->first();
 
             if (!$participantActive) {
                 return redirect(env('APP_URL') . "/users/" . auth()->id());
@@ -69,6 +69,12 @@ class AssessmentAttemptController extends Controller
             $attempt = AssessmentAttempt::find((int) $matches[1][0]);
 
             if (!$attempt) {
+                return redirect(env('APP_URL') . "/assessment/{$assessment->id}");    
+            }
+
+            $isValidAttemptForUser = $participantActive->pivot->id === $attempt->assessment_participant_id;
+
+            if (!$isValidAttemptForUser) {
                 return redirect(env('APP_URL') . "/assessment/{$assessment->id}");    
             }
 

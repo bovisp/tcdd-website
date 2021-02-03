@@ -23,7 +23,7 @@ class AssessmentAttemptController extends Controller
 
             $participantActive = $assessment->participants
                 ->filter(function ($participant) {
-                    return $participant->pivot->activated && $participant->id === auth()->id();
+                    return $participant->pivot->activated && $participant->pivot->participant_id === auth()->id();
                 })
                 ->first();
 
@@ -41,7 +41,7 @@ class AssessmentAttemptController extends Controller
 
             $participantActive = $assessment->participants
                 ->filter(function ($participant) {
-                    return $participant->pivot->activated && $participant->id === auth()->id();
+                    return $participant->pivot->activated && $participant->pivot->participant_id === auth()->id();
                 })
                 ->first();
 
@@ -55,6 +55,12 @@ class AssessmentAttemptController extends Controller
 
             if (!$attempt) {
                 abort(403, 'You are not authorized to view this exam');
+            }
+
+            $isValidAttemptForUser = $participantActive->pivot->id === $attempt->assessment_participant_id;
+
+            if (!$isValidAttemptForUser) {
+                abort(403, 'You are not authorized to view this exam');;    
             }
 
             $time_remaining = $assessment->completion_time - Carbon::now()->diffInMinutes($attempt->created_at);
@@ -75,7 +81,7 @@ class AssessmentAttemptController extends Controller
     {
         $participantActive = $assessment->participants
             ->filter(function ($participant) {
-                return $participant->pivot->activated && $participant->id === auth()->id();
+                return $participant->pivot->activated && $participant->pivot->participant_id === auth()->id();
             })
             ->first();
             

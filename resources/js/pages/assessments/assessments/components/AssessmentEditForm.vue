@@ -223,6 +223,13 @@
 
                 <button 
                     class="btn btn-text text-sm"
+                    @click.prevent="duplicate"
+                >
+                    Duplicate
+                </button>
+
+                <button 
+                    class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
                     Cancel
@@ -280,6 +287,10 @@ export default {
             fetchSections: 'sections/fetch',
             fetchTypes: 'assessmentTypes/fetch'
         }),
+
+        duplicate () {
+            this.$emit('assessments:duplicate', this.form)
+        },
 
         cancel () {
             window.events.$emit('assessments:edit-cancel')
