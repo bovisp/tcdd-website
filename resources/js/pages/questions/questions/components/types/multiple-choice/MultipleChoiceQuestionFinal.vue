@@ -67,7 +67,8 @@ export default {
             this.updateAttemptForm({
                 id: this.data.id,
                 key: 'answers',
-                data: this.form.answers
+                data: this.form.answers,
+                timestamp: Math.floor(new Date().getTime() / 1000)
             })
         }
     },
@@ -84,7 +85,7 @@ export default {
 
     mounted () {
         if (this.attemptForm && get(this.attemptForm, `question_${this.data.id}.answers`)) {
-            this.form.answers = this.attemptForm[`question_${this.data.id}`]['answers']
+            this.form.answers = this.attemptForm[`question_${this.data.id}`]['answers']['data']
         }
     }
 }

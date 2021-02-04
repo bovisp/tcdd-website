@@ -19,9 +19,11 @@ export const SET_CURRENT_PAGE_SCORE = (state, currentPageScore) => state.current
 export const UPDATE_ATTEMPT_FORM = (state, payload) => {
     if (!get(state.form, `question_${payload.id}`)) {
         state.form[`question_${payload.id}`] = {}
+        state.form[`question_${payload.id}`][payload.key] = {}
     }
 
-    state.form[`question_${payload.id}`][payload.key] = payload.data
+    state.form[`question_${payload.id}`][payload.key]['data'] = payload.data
+    state.form[`question_${payload.id}`][payload.key]['timestamp'] = payload.timestamp
 
     localStorage.setItem(`assessment_${state.attempt.id}`, JSON.stringify(state.form))
 }

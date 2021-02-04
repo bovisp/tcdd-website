@@ -80,7 +80,8 @@ export default {
                 this.updateAttemptForm({
                     id: this.data.id,
                     key: 'text',
-                    data
+                    data,
+                    timestamp: Math.floor(new Date().getTime() / 1000)
                 })
             }, 1000)
         }
@@ -98,11 +99,11 @@ export default {
 
     mounted () {
         if (this.attemptForm && get(this.attemptForm, `question_${this.data.id}.drawing`)) {
-            this.form.drawing = this.attemptForm[`question_${this.data.id}`]['drawing']
+            this.form.drawing = this.attemptForm[`question_${this.data.id}`]['drawing']['data']
         }
 
         if (this.attemptForm && get(this.attemptForm, `question_${this.data.id}.text`)) {
-            this.form.text = this.attemptForm[`question_${this.data.id}`]['text']
+            this.form.text = this.attemptForm[`question_${this.data.id}`]['text']['data']
         }
 
         window.events.$on('draw:data', data => {
@@ -110,7 +111,8 @@ export default {
                 this.updateAttemptForm({
                     id: this.data.id,
                     key: 'drawing',
-                    data: data.data
+                    data: data.data,
+                    timestamp: Math.floor(new Date().getTime() / 1000)
                 })
 
                 this.form.drawing = data.data

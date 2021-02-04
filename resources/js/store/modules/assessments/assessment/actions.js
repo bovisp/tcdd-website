@@ -67,7 +67,7 @@ export const getCurrentPageScore = async ({ state, commit }) => {
 export const updateAttemptForm = async ({ commit, state, dispatch }, payload) => {
     await commit('UPDATE_ATTEMPT_FORM', payload)
 
-    await dispatch('submitUpdatedForm', localStorage.getItem(`assessment_${state.attempt.id}`))
+    await dispatch('submitUpdatedForm', payload)
 }
 
 export const fetchAttemptForm = async ({ commit, state }) => {
@@ -76,9 +76,9 @@ export const fetchAttemptForm = async ({ commit, state }) => {
     }
 }
 
-export const submitUpdatedForm = async ({ state }, answers) => {
+export const submitUpdatedForm = async ({ state }, answer) => {
     await axios.patch(`${urlBase}/api/assessment/${state.attempt.assessment.id}/attempt/${state.attempt.id}/answers`, {
-        answers
+        answer
     })
 }
 
