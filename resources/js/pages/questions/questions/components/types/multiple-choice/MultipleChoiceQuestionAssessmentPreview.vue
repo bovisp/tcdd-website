@@ -26,6 +26,7 @@
 
                 <question-edit-page-number 
                     :question="question"
+                    @question:update-score="updateScore"
                 />
 
                 <div class="mt-6">

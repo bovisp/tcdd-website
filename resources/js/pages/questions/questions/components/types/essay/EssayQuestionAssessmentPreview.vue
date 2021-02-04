@@ -22,6 +22,7 @@
 
                 <question-edit-score 
                     :question="question"
+                    @question:update-score="updateScore"
                 />
 
                 <question-edit-page-number 

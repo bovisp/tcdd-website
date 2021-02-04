@@ -13,7 +13,7 @@
 
         <template v-if="editingScore && !lockStatus">
             <input 
-                type="text"
+                type="number"
                 class="shadow appearance-none border rounded w-32 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
                 v-model="score"
             >

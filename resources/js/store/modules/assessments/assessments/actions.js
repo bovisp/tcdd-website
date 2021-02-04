@@ -131,7 +131,7 @@ export const setAssessmentLockStatus = async ({ commit, state }) => {
     await commit('SET_LOCK_STATUS', status)
 }
 
-export const duplicateAssesment = async ({ state, commit }, form) => {
+export const duplicateAssesment = async ({ state, commit, dispatch }, form) => {
     let { data: assessment } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/duplicate`, form)
 
     await commit('SET_ASSESSMENT', assessment.data)
@@ -143,4 +143,6 @@ export const duplicateAssesment = async ({ state, commit }, form) => {
     window.events.$emit('users:selected', map(state.assessment.editors, editor => editor.id))
 
     window.events.$emit('datatable:reload-selected', map(state.assessment.editors, editor => editor.id))
+
+    await dispatch('fetchPages', state.assessment.id)
 }

@@ -39,6 +39,10 @@ class AssessmentQuestionContentController extends Controller
 
     public function changeScore(Assessment $assessment, AssessmentPageContentItem $item)
     {
+        request()->validate([
+            'score' => 'required|min:0|integer'
+        ]);
+
         $item->update([
             'question_score' => request('score')
         ]);
@@ -48,6 +52,10 @@ class AssessmentQuestionContentController extends Controller
 
     public function changePage(Assessment $assessment, AssessmentPageContentItem $item)
     {
+        request()->validate([
+            'page_number_id' => 'required|min:0|integer|exists:assessment_pages,id'
+        ]);
+
         $assessmentPageContent = AssessmentPageContent::find($item->assessment_page_content_id);
 
         $assessmentPageContent->update([
