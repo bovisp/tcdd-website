@@ -19,8 +19,9 @@ class AssessmentAttemptResource extends JsonResource
             'id' => $this->id,
             'assessment_participant_id' => $this->assessment_participant_id,
             'time_remaining' => $this->time_remaining,
+            'answers' => $this->answers,
             'assessment' => $this->assessment->only([
-                'completion_time', 'id', 'name'
+                'completion_time', 'id', 'name', 'answers'
             ]),
             'participant' => $this->participant()->only([
                 'fullname', 'id', 'pivot'

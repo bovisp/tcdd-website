@@ -72,8 +72,6 @@ export default {
             assessment: this.assessment
         })
 
-        await this.fetchAttemptForm()
-
         await this.getTotalScore()
 
         if (this.assessment.completion_time) {

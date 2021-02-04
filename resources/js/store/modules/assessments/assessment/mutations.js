@@ -28,10 +28,6 @@ export const UPDATE_ATTEMPT_FORM = (state, payload) => {
     localStorage.setItem(`assessment_${state.attempt.id}`, JSON.stringify(state.form))
 }
 
-export const SET_ATTEMPT_FORM = (state, payload) => {
-    state.form = payload
-}
-
 export const SET_REVIEW_STATUS = (state, reviewStatus) => state.reviewStatus = reviewStatus
 
 export const SET_ATTEMPT_REVIEW = async (state) => {
@@ -88,8 +84,36 @@ export const SET_ATTEMPT_REVIEW = async (state) => {
     state.attemptReview.questions = attemptReviewQuestionsArr
 }
 
-export const SET_ATTEMPT_STORAGE = (state) => {
+export const SET_ATTEMPT_STORAGE = async (state) => {
     if (!localStorage.getItem(`assessment_${state.attempt.id}`)) {
         localStorage.setItem(`assessment_${state.attempt.id}`, JSON.stringify({}))
     }
+
+    let answersFromServer = JSON.parse(state.attempt.answers)
+
+    if (!answersFromServer) {
+        return
+    }
+
+    let answersFromStorage = JSON.parse(localStorage.getItem(`assessment_${state.attempt.id}`))
+
+    for await (let answer of Object.keys(answersFromServer)) {
+        if (!answersFromStorage[answer]) {
+            answersFromStorage[answer] = {}
+        }
+
+        for await (let key of Object.keys(answersFromServer[answer])) {
+            if (answersFromStorage[answer][key] && (answersFromServer[answer][key]['timestamp'] > answersFromStorage[answer][key]['timestamp'])) {
+                answersFromStorage[answer][key]['data'] = answersFromServer[answer][key]['data']
+            } else if (!answersFromStorage[answer][key]) {
+                answersFromStorage[answer][key] = {}
+
+                answersFromStorage[answer][key]['data'] = answersFromServer[answer][key]['data']
+            }
+        }
+    }
+
+    localStorage.setItem(`assessment_${state.attempt.id}`, JSON.stringify(answersFromStorage))
+
+    state.form = answersFromStorage
 }
