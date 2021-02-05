@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { pascalCase } from 'change-case'
 
 export default {
@@ -42,6 +42,10 @@ export default {
     },
 
     methods: {
+        ...mapActions({
+            pushMultipleChoiceData: 'assessment/pushMultipleChoiceData'
+        }),
+
         pascalCase
     },
 
@@ -49,6 +53,13 @@ export default {
         let { data: question } = await axios.get(`
             ${this.urlBase}/api/assessment/${this.attempt.assessment.id}/attempt/${this.attempt.id}/question/${this.data.items[0].model_id}
         `)
+
+        if (question.data.type === 'multiple_choice') {
+            await this.pushMultipleChoiceData({
+                id: question.data.id,
+                answers: question.data.data.answers
+            })
+        }
 
         this.question = question.data
     }

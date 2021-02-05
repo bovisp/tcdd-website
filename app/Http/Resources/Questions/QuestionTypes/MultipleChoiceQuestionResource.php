@@ -39,7 +39,7 @@ class MultipleChoiceQuestionResource extends JsonResource
                             'id' => $answer->id,
                             'text' => $answer->text
                         ];
-                    }),
+                    })->shuffle(),
                     'parts' => PartResource::collection(ContentBuilder::find($contentBuilderId)->parts)
                 ]
             ]

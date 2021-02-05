@@ -12,9 +12,9 @@
             ></component>
         </div>
 
-        <ul v-if="data.data.answers">
+        <ul v-if="answers">
             <li
-                v-for="answer in shuffleArray(data.data.answers)"
+                v-for="answer in answers"
                 :key="answer.id"
                 class="mb-2"
             >
@@ -52,13 +52,15 @@ export default {
         return {
             form: {
                 answers: []
-            }
+            },
+            answers: []
         }
     },
 
     computed: {
         ...mapGetters({
-            attemptForm: 'assessment/form'
+            attemptForm: 'assessment/form',
+            multipleChoiceAnswers: 'assessment/multipleChoiceAnswers'
         })
     },
 
@@ -83,7 +85,15 @@ export default {
         pascalCase
     },
 
-    mounted () {
+    async mounted () {
+        for await (let answer of this.multipleChoiceAnswers) {
+            if (answer.id === this.data.id) {
+                this.answers = answer.answers
+
+                break
+            }
+        }
+
         if (this.attemptForm && get(this.attemptForm, `question_${this.data.id}.answers`)) {
             this.form.answers = this.attemptForm[`question_${this.data.id}`]['answers']['data']
         }

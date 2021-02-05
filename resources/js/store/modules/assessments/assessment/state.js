@@ -7,5 +7,6 @@ export default {
     reviewStatus: false,
     attemptReview: {
         questions: {}
-    }
+    },
+    multipleChoiceAnswers: []
 }

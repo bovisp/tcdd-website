@@ -105,3 +105,7 @@ export const submitAssessment = async ({ state }) => {
 
     window.location.href = `${urlBase}/users/31`
 }
+
+export const pushMultipleChoiceData = async ({ commit }, payload) => {
+    await commit('PUSH_TO_MULTIPLE_CHOICE_ARR', payload)
+}

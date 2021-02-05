@@ -117,3 +117,11 @@ export const SET_ATTEMPT_STORAGE = async (state) => {
 
     state.form = answersFromStorage
 }
+
+export const PUSH_TO_MULTIPLE_CHOICE_ARR = (state, payload) => {
+    if (find(state.multipleChoiceAnswers, answer => answer.id === payload.id)) {
+        return
+    }
+
+    state.multipleChoiceAnswers.push(payload)
+}
