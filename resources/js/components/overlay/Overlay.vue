@@ -1,6 +1,6 @@
 <template>
     <div
-        class="fixed bg-gray-400 inset-0 min-w-full min-h-screen z-10"
+        class="absolute w-full h-full bg-gray-900 opacity-50"
         @click="close"
     ></div>
 </template>
