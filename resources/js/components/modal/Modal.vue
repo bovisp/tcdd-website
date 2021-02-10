@@ -38,10 +38,15 @@
                     v-if="hasOkButton"
                 >
                     <button 
-                        class="btn btn-blue w-full"
-                        @click.prevent="$emit('submit')"
+                        class="btn btn-blue flex items-center w-full"
+                        @click.prevent="submit"
                     >
-                        {{ okButtonText }}
+                        <span 
+                            class="spinner spinner-blue"
+                            v-if="clicked"
+                        ></span>
+
+                        <span class="flex-1">{{ okButtonText }}</span>
                     </button>
                 </div>
             </div>
@@ -71,12 +76,31 @@ export default {
             type: String,
             required: false,
             default: 'Cancel'
+        },
+        hasSpinner: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
+    },
+
+    data () {
+        return {
+            clicked: false
         }
     },
     
     methods: {
         close (e) {
             this.$emit('close')
+        },
+
+        submit (e) {
+            if (this.hasSpinner) {
+                this.clicked = true
+            }
+
+            this.$emit('submit')
         }
     }
 }

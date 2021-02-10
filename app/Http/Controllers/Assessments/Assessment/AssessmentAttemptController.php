@@ -35,6 +35,10 @@ class AssessmentAttemptController extends Controller
             )->first();
             
             if ($attempt) {
+                if ($attempt->completed) {
+                    return redirect(env('APP_URL') . "/users/" . auth()->id());
+                }
+                
                 $time_remaining = $assessment->completion_time - Carbon::now()->diffInMinutes($attempt->created_at);
 
                 if ($time_remaining <= 0) {
@@ -72,6 +76,10 @@ class AssessmentAttemptController extends Controller
 
             if (!$attempt) {
                 return redirect(env('APP_URL') . "/assessment/{$assessment->id}");    
+            }
+
+            if ($attempt->completed) {
+                return redirect(env('APP_URL') . "/users/" . auth()->id());
             }
 
             $isValidAttemptForUser = $participantActive->pivot->id === $attempt->assessment_participant_id;

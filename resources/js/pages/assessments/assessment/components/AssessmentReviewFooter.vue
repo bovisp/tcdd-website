@@ -30,6 +30,7 @@
             v-show="modalActive"
             @close="close"
             @submit="submit"
+            :has-spinner="true"
         >
             <template slot="header">
                 Submit {{ attempt.assessment.name }}
@@ -41,7 +42,7 @@
                         class="text-red-700 mb-4"
                         v-if="hasIncompleteQuestions"
                     >
-                        <strong>Warning. Some of you answers have not yet been completed.</strong>
+                        <strong>Warning. Some of your answers have not yet been completed.</strong>
                     </p>
 
                     Are you sure you want to submit this exam? Once you submit your exam questions, you will not be 

@@ -91,6 +91,10 @@ export const SET_ATTEMPT_STORAGE = async (state) => {
 
     let answersFromServer = JSON.parse(state.attempt.answers)
 
+    if (!answersFromServer && localStorage.getItem(`assessment_${state.attempt.id}`)) {
+        state.form = JSON.parse(localStorage.getItem(`assessment_${state.attempt.id}`))
+    }
+
     if (!answersFromServer) {
         return
     }

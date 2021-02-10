@@ -97,13 +97,17 @@ export const goToQuestion = async ({ commit }, question) => {
 }
 
 export const submitAssessment = async ({ state }) => {
-    await axios.patch(`${urlBase}/api/assessment/${state.attempt.assessment.id}/attempt/${state.attempt.id}/answers`, {
+    let { data } = await axios.patch(`${urlBase}/api/assessment/${state.attempt.assessment.id}/attempt/${state.attempt.id}/submit`, {
         answers: localStorage.getItem(`assessment_${state.attempt.id}`)
     })
 
-    localStorage.removeItem(`assessment_${state.attempt.id}`)
+    setInterval(() => {
+        if (data) {
+            localStorage.removeItem(`assessment_${state.attempt.id}`)
 
-    window.location.href = `${urlBase}/users/31`
+            window.location.href = `${urlBase}/users/${data}`
+        }
+    }, 500)
 }
 
 export const pushMultipleChoiceData = async ({ commit }, payload) => {

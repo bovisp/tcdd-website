@@ -12,7 +12,8 @@ class AssessmentAttempt extends Model
     protected $fillable = [
         'assessment_participant_id',
         'answers',
-        'assessment_id'
+        'assessment_id',
+        'completed'
     ];
 
     public function participant()

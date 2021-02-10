@@ -27,6 +27,12 @@ class AssessmentAttemptController extends Controller
                 })
                 ->first();
 
+            $attempt = AssessmentAttempt::whereAssessmentParticipantId($participantActive->id)->first();
+
+            if ($attempt) {
+                abort(403, 'You are not authorized to view this exam');
+            }
+
             if ($participantActive) {
                 return $next($request);
             }
@@ -55,6 +61,10 @@ class AssessmentAttemptController extends Controller
 
             if (!$attempt) {
                 abort(403, 'You are not authorized to view this exam');
+            }
+
+            if ($attempt->completed) {
+                return redirect(env('APP_URL') . "/users/" . auth()->id());
             }
 
             $isValidAttemptForUser = $participantActive->pivot->id === $attempt->assessment_participant_id;

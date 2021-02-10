@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Assessments\Assessment\Api;
 
-use App\Http\Controllers\Controller;
+use App\Assessment;
+use App\AssessmentAttempt;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class AttemptSubmitController extends Controller
 {
@@ -19,6 +22,10 @@ class AttemptSubmitController extends Controller
             $attempt = AssessmentAttempt::find((int) $matches[1][0]);
     
             if ($attempt) {
+                if ($attempt->completed) {
+                    return redirect(env('APP_URL') . "/users/" . auth()->id());
+                }
+                
                 return $next($request);
             }
     
@@ -29,7 +36,8 @@ class AttemptSubmitController extends Controller
     public function update(Assessment $assessment, AssessmentAttempt $attempt)
     {
         $attempt->update([
-            'answers' => request('answers')
+            'answers' => request('answers'),
+            'completed' => 1
         ]);
 
         DB::table('assessment_participants')
@@ -37,6 +45,6 @@ class AttemptSubmitController extends Controller
             ->where('assessment_id', $assessment->id)
             ->update(['activated' => 0]);
 
-        return;
+        return auth()->id();
     }
 }

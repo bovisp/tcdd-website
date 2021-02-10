@@ -20,6 +20,10 @@ class AttemptReviewController extends Controller
             $attempt = AssessmentAttempt::find((int) $matches[1][0]);
     
             if ($attempt) {
+                if ($attempt->completed) {
+                    return redirect(env('APP_URL') . "/users/" . auth()->id());
+                }
+                
                 return $next($request);
             }
     
