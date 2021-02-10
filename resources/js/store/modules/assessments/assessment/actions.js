@@ -8,9 +8,11 @@ export const checkTimeRemaining = async ({ state, dispatch, commit }) => {
     let { data: timeRemaining } = await axios.get(`${urlBase}/api/assessment/${state.attempt.assessment.id}/attempt/${state.attempt.id}/time`)
 
     if (timeRemaining <= 0) {
-        await dispatch('deactivateParticipant')
+        await dispatch('submitAssessment')
+    }
 
-        window.location.href = `${urlBase}/users/${state.attempt.participant.id}`
+    if (timeRemaining <= 5) {
+        window.events.$emit('assessment:five-min-warning')
     }
 
     await commit('SET_TIME_REMAINING', timeRemaining)
