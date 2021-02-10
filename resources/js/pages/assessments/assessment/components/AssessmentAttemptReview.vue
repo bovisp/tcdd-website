@@ -4,28 +4,34 @@
             Review your exam
         </h2>
 
-        <ul
+        <table
             v-if="attemptReview.questions"
         >
-            <li
+            <tr
                 v-for="question in orderBy(attemptReview.questions, ['question_number'], ['asc'])"
                 :key="question.question_number"
             >
-                <strong>Question {{ question.question_number }}: ({{ question.question_score }} points)</strong>
+                <td class="p-2">
+                    <strong>Question {{ question.question_number }}: ({{ question.question_score }} points)</strong>
+                </td>
                 
-                <span 
-                    class="mx-2"
+                <td
+                    class="p-2" 
                     :class="completionTextClass(question)"
-                >{{ completionText(question) }}</span>
-
-                <button 
-                    class="btn btn-text text-blue-700"
-                    @click.prevent="goToQuestion(question)"
                 >
-                    Go to question
-                </button>
-            </li>
-        </ul>
+                    {{ completionText(question) }}
+                </td>
+
+                <td class="p-2">
+                    <button 
+                        class="btn btn-text text-blue-700"
+                        @click.prevent="goToQuestion(question)"
+                    >
+                        Go to question
+                    </button>
+                </td>
+            </tr>
+        </table>
     </div>
 </template>
 

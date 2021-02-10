@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Assessments\Assessment;
 
 use Carbon\Carbon;
 use App\Assessment;
+use App\ContentBuilder;
 use App\AssessmentAttempt;
+use Illuminate\Support\Arr;
 use App\Http\Controllers\Controller;
 
 class AssessmentAttemptController extends Controller
@@ -94,7 +96,41 @@ class AssessmentAttemptController extends Controller
 
     public function index(Assessment $assessment)
     {
-        return view('assessments.assessment.index', compact('assessment'));
+        $pages = $assessment->pages->map(function ($page) {
+            return [
+                'number' => $page->number,
+                'items' => $page->assessmentPageContents->map(function($content) {
+                    return $content->assessmentPageContentItems->map(function ($item) {
+                        if ($item->type === 'Question') {
+                            return [
+                                'type' => $item->type,
+                                'id' => $item->id,
+                                'model_id' => $item->model_id,
+                                'assessment_page_content_id' => $item->assessment_page_content_id,
+                                'question_number' => $item->question_number,
+                                'question_score' => $item->question_score
+                            ];
+                        }
+                    });
+                })
+            ];
+        })->map(function($page) {
+            $questions = array_map(function ($question) {
+                return [
+                    'number' => $question['question_number'],
+                    'score' => $question['question_score']
+                ];
+            }, array_filter(Arr::flatten($page['items'], 1)));
+
+            return [
+                'number' => $page['number'],
+                'questions' => array_values(Arr::sort($questions, function ($value) {
+                    return $value['number'];
+                }))
+            ];
+        })->groupBy('number');
+
+        return view('assessments.assessment.index', compact('assessment', 'pages'));
     }
 
     public function show(Assessment $assessment, AssessmentAttempt $attempt)

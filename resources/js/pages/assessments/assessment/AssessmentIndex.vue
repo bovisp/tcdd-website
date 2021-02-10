@@ -8,6 +8,36 @@
             {{ assessment.description }}
         </p>
 
+        <div>
+            <h2 class="font-light text-2xl mb-4">Exam questions by page</h2>
+
+            <dl
+                v-for="(questions, page) in pages"
+                :key="page"
+                class="text-normal mb-3"
+            >
+                <dt>
+                    <strong>Page {{ page }}</strong>
+                </dt>
+
+                <template v-if="questions[0].questions.length">
+                    <dd
+                        v-for="question in questions[0].questions"
+                        :key="question.number"
+                        class="ml-2"
+                    >
+                        Question {{ question.number }} ({{ question.score }} points)
+                    </dd>
+                </template>
+
+                <template v-else>
+                    <dd class="ml-2">
+                        No questions on this page.
+                    </dd>
+                </template>
+            </dl>
+        </div>
+
         <div class="flex justify-end">
             <button 
                 class="btn btn-blue"
@@ -45,6 +75,10 @@ export default {
         assessment: {
             type: Object,
             required: true
+        },
+        pages: {
+            type: Object,
+            required: true
         }
     },
 
@@ -70,6 +104,10 @@ export default {
 
             window.location.href = `${this.urlBase}/assessment/${this.assessment.id}/attempt/${attempt.data.id}`
         }
+    },
+
+    mounted () {
+        console.log(this.pages)
     }
 }
 </script>
