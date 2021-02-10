@@ -55,7 +55,8 @@ export default {
     methods: {
         ...mapActions({
             fetchReviewData: 'assessment/fetchReviewData',
-            goToQuestion: 'assessment/goToQuestion'
+            goToQuestion: 'assessment/goToQuestion',
+            setInconpleteQuestions: 'assessment/setInconpleteQuestions'
         }),
 
         orderBy,
@@ -65,15 +66,18 @@ export default {
         },
 
         completionText(question) {
-            console.log(question)
-            return question.required_answer_keys.length === question.existing_question_keys.length ? 'Complete' : 'Incomplete'
+            if (question.required_answer_keys.length === question.existing_question_keys.length) {
+                return 'Complete'
+            }
+
+            this.setInconpleteQuestions(true)
+
+            return 'Incomplete'
         }
     },
 
     async mounted () {
         await this.fetchReviewData()
-
-        console.log()
     }
 }
 </script>

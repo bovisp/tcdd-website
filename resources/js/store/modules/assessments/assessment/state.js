@@ -8,5 +8,6 @@ export default {
     attemptReview: {
         questions: {}
     },
-    multipleChoiceAnswers: []
+    multipleChoiceAnswers: [],
+    hasIncompleteQuestions: false
 }

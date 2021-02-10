@@ -13,3 +13,5 @@ export const reviewStatus = state => state.reviewStatus
 export const attemptReview = state => state.attemptReview
 
 export const multipleChoiceAnswers = state => state.multipleChoiceAnswers
+
+export const hasIncompleteQuestions = state => state.hasIncompleteQuestions

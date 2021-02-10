@@ -37,6 +37,13 @@
 
             <template slot="body">
                 <div class="my-4">
+                    <p 
+                        class="text-red-700 mb-4"
+                        v-if="hasIncompleteQuestions"
+                    >
+                        <strong>Warning. Some of you answers have not yet been completed.</strong>
+                    </p>
+
                     Are you sure you want to submit this exam? Once you submit your exam questions, you will not be 
                     allowed to re-enter this assessment.
                 </div>
@@ -57,7 +64,8 @@ export default {
 
     computed: {
         ...mapGetters({
-            attempt: 'assessment/attempt'
+            attempt: 'assessment/attempt',
+            hasIncompleteQuestions: 'assessment/hasIncompleteQuestions'
         })
     },
 
