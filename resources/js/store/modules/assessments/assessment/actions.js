@@ -66,7 +66,7 @@ export const getCurrentPageScore = async ({ state, commit }) => {
     await commit('SET_CURRENT_PAGE_SCORE', currentPageScore)
 }
 
-export const updateAttemptForm = async ({ commit, state, dispatch }, payload) => {
+export const updateAttemptForm = async ({ commit, dispatch }, payload) => {
     await commit('UPDATE_ATTEMPT_FORM', payload)
 
     await dispatch('submitUpdatedForm', payload)

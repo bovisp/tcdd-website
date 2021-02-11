@@ -29,6 +29,7 @@
         "jszip": "^3.5.0",
         "locutus": "^2.0.14",
         "lodash-es": "^4.17.15",
+        "merge-images": "^2.0.0",
         "plotly.js-dist": "^1.54.6",
         "pluralize": "^8.0.0",
         "tailwindcss": "^1.6.0",
