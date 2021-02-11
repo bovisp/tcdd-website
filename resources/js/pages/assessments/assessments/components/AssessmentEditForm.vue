@@ -186,40 +186,28 @@
             </div>
 
             <div
-                class="w-full lg:w-1/5 mb-4"
+                class="w-full mb-4"
             >
                 <label 
-                    for="assessment_type_id"
-                    class="block text-gray-700 font-bold mb-2"
+                    class="block text-gray-700 font-bold mb-2" 
+                    :class="{ 'text-red-500': errors.completion_time }"
+                    for="completion_time"
                 >
-                    Type
+                    Completion time (minutes)
                 </label>
 
-                <div class="relative">
-                    <select 
-                        id="visible"
-                        v-model="form.visible"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        :class="{ 'border-red-500': errors.visible }"
-                    >
-                        <option value=""></option>
-
-                        <option
-                            :value="visibility.value"
-                            v-for="visibility in visibilities"
-                            :key="visibility.id"
-                            v-text="visibility.name"
-                        ></option>
-                    </select>
-
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
+                <input 
+                    type="number" 
+                    min="1"
+                    v-model="form.completion_time"
+                    class="shadow appearance-none border rounded w-full md:w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
+                    id="completion_time"
+                    :class="{ 'border-red-500': errors.completion_time }"
+                >
 
                 <p
-                    v-if="errors.visible"
-                    v-text="errors.visible[0]"
+                    v-if="errors.completion_time"
+                    v-text="errors.completion_time[0]"
                     class="text-red-500 text-sm"
                 ></p>
             </div>
@@ -230,7 +218,15 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Update assessment
+                    {{ isDuplicate ? 'Save' : 'Update' }} assessment
+                </button>
+
+                <button 
+                    class="btn btn-text text-sm"
+                    @click.prevent="duplicate"
+                    v-if="!isDuplicate"
+                >
+                    Duplicate
                 </button>
 
                 <button 
@@ -245,14 +241,21 @@
         <hr class="block w-full mt-6 pt-6 border-t border-gray-200">
 
         <destroy-assessment 
-            v-if="hasRole(['administrator'])"
+            v-if="hasRole(['administrator']) && !lockStatus"
             @close="cancel"
         />
+
+        <div 
+            class="alert alert-red"
+            v-if="lockStatus"
+        >
+            You cannot delete this assessment when it has been locked and/or when there are one or more attempts that have been saved to the database.
+        </div>
     </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
     data() {
@@ -264,12 +267,8 @@ export default {
                 description_fr: '',
                 section_id: null,
                 assessment_type_id: null,
-                visible: 0
+                completion_time: null
             },
-            visibilities: [
-                { name: 'Hidden', value: 0 },
-                { name: 'Visible', value: 1 }
-            ],
             assessmentTabs: [
                 { id: 1, name: 'Edit settings' },
                 { id: 2, name: 'Instructors' },
@@ -282,7 +281,9 @@ export default {
         ...mapGetters({
             sections: 'sections/sections',
             types: 'assessmentTypes/assessmentTypes',
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            lockStatus: 'assessments/lockStatus',
+            isDuplicate: 'assessments/isDuplicate'
         })
     },
 
@@ -291,6 +292,14 @@ export default {
             fetchSections: 'sections/fetch',
             fetchTypes: 'assessmentTypes/fetch'
         }),
+
+        ...mapMutations({
+            cancelDuplication: 'assessments/SET_DUPLICATE_STATUS'
+        }),
+
+        duplicate () {
+            this.$emit('assessments:duplicate', this.form)
+        },
 
         cancel () {
             window.events.$emit('assessments:edit-cancel')
@@ -301,7 +310,9 @@ export default {
             this.form.description_fr = ''
             this.form.section_id = null
             this.form.type_id = null
-            this.form.visibility = 0
+            this.form.completion_time = null
+
+            this.cancelDuplication(false)
         },
 
         async update () {
@@ -323,7 +334,7 @@ export default {
         this.form.description_fr = this.assessment.description_fr
         this.form.section_id = this.assessment.section_id
         this.form.assessment_type_id = this.assessment.assessment_type_id
-        this.form.visible = this.assessment.visible
+        this.form.completion_time = this.assessment.completion_time
     }
 }
 </script>

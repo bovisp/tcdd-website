@@ -8,7 +8,9 @@
             <div class="mr-auto">
                 <button 
                     class="btn btn-blue"
+                    :class="{ 'btn-disabled': lockStatus }"
                     @click.prevent="add"
+                    :disabled="lockStatus"
                 >
                     <i class="fas fa-plus mr-1"></i>
                     Add page
@@ -64,7 +66,8 @@ export default {
         ...mapGetters({
             pages: 'assessments/pages',
             totalScore: 'assessments/totalScore',
-            currentPage: 'assessments/currentPage'
+            currentPage: 'assessments/currentPage',
+            lockStatus: 'assessments/lockStatus'
         })
     },
 

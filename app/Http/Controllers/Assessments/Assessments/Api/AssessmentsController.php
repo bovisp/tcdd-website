@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Assessments\Assessments\Api;
 
 use App\Assessment;
+use App\ContentBuilder;
+use App\ContentBuilderType;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Assessments\AssessmentResource;
 
@@ -51,7 +54,7 @@ class AssessmentsController extends Controller
             'description_fr' => 'required|min:3',
             'assessment_type_id' => 'required|exists:assessment_types,id',
             'section_id' => 'required|exists:sections,id',
-            'visible' => 'required|boolean'
+            'completion_time' => 'nullable|integer|min:1'
         ]);
 
         $assessment = Assessment::create([
@@ -65,7 +68,7 @@ class AssessmentsController extends Controller
             ],
             'assessment_type_id' => request('assessment_type_id'),
             'section_id' => request('section_id'),
-            'visible' => request('visible')
+            'completion_time' => request('completion_time')
         ]);
 
         $assessment->editors()->attach(auth()->id());
@@ -87,7 +90,7 @@ class AssessmentsController extends Controller
             'description_fr' => 'required|min:3',
             'assessment_type_id' => 'required|exists:assessment_types,id',
             'section_id' => 'required|exists:sections,id',
-            'visible' => 'required|boolean'
+            'completion_time' => 'nullable|integer|min:1'
         ]);
 
         $assessment->update([
@@ -101,7 +104,7 @@ class AssessmentsController extends Controller
             ],
             'assessment_type_id' => request('assessment_type_id'),
             'section_id' => request('section_id'),
-            'visible' => request('visible')
+            'completion_time' => request('completion_time')
         ]);
 
         return response()->json([
@@ -114,6 +117,48 @@ class AssessmentsController extends Controller
 
     public function destroy(Assessment $assessment)
     {
+        DB::table('assessment_participants')->where('assessment_id', '=', $assessment->id)->delete();
+
+        DB::table('assessment_editors')->where('assessment_id', '=', $assessment->id)->delete();
+
+        $assessment->attempts->each->delete();
+
+        foreach($assessment->pages as $page) {
+            $assessmentPageContents = $page->assessmentPageContents;
+
+            $assessmentPageContents->each(function ($contentItem) {
+                $contentItem->assessmentPageContentItems->each(function ($item) {
+                    if ($item->type === 'ContentBuilder') {
+                        $contentBuilder = ContentBuilder::find($item->model_id);
+        
+                        $contentBuilder->parts->each(function ($part) {
+                            $type = ContentBuilderType::find($part->content_builder_type_id)->type;
+        
+                            $typeClassName = 'App\\' . ucfirst($type) . 'Part';
+        
+                            $partType = $typeClassName::wherePartId($part->id)->first();
+        
+                            $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
+        
+                            (new $destroyClassName($partType))->delete();
+        
+                            $part->delete();
+                        });
+        
+                        $contentBuilder->delete();
+                    }
+                });
+            });
+
+            $assessmentPageContents->each(function ($content) {
+                $content->assessmentPageContentItems->each->delete();
+            });
+
+            $assessmentPageContents->each->delete();
+
+            $page->delete();
+        }
+
         $assessment->delete();
 
         return response()->json([

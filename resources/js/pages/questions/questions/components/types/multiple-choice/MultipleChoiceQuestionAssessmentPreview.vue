@@ -20,35 +20,14 @@
                     :part="part"
                 ></component>
 
-                <div class="flex items-center">
-                    <strong class="text-gray-700 mr-1">Points:</strong> 
-                    
-                    <template v-if="!editingScore">
-                        {{ totalPoints }} 
-                        <button 
-                            class="btn btn-text text-sm btn-sm text-blue-500 ml-2"
-                            @click.prevent="editScore"
-                        >Edit</button>
-                    </template>
+                <question-edit-score 
+                    :question="question"
+                />
 
-                    <template v-else>
-                        <input 
-                            type="text"
-                            class="shadow appearance-none border rounded w-32 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
-                            v-model="score"
-                        >
-
-                        <button 
-                            class="btn btn-blue text-sm btn-sm ml-2"
-                            @click.prevent="changeScore"
-                        >Change</button>
-
-                        <button 
-                            class="btn btn-text text-sm btn-sm ml-2"
-                            @click.prevent="cancelEditScore"
-                        >Cancel</button>
-                    </template>
-                </div>
+                <question-edit-page-number 
+                    :question="question"
+                    @question:update-score="updateScore"
+                />
 
                 <div class="mt-6">
                     <ul>
@@ -111,56 +90,27 @@
 </template>
 
 <script>
-import { find, orderBy, map, filter, some } from 'lodash-es'
-import { pascalCase } from 'change-case'
+import { map, filter, some } from 'lodash-es'
+import questionAssessmentPreview from '../../../../../../mixins/questionAssessmentPreview'
 
 export default {
-    props: {
-        question: {
-            type: Object,
-            required: true
-        }
-    },
+    mixins: [
+        questionAssessmentPreview
+    ],
 
     data () {
         return {
-            parts: [],
             form: {
                 answer: {
                     answers: []
                 }
             },
-            submitting: false,
             correct: [],
-            answers: [],
-            editingScore: false,
-            score: null
-        }
-    },
-
-    computed: {
-        questionNumber () {
-            return this.question.model.assessment_page_content_items[0].question_number
-        },
-
-        contentIdForLang () {
-            return find(this.question.items[0].question.content_builder, builder => builder.language === this.currentLang)['id']
-        },
-
-        questionData () {
-            return this.question.items[0].question.question_data
-        },
-
-        totalPoints () {
-            return this.question.model.assessment_page_content_items[0].question_score
+            answers: []
         }
     },
 
     methods: {
-        orderBy,
-
-        pascalCase,
-
         cancel () {
             this.form.answer.answers = []
             this.submitting = false
@@ -188,38 +138,10 @@ export default {
             }
 
             return this.submitting && this.form.answer.answers.indexOf(answerId) >= 0 && this.correct.indexOf(answerId) === -1
-        },
-
-        editScore () {
-            this.editingScore = true
-
-            this.score = this.question.model.assessment_page_content_items[0].question_score
-        },
-
-        cancelEditScore () {
-            this.editingScore = false
-
-            this.score = null
-        },
-
-        async changeScore () {
-            let assessmentPageContentItemId = this.question.model.assessment_page_content_items[0].id
-
-            let { data } = await axios.patch(`${this.urlBase}/api/assessments/questions/${assessmentPageContentItemId}/change-score`, {
-                score: this.score
-            })
-
-            this.question.model.assessment_page_content_items[0].question_score = data
-
-            this.cancelEditScore()
         }
     },
 
     async mounted () {
-        let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.contentIdForLang}`)
-
-        this.parts = data.data.parts
-
         this.answers = this.shuffleArray(this.question.items[0].question.question_data.answers)
 
         this.correct = map(

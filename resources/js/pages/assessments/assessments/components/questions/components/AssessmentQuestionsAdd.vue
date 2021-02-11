@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="!lockStatus">
         <template v-if="!showQuestionSettings">
             <datatable 
                 v-if="availableQuestions && availableQuestions.length"
@@ -82,7 +82,8 @@ export default {
     computed: {
         ...mapGetters({
             currentPage: 'assessments/currentPage',
-            availableQuestions: 'assessments/availableQuestions'
+            availableQuestions: 'assessments/availableQuestions',
+            lockStatus: 'assessments/lockStatus'
         })
     },
 

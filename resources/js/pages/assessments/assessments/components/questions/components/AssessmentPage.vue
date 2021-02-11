@@ -14,18 +14,20 @@
                 class="fas fa-trash-alt text-red-500 ml-2"
                 title="Delete page"
                 @click.prevent="confirmDestroy"
+                v-if="!lockStatus"
             ></i>
 
             <i 
                 class="fas fa-edit ml-2"
                 title="Update page number"
                 @click.prevent="updatePage = true"
+                v-if="!lockStatus"
             ></i>
         </h2>
 
         <div
             class="w-full lg:w-1/3"
-            v-else
+            v-if="updatePage && !lockStatus"
         >
             <label 
                 for="page_number"
@@ -121,7 +123,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { filter, map, orderBy } from 'lodash-es'
+import { filter } from 'lodash-es'
 import Draggable from 'vuedraggable'
 
 export default {
@@ -143,7 +145,8 @@ export default {
             currentPage: 'assessments/currentPage',
             currentPageScore: 'assessments/currentPageScore',
             pages: 'assessments/pages',
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            lockStatus: 'assessments/lockStatus'
         })
     },
 

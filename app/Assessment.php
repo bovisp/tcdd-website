@@ -7,6 +7,7 @@ use App\Section;
 use App\Question;
 use App\AssessmentPage;
 use App\AssessmentType;
+use App\AssessmentAttempt;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -21,8 +22,8 @@ class Assessment extends Model
         'description',
         'assessment_type_id',
         'section_id',
-        'visible',
-        'total_score'
+        'completion_time',
+        'locked'
     ];
 
     public function section()
@@ -42,13 +43,48 @@ class Assessment extends Model
 
     public function participants()
     {
-        return $this->belongsToMany(User::class, 'assessment_participants', 'assessment_id', 'participant_id');
+        return $this->belongsToMany(User::class, 'assessment_participants', 'assessment_id', 'participant_id')
+            ->withPivot('id', 'assessment_id', 'participant_id', 'activated');
     }
 
     public function pages()
     {
         return $this->hasMany(AssessmentPage::class)
             ->orderBy('number', 'asc');
+    }
+
+    public function attempts()
+    {
+        return $this->hasMany(AssessmentAttempt::class);
+    }
+
+    public function questions()
+    {
+        return $this->pages->map(function ($page) {
+            return [
+                'items' => $page->assessmentPageContents->map(function ($content) {
+                    if ($content->assessmentPageContentItems[0]->type === 'Question') {
+                        return [
+                            'model' => Question::find($content->assessmentPageContentItems[0]->model_id),
+                            'assessment_content' => $content,
+                            'assessment_item' => $content->assessmentPageContentItems[0],
+                            'assessment_id' => $this->id
+                        ];
+                    }
+                })
+            ];
+        })
+        ->flatten(2)
+        ->filter();
+
+        return $questions;
+    }
+
+    public function questionIds()
+    {
+        return $this->questions()->map(function ($question) {
+            return $question['model']['id'];
+        })->toArray();
     }
 
     public function toArray()

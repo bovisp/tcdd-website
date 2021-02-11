@@ -21,6 +21,7 @@ import questionCategories from './modules/questions/categories'
 import questionTypes from './modules/questions/types'
 import questions from './modules/questions/questions'
 import issues from './modules/issues'
+import assessment from './modules/assessments/assessment'
 
 export default new Vuex.Store({
 	state, 
@@ -40,6 +41,7 @@ export default new Vuex.Store({
 		questionCategories,
 		questionTypes,
 		questions,
-		issues
+		issues,
+		assessment
 	} 
 })

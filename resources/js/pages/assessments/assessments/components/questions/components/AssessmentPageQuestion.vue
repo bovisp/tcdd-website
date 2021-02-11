@@ -9,7 +9,6 @@
 
 <script>
 import { pascalCase } from 'change-case'
-import { find } from 'lodash-es'
 
 export default {
     props: {

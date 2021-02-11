@@ -1,9 +1,9 @@
-import { isEmpty, find, orderBy } from 'lodash-es'
+import { isEmpty, find, map } from 'lodash-es'
 
 export const fetch = async ({ commit, state }) => {
     let { data: assessments } = await axios.get(`${urlBase}/api/assessments`)
 
-    commit('SET_ASSESSMENTS', assessments.data)
+    await commit('SET_ASSESSMENTS', assessments.data)
 
     if (!isEmpty(state.assessment)) {
         commit('SET_ASSESSMENT', find(assessments.data, p => p.id === state.assessment.id))
@@ -12,8 +12,10 @@ export const fetch = async ({ commit, state }) => {
     return
 }
 
-export const setEdit = async ({ commit }, assessment) => {
+export const setEdit = async ({ commit, state }, assessment) => {
     await commit('SET_ASSESSMENT', assessment)
+
+    await commit('SET_LOCK_STATUS', state.assessment.locked)
 
     return
 }
@@ -63,13 +65,12 @@ export const setCurrentPage = async ({ commit }, page) => {
 }
 
 export const destroyPage = async ({ dispatch, commit, state }, pageId) => {
-    await axios.delete(`${urlBase}/api/assessments/page/${pageId}`)
+    await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/page/${pageId}`)
 
     await dispatch('fetchPages', state.assessment.id)
 }
 
 export const updatePageNumber = async ({ dispatch, commit, state }, payload) => {
-    console.log(payload)
     await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/page`, {
         newPageNumber: payload.newPageNumber,
         oldPageNumber: payload.oldPageNumber
@@ -87,7 +88,7 @@ export const fetchAvailableQuestions = async ({ commit }, assessmentId) => {
 }
 
 export const addQuestionToPage = async ({ commit, state, dispatch }, payload) => {
-    await axios.post(`${urlBase}/api/assessments/page/${state.currentPage.id}/add-question`, { payload })
+    await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/page/${state.currentPage.id}/add-question`, { payload })
 
     await dispatch('fetchPages', state.assessment.id)
 
@@ -97,11 +98,11 @@ export const addQuestionToPage = async ({ commit, state, dispatch }, payload) =>
 }
 
 export const addContentToPage = async ({ state }) => {
-    return axios.post(`${urlBase}/api/assessments/page/${state.currentPage.id}/add-content`)
+    return axios.post(`${urlBase}/api/assessments/${state.assessment.id}/page/${state.currentPage.id}/add-content`)
 }
 
 export const changeCurrentPageItemOrder = async ({ state, dispatch, commit }, payload) => {
-    await axios.patch(`${urlBase}/api/assessment/page/${state.currentPage.id}/change-order`, payload)
+    await axios.patch(`${urlBase}/api/assessment/${state.assessment.id}/page/${state.currentPage.id}/change-order`, payload)
 
     await dispatch('fetchPages', state.assessment.id)
 
@@ -109,9 +110,39 @@ export const changeCurrentPageItemOrder = async ({ state, dispatch, commit }, pa
 }
 
 export const deleteAssessmentPageItem = async ({ state, dispatch, commit }, itemId) => {
-    await axios.delete(`${urlBase}/api/assessments/page/content/${itemId}`)
+    await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/page/content/${itemId}`)
 
     await dispatch('fetchPages', state.assessment.id)
 
     await commit('SET_CURRENT_PAGE', state.currentPage.number)
+}
+
+export const activateParticipant = async ({ dispatch, state, commit }, payload) => {
+    let { data } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/participants/activate?id=${payload.participantId}&activated=${payload.isActivated}`)
+
+    await dispatch('fetch')
+
+    await commit('SET_LOCK_STATUS', data > 0 ? true : false)
+}
+
+export const setAssessmentLockStatus = async ({ commit, state }) => {
+    let { data: status } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/lock`)
+
+    await commit('SET_LOCK_STATUS', status)
+}
+
+export const duplicateAssesment = async ({ state, commit, dispatch }, form) => {
+    let { data: assessment } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/duplicate`, form)
+
+    await commit('SET_ASSESSMENT', assessment.data)
+
+    await commit('SET_LOCK_STATUS', state.assessment.locked)
+
+    await commit('SET_DUPLICATE_STATUS', true)
+
+    window.events.$emit('users:selected', map(state.assessment.editors, editor => editor.id))
+
+    window.events.$emit('datatable:reload-selected', map(state.assessment.editors, editor => editor.id))
+
+    await dispatch('fetchPages', state.assessment.id)
 }

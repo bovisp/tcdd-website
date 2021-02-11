@@ -34,7 +34,9 @@ class QuestionIndexResource extends JsonResource
             'contentBuilder' => [
                 'en' => $this->contentBuilder->where('language', '=', 'en')->first()->id,
                 'fr' => $this->contentBuilder->where('language', '=', 'fr')->first()->id,
-            ]
+            ],
+            'assessments' => $this->assessments(),
+            'inAssessment' => $this->inAssessment()
         ];
     }
 }

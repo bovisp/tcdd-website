@@ -29,7 +29,7 @@
         </div>
 
         <canvas 
-            id="canvas"
+            :id="`canvas${canvasId}`"
             ref="canvas"
             class="border-2 mx-auto"
             @mousedown="startPainting" 
@@ -57,6 +57,7 @@
 <script>
 import ucfirst from '../../helpers/ucfirst'
 import VSwatches from 'vue-swatches'
+import uuidv4 from '../../helpers/uuidv4'
 
 export default {
     components: { 
@@ -72,13 +73,21 @@ export default {
             type: Array,
             required: false,
             default: () => ['black']
+        },
+        canvasData: {
+            type: String,
+            required: false
+        },
+        questionId: {
+            type: Number,
+            required: false
         }
     },
 
     data () {
         return {
             strokeColor: this.penColors[0],
-            vueCanvas: null,
+            canvasId: uuidv4(),
             painting: false,
             canvas: null,
             ctx: null,
@@ -112,6 +121,13 @@ export default {
             this.modalActive = false
 
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+            if (this.questionId) {
+                window.events.$emit('draw:data', {
+                    data: this.canvas.toDataURL(),
+                    id: this.questionId
+                })
+            }
         },
 
         getClientOffset (e) {
@@ -134,6 +150,13 @@ export default {
 
         finishedPainting() {
             this.painting = false
+
+            if (this.questionId) {
+                window.events.$emit('draw:data', {
+                    data: this.canvas.toDataURL(),
+                    id: this.questionId
+                })
+            }
         },
 
         draw(e) {
@@ -185,9 +208,17 @@ export default {
         background.onload = function() {
             that.canvas.height = this.height
             that.canvas.width = this.width
-        }
 
-        this.vueCanvas = this.ctx
+            if (that.questionId && that.canvasData) {
+                let img = new Image()
+
+                img.onload = function(){
+                    that.ctx.drawImage(img,0,0)
+                }
+
+                img.src = that.canvasData
+            }
+        }
 
         window.events.$on('draw:save', async () => {
             let can2 = document.createElement('canvas')

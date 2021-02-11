@@ -18,6 +18,22 @@
                     @question-preview:cancel="cancelPreview"
                 ></component>
             </div>
+
+            <div 
+                class="alert alert-red content mb-4"
+                v-if="question.inAssessment"
+            >
+                <p>Note that this question has been added to the following assessments:</p>
+
+                <ul>
+                    <li
+                        v-for="assessment in question.assessments"
+                        :key="assessment.assessment_id"
+                    >
+                        {{ assessment.assessment_name }}
+                    </li>
+                </ul>
+            </div>
             
             <div
                 :class="!previewing && !duplicating ? 'visible h-auto' : 'invisible h-0'"
@@ -375,9 +391,29 @@
                 <hr class="block w-full mt-6 pt-6 border-t border-gray-200">
 
                 <destroy-question
-                    v-if="hasRole(['administrator'])"
+                    v-if="hasRole(['administrator']) && !question.inAssessment"
                     @close="cancel"
                 />
+                
+                <div 
+                    class="alert alert-red content mt-4"
+                    v-if="question.inAssessment"
+                >
+                    <p>You cannot delete a question that has been added to at least one assessment. 
+                    If the assessments have not been locked and/or they have not been attempted, 
+                    you must remove remove the question from the assessment before you can delete this question.</p>
+
+                    <p><strong>Assessments:</strong></p>
+
+                    <ul>
+                        <li
+                            v-for="assessment in question.assessments"
+                            :key="assessment.assessment_id"
+                        >
+                            {{ assessment.assessment_name }}
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <modal 

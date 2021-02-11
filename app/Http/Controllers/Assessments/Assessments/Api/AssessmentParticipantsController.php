@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Assessments\Assessments\Api;
 
 use App\User;
 use App\Assessment;
+use App\AssessmentAttempt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -34,6 +35,26 @@ class AssessmentParticipantsController extends Controller
             'users' => 'present|nullable|array',
             'users.*' => 'integer|exists:users,id',
         ]);
+
+        $assessmentParticipantIds = $assessment->participants->pluck('pivot.participant_id');
+
+        $participantsNotInRequest = array_diff($assessmentParticipantIds->toArray(), request('users'));
+
+        foreach ($participantsNotInRequest as $user) {
+            $assessmentParticipantId = $assessment->participants->map(function ($participant) use ($user) {
+                if ($participant->pivot->participant_id === $user) {
+                    return $participant->pivot->id;
+                }
+            })->filter()->first();
+
+            if (AssessmentAttempt::whereAssessmentParticipantId($assessmentParticipantId)->count()) {
+                return response()->json([
+                    'data' => [
+                        'message' => 'You cannot remove participants who have already attempted this exam.'
+                    ]
+                ], 403);
+            }
+        }
 
         $assessment->participants()->sync(request('users'));
 

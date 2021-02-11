@@ -70,7 +70,14 @@
                                 @click.prevent="emitEvent(event, item)"
                                 class="btn btn-text text-sm text-blue-500"
                             >
-                                {{ eventText }}
+                                <template v-if="eventTextBoolean">
+                                    {{ get(item, eventTextBoolean, false) ? eventTextTrue : eventTextFalse }}
+                                </template>
+
+                                <template v-else>
+                                    {{ eventText }}
+                                </template>
+
                             </button>
                         </template>
                     </td>
@@ -88,7 +95,7 @@
 
 <script>
 import paginate from 'vuejs-paginate'
-import { orderBy, filter, forEach, find, map } from 'lodash-es'
+import { orderBy, filter, forEach, find, map, get } from 'lodash-es'
 
 export default {
     components: {
@@ -178,6 +185,21 @@ export default {
             type: Array,
             required: false,
             default: () => []
+        },
+        eventTextBoolean: {
+            type: String,
+            required: false,
+            default: ''
+        },
+        eventTextTrue: {
+            type: String,
+            required: false,
+            default: ''
+        },
+        eventTextFalse: {
+            type: String,
+            required: false,
+            default: ''
         }
     },
 
@@ -231,6 +253,8 @@ export default {
     },
 
     methods: {
+        get,
+        
         matches (item) {
             return item.toString().toLowerCase().indexOf(this.textFilter.toLowerCase()) >= 0
         },

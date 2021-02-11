@@ -17,7 +17,7 @@
             </button>
         </div>
 
-        <template v-if="type === 'question'">
+        <template v-if="type === 'question' && !lockStatus">
             <assessment-questions-add />
         </template>
 
@@ -63,7 +63,9 @@ export default {
 
     computed: {
         ...mapGetters({
-            currentPage: 'assessments/currentPage'
+            currentPage: 'assessments/currentPage',
+            assessment: 'assessments/assessment',
+            lockStatus: 'assessments/lockStatus'
         })
     },
 
@@ -75,7 +77,7 @@ export default {
 
         async destroy () {
             if (this.type === 'content') {
-                let { data } = await axios.delete(`${this.urlBase}/api/assessments/page/${this.currentPage.id}/content`, {
+                let { data } = await axios.delete(`${this.urlBase}/api/assessments/${this.assessment.id}/page/${this.currentPage.id}/content`, {
                     data: {
                         type: this.type,
                         data: this.data

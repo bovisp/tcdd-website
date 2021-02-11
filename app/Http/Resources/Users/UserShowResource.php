@@ -23,7 +23,7 @@ class UserShowResource extends JsonResource
             'role' => $this->roles->where('name', '!=', 'administrator')->first()->name,
             'roleRank' => $this->roles->where('name', '!=', 'administrator')->first()->rank,
             'reportingStructure' => $this->reportingStructure(),
-            'assessmentParticipant' => $this->assessmentParticipant->where('visible', '=', 1)->toArray()
+            'assessments' => $this->assessmentParticipant
         ];
     }
 }

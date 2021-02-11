@@ -190,40 +190,28 @@
             </div>
 
             <div
-                class="w-full lg:w-1/5 mb-4"
+                class="w-full mb-4"
             >
                 <label 
-                    for="assessment_type_id"
-                    class="block text-gray-700 font-bold mb-2"
+                    class="block text-gray-700 font-bold mb-2" 
+                    :class="{ 'text-red-500': errors.completion_time }"
+                    for="name_en"
                 >
-                    Type
+                    Completion time (minutes)
                 </label>
 
-                <div class="relative">
-                    <select 
-                        id="visible"
-                        v-model="form.visible"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        :class="{ 'border-red-500': errors.visible }"
-                    >
-                        <option value=""></option>
-
-                        <option
-                            :value="visibility.value"
-                            v-for="visibility in visibilities"
-                            :key="visibility.id"
-                            v-text="visibility.name"
-                        ></option>
-                    </select>
-
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
+                <input 
+                    type="number" 
+                    min="1"
+                    v-model="form.completion_time"
+                    class="shadow appearance-none border rounded w-full md:w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
+                    id="completion_time"
+                    :class="{ 'border-red-500': errors.completion_time }"
+                >
 
                 <p
-                    v-if="errors.visible"
-                    v-text="errors.visible[0]"
+                    v-if="errors.completion_time"
+                    v-text="errors.completion_time[0]"
                     class="text-red-500 text-sm"
                 ></p>
             </div>
@@ -261,12 +249,8 @@ export default {
                 description_fr: '',
                 section_id: null,
                 assessment_type_id: null,
-                visible: 0
-            },
-            visibilities: [
-                { name: 'Hidden', value: 0 },
-                { name: 'Visible', value: 1 }
-            ]
+                completion_time: null
+            }
         }
     },
 
@@ -292,7 +276,7 @@ export default {
             this.form.description_fr = ''
             this.form.section_id = null
             this.form.assessment_type_id = null
-            this.form.visibility = 0
+            this.form.completion_time = null
         },
 
         async store () {

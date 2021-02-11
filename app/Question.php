@@ -5,6 +5,7 @@ namespace App;
 use App\Tag;
 use App\User;
 use App\Section;
+use App\Assessment;
 use App\QuestionType;
 use App\ContentBuilder;
 use App\QuestionCategory;
@@ -80,6 +81,32 @@ class Question extends Model
         $questionTypeDataClass = 'App\\' . $questionTypeName . 'Question';
 
         return $questionTypeDataClass::find($this->question_type_model_id);
+    }
+
+    public function inAssessment()
+    {
+        return Assessment::all()->map(function ($assessment) {
+            return $assessment->questionIds();
+        })
+            ->flatten(1)
+            ->unique()
+            ->contains(function ($value, $key) {
+                return $value === $this->id;
+            });
+    }
+
+    public function assessments()
+    {
+        return Assessment::all()->map(function ($assessment) {
+            $inAssessment = in_array($this->id, $assessment->questionIds());
+            
+            if ($inAssessment) {
+                return [
+                    'assessment_name' => $assessment->name,
+                    'assessment_id' => $assessment->id
+                ];
+            }
+        })->filter();
     }
 
     public function toArray()

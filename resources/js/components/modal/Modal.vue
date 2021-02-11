@@ -1,12 +1,11 @@
 <template>
-    <div>
+    <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center">
         <overlay 
             @close="close"
         />
 
         <div 
-            class="absolute z-20 p-5 bg-white rounded shadow-xl w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12"
-            style="left: 50%; top: 50%; transform: translate(-50%, -50%);"
+            class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto p-5"
         >
             <h1
                 v-if="this.$slots.header"
@@ -39,10 +38,15 @@
                     v-if="hasOkButton"
                 >
                     <button 
-                        class="btn btn-blue w-full"
-                        @click.prevent="$emit('submit')"
+                        class="btn btn-blue flex items-center w-full"
+                        @click.prevent="submit"
                     >
-                        {{ okButtonText }}
+                        <span 
+                            class="spinner spinner-blue"
+                            v-if="clicked"
+                        ></span>
+
+                        <span class="flex-1">{{ okButtonText }}</span>
                     </button>
                 </div>
             </div>
@@ -72,12 +76,31 @@ export default {
             type: String,
             required: false,
             default: 'Cancel'
+        },
+        hasSpinner: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
+    },
+
+    data () {
+        return {
+            clicked: false
         }
     },
     
     methods: {
         close (e) {
             this.$emit('close')
+        },
+
+        submit (e) {
+            if (this.hasSpinner) {
+                this.clicked = true
+            }
+
+            this.$emit('submit')
         }
     }
 }
