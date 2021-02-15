@@ -148,13 +148,9 @@
                     Description (English)
                 </label>
 
-                <textarea 
+                <vue-editor 
                     v-model="form.description_en"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    rows="8"
-                    id="description_en"
-                    :class="{ 'border-red-500': errors.description_en }"
-                ></textarea>
+                ></vue-editor>
 
                 <p
                     v-if="errors.description_en"
@@ -174,13 +170,9 @@
                     Description (French)
                 </label>
 
-                <textarea 
+                <vue-editor 
                     v-model="form.description_fr"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="description"
-                    rows="8"
-                    :class="{ 'border-red-500': errors.description_fr }"
-                ></textarea>
+                ></vue-editor>
 
                 <p
                     v-if="errors.description_fr"
@@ -238,8 +230,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { VueEditor, Quill } from 'vue2-editor'
 
 export default {
+    components: {
+        VueEditor
+    },
+
     data() {
         return {
             form: {

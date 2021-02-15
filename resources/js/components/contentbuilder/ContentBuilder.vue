@@ -1,6 +1,10 @@
 <template>
     <div class="p-4 border rounded">
-        <div class="flex">
+        <div class="flex items-center">
+            <strong>
+                {{ lang === 'en' ? 'English' : 'French' }}
+            </strong>
+
             <button 
                 class="btn btn-sm text-sm ml-auto"
                 :class="editingClasses"
