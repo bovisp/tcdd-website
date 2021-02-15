@@ -116,6 +116,6 @@ export const pushMultipleChoiceData = async ({ commit }, payload) => {
     await commit('PUSH_TO_MULTIPLE_CHOICE_ARR', payload)
 }
 
-export const setInconpleteQuestions = async ({ commit }, payload) => {
+export const setIncompleteQuestions = async ({ commit }, payload) => {
     await commit('SET_INCOMPLETE_QUESTIONS', payload)
 }

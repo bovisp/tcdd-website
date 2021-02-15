@@ -5,7 +5,10 @@
         </div>
 
         <div class="flex items-end">
-            <div class="mr-auto">
+            <div 
+                class="mr-auto"
+                :class="{ 'mt-4' : !this.pages.length }"
+            >
                 <button 
                     class="btn btn-blue"
                     :class="{ 'btn-disabled': lockStatus }"

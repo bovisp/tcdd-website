@@ -57,7 +57,7 @@ export default {
         ...mapActions({
             fetchReviewData: 'assessment/fetchReviewData',
             goToQuestion: 'assessment/goToQuestion',
-            setInconpleteQuestions: 'assessment/setInconpleteQuestions'
+            setIncompleteQuestions: 'assessment/setIncompleteQuestions'
         }),
 
         orderBy,
@@ -68,10 +68,12 @@ export default {
 
         completionText(question) {
             if (question.required_answer_keys.length === question.existing_question_keys.length) {
+                this.setIncompleteQuestions(false)
+
                 return 'Complete'
             }
 
-            this.setInconpleteQuestions(true)
+            this.setIncompleteQuestions(true)
 
             return 'Incomplete'
         }
