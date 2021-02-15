@@ -232,6 +232,7 @@
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
+                    v-if="isDuplicate"
                 >
                     Cancel
                 </button>
@@ -317,8 +318,6 @@ export default {
 
         async update () {
             let { data } = await axios.put(`${this.urlBase}/api/assessments/${this.assessment.id}`, this.form)
-
-            this.cancel()
 
             this.$toasted.success(data.data.message)
         }

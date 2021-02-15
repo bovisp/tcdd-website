@@ -1,11 +1,20 @@
 <template>
     <div class="w-full">
         <div 
-            class="mb-4 flex justify-end"
+            class="mb-4 flex items-center"
             v-if="!duplicating"
         >
             <button 
-                class="btn"
+                class="btn btn-text"
+                @click.prevent="back"
+            >
+                <i class="fas fa-chevron-left mr-1"></i>
+
+                Back to assessments
+            </button>
+
+            <button 
+                class="btn ml-auto"
                 :class="lockStatus ? 'btn-red' : 'btn-green'"
                 @click.prevent="setAssessmentLockStatus"
             >
@@ -84,6 +93,10 @@ export default {
             this.duplicating = true
 
             this.duplicateForm = form
+        },
+
+        back () {
+            window.events.$emit('assessments:edit-cancel')
         }
     }
 }
