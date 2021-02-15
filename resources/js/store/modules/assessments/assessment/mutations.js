@@ -134,5 +134,7 @@ export const PUSH_TO_MULTIPLE_CHOICE_ARR = (state, payload) => {
 }
 
 export const SET_INCOMPLETE_QUESTIONS = (state, payload) => {
+    state.hasIncompleteQuestions = false
+    
     state.hasIncompleteQuestions = payload
 }

@@ -1,6 +1,6 @@
 <template>
     <div v-if="attempt"
-        class="mt-8 mb-32"
+        class="mt-8"
     >
         <div class="flex items-center">
             <h1 
@@ -20,17 +20,15 @@
             v-if="!reviewStatus"
         />
 
-        <assessment-attempt-footer 
-            v-if="!reviewStatus"
-        />
-
         <assessment-attempt-review 
             v-if="reviewStatus"
         />
 
-        <assessment-review-footer 
-            v-if="reviewStatus"
+        <assessment-attempt-footer
+            :assessment="assessment"
         />
+
+        <div class="py-16"></div>
     </div>
 </template>
 
@@ -53,16 +51,16 @@ export default {
         ...mapGetters({
             attempt: 'assessment/attempt',
             totalScore: 'assessment/totalScore',
-            reviewStatus: 'assessment/reviewStatus'
+            reviewStatus: 'assessment/reviewStatus',
         })
     },
 
     methods: {
         ...mapActions({
-            checkTimeRemaining: 'assessment/checkTimeRemaining',
             fetch: 'assessment/fetch',
             getTotalScore: 'assessment/getTotalScore',
-            fetchAttemptForm: 'assessment/fetchAttemptForm'
+            fetchAttemptForm: 'assessment/fetchAttemptForm',
+            checkTimeRemaining: 'assessment/checkTimeRemaining'
         })
     },
 
@@ -72,7 +70,7 @@ export default {
             assessment: this.assessment
         })
 
-        await this.getTotalScore()
+        await this.getTotalScore()       
 
         if (this.assessment.completion_time) {
             await this.checkTimeRemaining()
@@ -80,7 +78,7 @@ export default {
             setInterval(async () => {
                 await this.checkTimeRemaining()
             }, 60000)
-        }       
+        }
     }
 }
 </script>

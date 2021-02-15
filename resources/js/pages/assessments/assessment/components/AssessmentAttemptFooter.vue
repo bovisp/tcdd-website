@@ -4,15 +4,11 @@
         style="box-shadow: 0px 0 10px rgba(0, 0, 0, 0.1);"
         v-if="attempt"
     >
-        <span
-            class="text-lg"
-            :class="{ 'text-red-700': warningClass }"
-            v-if="attempt.time_remaining"
-        >
-            <strong>Time remaining:</strong> {{ attempt.time_remaining }} minutes
-        </span>
+        <assessment-attempt-timer />
 
-        <template v-if="attempt.pages">
+        <template 
+            v-if="attempt.pages && !reviewStatus"
+        >
             <button 
                 class="btn btn-blue ml-auto"
                 :class="hasPrevPage ? '' : 'btn-disabled'"
@@ -21,7 +17,7 @@
             >
                 <i class="fas fa-chevron-left"></i>
 
-                Save all and previous page
+                Previous page
             </button>
 
             <button 
@@ -30,7 +26,7 @@
                 :disabled="!hasNextPage"
                 @click.prevent="changePage(currentPage.number + 1)"
             >
-                Save all and next page
+                Next page
 
                 <i class="fas fa-chevron-right"></i>
             </button>
@@ -43,25 +39,46 @@
             </button>
         </template>
 
-        <modal 
-            v-show="modalActive"
-            @submit="warningConfirmed"
-            :has-cancel-button="false"
-            ok-button-text="OK"
-        >
-            <template slot="header">
-                Two minute warning
-            </template>
+        <template v-else>
+            <button 
+                class="btn btn-green ml-auto"
+                @click.prevent="review"
+            >
+                Return to assessment
+            </button>
 
-            <template slot="body">
-                <div class="my-4">
-                    You have less than two minutes left to complete the assessment. 
-                    Please check your work and submit. If the timer reaches 0 minutes, 
-                    your work will automatically be saved and you will be locked 
-                    out of this exam.
-                </div>
-            </template>
-        </modal>
+            <button 
+                class="btn btn-blue ml-4"
+                @click.prevent="modalActive = true"
+            >
+                Submit and finish
+            </button>
+
+            <modal 
+                v-show="modalActive"
+                @close="close"
+                @submit="submit"
+                :has-spinner="true"
+            >
+                <template slot="header" v-if="attempt.assessment">
+                    Submit {{ attempt.assessment.name }}
+                </template>
+
+                <template slot="body">
+                    <div class="my-4">
+                        <p 
+                            class="text-red-700 mb-4"
+                            v-if="hasIncompleteQuestions"
+                        >
+                            <strong>Warning. Some of your answers have not yet been completed.</strong>
+                        </p>
+
+                        Are you sure you want to submit this exam? Once you submit your exam questions, you will not be 
+                        allowed to re-enter this assessment.
+                    </div>
+                </template>
+            </modal>
+        </template>
     </div>
 </template>
 
@@ -71,16 +88,17 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
     data () {
         return {
-            warningClass: false,
-            modalActive: false,
-            hasConfirmed: false
+            hasConfirmed: false,
+            modalActive: false
         }
     },
 
     computed: {
         ...mapGetters({
             attempt: 'assessment/attempt',
-            currentPage: 'assessment/currentPage'
+            currentPage: 'assessment/currentPage',
+            reviewStatus: 'assessment/reviewStatus',
+            hasIncompleteQuestions: 'assessment/hasIncompleteQuestions'
         }),
 
         hasPrevPage () {
@@ -103,36 +121,21 @@ export default {
     methods: {
         ...mapActions({
             changePage: 'assessment/changePage',
-            setReviewStatus: 'assessment/setReviewStatus'
+            setReviewStatus: 'assessment/setReviewStatus',
+            submitAssessment: 'assessment/submitAssessment'
         }),
 
         review () {
-            this.setReviewStatus(true)
+            this.setReviewStatus(!this.reviewStatus)
+        },
+        
+        close () {
+            this.modalActive = false
         },
 
-        warningConfirmed () {
-            this.modalActive = false
-
-            if (!this.hasConfirmed) {
-                this.hasConfirmed = true
-            }
+        async submit () {
+            await this.submitAssessment()
         }
-    },
-
-    mounted () {
-        setInterval(() => {
-            if (this.attempt.time_remaining <= 5) {
-                this.warningClass = true
-            }
-
-            if (this.attempt.time_remaining === 2) {
-                if (!this.hasConfirmed) {
-                    this.modalActive = true
-                }
-            }
-        }, 5000)
-
-        window.events.$on('assessment:five-min-warning', () => this.warningClass = true)
     }
 }
 </script>

@@ -6,6 +6,7 @@
 
         <table
             v-if="attemptReview.questions"
+            class="mb-32"
         >
             <tr
                 v-for="question in orderBy(attemptReview.questions, ['question_number'], ['asc'])"
@@ -37,7 +38,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { orderBy } from 'lodash-es'
+import { orderBy, forEach } from 'lodash-es'
 
 export default {
     data () {
@@ -78,6 +79,12 @@ export default {
 
     async mounted () {
         await this.fetchReviewData()
+
+        forEach(this.attemptReview.questions, question => {
+            if (!question.required_answer_keys.length === question.existing_question_keys.length) {
+                this.setInconpleteQuestions(true)    
+            }
+        })
     }
 }
 </script>
