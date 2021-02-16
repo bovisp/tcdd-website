@@ -98,6 +98,14 @@ export default {
         back () {
             window.events.$emit('assessments:edit-cancel')
         }
+    },
+
+    mounted () {
+        console.log('Here outside')
+        Echo.private(`assessment.${this.assessment.id}`)
+            .listen('AssessmentCompleted', (e) => {
+                console.log('here');
+            })
     }
 }
 </script>
