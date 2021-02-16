@@ -1,6 +1,7 @@
-const mix = require('laravel-mix');
+const mix = require('laravel-mix')
 const tailwindcss = require('tailwindcss')
-require('laravel-mix-purgecss');
+require("dotenv").config()
+require('laravel-mix-purgecss')
 
 /*
  |--------------------------------------------------------------------------

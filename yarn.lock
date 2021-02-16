@@ -2707,6 +2707,11 @@ dotenv@^6.2.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
   integrity sha512-HygQCKUBSFl8wKQZBSemMywRWcEDNidvNbjGVyZu3nbZ8qq9ubiPoGLMdRDpfSrpkkm9BXYFkpKxxFX38o/76w==
 
+dotenv@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
+
 duplexify@^3.4.2, duplexify@^3.6.0:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/duplexify/-/duplexify-3.7.1.tgz#2a4df5317f6ccfd91f86d6fd25d8d8a103b88309"
@@ -3100,6 +3105,13 @@ fastparse@^1.1.1, fastparse@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.2.tgz#91728c5a5942eced8531283c79441ee4122c35a9"
   integrity sha512-483XLLxTVIwWK3QTrMGRqUfUpoOs/0hbQrl2oz4J0pAcm3A3bu84wxTFqGqkJzewCLdME38xJLJAxBABfQT8sQ==
+
+faye-websocket@0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.9.4.tgz#885934c79effb0409549e0c0a3801ed17a40cdad"
+  integrity sha1-iFk0x57/sECVSeDAo4Ae0XpAza0=
+  dependencies:
+    websocket-driver ">=0.5.1"
 
 faye-websocket@^0.11.3:
   version "0.11.3"
@@ -4285,6 +4297,11 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
+
+laravel-echo@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/laravel-echo/-/laravel-echo-1.10.0.tgz#b7a3615baf563fadfe242589ad1e302acc931dad"
+  integrity sha512-qshJkrzl34on1VYd8KqZhLxUdWJFPTL6cGSZ4lVQ4OZMN7FvI9Pt24PrOFL169I8IEDHjHX16jaIAIwCkdnDNA==
 
 laravel-mix-purgecss@^5.0.0-rc.1:
   version "5.0.0"
@@ -5911,6 +5928,16 @@ purgecss@^2.3.0:
     postcss "7.0.32"
     postcss-selector-parser "^6.0.2"
 
+pusher-js@^4.3:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/pusher-js/-/pusher-js-4.4.0.tgz#c52e758c418f8ff9b3221b22291865ffbbc56e32"
+  integrity sha512-oxSEG764hqeGAqW9Ryq5KdGQrbM/2sBy5L6Jsh62GyRbRO4z0qI9EjQ6IfQSDhR59b/tY0ANuXD8+ZOZY9AOyg==
+  dependencies:
+    faye-websocket "0.9.4"
+    tweetnacl "^1.0.0"
+    tweetnacl-util "^0.15.0"
+    xmlhttprequest "^1.8.0"
+
 q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
@@ -7058,6 +7085,16 @@ tty-browserify@0.0.0:
   resolved "https://registry.yarnpkg.com/tty-browserify/-/tty-browserify-0.0.0.tgz#a157ba402da24e9bf957f9aa69d524eed42901a6"
   integrity sha1-oVe6QC2iTpv5V/mqadUk7tQpAaY=
 
+tweetnacl-util@^0.15.0:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/tweetnacl-util/-/tweetnacl-util-0.15.1.tgz#b80fcdb5c97bcc508be18c44a4be50f022eea00b"
+  integrity sha512-RKJBIj8lySrShN4w6i/BonWp2Z/uxwC3h4y7xsRrpP59ZboCd0GpEVsOnMDYLMmKBpYhb5TgHzZXy7wTfYFBRw==
+
+tweetnacl@^1.0.0:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"
+  integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
+
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"
   resolved "https://registry.yarnpkg.com/type-is/-/type-is-1.6.18.tgz#4e552cd05df09467dcbc4ef739de89f2cf37c131"
@@ -7633,6 +7670,11 @@ xlsx@^0.16.4:
     ssf "~0.11.2"
     wmf "~1.0.1"
     word "~0.3.0"
+
+xmlhttprequest@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/xmlhttprequest/-/xmlhttprequest-1.8.0.tgz#67fe075c5c24fef39f9d65f5f7b7fe75171968fc"
+  integrity sha1-Z/4HXFwk/vOfnWX197f+dRcZaPw=
 
 xtend@^4.0.0, xtend@^4.0.2, xtend@~4.0.1:
   version "4.0.2"

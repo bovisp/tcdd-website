@@ -11,6 +11,13 @@ object-assign
 */
 
 /*!
+	 * The buffer module from node.js, for the browser.
+	 *
+	 * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+	 * @license  MIT
+	 */
+
+/*!
   * vue-scrollto v2.20.0
   * (c) 2019 Randjelovic Igor
   * @license MIT
@@ -29,6 +36,14 @@ object-assign
  *
  * @author   Feross Aboukhadijeh <https://feross.org>
  * @license  MIT
+ */
+
+/*!
+ * Pusher JavaScript Library v4.4.0
+ * https://pusher.com/
+ *
+ * Copyright 2017, Pusher
+ * Released under the MIT licence.
  */
 
 /*!

@@ -8,6 +8,7 @@ use App\DrawingQuestion;
 use App\AssessmentAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Events\AssessmentCompleted;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -81,6 +82,8 @@ class AttemptSubmitController extends Controller
             ->where('participant_id', auth()->id())
             ->where('assessment_id', $assessment->id)
             ->update(['activated' => 0]);
+
+        event(new AssessmentCompleted($assessment->id, $attempt->id));
 
         return auth()->id();
     }

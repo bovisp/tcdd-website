@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('assessment.{assessmentId}', function ($user, $assessmentId) {
+    // if ($user->hasRole('administrator')) {
+    //     return true;
+    // }
+    return true;
 });
