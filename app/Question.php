@@ -24,7 +24,6 @@ class Question extends Model
     
     protected $fillable = [
         'name',  
-        'score',
         'author_id',
         'question_category_id',
         'section_id',

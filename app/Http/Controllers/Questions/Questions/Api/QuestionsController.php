@@ -67,7 +67,6 @@ class QuestionsController extends Controller
         request()->validate([
             'name_en' => 'required|min:3|max:60',
             'name_fr' => 'required|min:3|max:60',
-            'score' => 'required|integer|min:1',
             'section_id' => 'required|integer|exists:sections,id',
             'question_category_id' => 'required|integer|exists:question_categories,id',
             'tags' => 'array|present',
@@ -97,7 +96,6 @@ class QuestionsController extends Controller
                 'fr' => request('marking_guide_fr')
             ],
             'author_id' => auth()->id(),
-            'score' => request('score'),
             'section_id' => request('section_id'),
             'question_category_id' => request('question_category_id'),
             'question_type_id' => request('question_type_id'),
@@ -159,7 +157,6 @@ class QuestionsController extends Controller
         request()->validate([
             'name_en' => 'required|min:3|max:60',
             'name_fr' => 'required|min:3|max:60',
-            'score' => 'required|integer|min:1',
             'section_id' => 'required|integer|exists:sections,id',
             'question_category_id' => 'required|integer|exists:question_categories,id',
             'tags' => 'array|present',
@@ -189,7 +186,6 @@ class QuestionsController extends Controller
                 'en' => request('marking_guide_en'),
                 'fr' => request('marking_guide_fr')
             ],
-            'score' => request('score'),
             'section_id' => request('section_id'),
             'question_category_id' => request('question_category_id')
         ]);

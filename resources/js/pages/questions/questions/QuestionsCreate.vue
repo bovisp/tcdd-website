@@ -206,32 +206,6 @@
             </div>
 
             <div
-                class="w-full md:w-1/3 lg:w-1/4 mb-4"
-            >
-                <label 
-                    class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.score }"
-                    for="score"
-                >
-                    Score
-                </label>
-
-                <input 
-                    type="number" 
-                    v-model="form.score"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="score"
-                    :class="{ 'border-red-500': errors.score }"
-                >
-
-                <p
-                    v-if="errors.score"
-                    v-text="errors.score[0]"
-                    class="text-red-500 text-sm"
-                ></p>
-            </div>
-
-            <div
                 class="w-full md:w-2/3 lg:w-1/2 mb-4"
             >
                 <label 
@@ -412,7 +386,6 @@ export default {
                 name_fr: '',
                 marking_guide_fr: '',
                 marking_guide_en: '',
-                score: null,
                 section_id: null,
                 question_category_id: null,
                 tags: [],
@@ -476,7 +449,6 @@ export default {
             this.form.section_id = null
             this.form.question_category_id = null
             this.form.tags = []
-            this.form.score = null
             this.form.marking_guide_fr = ''
             this.form.marking_guide_en = ''
             this.question_type_id = null
