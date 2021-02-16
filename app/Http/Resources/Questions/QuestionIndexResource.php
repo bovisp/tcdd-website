@@ -21,7 +21,6 @@ class QuestionIndexResource extends JsonResource
             'name_fr' => $this->getTranslation('name', 'fr'),
             'marking_guide_en' => $this->getTranslation('marking_guide', 'en'),
             'marking_guide_fr' => $this->getTranslation('marking_guide', 'fr'),
-            'score' => $this->score,
             'author' => $this->author,
             'questionCategory' => optional($this->questionCategory),
             'question_category_id' => optional($this->questionCategory)->id,
