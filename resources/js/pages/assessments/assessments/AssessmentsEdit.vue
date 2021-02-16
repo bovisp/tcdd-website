@@ -76,7 +76,8 @@ export default {
     computed: {
         ...mapGetters({
             assessment: 'assessments/assessment',
-            lockStatus: 'assessments/lockStatus'
+            lockStatus: 'assessments/lockStatus',
+            attempts: 'assessments/attempts'
         }),
 
         lockText () {
@@ -86,7 +87,9 @@ export default {
 
     methods: {
         ...mapActions({
-            setAssessmentLockStatus: 'assessments/setAssessmentLockStatus'
+            setAssessmentLockStatus: 'assessments/setAssessmentLockStatus',
+            fetchAssessments: 'assessments/fetch',
+            fetchAttempt: 'assessments/fetchAttempt'
         }),
 
         duplicate (form) {
@@ -102,8 +105,12 @@ export default {
 
     mounted () {
         Echo.private(`assessment.${this.assessment.id}`)
-            .listen('AssessmentCompleted', (e) => {
-                console.log('here');
+            .listen('AssessmentCompleted', async (e) => {
+                await this.fetchAssessments()
+
+                await this.fetchAttempt(e.attemptId)
+
+                console.log(this.attempts)
             })
     }
 }

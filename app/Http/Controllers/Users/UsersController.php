@@ -21,8 +21,6 @@ class UsersController extends Controller
 
     public function show(User $user)
     {
-        event(new AssessmentCompleted(9, 38));
-        
         return view('users.show', compact('user'));
     }
 }

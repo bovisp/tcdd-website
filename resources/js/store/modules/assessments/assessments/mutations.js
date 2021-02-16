@@ -64,3 +64,5 @@ export const SET_AVAILABLE_QUESTIONS = (state, questions) => state.availableQues
 export const SET_LOCK_STATUS = (state, status) => state.lockStatus = status
 
 export const SET_DUPLICATE_STATUS = (state, status) => state.isDuplicate = status
+
+export const PUSH_ATTEMPT = (state, attempt) => state.attempts.push(attempt)

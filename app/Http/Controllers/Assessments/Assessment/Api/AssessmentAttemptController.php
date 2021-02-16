@@ -45,6 +45,10 @@ class AssessmentAttemptController extends Controller
 
             $assessment = Assessment::find((int) $matches[1][0]);
 
+            if (auth()->user()->hasRole(['administrator'])) {
+                return $next($request);
+            }
+
             $participantActive = $assessment->participants
                 ->filter(function ($participant) {
                     return $participant->pivot->activated && $participant->pivot->participant_id === auth()->id();

@@ -146,3 +146,9 @@ export const duplicateAssesment = async ({ state, commit, dispatch }, form) => {
 
     await dispatch('fetchPages', state.assessment.id)
 }
+
+export const fetchAttempt = async ({ commit, state }, attemptId) => {
+    let { data: attempt } = await axios.get(`/api/assessments/${state.assessment.id}/attempts/${attemptId}`)
+
+    commit('PUSH_ATTEMPT', attempt)
+}
