@@ -4,9 +4,10 @@
             {{ assessment.name }}
         </h1>
 
-        <p class="mb-6">
-            {{ assessment.description }}
-        </p>
+        <p 
+            class="mb-6"
+            v-html="assessment.description"
+        ></p>
 
         <div>
             <h2 class="font-light text-2xl mb-4">Exam questions by page</h2>
