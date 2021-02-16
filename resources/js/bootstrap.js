@@ -12,10 +12,18 @@ import Echo from 'laravel-echo';
 
 window.Pusher = require('pusher-js');
 
+let pusherKey = ''
+
+if (process.env.NODE_ENV === 'production') {
+    pusherKey = '527ffffc14a075ceaf06'
+} else if (process.env.NODE_ENV === 'development') {
+    pusherKey = 'd5dc29f415486ec427d3'
+}
+
 window.Echo = new Echo({
     authEndpoint : process.env.MIX_PUSHER_APP_AUTH_ROUTE,
     broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
+    key: pusherKey,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     forceTLS: process.env.MIX_PUSHER_APP_TLS
 });

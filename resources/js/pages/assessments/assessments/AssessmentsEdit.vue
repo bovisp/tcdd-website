@@ -101,7 +101,6 @@ export default {
     },
 
     mounted () {
-        console.log('Here outside')
         Echo.private(`assessment.${this.assessment.id}`)
             .listen('AssessmentCompleted', (e) => {
                 console.log('here');

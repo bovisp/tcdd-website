@@ -105,10 +105,6 @@ export default {
 
             window.location.href = `${this.urlBase}/assessment/${this.assessment.id}/attempt/${attempt.data.id}`
         }
-    },
-
-    mounted () {
-        console.log(this.pages)
     }
 }
 </script>
