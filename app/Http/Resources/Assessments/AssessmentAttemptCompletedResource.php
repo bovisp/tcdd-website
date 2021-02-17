@@ -17,7 +17,7 @@ class AssessmentAttemptCompletedResource extends JsonResource
         return [
             'id' => $this->id,
             'assessment_participant_id' => $this->assessment_participant_id,
-            'answers' => $this->answers
+            'answers' => json_decode($this->answers, true)
         ];
     }
 }

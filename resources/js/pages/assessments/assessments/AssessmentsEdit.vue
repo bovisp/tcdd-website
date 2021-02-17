@@ -88,8 +88,9 @@ export default {
     methods: {
         ...mapActions({
             setAssessmentLockStatus: 'assessments/setAssessmentLockStatus',
-            fetchAssessments: 'assessments/fetch',
-            fetchAttempt: 'assessments/fetchAttempt'
+            fetchAttempt: 'assessments/fetchAttempt',
+            fetchAttempts: 'assessments/fetchAttempts',
+            fetchAssessment: 'assessments/fetchAssessment'
         }),
 
         duplicate (form) {
@@ -103,14 +104,16 @@ export default {
         }
     },
 
-    mounted () {
+    async mounted () {
+        await this.fetchAssessment(this.assessment.id)
+
+        await this.fetchAttempts()
+
         Echo.private(`assessment.${this.assessment.id}`)
             .listen('AssessmentCompleted', async (e) => {
-                await this.fetchAssessments()
+                await this.fetchAssessment(this.assessment.id)
 
                 await this.fetchAttempt(e.attemptId)
-
-                console.log(this.attempts)
             })
     }
 }

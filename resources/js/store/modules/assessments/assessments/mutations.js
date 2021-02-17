@@ -1,4 +1,4 @@
-import { orderBy, find } from 'lodash-es'
+import { orderBy, find, findIndex } from 'lodash-es'
 
 export const SET_ASSESSMENTS = (state, assessments) => state.assessments = assessments
 
@@ -65,4 +65,8 @@ export const SET_LOCK_STATUS = (state, status) => state.lockStatus = status
 
 export const SET_DUPLICATE_STATUS = (state, status) => state.isDuplicate = status
 
-export const PUSH_ATTEMPT = (state, attempt) => state.attempts.push(attempt)
+export const PUSH_ATTEMPT = async (state, attempt) => {
+    state.attempts.push(attempt)
+}
+
+export const PUSH_ATTEMPTS = (state, attempts) => state.attempts = attempts
