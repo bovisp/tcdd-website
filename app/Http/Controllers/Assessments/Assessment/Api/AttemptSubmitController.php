@@ -74,7 +74,7 @@ class AttemptSubmitController extends Controller
         }
 
         $attempt->update([
-            'answers' => request('answers'),
+            'answers' => $answers,
             'completed' => 1
         ]);
 
