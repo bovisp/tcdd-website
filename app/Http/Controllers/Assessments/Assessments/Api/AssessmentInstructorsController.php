@@ -51,6 +51,7 @@ class AssessmentInstructorsController extends Controller
             ->filter(function ($user) use ($assessment) {
                 return $user->can('manage assessments') && 
                 !$assessment->editors->contains('id', $user->id) && 
+                !$assessment->participants->contains('id', $user->id) &&
                 !$user->hasRole('administrator');
             })
             ->toArray();
