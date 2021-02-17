@@ -234,13 +234,13 @@
         <hr class="block w-full mt-6 pt-6 border-t border-gray-200">
 
         <destroy-assessment 
-            v-if="hasRole(['administrator']) && !lockStatus"
+            v-if="hasRole(['administrator']) && !assessment.locked"
             @close="cancel"
         />
 
         <div 
             class="alert alert-red"
-            v-if="lockStatus"
+            v-if="assessment.locked"
         >
             You cannot delete this assessment when it has been locked and/or when there are one or more attempts that have been saved to the database.
         </div>
@@ -280,7 +280,6 @@ export default {
             sections: 'sections/sections',
             types: 'assessmentTypes/assessmentTypes',
             assessment: 'assessments/assessment',
-            lockStatus: 'assessments/lockStatus',
             isDuplicate: 'assessments/isDuplicate'
         })
     },

@@ -57,11 +57,11 @@ export default {
 
     computed: {
         ...mapGetters({
-            lockStatus: 'assessments/lockStatus'
+            assessment: 'assessments/assessment'
         }),
 
         types () {
-            if (this.lockStatus) {
+            if (this.assessment.locked) {
                 return  [
                     { code: 'content', name: 'Explanitory content' }
                 ]

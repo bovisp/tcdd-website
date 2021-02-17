@@ -14,8 +14,17 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('assessment.{assessmentId}', function ($user, $assessmentId) {
-    // if ($user->hasRole('administrator')) {
-    //     return true;
-    // }
-    return true;
+    if ($user->hasRole('administrator')) {
+        return true;
+    }
+
+    return false;
+});
+
+Broadcast::channel('assessment.{assessmentId}.attempting', function ($user, $assessmentId) {
+    if ($user->hasRole('administrator')) {
+        return true;
+    }
+
+    return false;
 });

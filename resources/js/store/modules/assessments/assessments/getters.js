@@ -12,8 +12,6 @@ export const currentPageScore = state => state.currentPageScore
 
 export const availableQuestions = state => state.availableQuestions
 
-export const lockStatus = state => state.lockStatus
-
 export const isDuplicate = state => state.isDuplicate
 
 export const attempts = state => state.attempts

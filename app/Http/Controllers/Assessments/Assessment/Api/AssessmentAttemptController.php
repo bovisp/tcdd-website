@@ -8,6 +8,7 @@ use App\AssessmentAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Events\AssessmentAttemptStarted;
 use App\Http\Resources\Assessments\AssessmentAttemptResource;
 
 class AssessmentAttemptController extends Controller
@@ -104,6 +105,12 @@ class AssessmentAttemptController extends Controller
             'time_remaining' => $assessment->completion_time ? $assessment->completion_time : null,
             'assessment_id' => $assessment->id
         ]);
+
+        $assessment->update([
+            'locked' => 1
+        ]);
+
+        event(new AssessmentAttemptStarted($assessment->id));
 
         return new AssessmentAttemptResource($assessmentAttempt);
     }

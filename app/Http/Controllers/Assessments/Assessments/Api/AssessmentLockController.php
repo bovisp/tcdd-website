@@ -28,14 +28,10 @@ class AssessmentLockController extends Controller
 
     public function update(Assessment $assessment)
     {
-        $activeParticipants = $assessment->participants->filter(function ($participant) {
-            return $participant->pivot->activated;
-        })->count();
-
-        if ($assessment->locked === 1 && ($activeParticipants || $assessment->attempts->count())) {
+        if ($assessment->locked === 1 && $assessment->attempts->count()) {
             return response()->json([
                 'data' => [
-                    'message' => 'You cannot unlock an assessment in which participants are active and/or have attempted.'
+                    'message' => 'You cannot unlock an assessment in which participants have attempted or are attempting.'
                 ]
             ], 403);
         }
@@ -44,6 +40,6 @@ class AssessmentLockController extends Controller
             'locked' => $assessment->locked === 1 ? 0 : 1
         ]);
 
-        return $assessment->locked;
+        return $assessment->locked ? true : false;
     }
 }

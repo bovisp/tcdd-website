@@ -14,20 +14,20 @@
                 class="fas fa-trash-alt text-red-500 ml-2"
                 title="Delete page"
                 @click.prevent="confirmDestroy"
-                v-if="!lockStatus"
+                v-if="!assessment.locked"
             ></i>
 
             <i 
                 class="fas fa-edit ml-2"
                 title="Update page number"
                 @click.prevent="updatePage = true"
-                v-if="!lockStatus"
+                v-if="!assessment.locked"
             ></i>
         </h2>
 
         <div
             class="w-full lg:w-1/3"
-            v-if="updatePage && !lockStatus"
+            v-if="updatePage && !assessment.locked"
         >
             <label 
                 for="page_number"
@@ -145,8 +145,7 @@ export default {
             currentPage: 'assessments/currentPage',
             currentPageScore: 'assessments/currentPageScore',
             pages: 'assessments/pages',
-            assessment: 'assessments/assessment',
-            lockStatus: 'assessments/lockStatus'
+            assessment: 'assessments/assessment'
         })
     },
 

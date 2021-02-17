@@ -15,7 +15,7 @@
 
             <button 
                 class="btn ml-auto"
-                :class="lockStatus ? 'btn-red' : 'btn-green'"
+                :class="lockClass"
                 @click.prevent="setAssessmentLockStatus"
             >
                 {{ lockText }}
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
     data () {
@@ -76,12 +76,15 @@ export default {
     computed: {
         ...mapGetters({
             assessment: 'assessments/assessment',
-            lockStatus: 'assessments/lockStatus',
             attempts: 'assessments/attempts'
         }),
 
         lockText () {
-            return this.lockStatus ? 'Assessment locked' : 'Lock assessment'
+            return this.assessment.locked ? 'Assessment locked' : 'Lock assessment'
+        },
+
+        lockClass () {
+            return this.assessment.locked ? 'btn-red' : 'btn-green'
         }
     },
 
@@ -91,6 +94,10 @@ export default {
             fetchAttempt: 'assessments/fetchAttempt',
             fetchAttempts: 'assessments/fetchAttempts',
             fetchAssessment: 'assessments/fetchAssessment'
+        }),
+
+        ...mapMutations({
+            setLockStatus: 'assessments/SET_LOCK_STATUS'
         }),
 
         duplicate (form) {
@@ -114,6 +121,11 @@ export default {
                 await this.fetchAssessment(this.assessment.id)
 
                 await this.fetchAttempt(e.attemptId)
+            })
+
+        Echo.private(`assessment.${this.assessment.id}.attempting`)
+            .listen('AssessmentAttemptStarted', async (e) => {
+                await this.setLockStatus(true)
             })
     }
 }

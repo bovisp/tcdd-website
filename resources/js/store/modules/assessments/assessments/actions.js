@@ -121,8 +121,6 @@ export const activateParticipant = async ({ dispatch, state, commit }, payload) 
     let { data } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/participants/activate?id=${payload.participantId}&activated=${payload.isActivated}`)
 
     await dispatch('fetchAssessment', state.assessment.id)
-
-    await commit('SET_LOCK_STATUS', data > 0 ? true : false)
 }
 
 export const setAssessmentLockStatus = async ({ commit, state }) => {
