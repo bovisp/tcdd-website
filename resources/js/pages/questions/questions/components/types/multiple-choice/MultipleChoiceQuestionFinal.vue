@@ -20,8 +20,8 @@
             >
                 <label class="flex items-center">
                     <input 
-                        :type="data.data.multiple_answers ? 'checkbox' : 'radio'" 
-                        :class="data.data.multiple_answers ? 'form-checkbox' : 'form-radio'"
+                        type="checkbox" 
+                        class="form-checkbox"
                         v-model="form.answers"
                         :value="answer.id"
                     >
