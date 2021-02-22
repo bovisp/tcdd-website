@@ -12,6 +12,7 @@ use App\Events\AssessmentCompleted;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use App\Classes\Assessments\Assessment\MarkMultipleChoiceQuestion;
 
 class AttemptSubmitController extends Controller
 {
@@ -41,6 +42,20 @@ class AttemptSubmitController extends Controller
     public function update(Assessment $assessment, AssessmentAttempt $attempt)
     {
         $answers = json_decode(request('answers'), true);
+
+        $questionIds = [];
+
+        foreach (array_keys($answers) as $key) {
+            $questionId = (int) explode('_', $key)[1];
+
+            $question = Question::find($questionId);
+
+            if ($question->questionType->code === 'multiple_choice') {
+                (new MarkMultipleChoiceQuestion(
+                    $question, $answers[$key], $attempt
+                ))->mark();
+            }
+        }
 
         $drawings = array_filter(
             array_map(function($question, $data) {
