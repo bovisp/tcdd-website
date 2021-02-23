@@ -103,7 +103,6 @@ export default {
                     })
                 }
 
-
                 for await (let index of order) {
                     let orderedAnswer = find(answer.answers, a => a.id === index)
 
