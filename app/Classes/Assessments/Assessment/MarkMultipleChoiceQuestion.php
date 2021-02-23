@@ -14,6 +14,10 @@ class MarkMultipleChoiceQuestion extends MarkQuestion
         $evalItems = $this->getEvalItems();
 
         $score = 0;
+        
+        if (is_int($evalItems['participantAnswerData'])) {
+            $evalItems['participantAnswerData'] = [$evalItems['participantAnswerData']];
+        }
 
         if (count($evalItems['participantAnswerData']) === 0) {
             $score = 0;
@@ -25,12 +29,24 @@ class MarkMultipleChoiceQuestion extends MarkQuestion
             $score = 0;
         }
         
-        $this->persistScore;
+        $this->persistScore($score, null, null);
     }
 
     protected function evaluateScore($evalItems)
     {
         $score = 0;
+
+        $numCorrectAnswers = array_filter($evalItems['allPossibleAnswers'], function ($answer) {
+            return $answer['isCorrect'];
+        });
+
+        if (count($numCorrectAnswers) === 1) {
+            if (array_search($evalItems['allPossibleAnswers'][0], $evalItems['participantAnswerData'])) {
+                return $evalItems['questionScore'];
+            }
+
+            return 0;
+        }
 
         foreach ($evalItems['allPossibleAnswers'] as $answer) {
             // This a correct answer which the participant has selected as one of their answers.

@@ -37,7 +37,11 @@ class AttemptAnswersController extends Controller
     {
         $answers = json_decode($attempt->answers, true);
 
-        if (Arr::has($answers, 'question_' . request('answer')['id'] . '.' . request('answer')['key'])) {
+        $hasAnswerKeyForQuestion = Arr::has($answers, 'question_' . request('answer')['id'] . '.' . request('answer')['key']);
+
+        $hasQuestion = Arr::has($answers, 'question_' . request('answer')['id']);
+
+        if ($hasAnswerKeyForQuestion) {
             $answer = Arr::get($answers, 'question_' . request('answer')['id'] . '.' . request('answer')['key']);
 
             if (request('answer')['timestamp'] > $answer['timestamp']) {
@@ -46,6 +50,11 @@ class AttemptAnswersController extends Controller
                     'timestamp' => request('answer')['timestamp']
                 ];
             }
+        } else if (!$hasAnswerKeyForQuestion && $hasQuestion) {
+            $answers['question_' . request('answer')['id']][request('answer')['key']] = [
+                'data' => request('answer')['data'],
+                'timestamp' => request('answer')['timestamp']
+            ];
         } else {
             $answers['question_' . request('answer')['id']] = [];
 
@@ -57,6 +66,13 @@ class AttemptAnswersController extends Controller
 
         $attempt->update([
             'answers' => json_encode($answers)
+        ]);
+    }
+
+    public function allAnswers(Assessment $assessment, AssessmentAttempt $attempt)
+    {
+        $attempt->update([
+            'answers' => request('answers')
         ]);
     }
 }

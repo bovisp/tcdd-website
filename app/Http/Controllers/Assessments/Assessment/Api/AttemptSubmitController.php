@@ -43,6 +43,8 @@ class AttemptSubmitController extends Controller
     {
         $answers = json_decode(request('answers'), true);
 
+        dd($answers);
+
         $questionIds = [];
 
         foreach (array_keys($answers) as $key) {

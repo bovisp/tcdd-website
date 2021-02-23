@@ -18,10 +18,12 @@ export const SET_CURRENT_PAGE_SCORE = (state, currentPageScore) => state.current
 
 export const UPDATE_ATTEMPT_FORM = (state, payload) => {
     if (!get(state.form, `question_${payload.id}`)) {
+        console.log(`question_${payload.id}`)
         state.form[`question_${payload.id}`] = {}
     }
 
     if (!get(state.form, `question_${payload.id}.${payload.key}`)) {
+        console.log(`question_${payload.id}.${payload.key}`)
         state.form[`question_${payload.id}`][payload.key] = {}
     }
 
@@ -88,20 +90,8 @@ export const SET_ATTEMPT_REVIEW = async (state) => {
 }
 
 export const SET_ATTEMPT_STORAGE = async (state) => {
-    if (!localStorage.getItem(`assessment_${state.attempt.id}`)) {
-        localStorage.setItem(`assessment_${state.attempt.id}`, JSON.stringify({}))
-    }
-
     let answersFromServer = JSON.parse(state.attempt.answers)
-
-    if (!answersFromServer && localStorage.getItem(`assessment_${state.attempt.id}`)) {
-        state.form = JSON.parse(localStorage.getItem(`assessment_${state.attempt.id}`))
-    }
-
-    if (!answersFromServer) {
-        return
-    }
-
+    
     let answersFromStorage = JSON.parse(localStorage.getItem(`assessment_${state.attempt.id}`))
 
     for await (let answer of Object.keys(answersFromServer)) {

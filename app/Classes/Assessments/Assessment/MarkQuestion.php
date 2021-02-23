@@ -3,6 +3,7 @@
 namespace App\Classes\Assessments\Assessment;
 
 use App\Question;
+use App\AssessmentMark;
 use App\AssessmentPage;
 use App\AssessmentAttempt;
 use App\AssessmentPageContentItem;
@@ -42,5 +43,16 @@ abstract class MarkQuestion
             })
             ->flatten(3)
             ->toArray();
+    }
+
+    protected function persistScore($score, $markerId, $comments)
+    {
+        AssessmentMark::create([
+            'assessment_attempt_id' => $this->attempt->id,
+            'assessment_page_content_id' => $this->findContentItem()->id,
+            'mark' => $score,
+            'marker_id' => $markerId,
+            'comments' => $comments
+        ]);
     }
 }
