@@ -18,13 +18,15 @@ export const SET_CURRENT_PAGE_SCORE = (state, currentPageScore) => state.current
 
 export const UPDATE_ATTEMPT_FORM = (state, payload) => {
     if (!get(state.form, `question_${payload.id}`)) {
-        console.log(`question_${payload.id}`)
         state.form[`question_${payload.id}`] = {}
     }
 
     if (!get(state.form, `question_${payload.id}.${payload.key}`)) {
-        console.log(`question_${payload.id}.${payload.key}`)
         state.form[`question_${payload.id}`][payload.key] = {}
+    }
+
+    if (payload.key === 'order' && !isEmpty(state.form[`question_${payload.id}`][payload.key])) {
+        return
     }
 
     state.form[`question_${payload.id}`][payload.key]['data'] = payload.data

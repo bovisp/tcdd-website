@@ -44,11 +44,15 @@ class AttemptAnswersController extends Controller
         if ($hasAnswerKeyForQuestion) {
             $answer = Arr::get($answers, 'question_' . request('answer')['id'] . '.' . request('answer')['key']);
 
-            if (request('answer')['timestamp'] > $answer['timestamp']) {
-                $answers['question_' . request('answer')['id']][request('answer')['key']] = [
-                    'data' => request('answer')['data'],
-                    'timestamp' => request('answer')['timestamp']
-                ];
+            if (request('answer')['key'] === 'order') {
+                
+            } else {
+                if (request('answer')['timestamp'] > $answer['timestamp']) {
+                    $answers['question_' . request('answer')['id']][request('answer')['key']] = [
+                        'data' => request('answer')['data'],
+                        'timestamp' => request('answer')['timestamp']
+                    ];
+                }
             }
         } else if (!$hasAnswerKeyForQuestion && $hasQuestion) {
             $answers['question_' . request('answer')['id']][request('answer')['key']] = [
