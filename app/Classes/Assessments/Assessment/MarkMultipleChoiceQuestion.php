@@ -19,7 +19,9 @@ class MarkMultipleChoiceQuestion extends MarkQuestion
             $evalItems['participantAnswerData'] = [$evalItems['participantAnswerData']];
         }
 
-        if (count($evalItems['participantAnswerData']) === 0) {
+        if ($evalItems['participantAnswerData'] === '') {
+            $score = 0;
+        } else if (count($evalItems['participantAnswerData']) === 0) {
             $score = 0;
         } else {
             $score = $this->evaluateScore($evalItems);
@@ -41,7 +43,7 @@ class MarkMultipleChoiceQuestion extends MarkQuestion
         });
 
         if (count($numCorrectAnswers) === 1) {
-            if (array_search($evalItems['allPossibleAnswers'][0], $evalItems['participantAnswerData'])) {
+            if ($evalItems['participantAnswerData'][0] === $evalItems['correctAnswers'][0]) {
                 return $evalItems['questionScore'];
             }
 

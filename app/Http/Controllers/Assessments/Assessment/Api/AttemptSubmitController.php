@@ -6,6 +6,7 @@ use App\Question;
 use App\Assessment;
 use App\DrawingQuestion;
 use App\AssessmentAttempt;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Events\AssessmentCompleted;
@@ -41,20 +42,124 @@ class AttemptSubmitController extends Controller
 
     public function update(Assessment $assessment, AssessmentAttempt $attempt)
     {
-        $answers = json_decode(request('answers'), true);
+        $allAnswers = [];
 
-        dd($answers);
+        $assessment->questions()->map(function ($question) use (&$allAnswers) {
+            $item = $question['assessment_content']->assessmentPageContentItems[0];
+
+
+            $allAnswers['question_' .$item->model_id] = [];
+
+            switch ($question['model']->questionType->code) {
+                case 'drawing':
+                    $hasTextAnswer = DrawingQuestion::whereQuestionId($question['model']->id)->first()->text_answer;
+
+                    if ($hasTextAnswer) {
+                        $allAnswers['question_' .$item->model_id] = [
+                            'drawing' => [
+                                'data' => '',
+                                'timestamp' => ''
+                            ],
+                            'text' => [
+                                'data' => '',
+                                'timestamp' => ''
+                            ]
+                        ];
+                        
+                        break;
+                    } else {
+                        $allAnswers['question_' .$item->model_id] = [
+                            'drawing' => [
+                                'data' => '',
+                                'timestamp' => ''
+                            ]
+                        ];
+
+                        break;
+                    }
+                case 'multiple_choice':
+                    $allAnswers['question_' . $item->model_id] = [
+                        'answers' => [
+                            'data' => '',
+                            'timestamp' => ''
+                        ]
+                    ];
+                    
+                    break;
+                case 'essay':
+                    $allAnswers['question_' . $item->model_id] = [
+                        'text' => [
+                            'data' => '',
+                            'timestamp' => ''
+                        ]
+                    ];
+                    
+                    break;
+            }
+        });
+
+        $participantAnswers = json_decode(request('answers'), true);
+
+        foreach ($allAnswers as $q => $answer) {
+            if (Arr::has($participantAnswers, $q)) {
+                $question = Question::find((int) explode('_', $q)[1]);
+
+                switch ($question->questionType->code) {
+                    case 'drawing':
+                        $hasTextAnswer = DrawingQuestion::whereQuestionId($question->id)->first()->text_answer;
+
+                        if ($hasTextAnswer) {
+                            $allAnswers['question_' . $question->id] = [
+                                'drawing' => [
+                                    'data' => $participantAnswers[$q]['drawing']['data']
+                                ],
+                                'text' => [
+                                    'data' => $participantAnswers[$q]['text']['data']
+                                ]
+                            ];
+                            
+                            break;
+                        } else {
+                            $allAnswers['question_' .$question->id] = [
+                                'drawing' => [
+                                    'data' => $participantAnswers[$q]['drawing']['data']
+                                ]
+                            ];
+    
+                            break;
+                        }
+                    case 'multiple_choice':
+                        if (Arr::has($participantAnswers, 'question_' . $question->id . '.answers')) {
+                            $allAnswers['question_' . $question->id] = [
+                                'answers' => [
+                                    'data' => $participantAnswers[$q]['answers']['data']
+                                ]
+                            ];
+                        }
+                        
+                        break;
+                    case 'essay':
+                        $allAnswers['question_' . $question->id] = [
+                            'text' => [
+                                'data' => $participantAnswers[$q]['text']['data']
+                            ]
+                        ];
+                        
+                        break;
+                }
+            }
+        }
 
         $questionIds = [];
 
-        foreach (array_keys($answers) as $key) {
+        foreach (array_keys($allAnswers) as $key) {
             $questionId = (int) explode('_', $key)[1];
 
             $question = Question::find($questionId);
 
             if ($question->questionType->code === 'multiple_choice') {
                 (new MarkMultipleChoiceQuestion(
-                    $question, $answers[$key], $attempt
+                    $question, $allAnswers[$key], $attempt
                 ))->mark();
             }
         }
@@ -69,7 +174,7 @@ class AttemptSubmitController extends Controller
                 }
 
                 return false;
-            }, array_keys($answers), $answers)
+            }, array_keys($allAnswers), $allAnswers)
         );
         
         foreach ($drawings as $drawing) {
@@ -77,21 +182,26 @@ class AttemptSubmitController extends Controller
                 Question::find($drawing['question'])->question_type_model_id
             )->drawing_options)['background_image'][0]['file'];
 
-            $drawingDecode = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $drawing['data']));
-
             $drawingImagePath = "/public/assessments/" . $assessment->id . "/attempt/" . $attempt->id . "/question/" . $drawing['question'] . "/" . uniqid() . ".png";
-           
-            Storage::put($drawingImagePath, $drawingDecode);
 
-            Image::make(public_path($backgroundImage))
-                ->insert(storage_path("app" . $drawingImagePath))
-                ->save(storage_path("app" . $drawingImagePath));
+            if ($drawing['data'] !== '') {
+                $drawingDecode = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $drawing['data']));
 
-            $answers['question_' . $drawing['question']]['drawing']['data'] = $drawingImagePath;
+                Storage::put($drawingImagePath, $drawingDecode);
+
+                Image::make(public_path($backgroundImage))
+                    ->insert(storage_path("app" . $drawingImagePath))
+                    ->save(storage_path("app" . $drawingImagePath));
+            } else {
+                Image::make(public_path($backgroundImage))
+                    ->save(storage_path("app" . $drawingImagePath));
+            }
+
+            $allAnswers['question_' . $drawing['question']]['drawing']['data'] = $drawingImagePath;
         }
 
         $attempt->update([
-            'answers' => $answers,
+            'answers' => $allAnswers,
             'completed' => 1
         ]);
 
