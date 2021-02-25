@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Question;
 use Illuminate\Support\Arr;
 use App\MultipleChoiceQuestionAnswer;
 use Illuminate\Database\Eloquent\Model;
@@ -45,8 +46,22 @@ class MultipleChoiceQuestion extends Model
         'answers'
     ];
 
+    // protected $appends =[
+    //     'type'
+    // ];
+
+    // public function getTypeAttribute()
+    // {
+    //     return $this->question->questionType->code;
+    // }
+
     public function answers()
     {
         return $this->hasMany(MultipleChoiceQuestionAnswer::class);
     }
+
+    // public function question()
+    // {
+    //     return $this->belongsTo(Question::class);
+    // }
 }

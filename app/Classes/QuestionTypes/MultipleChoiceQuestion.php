@@ -129,6 +129,15 @@ class MultipleChoiceQuestion
                         return $answer['is_correct'];
                     });
 
+                    if (!$data['multiple_answers'] && count($correctArr) > 1) {
+                        $fail('This question cannot have multiple answers.');
+                    }
+                },
+                function ($attribute, $value, $fail) use ($data) {
+                    $correctArr = array_filter($data['answers'], function ($answer) {
+                        return $answer['is_correct'];
+                    });
+
                     if (count($correctArr) === 0) {
                         $fail('You must supply at leat one correct answer.');
                     }

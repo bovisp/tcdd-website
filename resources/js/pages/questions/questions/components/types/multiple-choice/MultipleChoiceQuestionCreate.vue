@@ -67,8 +67,8 @@
                 </p>
 
                 <input 
-                    :type="data.multiple_answers === true ? 'checkbox' : 'radio'" 
-                    :class="data.multiple_answers === true ? 'form-checkbox' : 'form-radio'"
+                    type="checkbox" 
+                    class="form-checkbox"
                     v-model="answerIds"
                     :value="answer.id"
                 >
@@ -126,7 +126,7 @@
 
 <script>
 import { v4 as uuid_v4 } from 'uuid'
-import { forEach, includes, find, trim, isEmpty } from 'lodash-es'
+import { forEach, includes, find, trim, isEmpty, set } from 'lodash-es'
 
 export default {
     data () {
@@ -154,6 +154,14 @@ export default {
             forEach(this.data.answers, answer => {
                 answer.is_correct = includes(this.answerIds, answer.id) ? true : false
             })
+        },
+
+        async 'data.multiple_answers' () {
+            for (let i = 0; i < this.data.answers.length; i++) {
+                set(this.data.answers[i], 'is_correct', false)
+            }
+
+            this.answerIds = []
         }
     },
 
