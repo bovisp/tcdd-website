@@ -192,7 +192,7 @@ class PrepareAssessment{
                 case 'multiple_choice':
                     $allAnswers['question_' . $item->model_id] = [
                         'answers' => [
-                            'data' => ''
+                            'data' => []
                         ]
                     ];
                     

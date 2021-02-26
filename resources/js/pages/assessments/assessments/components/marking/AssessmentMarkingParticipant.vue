@@ -1,0 +1,58 @@
+<template>
+    <div>
+        <h2 class="text-3xl font-medium mb-2">
+            {{ participantAnswer.participant_fullname }}
+        </h2>
+
+        <ul>
+            <li
+                v-for="question in orderBy(participantAnswer.questions, ['question_number'], ['asc'])"
+                :key="question.id"
+                class="flex mb-6"
+            >
+                <p class="text-right mr-3 w-6 pt-4">
+                    {{ question.question_number }}.
+                </p>
+
+                <div class="flex-1 mb-6">
+                    <component 
+                        v-for="part in orderBy(question.parts, ['sort_order'], ['asc'])"
+                        :key="part.id"
+                        :is="`Final${ pascalCase(part.builderType.type) }`"
+                        :part="part"
+                    ></component>
+
+                    <h2 class="mb-4 font-medium text-lg">
+                        Answer:
+                    </h2>
+
+                    <component 
+                        :is="`${pascalCase(question.type)}QuestionMarking`"
+                        :answer="participantAnswer.answers[`question_${question.id}`]"
+                        :question="question"
+                    ></component>
+                </div>
+            </li>
+        </ul>
+    </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import { orderBy } from 'lodash-es'
+import { pascalCase } from 'change-case'
+
+export default {
+    computed: {
+        ...mapGetters({
+            participantAnswer: 'assessments/participantAnswer'
+        })
+    },
+
+    methods: {
+        orderBy,
+
+        pascalCase
+    }
+}
+</script>

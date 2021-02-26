@@ -70,3 +70,7 @@ export const PUSH_ATTEMPT = async (state, attempt) => {
 }
 
 export const PUSH_ATTEMPTS = (state, attempts) => state.attempts = attempts
+
+export const SET_ATTEMPT_ANSWERS = (state, attemptAnswers) => state.attemptAnswers = attemptAnswers
+
+export const SET_ATTEMPT_ANSWER = (state, participantAnswer) => state.participantAnswer = participantAnswer

@@ -7,5 +7,7 @@ export default {
 	currentPageScore: null,
 	availableQuestions: null,
 	isDuplicate: false,
-	attempts: []
+	attempts: [],
+	attemptAnswers: [],
+	participantAnswer: []
 }
