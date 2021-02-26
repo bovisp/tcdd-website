@@ -53,6 +53,12 @@
             >
                 <assessment-questions />
             </tab>
+
+            <tab  
+                name="Marking" 
+            >
+                <assessment-marking />
+            </tab>
         </tabs>
 
         <assessments-duplicate 

@@ -73,6 +73,7 @@ Route::patch('/api/assessments/{assessment}/questions/{item}/change-score', 'Ass
 Route::patch('/api/assessments/{assessment}/questions/{item}/change-page', 'Assessments\Assessments\Api\AssessmentQuestionContentController@changePage');
 Route::get('/api/assessments/{assessment}/attempts/{attemptId}', 'Assessments\Assessments\Api\AssessmentAttemptsController@show');
 Route::get('/api/assessments/{assessment}/attempts', 'Assessments\Assessments\Api\AssessmentAttemptsController@index');
+Route::get('/api/assessments/{assessment}/answers', 'Assessments\Assessments\Api\AssessmentAnswersController@index');
 
 Route::get('/assessment/{assessment}', 'Assessments\Assessment\AssessmentAttemptController@index');
 Route::post('/api/assessment/{assessment}/attempt', 'Assessments\Assessment\Api\AssessmentAttemptController@store');

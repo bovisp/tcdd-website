@@ -16,7 +16,7 @@ class AssessmentMark extends Model
 
     public function assessmentPageContentItem()
     {
-        $this->belongsTo(AssessmentPageContentItem::class);
+        return $this->belongsTo(AssessmentPageContentItem::class, 'assessment_page_content_id');
     }
 
     public function assessmentAttempt()
