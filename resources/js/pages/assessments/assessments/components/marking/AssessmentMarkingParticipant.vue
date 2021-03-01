@@ -31,6 +31,16 @@
                         :answer="participantAnswer.answers[`question_${question.id}`]"
                         :question="question"
                     ></component>
+
+                    <assessment-marking-guide 
+                        :guide="question.marking_guide"
+                        v-if="question.type !== 'multiple_choice'"
+                    />
+
+                    <assessment-marking-comments 
+                        :question="question"
+                        v-if="question.type !== 'multiple_choice'"
+                    />
                 </div>
             </li>
         </ul>

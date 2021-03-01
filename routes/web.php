@@ -74,6 +74,8 @@ Route::patch('/api/assessments/{assessment}/questions/{item}/change-page', 'Asse
 Route::get('/api/assessments/{assessment}/attempts/{attemptId}', 'Assessments\Assessments\Api\AssessmentAttemptsController@show');
 Route::get('/api/assessments/{assessment}/attempts', 'Assessments\Assessments\Api\AssessmentAttemptsController@index');
 Route::get('/api/assessments/{assessment}/answers', 'Assessments\Assessments\Api\AssessmentAnswersController@index');
+Route::post('/api/assessments/{assessment}/attempt/{attempt}/mark', 'Assessments\Assessments\Api\AssessmentMarksController@store');
+Route::patch('/api/assessments/{assessment}/attempt/{attempt}/mark/{mark}', 'Assessments\Assessments\Api\AssessmentMarksController@update');
 
 Route::get('/assessment/{assessment}', 'Assessments\Assessment\AssessmentAttemptController@index');
 Route::post('/api/assessment/{assessment}/attempt', 'Assessments\Assessment\Api\AssessmentAttemptController@store');

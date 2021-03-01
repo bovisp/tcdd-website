@@ -11,7 +11,9 @@ class AssessmentMark extends Model
     protected $fillable = [
         'assessment_attempt_id',
         'mark',
-        'assessment_page_content_id'
+        'assessment_page_content_id',
+        'marked_by',
+        'description'
     ];
 
     public function assessmentPageContentItem()

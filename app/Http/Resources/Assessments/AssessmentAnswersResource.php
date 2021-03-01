@@ -36,6 +36,7 @@ class AssessmentAnswersResource extends JsonResource
                     'type' => $type,
                     'question_number' => $question['assessment_item']->question_number,
                     'question_score' => $question['assessment_item']->question_score,
+                    'question_item' => $question['assessment_item']->id,
                     'marking_guide' => $question['model']->marking_guide,
                     'parts' => PartResource::collection(
                         $question['model']->contentBuilder->where('language', '=', app()->getLocale())->first()->parts

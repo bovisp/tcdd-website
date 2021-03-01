@@ -74,3 +74,11 @@ export const PUSH_ATTEMPTS = (state, attempts) => state.attempts = attempts
 export const SET_ATTEMPT_ANSWERS = (state, attemptAnswers) => state.attemptAnswers = attemptAnswers
 
 export const SET_ATTEMPT_ANSWER = (state, participantAnswer) => state.participantAnswer = participantAnswer
+
+export const PUSH_NEW_MARK = (state, mark) => state.participantAnswer.marks.push(mark)
+
+export const UPDATE_MARK = (state, mrk) => {
+    let index = findIndex(state.participantAnswer.marks, m => m.id === mrk.id)
+
+    state.participantAnswer.marks[index] = mrk
+}

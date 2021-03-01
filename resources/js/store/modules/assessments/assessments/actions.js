@@ -172,3 +172,24 @@ export const fetchParticipantAnswers = async ({ commit, state }) => {
 export const setParticipantAnswer = async ({ commit }, participantAnswer) => {
     await commit('SET_ATTEMPT_ANSWER', participantAnswer)
 }
+
+export const updateMarkingComment = async ({ commit, state }, payload) => {
+    if (payload.id) {
+        let { data } = await axios.patch(
+            `/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark/${payload.id}`,
+            payload
+        )
+
+        await commit('UPDATE_MARK', data.data)
+
+        window.events.$emit('assessment:mark-update', data.data)
+
+        return
+    }
+
+    let { data } = await axios.post(`/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark`, payload)
+
+    await commit('PUSH_NEW_MARK', data.data)
+
+    window.events.$emit('assessment:mark-update', data.data)
+}
