@@ -1,11 +1,16 @@
 <template>
     <div>
+        <assessment-marking-question 
+            v-if="!marking"
+        />
+
         <assessment-marking-index 
             v-if="!marking"
         />
 
         <assessment-marking-participant 
             v-if="marking"
+            @assessments:mark-return-to-table="marking = false"
         />
     </div>
 </template>
@@ -20,7 +25,7 @@ export default {
 
     mounted () {
         window.events.$on('assessment:marking', () => {
-            this.marking = !this.marking
+            this.marking = true
         })
     }
 }

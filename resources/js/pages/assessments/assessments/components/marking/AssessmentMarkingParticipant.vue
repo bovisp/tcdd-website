@@ -1,8 +1,19 @@
 <template>
     <div>
-        <h2 class="text-3xl font-medium mb-2">
-            {{ participantAnswer.participant_fullname }}
-        </h2>
+        <div class="flex items-center">
+            <h2 class="text-3xl font-medium mb-2">
+                {{ participantAnswer.participant_fullname }}
+            </h2>
+
+            <button 
+                class="btn btn-text ml-auto"
+                @click.prevent="cancel"
+            >
+                <i class="fas fa-chevron-left mr-1"></i>
+                Return to marking table
+            </button>
+        </div>
+        
 
         <ul>
             <li
@@ -48,11 +59,21 @@
                 </div>
             </li>
         </ul>
+
+        <div class="flex items-center">
+            <button 
+                class="btn btn-text ml-auto"
+                @click.prevent="cancel"
+            >
+                <i class="fas fa-chevron-left mr-1"></i>
+                Return to marking table
+            </button>
+        </div>
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { orderBy } from 'lodash-es'
 import { pascalCase } from 'change-case'
 
@@ -64,9 +85,19 @@ export default {
     },
 
     methods: {
+        ...mapMutations({
+            clearParticipantAnswer: 'assessments/CLEAR_PARTICIPANT_ANSWER'
+        }),
+
         orderBy,
 
-        pascalCase
+        pascalCase,
+
+        cancel () {
+            this.clearParticipantAnswer()
+
+            this.$emit('assessments:mark-return-to-table')
+        }
     }
 }
 </script>

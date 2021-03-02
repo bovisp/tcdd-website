@@ -169,6 +169,12 @@ export const fetchParticipantAnswers = async ({ commit, state }) => {
     await commit('SET_ATTEMPT_ANSWERS', participantAnswers.data)
 }
 
+export const fetchParticipantAnswer = async ({ commit, state }, attemptId) => {
+    let { data: participantAnswer } = await axios.get(`/api/assessments/${state.assessment.id}/attempt/${attemptId}/answer`)
+
+    await commit('PUSH_ATTEMPT_ANSWER', participantAnswer.data)
+}
+
 export const setParticipantAnswer = async ({ commit }, participantAnswer) => {
     await commit('SET_ATTEMPT_ANSWER', participantAnswer)
 }

@@ -42,8 +42,6 @@ export default {
     },
 
     async mounted () {
-        await this.fetchParticipantAnswers()
-
         window.events.$on('assessment:mark', attempt => {
             this.setParticipantAnswer(attempt)
 

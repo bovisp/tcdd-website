@@ -73,7 +73,11 @@ export const PUSH_ATTEMPTS = (state, attempts) => state.attempts = attempts
 
 export const SET_ATTEMPT_ANSWERS = (state, attemptAnswers) => state.attemptAnswers = attemptAnswers
 
+export const PUSH_ATTEMPT_ANSWER = (state, attemptAnswer) => state.attemptAnswers.push(attemptAnswer)
+
 export const SET_ATTEMPT_ANSWER = (state, participantAnswer) => state.participantAnswer = participantAnswer
+
+export const CLEAR_PARTICIPANT_ANSWER = (state) => state.participantAnswer = null
 
 export const PUSH_NEW_MARK = (state, mark) => state.participantAnswer.marks.push(mark)
 

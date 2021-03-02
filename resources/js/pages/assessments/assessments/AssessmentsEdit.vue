@@ -56,6 +56,7 @@
 
             <tab  
                 name="Marking" 
+                v-if="attemptAnswers.length"
             >
                 <assessment-marking />
             </tab>
@@ -82,7 +83,8 @@ export default {
     computed: {
         ...mapGetters({
             assessment: 'assessments/assessment',
-            attempts: 'assessments/attempts'
+            attempts: 'assessments/attempts',
+            attemptAnswers: 'assessments/attemptAnswers'
         }),
 
         lockText () {
@@ -99,7 +101,9 @@ export default {
             setAssessmentLockStatus: 'assessments/setAssessmentLockStatus',
             fetchAttempt: 'assessments/fetchAttempt',
             fetchAttempts: 'assessments/fetchAttempts',
-            fetchAssessment: 'assessments/fetchAssessment'
+            fetchAssessment: 'assessments/fetchAssessment',
+            fetchParticipantAnswer: 'assessments/fetchParticipantAnswer',
+            fetchParticipantAnswers: 'assessments/fetchParticipantAnswers'
         }),
 
         ...mapMutations({
@@ -122,11 +126,15 @@ export default {
 
         await this.fetchAttempts()
 
+        await this.fetchParticipantAnswers()
+
         Echo.private(`assessment.${this.assessment.id}`)
             .listen('AssessmentCompleted', async (e) => {
                 await this.fetchAssessment(this.assessment.id)
 
                 await this.fetchAttempt(e.attemptId)
+
+                await this.fetchParticipantAnswer(e.attemptId)
             })
 
         Echo.private(`assessment.${this.assessment.id}.attempting`)
