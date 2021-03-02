@@ -48,11 +48,16 @@ export default {
     watch: {
         comment: {
             handler: debounce(function (data) {
-                this.updateMarkingComment({
+                if (!this.comment && typeof this.mark === 'undefined') {
+                    return 
+                }
+
+                this.updateMark({
                     id: this.mark ? this.mark.id : null,
                     questionId: this.question.id,
                     itemId: this.question.question_item,
-                    comment: this.comment
+                    comment: this.comment,
+                    mark: this.mark ? this.mark.mark : null,
                 })
             }, 500)
         }
@@ -60,7 +65,7 @@ export default {
 
     methods: {
         ...mapActions({
-            updateMarkingComment: 'assessments/updateMarkingComment'
+            updateMark: 'assessments/updateMark'
         })
     },
 

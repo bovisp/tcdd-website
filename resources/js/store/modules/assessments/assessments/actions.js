@@ -173,7 +173,7 @@ export const setParticipantAnswer = async ({ commit }, participantAnswer) => {
     await commit('SET_ATTEMPT_ANSWER', participantAnswer)
 }
 
-export const updateMarkingComment = async ({ commit, state }, payload) => {
+export const updateMark = async ({ commit, state }, payload) => {
     if (payload.id) {
         let { data } = await axios.patch(
             `/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark/${payload.id}`,

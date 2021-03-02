@@ -41,6 +41,10 @@
                         :question="question"
                         v-if="question.type !== 'multiple_choice'"
                     />
+
+                    <assessment-marking-score 
+                        :question="question"
+                    />
                 </div>
             </li>
         </ul>

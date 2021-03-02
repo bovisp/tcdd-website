@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Assessments\Assessments\Api;
 use App\Assessment;
 use App\AssessmentMark;
 use App\AssessmentAttempt;
+use App\AssessmentPageContentItem;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Assessments\AssessmentMarksResource;
 
@@ -42,7 +43,7 @@ class AssessmentMarksController extends Controller
                 function ($attribute, $value, $fail) {
                     $item = AssessmentPageContentItem::find((int) request('itemId'));
                     if (request()->has('mark') && request('mark') > $item->question_score) {
-                        $fail('The most a participant can score on this qiestion is ' . $item->question_score . ' points');
+                        $fail('The most a participant can score on this question is ' . $item->question_score . ' points');
                     }
                 }
             ]
@@ -50,10 +51,16 @@ class AssessmentMarksController extends Controller
 
         $mark = AssessmentMark::create([
             'assessment_attempt_id' => $attempt->id,
-            'mark' => request()->has('mark') ?? request('mark'),
-            'description' => request()->has('comment') ? request('comment') : null,
+            'mark' => request()->has('mark') ? request('mark') : $mark->mark,
+            'description' => request()->has('comment') ? request('comment') : $mark->description,
             'assessment_page_content_id' => request('itemId')
         ]);
+
+        if (request()->has('mark')) {
+            $mark->update([
+                'marker_id' => auth()->id()
+            ]);
+        }
 
         return new AssessmentMarksResource($mark);
     }
@@ -79,10 +86,16 @@ class AssessmentMarksController extends Controller
 
         $mark->update([
             'assessment_attempt_id' => $attempt->id,
-            'mark' => request()->has('mark') ? request('mark') : null,
-            'description' => request()->has('comment') ? request('comment') : null,
+            'mark' => request()->has('mark') ? request('mark') : $mark->mark,
+            'description' => request()->has('comment') ? request('comment') : $mark->description,
             'assessment_page_content_id' => request('itemId')
         ]);
+
+        if (request()->has('mark')) {
+            $mark->update([
+                'marker_id' => auth()->id()
+            ]);
+        }
 
         return new AssessmentMarksResource($mark);
     }

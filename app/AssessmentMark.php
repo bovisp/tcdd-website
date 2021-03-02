@@ -12,7 +12,7 @@ class AssessmentMark extends Model
         'assessment_attempt_id',
         'mark',
         'assessment_page_content_id',
-        'marked_by',
+        'marker_id',
         'description'
     ];
 
