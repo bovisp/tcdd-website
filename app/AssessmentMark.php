@@ -16,6 +16,10 @@ class AssessmentMark extends Model
         'description'
     ];
 
+    protected $casts = [
+        'marked_on' => 'date'
+    ];
+
     public function assessmentPageContentItem()
     {
         return $this->belongsTo(AssessmentPageContentItem::class, 'assessment_page_content_id');

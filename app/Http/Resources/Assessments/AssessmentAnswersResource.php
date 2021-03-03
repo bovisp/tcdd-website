@@ -21,6 +21,8 @@ class AssessmentAnswersResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'marked' => $this->marked ? true : false,
+            'marked_on' => $this->marked_on ? $this->marked_on : 'No',
             'participant' => $this->participant(),
             'assessment_participant_id' => $this->assessment_participant_id,
             'participant_firstname' => $participant->firstname,

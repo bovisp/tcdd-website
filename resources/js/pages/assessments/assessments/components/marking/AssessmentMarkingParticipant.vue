@@ -13,6 +13,13 @@
                 Return to marking table
             </button>
         </div>
+
+        <div 
+            class="alert alert-blue my-4"
+            v-if="participantAnswer.marked"
+        >
+            This attempt was fully marked on {{ participantAnswer.marked_on }}.
+        </div>
         
         <ul>
             <li

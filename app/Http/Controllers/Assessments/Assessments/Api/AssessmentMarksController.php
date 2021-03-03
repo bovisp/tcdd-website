@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Assessments\Assessments\Api;
 
+use Carbon\Carbon;
 use App\Assessment;
 use App\AssessmentMark;
 use App\AssessmentAttempt;
@@ -62,6 +63,17 @@ class AssessmentMarksController extends Controller
             ]);
         }
 
+        $scoredAnswers = $attempt->assessmentMarks->filter(function ($mark) {
+            return !is_null($mark->mark);
+        });
+
+        if ($assessment->questions()->count() === $scoredAnswers->count() && !$attempt->marked) {
+            $attempt->update([
+                'marked' => 1,
+                'marked_on' => Carbon::now()
+            ]);
+        }
+
         return new AssessmentMarksResource($mark);
     }
 
@@ -94,6 +106,17 @@ class AssessmentMarksController extends Controller
         if (request()->has('mark')) {
             $mark->update([
                 'marker_id' => auth()->id()
+            ]);
+        }
+
+        $scoredAnswers = $attempt->assessmentMarks->filter(function ($mark) {
+            return !is_null($mark->mark);
+        });
+
+        if ($assessment->questions()->count() === $scoredAnswers->count() && !$attempt->marked) {
+            $attempt->update([
+                'marked' => 1,
+                'marked_on' => Carbon::now()
             ]);
         }
 

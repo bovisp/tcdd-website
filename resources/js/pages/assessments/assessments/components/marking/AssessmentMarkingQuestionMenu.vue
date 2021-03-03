@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-center mb-8">
-        <div class="w-full lg:w-1/2">
+        <div class="w-full lg:w-2/3">
             <label 
                 for="question"
                 class="block text-gray-700 font-bold mb-2"

@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-center">
-        <div class="w-full lg:w-1/2">
+        <div class="w-full lg:w-2/3">
             <datatable 
                 :data="attemptAnswers"
                 :columns="columns"
@@ -23,7 +23,8 @@ export default {
         return {
             columns: [
                 { field: 'participant_firstname', title: 'First name', sortable: true },
-                { field: 'participant_lastname', title: 'Last name', sortable: true }
+                { field: 'participant_lastname', title: 'Last name', sortable: true },
+                { field: 'marked_on', title: 'Marking completed', sortable: false }
             ]
         }
     },

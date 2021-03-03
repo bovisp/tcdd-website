@@ -29,7 +29,7 @@
 
                 <button 
                     class="btn btn-text btn-sm text-sm"
-                    v-if="score"
+                    v-if="hasExistingScore"
                     @click.prevent="scoring = false"
                 >
                     Cancel
@@ -168,9 +168,11 @@ export default {
         })
 
         window.events.$on('assessment:mark-update-attempt', payload => {
-            if (payload.data.question_id === this.question.id && this.answer.id === payload.attemptId) {
-                this.mark = payload.data
-                this.score = payload.data.mark
+            if (this.answer && this.question) {
+                if (payload.data.question_id === this.question.id && this.answer.id === payload.attemptId) {
+                    this.mark = payload.data
+                    this.score = payload.data.mark
+                }
             }
         })
     }

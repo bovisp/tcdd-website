@@ -94,9 +94,11 @@ export default {
         })
 
         window.events.$on('assessment:mark-update-attempt', payload => {
-            if (payload.data.question_id === this.question.id && this.answer.id === payload.attemptId) {
-                this.mark = payload.data
-                this.comment = payload.data.description
+            if (this.answer && this.question) {
+                if (payload.data.question_id === this.question.id && this.answer.id === payload.attemptId) {
+                    this.mark = payload.data
+                    this.comment = payload.data.description
+                }
             }
         })
     }

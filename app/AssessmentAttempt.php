@@ -14,7 +14,9 @@ class AssessmentAttempt extends Model
         'assessment_participant_id',
         'answers',
         'assessment_id',
-        'completed'
+        'completed',
+        'marked',
+        'marked_on'
     ];
 
     public function participant()
