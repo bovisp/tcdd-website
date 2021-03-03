@@ -180,7 +180,7 @@ export const setParticipantAnswer = async ({ commit }, participantAnswer) => {
 }
 
 export const updateMark = async ({ commit, state }, payload) => {
-    if (payload.id) {
+    if (payload.id && payload.attemptId === null) {
         let { data } = await axios.patch(
             `/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark/${payload.id}`,
             payload
@@ -189,13 +189,38 @@ export const updateMark = async ({ commit, state }, payload) => {
         await commit('UPDATE_MARK', data.data)
 
         window.events.$emit('assessment:mark-update', data.data)
+    } else if (!payload.id && payload.attemptId === null) {
+        let { data } = await axios.post(`/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark`, payload)
 
-        return
+        await commit('PUSH_NEW_MARK', data.data)
+
+        window.events.$emit('assessment:mark-update', data.data)
+    } else if (!payload.id && payload.attemptId !== null) {
+        let { data } = await axios.post(`/api/assessments/${state.assessment.id}/attempt/${payload.attemptId}/mark`, payload)
+
+        await commit('PUSH_NEW_MARK_ATTEMPT', {
+            data: data.data,
+            attempt: payload.attemptId
+        })
+
+        window.events.$emit('assessment:mark-update-attempt', {
+            data: data.data,
+            attemptId: payload.attemptId
+        })
+    } else if (payload.id && payload.attemptId !== null) {
+        let { data } = await axios.patch(
+            `/api/assessments/${state.assessment.id}/attempt/${payload.attemptId}/mark/${payload.id}`,
+            payload
+        )
+
+        await commit('UPDATE_MARK_OF_ATTEMPT', {
+            data: data.data,
+            attempt: payload.attemptId
+        })
+
+        window.events.$emit('assessment:mark-update-attempt', {
+            data: data.data,
+            attemptId: payload.attemptId
+        })
     }
-
-    let { data } = await axios.post(`/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark`, payload)
-
-    await commit('PUSH_NEW_MARK', data.data)
-
-    window.events.$emit('assessment:mark-update', data.data)
 }

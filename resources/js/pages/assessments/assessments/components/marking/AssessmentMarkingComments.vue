@@ -29,6 +29,11 @@ export default {
         question: {
             type: Object,
             required: true
+        },
+        answer: {
+            type: Object,
+            required: false,
+            default: null
         }
     },
 
@@ -58,6 +63,7 @@ export default {
                     itemId: this.question.question_item,
                     comment: this.comment,
                     mark: this.mark ? this.mark.mark : null,
+                    attemptId: this.answer ? this.answer.id : null
                 })
             }, 500)
         }
@@ -70,7 +76,11 @@ export default {
     },
 
     mounted () {
-        this.mark = find(this.participantAnswer.marks, mark => mark.question_id === this.question.id)
+        if (this.answer === null) {
+            this.mark = find(this.participantAnswer.marks, mark => mark.question_id === this.question.id)
+        } else {
+            this.mark = find(this.answer.marks, mark => mark.question_id === this.question.id)
+        }
 
         if (this.mark) {
             this.comment = this.mark.description
@@ -80,6 +90,13 @@ export default {
             if (mark.question_id === this.question.id) {
                 this.mark = mark
                 this.comment = mark.description
+            }
+        })
+
+        window.events.$on('assessment:mark-update-attempt', payload => {
+            if (payload.data.question_id === this.question.id && this.answer.id === payload.attemptId) {
+                this.mark = payload.data
+                this.comment = payload.data.description
             }
         })
     }

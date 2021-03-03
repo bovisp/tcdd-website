@@ -14,7 +14,6 @@
             </button>
         </div>
         
-
         <ul>
             <li
                 v-for="question in orderBy(participantAnswer.questions, ['question_number'], ['asc'])"

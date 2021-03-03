@@ -29,6 +29,7 @@
 
                 <button 
                     class="btn btn-text btn-sm text-sm"
+                    v-if="score"
                     @click.prevent="scoring = false"
                 >
                     Cancel
@@ -79,6 +80,11 @@ export default {
         question: {
             type: Object,
             required: true
+        },
+        answer: {
+            type: Object,
+            required: false,
+            default: null
         }
     },
 
@@ -135,7 +141,8 @@ export default {
                 questionId: this.question.id,
                 itemId: this.question.question_item,
                 comment: this.mark ? this.mark.description : null,
-                mark: parseFloat(this.score)
+                mark: parseFloat(this.score),
+                attemptId: this.answer ? this.answer.id : null
             })
 
             this.scoring = false
@@ -143,7 +150,11 @@ export default {
     },
 
     mounted () {
-        this.mark = find(this.participantAnswer.marks, mark => mark.question_id === this.question.id)
+        if (this.answer === null) {
+            this.mark = find(this.participantAnswer.marks, mark => mark.question_id === this.question.id)
+        } else {
+            this.mark = find(this.answer.marks, mark => mark.question_id === this.question.id)
+        }
 
         if (this.mark) {
             this.score = this.mark.mark
@@ -153,6 +164,13 @@ export default {
             if (mark.question_id === this.question.id) {
                 this.mark = mark
                 this.score = mark.mark
+            }
+        })
+
+        window.events.$on('assessment:mark-update-attempt', payload => {
+            if (payload.data.question_id === this.question.id && this.answer.id === payload.attemptId) {
+                this.mark = payload.data
+                this.score = payload.data.mark
             }
         })
     }

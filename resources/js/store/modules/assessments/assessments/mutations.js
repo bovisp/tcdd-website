@@ -86,3 +86,17 @@ export const UPDATE_MARK = (state, mrk) => {
 
     state.participantAnswer.marks[index] = mrk
 }
+
+export const PUSH_NEW_MARK_ATTEMPT = (state, payload) => {
+    let index = findIndex(state.attemptAnswers, answer => answer.id === payload.attempt)
+
+    state.attemptAnswers[index].marks.push(payload.data)
+}
+
+export const UPDATE_MARK_OF_ATTEMPT = async (state, payload) => {
+    let index = await findIndex(state.attemptAnswers, answer => answer.id === payload.attempt)
+
+    let markIndex = await findIndex(state.attemptAnswers[index].marks, mark => mark.id === payload.data.id)
+
+    state.attemptAnswers[index].marks[markIndex] = payload.data
+}
