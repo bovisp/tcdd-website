@@ -74,6 +74,23 @@ class AssessmentMarksController extends Controller
             ]);
         }
 
+        $numParticipants = $assessment->participants()->count();
+
+        $totalScoredAnswers = 0;
+
+        foreach ($assessment->attempts->filter->completed as $attempt) {
+            $totalScoredAnswers += $attempt->assessmentMarks->filter(function ($mark) {
+                return !is_null($mark->mark);
+            });
+        }
+
+        if (($numParticipants * $assessment->questions()->count()) === $totalScoredAnswers) {
+            $attempt->update([
+                'marking_completed' => 1,
+                'marking_completed_on' => Carbon::now()
+            ]);
+        }
+
         return new AssessmentMarksResource($mark);
     }
 
@@ -117,6 +134,23 @@ class AssessmentMarksController extends Controller
             $attempt->update([
                 'marked' => 1,
                 'marked_on' => Carbon::now()
+            ]);
+        }
+
+        $numParticipants = $assessment->participants()->count();
+
+        $totalScoredAnswers = 0;
+
+        foreach ($assessment->attempts->filter->completed as $attempt) {
+            $totalScoredAnswers += $attempt->assessmentMarks->filter(function ($mark) {
+                return !is_null($mark->mark);
+            });
+        }
+
+        if (($numParticipants * $assessment->questions()->count()) === $totalScoredAnswers) {
+            $attempt->update([
+                'marking_completed' => 1,
+                'marking_completed_on' => Carbon::now()
             ]);
         }
 
