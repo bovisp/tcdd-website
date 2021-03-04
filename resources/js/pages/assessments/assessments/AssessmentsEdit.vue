@@ -26,6 +26,13 @@
             {{ duplicating ? 'Duplicating' : 'Edit' }}: Assessment - {{ assessment.name }}
         </h1>
 
+        <div
+            class="alert alert-blue my-4"
+            v-if="assessment.marking_completed"
+        >
+            Marking for this assessment was completed on {{ dayjs(assessment.marking_completed_on).format('YYYY-MM-DD') }}.
+        </div>
+
         <tabs v-if="!duplicating">
             <tab  
                 name="Edit settings" 
@@ -71,6 +78,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
+import dayjs from 'dayjs'
 
 export default {
     data () {
@@ -103,12 +111,15 @@ export default {
             fetchAttempts: 'assessments/fetchAttempts',
             fetchAssessment: 'assessments/fetchAssessment',
             fetchParticipantAnswer: 'assessments/fetchParticipantAnswer',
-            fetchParticipantAnswers: 'assessments/fetchParticipantAnswers'
+            fetchParticipantAnswers: 'assessments/fetchParticipantAnswers',
+            updateAssessmentMarkingCompletion: 'assessments/updateAssessmentMarkingCompletion'
         }),
 
         ...mapMutations({
             setLockStatus: 'assessments/SET_LOCK_STATUS'
         }),
+
+        dayjs,
 
         duplicate (form) {
             this.duplicating = true
@@ -140,6 +151,14 @@ export default {
         Echo.private(`assessment.${this.assessment.id}.attempting`)
             .listen('AssessmentAttemptStarted', async (e) => {
                 await this.setLockStatus(true)
+            })
+
+        Echo.private(`assessment.${this.assessment.id}.marked`)
+            .listen('AssessmentAttemptsMarked', async (e) => {
+                await this.updateAssessmentMarkingCompletion({
+                    assessmentId: e.assessmentId,
+                    markingCompletedOn: e.markingCompletedOn
+                })
             })
     }
 }

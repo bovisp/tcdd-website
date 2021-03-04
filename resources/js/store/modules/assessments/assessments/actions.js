@@ -224,3 +224,7 @@ export const updateMark = async ({ commit, state }, payload) => {
         })
     }
 }
+
+export const updateAssessmentMarkingCompletion = async ({ commit }, payload) => {
+    await commit('UPDATE_ASSESSMENT_MARKING_COMLETION', payload)
+}

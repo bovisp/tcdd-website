@@ -8,6 +8,7 @@ use App\AssessmentMark;
 use App\AssessmentAttempt;
 use App\AssessmentPageContentItem;
 use App\Http\Controllers\Controller;
+use App\Events\AssessmentAttemptsMarked;
 use App\Http\Resources\Assessments\AssessmentMarksResource;
 
 class AssessmentMarksController extends Controller
@@ -81,14 +82,16 @@ class AssessmentMarksController extends Controller
         foreach ($assessment->attempts->filter->completed as $attempt) {
             $totalScoredAnswers += $attempt->assessmentMarks->filter(function ($mark) {
                 return !is_null($mark->mark);
-            });
+            })->count();
         }
 
         if (($numParticipants * $assessment->questions()->count()) === $totalScoredAnswers) {
-            $attempt->update([
+            $assessment->update([
                 'marking_completed' => 1,
                 'marking_completed_on' => Carbon::now()
             ]);
+
+            event(new AssessmentAttemptsMarked($assessment->id, $assessment->marking_completed_on));
         }
 
         return new AssessmentMarksResource($mark);
@@ -144,14 +147,16 @@ class AssessmentMarksController extends Controller
         foreach ($assessment->attempts->filter->completed as $attempt) {
             $totalScoredAnswers += $attempt->assessmentMarks->filter(function ($mark) {
                 return !is_null($mark->mark);
-            });
+            })->count();
         }
 
         if (($numParticipants * $assessment->questions()->count()) === $totalScoredAnswers) {
-            $attempt->update([
+            $assessment->update([
                 'marking_completed' => 1,
                 'marking_completed_on' => Carbon::now()
             ]);
+
+            event(new AssessmentAttemptsMarked($assessment->id, $assessment->marking_completed_on));
         }
 
         return new AssessmentMarksResource($mark);

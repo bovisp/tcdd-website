@@ -1,4 +1,4 @@
-import { orderBy, find, findIndex } from 'lodash-es'
+import { orderBy, find, findIndex, isEmpty } from 'lodash-es'
 
 export const SET_ASSESSMENTS = (state, assessments) => state.assessments = assessments
 
@@ -99,4 +99,12 @@ export const UPDATE_MARK_OF_ATTEMPT = async (state, payload) => {
     let markIndex = await findIndex(state.attemptAnswers[index].marks, mark => mark.id === payload.data.id)
 
     state.attemptAnswers[index].marks[markIndex] = payload.data
+}
+
+export const UPDATE_ASSESSMENT_MARKING_COMLETION = (state, payload) => {
+    if (!isEmpty(state.assessment)) {
+        state.assessment.marking_completed = true
+
+        state.assessment.marking_completed_on = payload.markingCompletedOn
+    }
 }

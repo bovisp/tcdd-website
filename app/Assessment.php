@@ -23,7 +23,13 @@ class Assessment extends Model
         'assessment_type_id',
         'section_id',
         'completion_time',
-        'locked'
+        'locked',
+        'marking_completed',
+        'marking_completed_on'
+    ];
+
+    protected $casts = [
+        'marking_completed_on' => 'date'
     ];
 
     public function section()

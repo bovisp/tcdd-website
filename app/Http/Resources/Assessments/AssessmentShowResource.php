@@ -39,7 +39,9 @@ class AssessmentShowResource extends JsonResource
 
                 return $participant;
             }),
-            'locked' => $this->locked ? true : false
+            'locked' => $this->locked ? true : false,
+            'marking_completed' => $this->marking_completed ? true : false,
+            'marking_completed_on' => $this->marking_completed_on
         ];
     }
 }

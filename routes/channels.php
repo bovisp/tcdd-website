@@ -28,6 +28,20 @@ Broadcast::channel('assessment.{assessmentId}', function ($user, $assessmentId) 
     return false;
 });
 
+Broadcast::channel('assessment.{assessmentId}.marked', function ($user, $assessmentId) {
+    if ($user->hasRole('administrator')) {
+        return true;
+    }
+
+    $assessment = Assessment::find($assessmentId);
+
+    if ($assessment->editors->contains('id', $user->id)) {
+        return true;
+    }
+
+    return false;
+});
+
 Broadcast::channel('assessment.{assessmentId}.attempting', function ($user, $assessmentId) {
     if ($user->hasRole('administrator')) {
         return true;
