@@ -55,31 +55,33 @@
                         class="p-1"
                     ></td>
 
-                    <td v-if="hasAction || hasEvent" class="p-1">
-                        <template v-if="hasAction">
-                            <a 
-                                :href="`${actionLink}/${item[actionId]}`"
-                                class="btn btn-text text-sm"
-                            >
-                                {{ actionText }}
-                            </a>
-                        </template>
-                        
-                        <template v-if="hasEvent">
-                            <button 
-                                @click.prevent="emitEvent(event, item)"
-                                class="btn btn-text text-sm text-blue-500"
-                            >
-                                <template v-if="eventTextBoolean">
-                                    {{ get(item, eventTextBoolean, false) ? eventTextTrue : eventTextFalse }}
-                                </template>
+                    <td v-if="hasEvent && !get(item, noEventIfTextColumnBoolean, false)" class="p-1">
+                        <button 
+                            @click.prevent="emitEvent(event, item)"
+                            class="btn btn-text text-sm text-blue-500"
+                        >
+                            <template v-if="eventTextBoolean">
+                                {{ get(item, eventTextBoolean, false) ? eventTextTrue : eventTextFalse }}
+                            </template>
 
-                                <template v-else>
-                                    {{ eventText }}
-                                </template>
+                            <template v-else>
+                                {{ eventText }}
+                            </template>
 
-                            </button>
-                        </template>
+                        </button>
+                    </td>
+
+                    <td v-if="hasAction" class="p-1">
+                        <a 
+                            :href="`${actionLink}/${item[actionId]}`"
+                            class="btn btn-text text-sm"
+                        >
+                            {{ actionText }}
+                        </a>
+                    </td>
+
+                    <td v-if="get(item, noEventIfTextColumnBoolean, false)" class="p-1">
+                        {{ textColumnText }}
                     </td>
                 </tr>
             </tbody>
@@ -95,7 +97,7 @@
 
 <script>
 import paginate from 'vuejs-paginate'
-import { orderBy, filter, forEach, find, map, get } from 'lodash-es'
+import { orderBy, filter, forEach, get } from 'lodash-es'
 
 export default {
     components: {
@@ -197,6 +199,15 @@ export default {
             default: ''
         },
         eventTextFalse: {
+            type: String,
+            required: false,
+            default: ''
+        },
+        noEventIfTextColumnBoolean: {
+            type: String,
+            required: false,
+        },
+        textColumnText: {
             type: String,
             required: false,
             default: ''

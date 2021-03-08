@@ -15,7 +15,7 @@
 
             <button 
                 class="btn ml-auto"
-                :class="lockStatus ? 'btn-red' : 'btn-green'"
+                :class="lockClass"
                 @click.prevent="setAssessmentLockStatus"
             >
                 {{ lockText }}
@@ -25,6 +25,13 @@
         <h1 class="text-3xl font-bold mb-4">
             {{ duplicating ? 'Duplicating' : 'Edit' }}: Assessment - {{ assessment.name }}
         </h1>
+
+        <div
+            class="alert alert-blue my-4"
+            v-if="assessment.marking_completed"
+        >
+            Marking for this assessment was completed on {{ dayjs(assessment.marking_completed_on).format('YYYY-MM-DD') }}.
+        </div>
 
         <tabs v-if="!duplicating">
             <tab  
@@ -53,6 +60,20 @@
             >
                 <assessment-questions />
             </tab>
+
+            <tab  
+                name="Marking" 
+                v-if="attemptAnswers.length"
+            >
+                <assessment-marking />
+            </tab>
+
+            <tab  
+                name="Results" 
+                v-if="attemptAnswers.length"
+            >
+                <assessment-results />
+            </tab>
         </tabs>
 
         <assessments-duplicate 
@@ -63,7 +84,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
+import dayjs from 'dayjs'
 
 export default {
     data () {
@@ -76,21 +98,35 @@ export default {
     computed: {
         ...mapGetters({
             assessment: 'assessments/assessment',
-            lockStatus: 'assessments/lockStatus',
-            attempts: 'assessments/attempts'
+            attempts: 'assessments/attempts',
+            attemptAnswers: 'assessments/attemptAnswers'
         }),
 
         lockText () {
-            return this.lockStatus ? 'Assessment locked' : 'Lock assessment'
+            return this.assessment.locked ? 'Assessment locked' : 'Lock assessment'
+        },
+
+        lockClass () {
+            return this.assessment.locked ? 'btn-red' : 'btn-green'
         }
     },
 
     methods: {
         ...mapActions({
             setAssessmentLockStatus: 'assessments/setAssessmentLockStatus',
-            fetchAssessments: 'assessments/fetch',
-            fetchAttempt: 'assessments/fetchAttempt'
+            fetchAttempt: 'assessments/fetchAttempt',
+            fetchAttempts: 'assessments/fetchAttempts',
+            fetchAssessment: 'assessments/fetchAssessment',
+            fetchParticipantAnswer: 'assessments/fetchParticipantAnswer',
+            fetchParticipantAnswers: 'assessments/fetchParticipantAnswers',
+            updateAssessmentMarkingCompletion: 'assessments/updateAssessmentMarkingCompletion'
         }),
+
+        ...mapMutations({
+            setLockStatus: 'assessments/SET_LOCK_STATUS'
+        }),
+
+        dayjs,
 
         duplicate (form) {
             this.duplicating = true
@@ -103,14 +139,33 @@ export default {
         }
     },
 
-    mounted () {
+    async mounted () {
+        await this.fetchAssessment(this.assessment.id)
+
+        await this.fetchAttempts()
+
+        await this.fetchParticipantAnswers()
+
         Echo.private(`assessment.${this.assessment.id}`)
             .listen('AssessmentCompleted', async (e) => {
-                await this.fetchAssessments()
+                await this.fetchAssessment(this.assessment.id)
 
                 await this.fetchAttempt(e.attemptId)
 
-                console.log(this.attempts)
+                await this.fetchParticipantAnswer(e.attemptId)
+            })
+
+        Echo.private(`assessment.${this.assessment.id}.attempting`)
+            .listen('AssessmentAttemptStarted', async (e) => {
+                await this.setLockStatus(true)
+            })
+
+        Echo.private(`assessment.${this.assessment.id}.marked`)
+            .listen('AssessmentAttemptsMarked', async (e) => {
+                await this.updateAssessmentMarkingCompletion({
+                    assessmentId: e.assessmentId,
+                    markingCompletedOn: e.markingCompletedOn
+                })
             })
     }
 }

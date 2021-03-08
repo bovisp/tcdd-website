@@ -32,14 +32,14 @@ class MultipleChoiceQuestionResource extends JsonResource
                 'name' => $this->name,
                 'type' => $this->questionType->code,
                 'data' => [
-                    'multiple_answers' => $this->multiple_answers,
-                    'shuffle_answers' => $this->shuffle_answers,
+                    'multiple_answers' => $questionData->multiple_answers,
+                    'shuffle_answers' => $questionData->shuffle_answers,
                     'answers' => $questionData->answers->map(function ($answer) {
                         return [
                             'id' => $answer->id,
                             'text' => $answer->text
                         ];
-                    })->shuffle(),
+                    }),
                     'parts' => PartResource::collection(ContentBuilder::find($contentBuilderId)->parts)
                 ]
             ]

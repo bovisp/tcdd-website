@@ -8,18 +8,6 @@
 
         <template v-else>
             <div 
-                :class="previewing ? 'visible h-auto' : 'invisible h-0'"
-                v-if="typeof questionTypeData.type !== 'undefined'"
-                id="preview-pane"
-            >
-                <component 
-                    :is="`${pascalCase(questionTypeData.type)}QuestionPreview`"
-                    :content-id="question.contentBuilder[currentLang]"
-                    @question-preview:cancel="cancelPreview"
-                ></component>
-            </div>
-
-            <div 
                 class="alert alert-red content mb-4"
                 v-if="question.inAssessment"
             >
@@ -316,12 +304,12 @@
                         class="text-2xl font-light my-4"
                         v-if="typeof questionTypeData.type !== 'undefined'"
                     >
-                        {{ capitalCase(questionTypeData.type) }} Question Settings
+                        {{ capitalCase(question.type) }} Question Settings
                     </h3>
 
-                    <template v-if="typeof questionTypeData.type !== 'undefined'">
+                    <template v-if="typeof question.type !== 'undefined'">
                         <component 
-                            :is="`${pascalCase(questionTypeData.type)}QuestionEdit`"
+                            :is="`${pascalCase(question.type)}QuestionEdit`"
                             @question-type:update-data="updateQuestionTypeData"
                         ></component>
                     </template>
@@ -388,6 +376,18 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+
+            <div 
+                :class="previewing ? 'visible h-auto' : 'invisible h-0'"
+                v-if="previewing && typeof question.type !== 'undefined'"
+                id="preview-pane"
+            >
+                <component 
+                    :is="`${pascalCase(question.type)}QuestionPreview`"
+                    :content-id="question.contentBuilder[currentLang]"
+                    @question-preview:cancel="cancelPreview"
+                ></component>
             </div>
 
             <modal 

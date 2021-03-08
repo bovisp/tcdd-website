@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\AssessmentMark;
+use App\AssessmentPageContent;
 use Illuminate\Database\Eloquent\Model;
 
 class AssessmentPageContentItem extends Model
@@ -18,5 +20,15 @@ class AssessmentPageContentItem extends Model
     public function itemable()
     {
         return $this->morphTo();
+    }
+
+    public function assessmentPageContent()
+    {
+        return $this->belongsTo(AssessmentPageContent::class);
+    }
+
+    public function assessmentMarks()
+    {
+        return $this->hasMany(AssessmentMark::class);
     }
 }

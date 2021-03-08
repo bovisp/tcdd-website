@@ -18,7 +18,7 @@ export const checkTimeRemaining = async ({ state, dispatch, commit }) => {
     await commit('SET_TIME_REMAINING', timeRemaining)
 }
 
-export const fetch = async ({ commit, dispatch }, payload) => {
+export const fetch = async ({ commit, dispatch, state }, payload) => {
     let { data: attempt } = await axios.get(`${urlBase}/api/assessment/${payload.assessment.id}/attempt/${payload.attempt.id}`)
 
     await commit('SET_ATTEMPT', attempt.data)
@@ -26,6 +26,24 @@ export const fetch = async ({ commit, dispatch }, payload) => {
     await dispatch('checkTimeRemaining')
 
     await commit('SET_CURRENT_PAGE')
+
+    if (!localStorage.getItem(`assessment_${state.attempt.id}`)) {
+        localStorage.setItem(`assessment_${state.attempt.id}`, JSON.stringify({}))
+    }
+
+    let answersFromServer = JSON.parse(state.attempt.answers)
+
+    if (!answersFromServer && localStorage.getItem(`assessment_${state.attempt.id}`)) {
+        state.form = JSON.parse(localStorage.getItem(`assessment_${state.attempt.id}`))
+
+        await dispatch('persistAnswersFromStorage')
+
+        return
+    }
+
+    if (!answersFromServer) {
+        return
+    }
 
     await commit('SET_ATTEMPT_STORAGE')
 }
@@ -118,4 +136,12 @@ export const pushMultipleChoiceData = async ({ commit }, payload) => {
 
 export const setIncompleteQuestions = async ({ commit }, payload) => {
     await commit('SET_INCOMPLETE_QUESTIONS', payload)
+}
+
+export const persistAnswersFromStorage = async ({ state }) => {
+    await axios.patch(
+        `${urlBase}/api/assessment/${state.attempt.assessment.id}/attempt/${state.attempt.id}/all-answers`, {
+            answers: JSON.stringify(state.form)
+        }
+    )
 }

@@ -120,9 +120,7 @@ export const deleteAssessmentPageItem = async ({ state, dispatch, commit }, item
 export const activateParticipant = async ({ dispatch, state, commit }, payload) => {
     let { data } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/participants/activate?id=${payload.participantId}&activated=${payload.isActivated}`)
 
-    await dispatch('fetch')
-
-    await commit('SET_LOCK_STATUS', data > 0 ? true : false)
+    await dispatch('fetchAssessment', state.assessment.id)
 }
 
 export const setAssessmentLockStatus = async ({ commit, state }) => {
@@ -150,5 +148,100 @@ export const duplicateAssesment = async ({ state, commit, dispatch }, form) => {
 export const fetchAttempt = async ({ commit, state }, attemptId) => {
     let { data: attempt } = await axios.get(`/api/assessments/${state.assessment.id}/attempts/${attemptId}`)
 
-    commit('PUSH_ATTEMPT', attempt)
+    await commit('PUSH_ATTEMPT', attempt.data)
+}
+
+export const fetchAttempts = async ({ commit, state }) => {
+    let { data: attempts } = await axios.get(`/api/assessments/${state.assessment.id}/attempts`)
+
+    await commit('PUSH_ATTEMPTS', attempts.data)
+}
+
+export const fetchAssessment = async ({ commit }, assessmentId) => {
+    let { data: assessment } = await axios.get(`/api/assessments/${assessmentId}`)
+
+    await commit('SET_ASSESSMENT', assessment.data)
+}
+
+export const fetchParticipantAnswers = async ({ commit, state }) => {
+    let { data: participantAnswers } = await axios.get(`/api/assessments/${state.assessment.id}/answers`)
+
+    await commit('SET_ATTEMPT_ANSWERS', participantAnswers.data)
+}
+
+export const fetchParticipantAnswer = async ({ commit, state }, attemptId) => {
+    let { data: participantAnswer } = await axios.get(`/api/assessments/${state.assessment.id}/attempt/${attemptId}/answer`)
+
+    await commit('PUSH_ATTEMPT_ANSWER', participantAnswer.data)
+}
+
+export const setParticipantAnswer = async ({ commit }, participantAnswer) => {
+    await commit('SET_ATTEMPT_ANSWER', participantAnswer)
+}
+
+export const updateMark = async ({ commit, state }, payload) => {
+    if (payload.id && payload.attemptId === null) {
+        let { data } = await axios.patch(
+            `/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark/${payload.id}`,
+            payload
+        )
+
+        await commit('UPDATE_MARK', data.data)
+
+        window.events.$emit('assessment:mark-update', data.data)
+    } else if (!payload.id && payload.attemptId === null) {
+        let { data } = await axios.post(`/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark`, payload)
+
+        await commit('PUSH_NEW_MARK', data.data)
+
+        window.events.$emit('assessment:mark-update', data.data)
+    } else if (!payload.id && payload.attemptId !== null) {
+        let { data } = await axios.post(`/api/assessments/${state.assessment.id}/attempt/${payload.attemptId}/mark`, payload)
+
+        await commit('PUSH_NEW_MARK_ATTEMPT', {
+            data: data.data,
+            attempt: payload.attemptId
+        })
+
+        window.events.$emit('assessment:mark-update-attempt', {
+            data: data.data,
+            attemptId: payload.attemptId
+        })
+    } else if (payload.id && payload.attemptId !== null) {
+        let { data } = await axios.patch(
+            `/api/assessments/${state.assessment.id}/attempt/${payload.attemptId}/mark/${payload.id}`,
+            payload
+        )
+
+        await commit('UPDATE_MARK_OF_ATTEMPT', {
+            data: data.data,
+            attempt: payload.attemptId
+        })
+
+        window.events.$emit('assessment:mark-update-attempt', {
+            data: data.data,
+            attemptId: payload.attemptId
+        })
+    }
+}
+
+export const updateAssessmentMarkingCompletion = async ({ commit }, payload) => {
+    await commit('UPDATE_ASSESSMENT_MARKING_COMLETION', payload)
+}
+
+export const updateMarkScore = async ({ state, commit }, payload) => {
+    let { data } = await axios.patch(
+        `/api/assessments/${state.assessment.id}/attempt/${payload.attempt.id}/mark/${payload.mark.id}/update-score`,
+        payload
+    )
+
+    await commit('UPDATE_MARK_OF_ATTEMPT', {
+        data: data.data,
+        attempt: payload.attempt.id
+    })
+
+    window.events.$emit('assessment:mark-update-attempt', {
+        data: data.data,
+        attemptId: payload.attempt.id
+    })
 }

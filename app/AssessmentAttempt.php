@@ -4,6 +4,7 @@ namespace App;
 
 use App\User;
 use App\Assessment;
+use App\AssessmentMark;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,7 +14,9 @@ class AssessmentAttempt extends Model
         'assessment_participant_id',
         'answers',
         'assessment_id',
-        'completed'
+        'completed',
+        'marked',
+        'marked_on'
     ];
 
     public function participant()
@@ -42,5 +45,10 @@ class AssessmentAttempt extends Model
     public function assessment()
     {
         return $this->belongsTo(Assessment::class);
+    }
+
+    public function assessmentMarks()
+    {
+        return $this->hasMany(AssessmentMark::class);
     }
 }

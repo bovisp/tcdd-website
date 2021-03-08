@@ -38,7 +38,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { orderBy, forEach } from 'lodash-es'
+import { orderBy, forEach, without } from 'lodash-es'
 
 export default {
     data () {
@@ -63,11 +63,14 @@ export default {
         orderBy,
 
         completionTextClass(question) {
-            return question.required_answer_keys.length === question.existing_question_keys.length ? 'text-green-700' : 'text-red-700'
+            let existingKeys = without(question.existing_question_keys, 'order')
+
+            return question.required_answer_keys.length === existingKeys.length ? 'text-green-700' : 'text-red-700'
         },
 
         completionText(question) {
-            if (question.required_answer_keys.length === question.existing_question_keys.length) {
+            let existingKeys = without(question.existing_question_keys, 'order')
+            if (question.required_answer_keys.length === existingKeys.length) {
                 this.setIncompleteQuestions(false)
 
                 return 'Complete'

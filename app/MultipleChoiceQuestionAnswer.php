@@ -19,6 +19,15 @@ class MultipleChoiceQuestionAnswer extends Model
         'is_correct'
     ];
 
+    // protected $casts = [
+    //     'is_correct' => 'boolean'
+    // ];
+
+    // public function getCorrectAttribute()
+    // {
+    //     return 'correct';
+    // }
+
     public function toArray()
     {
         $attributes = parent::toArray();

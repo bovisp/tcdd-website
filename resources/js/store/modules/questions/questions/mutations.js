@@ -19,7 +19,7 @@ export const SET_TEST_QUESTION_DATA = (state) => {
         'sectionName', 'section', 'categoryName', 'contentBuilder'
     ])
 
-    state.testQuestionData.type = state.questionTypeData.type
+    state.testQuestionData.type = state.question.type
 
     state.testQuestionData.questionTypeData = state.questionTypeData.data
 }

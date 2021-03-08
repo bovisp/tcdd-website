@@ -11,9 +11,9 @@
             >
                 <button 
                     class="btn btn-blue"
-                    :class="{ 'btn-disabled': lockStatus }"
+                    :class="{ 'btn-disabled': assessment.locked }"
                     @click.prevent="add"
-                    :disabled="lockStatus"
+                    :disabled="assessment.locked"
                 >
                     <i class="fas fa-plus mr-1"></i>
                     Add page
@@ -70,7 +70,7 @@ export default {
             pages: 'assessments/pages',
             totalScore: 'assessments/totalScore',
             currentPage: 'assessments/currentPage',
-            lockStatus: 'assessments/lockStatus'
+            assessment: 'assessments/assessment'
         })
     },
 

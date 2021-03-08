@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="form">
         <h4 class="text-lg font-medium mb-3">
             General options
         </h4>
@@ -12,6 +12,7 @@
                     type="checkbox" 
                     class="form-checkbox"
                     v-model="form.multiple_answers"
+                    @change="test"
                 >
 
                 <span 
@@ -67,9 +68,9 @@
                 </p>
 
                 <input 
-                    :type="form.multiple_answers ? 'checkbox' : 'radio'" 
-                    :class="form.multiple_answers ? 'form-checkbox' : 'form-radio'"
-                    :value="answer.is_correct ? true : false"
+                    type="checkbox" 
+                    class="form-checkbox"
+                    :value="answer.id"
                     :checked="answer.is_correct"
                     @change="updateCorrect(answer.id)"
                 >
@@ -137,7 +138,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { v4 as uuid_v4 } from 'uuid'
-import { forEach, includes, find, trim, filter, isEmpty } from 'lodash-es'
+import { forEach, includes, find, trim, filter, isEmpty, set } from 'lodash-es'
 
 export default {
     data () {
@@ -169,19 +170,17 @@ export default {
             handler () {
                 this.form = this.questionTypeData.data
             }
-        },
-
-        async 'form.multiple_answers' (newVal, oldVal) {
-            if (oldVal) {
-                for await (let answer of this.form.answers) {
-                    answer.is_correct = false
-                }
-            }
         }
     },
 
     methods: {
         isEmpty,
+
+        test () {
+            for (let i = 0; i < this.form.answers.length; i++) {
+                set(this.form.answers[i], 'is_correct', false)
+            }
+        },
         
         addAnswers () {
             for (let i = 0; i < this.answerIncrement; i++) {

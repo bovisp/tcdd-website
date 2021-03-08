@@ -71,6 +71,7 @@ class AssessmentParticipantsController extends Controller
         $users = User::all()
             ->filter(function ($user) use ($assessment) {
                 return !$assessment->participants->contains('id', $user->id) && 
+                    !$assessment->editors->contains('id', $user->id) && 
                     !$user->hasRole('administrator');
             })
             ->toArray();

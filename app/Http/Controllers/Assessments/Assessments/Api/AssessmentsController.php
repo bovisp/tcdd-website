@@ -7,7 +7,8 @@ use App\ContentBuilder;
 use App\ContentBuilderType;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Assessments\AssessmentResource;
+use App\Http\Resources\Assessments\AssessmentShowResource;
+use App\Http\Resources\Assessments\AssessmentIndexResource;
 
 class AssessmentsController extends Controller
 {
@@ -29,20 +30,25 @@ class AssessmentsController extends Controller
             }
             
             abort(403);
-        })->only(['update', 'destroy']);
+        })->only(['update', 'destroy', 'show']);
     }
 
     public function index()
     {
         if (auth()->user()->hasRole('administrator')) {
-            return AssessmentResource::collection(
+            return AssessmentIndexResource::collection(
                 Assessment::all()
             );
         }
         
-        return AssessmentResource::collection(
+        return AssessmentIndexResource::collection(
             auth()->user()->assessmentEditor
         );
+    }
+
+    public function show(Assessment $assessment)
+    {
+        return new AssessmentShowResource($assessment);
     }
 
     public function store()

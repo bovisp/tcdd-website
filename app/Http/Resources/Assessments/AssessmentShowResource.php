@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources\Assessments;
 
+use App\AssessmentAttempt;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AssessmentResource extends JsonResource
+class AssessmentShowResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +19,9 @@ class AssessmentResource extends JsonResource
             'id' => $this->id,
             'sectionName' => $this->section->name,
             'typeName' => $this->assessmentType->name,
-            'visibility' => $this->visible ? 'Yes' : 'No',
             'name' => $this->name,
             'name_en' => $this->getTranslation('name', 'en'),
             'name_fr' => $this->getTranslation('name', 'fr'),
-            'visible' => $this->visible,
             'description' => $this->description,
             'description_en' => $this->getTranslation('description', 'en'),
             'description_fr' => $this->getTranslation('description', 'en'),
@@ -31,8 +30,18 @@ class AssessmentResource extends JsonResource
             'assessmentType' => $this->assessmentType,
             'section_id' => $this->section_id,
             'editors' => $this->editors,
-            'participants' => $this->participants,
-            'locked' => $this->locked ? true : false
+            'participants' => $this->participants->map(function ($participant) {
+                if (optional(AssessmentAttempt::whereAssessmentParticipantId($participant->pivot->id)->first())->completed) {
+                    $participant->completed = true;
+
+                    return $participant;
+                }
+
+                return $participant;
+            }),
+            'locked' => $this->locked ? true : false,
+            'marking_completed' => $this->marking_completed ? true : false,
+            'marking_completed_on' => $this->marking_completed_on
         ];
     }
 }

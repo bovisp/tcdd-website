@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { orderBy, get } from 'lodash-es'
+import { orderBy, get, map, find } from 'lodash-es'
 import { pascalCase } from 'change-case'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -88,7 +88,26 @@ export default {
     async mounted () {
         for await (let answer of this.multipleChoiceAnswers) {
             if (answer.id === this.data.id) {
-                this.answers = answer.answers
+                let order
+
+                if (this.attemptForm && get(this.attemptForm, `question_${this.data.id}.order`)) {
+                    order = get(this.attemptForm, `question_${this.data.id}.order.data`)
+                } else {
+                    order = this.shuffleArray(map(answer.answers, answer => answer.id))
+
+                    this.updateAttemptForm({
+                        id: this.data.id,
+                        key: 'order',
+                        data: order,
+                        timestamp: Math.floor(new Date().getTime() / 1000)
+                    })
+                }
+
+                for await (let index of order) {
+                    let orderedAnswer = find(answer.answers, a => a.id === index)
+
+                    this.answers.push(orderedAnswer)
+                }
 
                 break
             }

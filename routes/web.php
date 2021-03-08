@@ -47,6 +47,7 @@ Route::post('/api/users/{user}/role/{role}', 'Supervisors\Api\SupervisorsControl
 Route::get('/assessments/assessment-types', 'Assessments\AssessmentTypes\AssessmentTypesController@index');
 Route::resource('/api/assessments/assessment-types', 'Assessments\AssessmentTypes\Api\AssessmentTypesController');
 Route::get('/assessments', 'Assessments\Assessments\AssessmentsController@index');
+Route::get('/assessments/{assessment}', 'Assessments\Assessments\AssessmentsController@show');
 Route::resource('/api/assessments', 'Assessments\Assessments\Api\AssessmentsController');
 Route::put('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@update');
 Route::get('/api/assessments/{assessment}/instructors/create', 'Assessments\Assessments\Api\AssessmentInstructorsController@create');
@@ -71,6 +72,12 @@ Route::patch('/api/assessment/{assessment}/page/{page}/change-order', 'Assessmen
 Route::patch('/api/assessments/{assessment}/questions/{item}/change-score', 'Assessments\Assessments\Api\AssessmentQuestionContentController@changeScore');
 Route::patch('/api/assessments/{assessment}/questions/{item}/change-page', 'Assessments\Assessments\Api\AssessmentQuestionContentController@changePage');
 Route::get('/api/assessments/{assessment}/attempts/{attemptId}', 'Assessments\Assessments\Api\AssessmentAttemptsController@show');
+Route::get('/api/assessments/{assessment}/attempts', 'Assessments\Assessments\Api\AssessmentAttemptsController@index');
+Route::get('/api/assessments/{assessment}/answers', 'Assessments\Assessments\Api\AssessmentAnswersController@index');
+Route::get('/api/assessments/{assessment}/attempt/{attempt}/answer', 'Assessments\Assessments\Api\AssessmentAnswersController@show');
+Route::post('/api/assessments/{assessment}/attempt/{attempt}/mark', 'Assessments\Assessments\Api\AssessmentMarksController@store');
+Route::patch('/api/assessments/{assessment}/attempt/{attempt}/mark/{mark}', 'Assessments\Assessments\Api\AssessmentMarksController@update');
+Route::patch('/api/assessments/{assessment}/attempt/{attempt}/mark/{mark}/update-score', 'Assessments\Assessments\Api\AssessmentMarksController@updateScore');
 
 Route::get('/assessment/{assessment}', 'Assessments\Assessment\AssessmentAttemptController@index');
 Route::post('/api/assessment/{assessment}/attempt', 'Assessments\Assessment\Api\AssessmentAttemptController@store');
@@ -83,6 +90,7 @@ Route::get('/api/assessment/{assessment}/attempt/{attempt}/question/{question}',
 Route::patch('/api/assessment/{assessment}/attempt/{attempt}/answers', 'Assessments\Assessment\Api\AttemptAnswersController@update');
 Route::get('/api/assessment/{assessment}/attempt/{attempt}/review', 'Assessments\Assessment\Api\AttemptReviewController@index');
 Route::patch('/api/assessment/{assessment}/attempt/{attempt}/submit', 'Assessments\Assessment\Api\AttemptSubmitController@update');
+Route::patch('/api/assessment/{assessment}/attempt/{attempt}/all-answers', 'Assessments\Assessment\Api\AttemptAnswersController@allAnswers');
 
 Route::get('/permissions', 'Permissions\PermissionsController@index');
 Route::resource('/api/permissions', 'Permissions\Api\PermissionsController');

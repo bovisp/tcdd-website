@@ -50,6 +50,7 @@
 
         <modal 
             v-show="modalActive"
+            ok-button-text="Start"
             @close="close"
             @submit="confirm"
         >

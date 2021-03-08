@@ -15,6 +15,13 @@ class AssessmentAttemptsController extends Controller
         $this->middleware(['can:manage assessments']);
     }
 
+    public function index(Assessment $assessment)
+    {
+        return AssessmentAttemptCompletedResource::collection(
+            $assessment->attempts->filter->completed
+        );
+    }
+
     public function show(Assessment $assessment, AssessmentAttempt $attempt)
     {
         return new AssessmentAttemptCompletedResource($attempt);

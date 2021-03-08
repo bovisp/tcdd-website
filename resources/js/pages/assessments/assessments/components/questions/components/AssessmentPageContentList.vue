@@ -5,13 +5,13 @@
         >
             <i 
                 class="fas fa-arrows-alt ml-auto cursor-move"
-                v-if="!lockStatus || (lockStatus && data.type === 'ContentBuilder')"
+                v-if="!assessment.locked || (assessment.locked && data.type === 'ContentBuilder')"
             ></i>
 
             <i 
                 v-if="data.type === 'Question'"
                 class="fas fa-edit ml-2"
-                :class="{ 'ml-auto':  lockStatus }"
+                :class="{ 'ml-auto':  assessment.locked }"
                 title="Edit question"
                 @click.prevent="editQuestion"
             ></i>
@@ -20,7 +20,7 @@
                 class="fas fa-trash-alt text-red-500 ml-2"
                 @click.prevent="confirmDestroy"
                 :title="`Delete ${data.type === 'ContentBuilder' ? 'content' : 'question'}`"
-                v-if="!lockStatus || (lockStatus && data.type === 'ContentBuilder')"
+                v-if="!assessment.locked || (assessment.locked && data.type === 'ContentBuilder')"
             ></i>
         </div>
 
@@ -81,8 +81,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            assessment: 'assessments/assessment',
-            lockStatus: 'assessments/lockStatus'
+            assessment: 'assessments/assessment'
         })
     },
 

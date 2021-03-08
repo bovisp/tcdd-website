@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
     data () {
         return {
@@ -20,11 +22,21 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters({
+            assessment: 'assessments/assessment'
+        })
+    },
+
     methods: {
-        reload () {
+        ...mapActions({
+            fetchAssessment: 'assessments/fetchAssessment'
+        }),
+
+        async reload () {
             this.showIndex = true
 
-            window.events.$emit('assessments:reload')
+            await this.fetchAssessment(this.assessment.id)
         },
     }
 }

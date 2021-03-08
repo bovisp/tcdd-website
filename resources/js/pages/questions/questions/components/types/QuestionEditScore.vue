@@ -7,11 +7,11 @@
             <button 
                 class="btn btn-text text-sm btn-sm text-blue-500 ml-2"
                 @click.prevent="editScore"
-                v-if="!lockStatus"
+                v-if="!assessment.locked"
             >Edit</button>
         </template>
 
-        <template v-if="editingScore && !lockStatus">
+        <template v-if="editingScore && !assessment.locked">
             <input 
                 type="number"
                 class="shadow appearance-none border rounded w-32 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
@@ -51,8 +51,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            assessment: 'assessments/assessment',
-            lockStatus: 'assessments/lockStatus'
+            assessment: 'assessments/assessment'
         }),
 
         totalPoints () {

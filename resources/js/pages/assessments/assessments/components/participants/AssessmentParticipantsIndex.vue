@@ -42,6 +42,8 @@
                     event-text-true="Deactivate"
                     event-text-false="Activate"
                     event="assessment:activate"
+                    no-event-if-text-column-boolean="completed"
+                    text-column-text="Completed"
                 ></datatable>
             </div>
 
@@ -94,7 +96,7 @@ export default {
 
     methods: {
         ...mapActions({
-            fetchAssessments: 'assessments/fetch',
+            fetchAssessment: 'assessments/fetchAssessment',
             activateParticipant: 'assessments/activateParticipant'
         }),
 
@@ -113,7 +115,7 @@ export default {
         },
 
         async reload () {
-            await this.fetchAssessments()
+            await this.fetchAssessment(this.assessment.id)
         }
     },
 

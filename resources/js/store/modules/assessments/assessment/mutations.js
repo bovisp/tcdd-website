@@ -25,6 +25,10 @@ export const UPDATE_ATTEMPT_FORM = (state, payload) => {
         state.form[`question_${payload.id}`][payload.key] = {}
     }
 
+    if (payload.key === 'order' && !isEmpty(state.form[`question_${payload.id}`][payload.key])) {
+        return
+    }
+
     state.form[`question_${payload.id}`][payload.key]['data'] = payload.data
     state.form[`question_${payload.id}`][payload.key]['timestamp'] = payload.timestamp
 
@@ -88,20 +92,8 @@ export const SET_ATTEMPT_REVIEW = async (state) => {
 }
 
 export const SET_ATTEMPT_STORAGE = async (state) => {
-    if (!localStorage.getItem(`assessment_${state.attempt.id}`)) {
-        localStorage.setItem(`assessment_${state.attempt.id}`, JSON.stringify({}))
-    }
-
     let answersFromServer = JSON.parse(state.attempt.answers)
-
-    if (!answersFromServer && localStorage.getItem(`assessment_${state.attempt.id}`)) {
-        state.form = JSON.parse(localStorage.getItem(`assessment_${state.attempt.id}`))
-    }
-
-    if (!answersFromServer) {
-        return
-    }
-
+    
     let answersFromStorage = JSON.parse(localStorage.getItem(`assessment_${state.attempt.id}`))
 
     for await (let answer of Object.keys(answersFromServer)) {

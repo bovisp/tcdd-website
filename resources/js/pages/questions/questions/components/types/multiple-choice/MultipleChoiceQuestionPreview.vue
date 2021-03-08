@@ -168,7 +168,7 @@ export default {
 
         await this.fetchTestQuestionData()
 
-        this.answers = this.testQuestionData.questionTypeData.answersShuffled
+        this.answers = this.testQuestionData.questionTypeData.answers
 
         this.correct = map(
             filter(this.answers, answer => {
