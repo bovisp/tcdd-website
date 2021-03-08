@@ -1,6 +1,7 @@
 <template>
     <div
         class="mb-4"
+        v-if="typeof form !== 'undefined'"
     >
         <label class="flex items-center">
             <input 

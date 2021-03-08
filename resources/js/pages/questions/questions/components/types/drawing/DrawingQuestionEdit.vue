@@ -1,5 +1,7 @@
 <template>
-    <div>
+    <div
+        v-if="typeof form !== 'undefined'"
+    >
         <h4 class="text-lg font-medium mb-3">
             General options
         </h4>
