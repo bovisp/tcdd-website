@@ -9,8 +9,8 @@
             :data="assessments"
             :columns="columns"
             :per-page="10"
-            :order-keys="['typeName', 'name', 'visibility', 'section']"
-            :order-key-directions="['asc', 'asc', 'asc', 'asc']"
+            :order-keys="['typeName', 'name', 'section']"
+            :order-key-directions="['asc', 'asc', 'asc']"
             :has-text-filter="true"
             :has-event="true"
             event-text="Edit"
@@ -35,7 +35,6 @@ export default {
             columns: [
                 { field: 'typeName', title: 'Type', sortable: true },
                 { field: 'name', title: 'Name', sortable: true },
-                { field: 'visibility', title: 'Visible', sortable: true },
                 { field: 'sectionName', title: 'Section', sortable: true }
             ]
         }
