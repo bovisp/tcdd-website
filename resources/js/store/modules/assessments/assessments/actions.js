@@ -228,3 +228,20 @@ export const updateMark = async ({ commit, state }, payload) => {
 export const updateAssessmentMarkingCompletion = async ({ commit }, payload) => {
     await commit('UPDATE_ASSESSMENT_MARKING_COMLETION', payload)
 }
+
+export const updateMarkScore = async ({ state, commit }, payload) => {
+    let { data } = await axios.patch(
+        `/api/assessments/${state.assessment.id}/attempt/${payload.attempt.id}/mark/${payload.mark.id}/update-score`,
+        payload
+    )
+
+    await commit('UPDATE_MARK_OF_ATTEMPT', {
+        data: data.data,
+        attempt: payload.attempt.id
+    })
+
+    window.events.$emit('assessment:mark-update-attempt', {
+        data: data.data,
+        attemptId: payload.attempt.id
+    })
+}

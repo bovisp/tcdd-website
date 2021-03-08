@@ -161,4 +161,17 @@ class AssessmentMarksController extends Controller
 
         return new AssessmentMarksResource($mark);
     }
+
+    public function updateScore(Assessment $assessment, AssessmentAttempt $attempt, AssessmentMark $mark)
+    {
+        request()->validate([
+            'score' => 'numeric|min:0'
+        ]);
+
+        $mark->update([
+            'mark' => request('score')
+        ]);
+
+        return new AssessmentMarksResource($mark);
+    }
 }

@@ -67,6 +67,13 @@
             >
                 <assessment-marking />
             </tab>
+
+            <tab  
+                name="Results" 
+                v-if="attemptAnswers.length"
+            >
+                <assessment-results />
+            </tab>
         </tabs>
 
         <assessments-duplicate 
