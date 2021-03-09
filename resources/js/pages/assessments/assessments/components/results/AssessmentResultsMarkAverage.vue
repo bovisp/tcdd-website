@@ -1,11 +1,11 @@
 <template>
     <div>
-        {{ average }}
+        {{ averageQuestionScore }}
     </div>
 </template>
 
 <script>
-import { reduce, find } from 'lodash-es'
+import { reduce, find, findIndex } from 'lodash-es'
 
 export default {
     props: {
@@ -19,14 +19,37 @@ export default {
         }
     },
 
-    computed: {
+    data () {
+        return {
+            assessmentAttempts: [],
+            averageQuestionScore: null
+        }
+    },
+
+    methods: {
         average () {
-            return ((reduce(this.attempts, (result, value, key) => {
+            return ((reduce(this.assessmentAttempts, (result, value, key) => {
                 let mark = find(value.marks, m => m.question_id === this.question.id)
 
                 return result + parseFloat(mark.mark) 
-            }, 0)) / this.attempts.length).toFixed(1)
+            }, 0)) / this.assessmentAttempts.length).toFixed(1)
         }
+    },
+
+    mounted () {
+        this.assessmentAttempts = this.attempts
+
+        this.averageQuestionScore = this.average()
+
+        window.events.$on('assessment:results-mark-table', async payload => {
+            let attemptIndex = findIndex(this.assessmentAttempts, attempt => attempt.id === payload.attempt.id)
+            
+            let markIndex = findIndex(this.assessmentAttempts[attemptIndex].marks, mark => mark.id === payload.mark.id)
+
+            this.assessmentAttempts[attemptIndex]['marks'][markIndex]['mark'] = payload.score
+
+            this.averageQuestionScore = this.average()
+        })
     }
 }
 </script>

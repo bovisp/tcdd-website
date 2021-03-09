@@ -73,6 +73,12 @@ export default {
             })
 
             this.editing = false
+
+            window.events.$emit('assessment:results-mark-table', {
+                attempt: this.attempt,
+                mark: this.mark,
+                score: parseFloat(this.markScore)
+            })
         }
     },
 

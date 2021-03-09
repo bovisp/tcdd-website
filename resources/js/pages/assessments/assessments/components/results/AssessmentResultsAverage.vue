@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { reduce } from 'lodash-es'
+import { reduce, findIndex } from 'lodash-es'
 
 export default {
     props: {
@@ -19,22 +19,52 @@ export default {
         }
     },
 
+    data () {
+        return {
+            assessmentAttempts: [],
+            averageTotal: null,
+            averagePercentage: null
+        }
+    },
+
     computed: {
-        averageTotal () {
-            return (reduce(this.attempts, function (total, attempt, key) {
-                return total + reduce(attempt.marks, function (totalOfMarks, mark, key) {
-                    return totalOfMarks + mark.mark
-                }, 0)
-            }, 0) / this.attempts.length).toFixed(1)
-        },
-
-        averagePercentage() {
-            return Math.round((this.averageTotal / this.overallTotal) * 100)
-        },
-
         overallTotal () {
             return reduce(this.questions, (result, value, key) => result + value.score, 0)
         }
+    },
+
+    methods: {
+        getAverageTotal () {
+            return (reduce(this.assessmentAttempts, function (total, attempt, key) {
+                return total + reduce(attempt.marks, function (totalOfMarks, mark, key) {
+                    return totalOfMarks + mark.mark
+                }, 0)
+            }, 0) / this.assessmentAttempts.length).toFixed(1)
+        },
+
+        getAveragePercentage() {
+            return Math.round((this.averageTotal / this.overallTotal) * 100)
+        }
+    },
+
+    async mounted () {
+        this.assessmentAttempts = this.attempts
+
+        this.averageTotal = await this.getAverageTotal()
+
+        this.averagePercentage = await this.getAveragePercentage()
+
+        window.events.$on('assessment:results-mark-table', async payload => {
+            let attemptIndex = findIndex(this.assessmentAttempts, attempt => attempt.id === payload.attempt.id)
+            
+            let markIndex = findIndex(this.assessmentAttempts[attemptIndex].marks, mark => mark.id === payload.mark.id)
+
+            this.assessmentAttempts[attemptIndex]['marks'][markIndex]['mark'] = payload.score
+
+            this.averageTotal = this.getAverageTotal()
+
+            this.averagePercentage = this.getAveragePercentage()
+        })
     }
 }
 </script>

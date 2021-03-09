@@ -16,7 +16,7 @@
 
             <tbody>
                 <tr
-                    v-for="attempt in orderBy(attemptAnswers, ['participant_lastname'], ['asc'])"
+                    v-for="attempt in orderBy(attemptsMarkingCompleted, ['participant_lastname'], ['asc'])"
                     :key="attempt.id"
                 >
                     <td>
@@ -54,14 +54,14 @@
                         class="p-2 text-center"
                     >
                         <assessment-results-mark-average 
-                            :attempts="attemptAnswers"
+                            :attempts="attemptsMarkingCompleted"
                             :question="quest"
                         />
                     </td>
 
                     <td class="p-2 text-center">
                         <assessment-results-average
-                            :attempts="attemptAnswers"
+                            :attempts="attemptsMarkingCompleted"
                             :questions="questions"
                         />
                     </td>
@@ -73,7 +73,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { map, orderBy, reduce } from 'lodash-es'
+import { map, orderBy, reduce, filter } from 'lodash-es'
 
 export default {
     data () {
@@ -85,7 +85,11 @@ export default {
     computed: {
         ...mapGetters({
             attemptAnswers: 'assessments/attemptAnswers'
-        })
+        }),
+
+        attemptsMarkingCompleted () {
+            return filter(this.attemptAnswers, attempt => attempt.marked)
+        }
     },
 
     methods: {
