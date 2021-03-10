@@ -146,6 +146,12 @@ export default {
             })
 
             this.scoring = false
+
+            window.events.$emit('assessment:results-mark-table', {
+                attempt: this.participantAnswer,
+                mark: this.mark,
+                score: parseFloat(this.score)
+            })
         }
     },
 

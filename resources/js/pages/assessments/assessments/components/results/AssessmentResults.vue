@@ -1,6 +1,9 @@
 <template>
-    <div class="flex justify-center">
-        <table>
+    <div>
+        <table
+            v-if="!editing"
+            class="mx-auto"
+        >
             <thead>
                 <tr>
                     <th></th>
@@ -31,6 +34,7 @@
                         <assessment-results-mark
                             :attempt="attempt"
                             :question="q"
+                            @assessment:update-mark-from-results="updateMark"
                         />
                     </td>
 
@@ -68,23 +72,86 @@
                 </tr>
             </tfoot>
         </table>
+
+        <div v-else>
+            <div class="flex items-center w-full">
+                <h2 class="text-3xl font-medium mb-2">
+                    Edit: Question {{ question.question_number }} - {{ participantAnswer.participant_fullname }}
+                </h2>
+
+                <button 
+                    class="btn btn-text ml-auto"
+                    @click.prevent="cancel"
+                >
+                    <i class="fas fa-chevron-left mr-1"></i>
+                    Return to results table
+                </button>
+            </div>
+
+            <div class="my-6">
+                <component 
+                    v-for="part in orderBy(question.parts, ['sort_order'], ['asc'])"
+                    :key="part.id"
+                    :is="`Final${ pascalCase(part.builderType.type) }`"
+                    :part="part"
+                ></component>
+
+                <h2 class="mb-4 font-medium text-lg">
+                    Answer:
+                </h2>
+
+                <component 
+                    :is="`${pascalCase(question.type)}QuestionMarking`"
+                    :answer="participantAnswer.answers[`question_${question.id}`]"
+                    :question="question"
+                ></component>
+
+                <assessment-marking-guide 
+                    :guide="question.marking_guide"
+                    v-if="question.type !== 'multiple_choice'"
+                />
+
+                <assessment-marking-comments 
+                    :question="question"
+                    v-if="question.type !== 'multiple_choice'"
+                />
+
+                <assessment-marking-score 
+                    :question="question"
+                />
+            </div>
+
+            <div class="flex items-center w-full">
+                <button 
+                    class="btn btn-text ml-auto"
+                    @click.prevent="cancel"
+                >
+                    <i class="fas fa-chevron-left mr-1"></i>
+                    Return to results table
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { map, orderBy, reduce, filter } from 'lodash-es'
+import { pascalCase } from 'change-case'
 
 export default {
     data () {
         return {
-            questions: []
+            questions: [],
+            editing: false,
+            question: null
         }
     },
 
     computed: {
         ...mapGetters({
-            attemptAnswers: 'assessments/attemptAnswers'
+            attemptAnswers: 'assessments/attemptAnswers',
+            participantAnswer: 'assessments/participantAnswer'
         }),
 
         attemptsMarkingCompleted () {
@@ -93,7 +160,27 @@ export default {
     },
 
     methods: {
+        ...mapActions({
+            setParticipantAnswer: 'assessments/setParticipantAnswer'
+        }),
+
         orderBy,
+
+        pascalCase,
+
+        cancel () {
+            this.editing = false
+
+            this.setParticipantAnswer(null)
+        },
+
+        async updateMark (payload) {
+            this.setParticipantAnswer(payload.attempt)
+
+            this.question = payload.question
+
+            this.editing = true
+        },
 
         assessmentTotal (attempt) {
             if (attempt) {
