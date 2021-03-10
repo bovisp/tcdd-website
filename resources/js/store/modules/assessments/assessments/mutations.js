@@ -108,3 +108,9 @@ export const UPDATE_ASSESSMENT_MARKING_COMLETION = (state, payload) => {
         state.assessment.marking_completed_on = payload.markingCompletedOn
     }
 }
+
+export const REMOVE_MARKING_COMPLETED = (state) => {
+    state.assessment.marking_completed = false
+
+    state.assessment.marking_completed_on = null
+}

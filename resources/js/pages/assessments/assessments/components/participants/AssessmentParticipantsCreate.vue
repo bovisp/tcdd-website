@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     data () {
@@ -54,6 +54,10 @@ export default {
     },
 
     methods: {
+        ...mapActions({
+            removeMarkingCompleted: 'assessments/removeMarkingCompleted'
+        }),
+
         async store () {
             let { data } = await axios.post(`${this.urlBase}/api/assessments/${this.assessment.id}/participants`, {
                 users: this.selected
@@ -64,6 +68,8 @@ export default {
             window.events.$emit('datatable:clear')
 
             this.$toasted.success(data.data.message)
+
+            await this.removeMarkingCompleted()
 
             this.$emit('cancel')
         }

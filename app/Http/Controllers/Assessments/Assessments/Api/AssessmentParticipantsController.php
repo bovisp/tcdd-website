@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Assessments\Assessments\Api;
 
 use App\User;
+use Carbon\Carbon;
 use App\Assessment;
 use App\AssessmentAttempt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Events\AssessmentAttemptsMarked;
 
 class AssessmentParticipantsController extends Controller
 {
@@ -58,6 +60,25 @@ class AssessmentParticipantsController extends Controller
 
         $assessment->participants()->sync(request('users'));
 
+        $numParticipants = $assessment->participants()->count();
+
+        $totalScoredAnswers = 0;
+
+        foreach ($assessment->attempts->filter->completed as $attempt) {
+            $totalScoredAnswers += $attempt->assessmentMarks->filter(function ($mark) {
+                return !is_null($mark->mark);
+            })->count();
+        }
+
+        if (($numParticipants * $assessment->questions()->count()) === $totalScoredAnswers) {
+            $assessment->update([
+                'marking_completed' => 1,
+                'marking_completed_on' => Carbon::now()
+            ]);
+
+            event(new AssessmentAttemptsMarked($assessment->id, $assessment->marking_completed_on));
+        }
+
         return response()->json([
             'data' => [
                 'type' => 'success',
@@ -87,6 +108,11 @@ class AssessmentParticipantsController extends Controller
         ]);
 
         $assessment->participants()->attach(request('users'));
+
+        $assessment->update([
+            'marking_completed' => 0,
+            'marking_completed_on' => null
+        ]);
 
         return response()->json([
             'data' => [

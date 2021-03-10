@@ -245,3 +245,7 @@ export const updateMarkScore = async ({ state, commit }, payload) => {
         attemptId: payload.attempt.id
     })
 }
+
+export const removeMarkingCompleted = async ({ commit }) => {
+    await commit('REMOVE_MARKING_COMPLETED')
+}
