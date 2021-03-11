@@ -12,7 +12,7 @@ class AssessmentAttemptsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['can:manage assessments']);
+        $this->middleware(['can:manage assessments', 'assessment-edit']);
     }
 
     public function index(Assessment $assessment)

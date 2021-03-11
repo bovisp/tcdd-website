@@ -16,21 +16,7 @@ class AssessmentsController extends Controller
     {
         $this->middleware(['can:manage assessments'])->only(['index', 'store']);
 
-        $this->middleware(function ($request, $next) {
-            if (auth()->user()->hasRole('administrator')) {
-                return $next($request);
-            }
-
-            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
-
-            $assessment = Assessment::find((int) $matches[1][0]);
-
-            if ($assessment->editors->contains('id', auth()->id())) {
-                return $next($request);
-            }
-            
-            abort(403);
-        })->only(['update', 'destroy', 'show']);
+        $this->middleware(['assessment-edit'])->only(['update', 'destroy', 'show']);
     }
 
     public function index()

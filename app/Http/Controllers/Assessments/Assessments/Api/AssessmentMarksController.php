@@ -15,21 +15,7 @@ class AssessmentMarksController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
-            if (auth()->user()->hasRole('administrator')) {
-                return $next($request);
-            }
-    
-            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
-    
-            $assessment = Assessment::find((int) $matches[1][0]);
-    
-            if ($assessment->editors->contains('id', auth()->id())) {
-                return $next($request);
-            }
-            
-            abort(403);
-        });
+        $this->middleware(['assessment-edit']);
     }
 
     public function store(Assessment $assessment, AssessmentAttempt $attempt)
