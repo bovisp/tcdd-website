@@ -44,41 +44,11 @@ class AssessmentMarksController extends Controller
             'assessment_page_content_id' => request('itemId')
         ]);
 
-        if (request()->has('mark')) {
-            $mark->update([
-                'marker_id' => auth()->id()
-            ]);
-        }
+        $this->updateMarkerIfScoreExists($mark);
 
-        $scoredAnswers = $attempt->assessmentMarks->filter(function ($mark) {
-            return !is_null($mark->mark);
-        });
+        $this->allAnswersMarked($assessment, $attempt, $mark);
 
-        if ($assessment->questions()->count() === $scoredAnswers->count() && !$attempt->marked) {
-            $attempt->update([
-                'marked' => 1,
-                'marked_on' => Carbon::now()
-            ]);
-        }
-
-        $numParticipants = $assessment->participants()->count();
-
-        $totalScoredAnswers = 0;
-
-        foreach ($assessment->attempts->filter->completed as $attempt) {
-            $totalScoredAnswers += $attempt->assessmentMarks->filter(function ($mark) {
-                return !is_null($mark->mark);
-            })->count();
-        }
-
-        if (($numParticipants * $assessment->questions()->count()) === $totalScoredAnswers) {
-            $assessment->update([
-                'marking_completed' => 1,
-                'marking_completed_on' => Carbon::now()
-            ]);
-
-            event(new AssessmentAttemptsMarked($assessment->id, $assessment->marking_completed_on));
-        }
+        $this->allAttemptsMarked($assessment);
 
         return new AssessmentMarksResource($mark);
     }
@@ -109,12 +79,39 @@ class AssessmentMarksController extends Controller
             'assessment_page_content_id' => request('itemId')
         ]);
 
+        $this->updateMarkerIfScoreExists($mark);
+
+        $this->allAnswersMarked($assessment, $attempt, $mark);
+
+        $this->allAttemptsMarked($assessment);
+
+        return new AssessmentMarksResource($mark);
+    }
+
+    public function updateScore(Assessment $assessment, AssessmentAttempt $attempt, AssessmentMark $mark)
+    {
+        request()->validate([
+            'score' => 'numeric|min:0'
+        ]);
+
+        $mark->update([
+            'mark' => request('score')
+        ]);
+
+        return new AssessmentMarksResource($mark);
+    }
+
+    protected function updateMarkerIfScoreExists(AssessmentMark $mark)
+    {
         if (request()->has('mark')) {
             $mark->update([
                 'marker_id' => auth()->id()
             ]);
         }
+    }
 
+    protected function allAnswersMarked(Assessment $assessment, AssessmentAttempt $attempt, AssessmentMark $mark)
+    {
         $scoredAnswers = $attempt->assessmentMarks->filter(function ($mark) {
             return !is_null($mark->mark);
         });
@@ -125,7 +122,10 @@ class AssessmentMarksController extends Controller
                 'marked_on' => Carbon::now()
             ]);
         }
+    }
 
+    protected function allAttemptsMarked(Assessment $assessment)
+    {
         $numParticipants = $assessment->participants()->count();
 
         $totalScoredAnswers = 0;
@@ -144,20 +144,5 @@ class AssessmentMarksController extends Controller
 
             event(new AssessmentAttemptsMarked($assessment->id, $assessment->marking_completed_on));
         }
-
-        return new AssessmentMarksResource($mark);
-    }
-
-    public function updateScore(Assessment $assessment, AssessmentAttempt $attempt, AssessmentMark $mark)
-    {
-        request()->validate([
-            'score' => 'numeric|min:0'
-        ]);
-
-        $mark->update([
-            'mark' => request('score')
-        ]);
-
-        return new AssessmentMarksResource($mark);
     }
 }
