@@ -14,6 +14,10 @@
                     >Q{{ q.number }}({{ q.score }})</th>
 
                     <th>Total ({{ assessmentTotal(attemptAnswers[0]) }})</th>
+
+                    <th>
+                        <assessment-results-show-all />
+                    </th>
                 </tr>
             </thead>
 
@@ -40,6 +44,12 @@
 
                     <td class="p-2 text-center">
                         <assessment-results-mark-total
+                            :attempt="attempt"
+                        />
+                    </td>
+
+                    <td class="text-center">
+                        <assessment-results-show
                             :attempt="attempt"
                         />
                     </td>

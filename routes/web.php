@@ -79,6 +79,7 @@ Route::get('/api/assessments/{assessment}/attempt/{attempt}/answer', 'Assessment
 Route::post('/api/assessments/{assessment}/attempt/{attempt}/mark', 'Assessments\Assessments\Api\AssessmentMarksController@store');
 Route::patch('/api/assessments/{assessment}/attempt/{attempt}/mark/{mark}', 'Assessments\Assessments\Api\AssessmentMarksController@update');
 Route::patch('/api/assessments/{assessment}/attempt/{attempt}/mark/{mark}/update-score', 'Assessments\Assessments\Api\AssessmentMarksController@updateScore');
+Route::patch('/api/assessments/{assessment}/review/all', 'Assessments\Assessments\Api\AssessmentReviewAllController@update');
 
 Route::get('/assessment/{assessment}', 'Assessments\Assessment\AssessmentAttemptController@index');
 Route::post('/api/assessment/{assessment}/attempt', 'Assessments\Assessment\Api\AssessmentAttemptController@store');

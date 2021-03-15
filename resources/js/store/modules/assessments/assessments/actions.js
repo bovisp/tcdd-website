@@ -249,3 +249,9 @@ export const updateMarkScore = async ({ state, commit }, payload) => {
 export const removeMarkingCompleted = async ({ commit }) => {
     await commit('REMOVE_MARKING_COMPLETED')
 }
+
+export const setReviewStatusAll = async ({ commit, state }, status) => {
+    let { data: participantAnswers } = await axios.patch(`/api/assessments/${state.assessment.id}/review/all`, { status })
+
+    await commit('SET_ATTEMPT_ANSWERS', participantAnswers.data)
+}
