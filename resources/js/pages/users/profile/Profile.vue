@@ -4,13 +4,13 @@
             {{ user.fullname }}
         </h1>
 
+        <change-password />
+
         <user-assessment-participant-list />
 
-        <!-- <change-password />
+        <!-- <role /> -->
 
-        <role /> -->
-
-        <reporting-structure />
+        <!-- <reporting-structure /> -->
         
         <!-- <hr class="block w-full mt-6 pt-6 border-t border-gray-200">
 
