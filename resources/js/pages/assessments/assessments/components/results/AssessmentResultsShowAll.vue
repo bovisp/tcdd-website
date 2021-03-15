@@ -40,6 +40,16 @@ export default {
     },
 
     mounted () {
+        window.events.$on('assessment:review-status', () => {
+            if (filter(this.attemptAnswers, answer => answer.show).length + 1 === this.attemptAnswers.length) {
+                this.showing = true
+            }
+
+            if (filter(this.attemptAnswers, answer => answer.show).length - 1 === 0) {
+                this.showing = false
+            }
+        })
+
         if (filter(this.attemptAnswers, answer => answer.show).length === this.attemptAnswers.length) {
             this.showing = true
         }

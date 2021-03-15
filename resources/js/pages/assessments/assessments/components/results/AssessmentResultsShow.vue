@@ -2,13 +2,15 @@
     <button
         class="btn btn-sm text-sm"
         :class="showing ? 'btn-red' : 'btn-text'"
-        @click.prevent="showing = !showing"
+        @click.prevent="status"
     >
         {{ showing ? 'Hide' : 'Show' }} results
     </button>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
     props: {
         attempt: {
@@ -20,6 +22,23 @@ export default {
     data () {
         return {
             showing: false
+        }
+    },
+
+    methods: {
+        ...mapActions({
+            setReviewStatus: 'assessments/setReviewStatus'
+        }),
+
+        status () {
+            this.showing = !this.showing
+
+            this.setReviewStatus({
+                status: this.showing,
+                attemptId: this.attempt.id
+            })
+
+            window.events.$emit('assessment:review-status')
         }
     },
 

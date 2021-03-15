@@ -255,3 +255,9 @@ export const setReviewStatusAll = async ({ commit, state }, status) => {
 
     await commit('SET_ATTEMPT_ANSWERS', participantAnswers.data)
 }
+
+export const setReviewStatus = async ({ commit, state }, payload) => {
+    let { data: participantAnswers } = await axios.patch(`/api/assessments/${state.assessment.id}/attempts/${payload.attemptId}/review`, { payload })
+
+    await commit('SET_ATTEMPT_ANSWERS', participantAnswers.data)
+}
