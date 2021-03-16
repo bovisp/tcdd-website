@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Assessments\Assessments\Api;
 use Carbon\Carbon;
 use App\Assessment;
 use App\Http\Controllers\Controller;
+use App\Events\PublishAssessmentAttempt;
 use App\Http\Resources\Assessments\AssessmentAnswersResource;
 
 class AssessmentReviewAllController extends Controller
@@ -26,6 +27,8 @@ class AssessmentReviewAllController extends Controller
                     'published' => 1,
                     'publish_date' => Carbon::now()
                 ]);
+                
+                event(new PublishAssessmentAttempt($attempt->participant()->id));
             }
         }
 

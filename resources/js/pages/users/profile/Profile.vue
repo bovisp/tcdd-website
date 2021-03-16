@@ -52,6 +52,11 @@ export default {
             .listen('AddAssessmentToProfilePage', async (e) => {
                 await this.fetch(this.userId)
             })
+
+        Echo.private(`user.${this.userId}.assessment_results`)
+            .listen('PublishAssessmentAttempt', async (e) => {
+                await this.fetch(this.userId)
+            })
     },
 }
 </script>

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Assessment;
 use App\AssessmentAttempt;
 use App\Http\Controllers\Controller;
+use App\Events\PublishAssessmentAttempt;
 use App\Http\Resources\Assessments\AssessmentAnswersResource;
 
 class AssessmentReviewController extends Controller
@@ -26,6 +27,8 @@ class AssessmentReviewController extends Controller
                 'published' => 1,
                 'publish_date' => Carbon::now()
             ]);
+
+            event(new PublishAssessmentAttempt($attempt->participant()->id));
         }
 
         return AssessmentAnswersResource::collection(
