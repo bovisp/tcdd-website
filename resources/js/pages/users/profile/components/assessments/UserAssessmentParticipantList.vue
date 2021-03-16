@@ -7,19 +7,53 @@
             Active assessments
         </h2>
 
-        <ul class="ml-2">
-            <li
-                v-for="assessment in user.assessments"
-                :key="assessment.id"
-                class="my-1"
-            >
-                <a 
-                    :href="`${urlBase}/assessment/${assessment.id}`"
+        <table>
+            <thead>
+                <tr class="border-b-2">
+                    <th class="p-2 text-left">
+                        Section
+                    </th>
+
+                    <th class="p-2 text-left">
+                        Type
+                    </th>
+
+                    <th class="p-2 text-left">
+                        Title
+                    </th>
+
+                    <th class="p-2"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr
+                    v-for="assessment in user.assessments"
+                    :key="assessment.id"
+                    class="border-b"
                 >
-                    {{ assessment.name }}
-                </a>
-            </li>
-        </ul>
+                    <td class="p-2">
+                        {{ assessment.section.name }}
+                    </td>
+
+                    <td class="p-2">
+                        {{ assessment.assessment_type.name }}
+                    </td>
+
+                    <td class="p-2">
+                        {{ assessment.name }}
+                    </td>
+
+                    <td class="p-2 text-center">
+                        <a 
+                            :href="`${urlBase}/assessment/${assessment.id}`"
+                        >
+                            Enter exam
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 

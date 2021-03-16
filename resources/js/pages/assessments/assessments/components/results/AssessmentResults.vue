@@ -5,7 +5,7 @@
             class="mx-auto"
         >
             <thead>
-                <tr>
+                <tr class="border-b-2">
                     <th></th>
 
                     <th
@@ -25,6 +25,7 @@
                 <tr
                     v-for="attempt in orderBy(attemptsMarkingCompleted, ['participant_lastname'], ['asc'])"
                     :key="attempt.id"
+                    class="border-b"
                 >
                     <td>
                         <strong>{{ attempt.participant_fullname }}</strong>

@@ -43,8 +43,13 @@ export default {
         })
     },
 
-    mounted() {
-        this.fetch(this.userId)
+    async mounted() {
+        await this.fetch(this.userId)
+
+        Echo.private(`user.${this.userId}.assessment_activated`)
+            .listen('AddAssessmentToProfilePage', async (e) => {
+                await this.fetch(this.userId)
+            })
     },
 }
 </script>

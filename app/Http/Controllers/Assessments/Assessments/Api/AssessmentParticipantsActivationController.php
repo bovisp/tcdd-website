@@ -6,6 +6,7 @@ use App\Assessment;
 use App\AssessmentAttempt;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Events\AddAssessmentToProfilePage;
 
 class AssessmentParticipantsActivationController extends Controller
 {
@@ -24,10 +25,17 @@ class AssessmentParticipantsActivationController extends Controller
             ], 403);
         }
 
-        $participant = DB::table('assessment_participants')
+        DB::table('assessment_participants')
             ->where('id', (int) request()->query('id'))->update([
                 'activated' => (int) request()->query('activated') ? 0 : 1,
             ]);
+
+        $participant = DB::table('assessment_participants')
+            ->where('id', (int) request()->query('id'))
+            ->get()
+            ->first();
+
+        event(new AddAssessmentToProfilePage($participant->participant_id));
 
         return DB::table('assessment_participants')
             ->where('assessment_id', $assessment->id)

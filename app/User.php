@@ -78,7 +78,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Assessment::class, 'assessment_participants', 'participant_id', 'assessment_id')
             ->wherePivot('activated', 1)
-            ->withPivot('id', 'assessment_id', 'participant_id', 'activated');
+            ->withPivot('id', 'assessment_id', 'participant_id', 'activated')
+            ->with(['assessmentType', 'section']);
     }
 
     public function questions()
