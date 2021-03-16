@@ -1,24 +1,35 @@
 <template>
     <div class="flex flex-col items-center w-full py-16">
-        <h1 class="text-3xl mb-4 w-full flex items-center">
-            {{ user.fullname }}
-        </h1>
+        <template v-if="!reviewing">
+            <h1 class="text-3xl mb-4 w-full flex items-center">
+                {{ user.fullname }}
+            </h1>
 
-        <change-password />
+            <change-password />
 
-        <user-assessment-participant-list />
+            <user-assessment-participant-list />
 
-        <completed-assessments />
+            <completed-assessments 
+                @assessment:review="review"
+            />
 
-        <!-- <role /> -->
+            <!-- <role /> -->
 
-        <!-- <reporting-structure /> -->
+            <!-- <reporting-structure /> -->
+            
+            <!-- <hr class="block w-full mt-6 pt-6 border-t border-gray-200">
+
+            <destroy-user 
+                v-if="hasRole(['administrator'])"
+            /> -->
+        </template>
         
-        <!-- <hr class="block w-full mt-6 pt-6 border-t border-gray-200">
-
-        <destroy-user 
-            v-if="hasRole(['administrator'])"
-        /> -->
+        <template v-else>
+            <attempt-review 
+                :attempt-id="attemptId"
+                @assessment:review-cancel="cancelReview"
+            />
+        </template>
     </div>
 </template>
 
@@ -33,6 +44,13 @@ export default {
         }
     },
 
+    data () {
+        return {
+            reviewing: false,
+            attemptId: null
+        }
+    },
+
     computed: {
         ...mapGetters({
             user: 'user/user'
@@ -42,7 +60,19 @@ export default {
     methods: {
         ...mapActions({
             fetch: 'user/fetch'
-        })
+        }),
+
+        review (attemptId) {
+            this.attemptId = attemptId
+
+            this.reviewing = true
+        },
+
+        cancelReview () {
+            this.attemptId = null
+
+            this.reviewing = false
+        }
     },
 
     async mounted() {
@@ -55,6 +85,11 @@ export default {
 
         Echo.private(`user.${this.userId}.assessment_results`)
             .listen('PublishAssessmentAttempt', async (e) => {
+                await this.fetch(this.userId)
+            })
+
+        Echo.private(`user.${this.userId}.attempt_show`)
+            .listen('ShowAttemptResults', async (e) => {
                 await this.fetch(this.userId)
             })
     },

@@ -55,7 +55,8 @@ class UserShowResource extends JsonResource
                     'type' => $attempt->assessment->assessmentType->name,
                     'name' => $attempt->assessment->name,
                     'marked' => $attempt->publish_date,
-                    'id' => $attempt->id
+                    'id' => $attempt->id,
+                    'show' => $attempt->show ? true : false
                 ];
             })
         ];

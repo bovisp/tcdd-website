@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Assessments\Assessments\Api;
 
 use Carbon\Carbon;
 use App\Assessment;
+use App\Events\ShowAttemptResults;
 use App\Http\Controllers\Controller;
 use App\Events\PublishAssessmentAttempt;
 use App\Http\Resources\Assessments\AssessmentAnswersResource;
@@ -21,6 +22,8 @@ class AssessmentReviewAllController extends Controller
             $attempt->update([
                 'show' => request('status') ? 1 : 0
             ]);
+
+            event(new ShowAttemptResults($attempt->participant()->id));
 
             if (request('status') && !$attempt->published) {
                 $attempt->update([

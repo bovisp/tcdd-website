@@ -63,7 +63,13 @@
                     </td>
 
                     <td class="p-2 text-center">
-                        
+                        <button 
+                            class="btn btn-sm btn-text text-sm text-blue-500"
+                            @click.prevent="($emit('assessment:review', attempt.id))"
+                            v-if="attempt.show"
+                        >
+                            Review
+                        </button>
                     </td>
                 </tr>
             </tbody>
