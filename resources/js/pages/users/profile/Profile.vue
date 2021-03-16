@@ -8,6 +8,8 @@
 
         <user-assessment-participant-list />
 
+        <completed-assessments />
+
         <!-- <role /> -->
 
         <!-- <reporting-structure /> -->
