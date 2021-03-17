@@ -4,7 +4,9 @@ namespace App\Http\Resources\Users;
 
 use App\User;
 use App\AssessmentMark;
+use App\MultipleChoiceQuestion;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\ContentBuilder\PartResource;
 
 class UserAttemptReviewResource extends JsonResource
 {
@@ -33,8 +35,10 @@ class UserAttemptReviewResource extends JsonResource
             return [
                 'score' => $question['assessment_content']->assessmentPageContentItems[0]->question_score,
                 'number' => $question['assessment_content']->assessmentPageContentItems[0]->question_number,
-                'text' => $question['model']->contentBuilder->where('language', '=', app()->getLocale())->first()->parts,
+                'text' => PartResource::collection($question['model']->contentBuilder->where('language', '=', app()->getLocale())->first()->parts),
                 'answer' => $answers['question_' . $question['model']->id],
+                'answers' => $question['model']->questionType->code === 'multiple_choice' ? MultipleChoiceQuestion::whereQuestionId($question['model']->id)->first()->answers : null,
+                'type' => $question['model']->questionType->code,
                 'mark' => AssessmentMark::where(
                         'assessment_page_content_id', '=', $question['assessment_content']->assessmentPageContentItems[0]->id
                     )

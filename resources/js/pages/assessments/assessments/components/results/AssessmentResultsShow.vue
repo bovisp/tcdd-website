@@ -4,7 +4,7 @@
         :class="showing ? 'btn-red' : 'btn-text'"
         @click.prevent="status"
     >
-        {{ showing ? 'Hide' : 'Show' }} results
+        {{ showing ? 'Recall' : 'Publish' }} results
     </button>
 </template>
 

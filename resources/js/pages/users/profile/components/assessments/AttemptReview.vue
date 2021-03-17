@@ -36,6 +36,66 @@
             Results
         </h3>
 
+        <ul>
+            <li
+                v-for="question in orderBy(attempt.questions, ['number'], ['asc'])"
+                :key="question.number"
+                class="flex mb-6"
+            >
+                <p class="text-right mr-3 w-6 pt-4">
+                    {{ question.number }}.
+                </p>
+
+                <div class="flex-1 mb-6">
+                    <component 
+                        v-for="part in orderBy(question.text, ['sort_order'], ['asc'])"
+                        :key="part.id"
+                        :is="`Final${ pascalCase(part.builderType.type) }`"
+                        :part="part"
+                    ></component>
+
+                    <h4 class="mb-4 font-medium text-lg">
+                        Answer:
+                    </h4>
+
+                    <component 
+                        :is="`${pascalCase(question.type)}QuestionMarking`"
+                        :answer="question.answer"
+                        :question="question"
+                    ></component>
+
+                    <template v-if="question.type !== 'multiple_choice'">
+                        <h4 class="my-4 font-medium text-lg">
+                            Marker comments:
+                        </h4>
+
+                        <div
+                            v-html="question.mark.comment"
+                            v-if="question.mark.comment"
+                        ></div>
+
+                        <div 
+                            class="alert alert-blue"
+                            v-else
+                        >No comments available.</div>
+                    </template>
+
+                    <div class="mt-4">
+                        <strong>Score: </strong> 
+
+                        {{ question.mark.score }}/{{ question.score }} points
+                    </div>
+
+                    <p 
+                        v-if="question.mark.marker"
+                        class="text-sm"
+                    >
+                        <strong>Marked by: </strong>{{ question.mark.marker.fullname }}
+                    </p>
+                </div>
+            </li>
+        </ul>
+
         <div class="flex items-center w-full">
             <button 
                 class="btn btn-text ml-auto"
@@ -50,6 +110,8 @@
 
 <script>
 import dayjs from 'dayjs'
+import { orderBy } from 'lodash-es'
+import { pascalCase } from 'change-case'
 
 export default {
     props: {
@@ -67,6 +129,10 @@ export default {
 
     methods: {
         dayjs,
+
+        orderBy,
+
+        pascalCase,
 
         cancel () {
             this.$emit('assessment:review-cancel')

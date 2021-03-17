@@ -2,7 +2,7 @@
     <div>
         <table
             v-if="!editing"
-            class="mx-auto"
+            class="w-full overflow-auto"
         >
             <thead>
                 <tr class="border-b-2">
