@@ -146,31 +146,31 @@ export const duplicateAssesment = async ({ state, commit, dispatch }, form) => {
 }
 
 export const fetchAttempt = async ({ commit, state }, attemptId) => {
-    let { data: attempt } = await axios.get(`/api/assessments/${state.assessment.id}/attempts/${attemptId}`)
+    let { data: attempt } = await axios.get(`${urlBase}/api/assessments/${state.assessment.id}/attempts/${attemptId}`)
 
     await commit('PUSH_ATTEMPT', attempt.data)
 }
 
 export const fetchAttempts = async ({ commit, state }) => {
-    let { data: attempts } = await axios.get(`/api/assessments/${state.assessment.id}/attempts`)
+    let { data: attempts } = await axios.get(`${urlBase}/api/assessments/${state.assessment.id}/attempts`)
 
     await commit('PUSH_ATTEMPTS', attempts.data)
 }
 
 export const fetchAssessment = async ({ commit }, assessmentId) => {
-    let { data: assessment } = await axios.get(`/api/assessments/${assessmentId}`)
+    let { data: assessment } = await axios.get(`${urlBase}/api/assessments/${assessmentId}`)
 
     await commit('SET_ASSESSMENT', assessment.data)
 }
 
 export const fetchParticipantAnswers = async ({ commit, state }) => {
-    let { data: participantAnswers } = await axios.get(`/api/assessments/${state.assessment.id}/answers`)
+    let { data: participantAnswers } = await axios.get(`${urlBase}/api/assessments/${state.assessment.id}/answers`)
 
     await commit('SET_ATTEMPT_ANSWERS', participantAnswers.data)
 }
 
 export const fetchParticipantAnswer = async ({ commit, state }, attemptId) => {
-    let { data: participantAnswer } = await axios.get(`/api/assessments/${state.assessment.id}/attempt/${attemptId}/answer`)
+    let { data: participantAnswer } = await axios.get(`${urlBase}/api/assessments/${state.assessment.id}/attempt/${attemptId}/answer`)
 
     await commit('PUSH_ATTEMPT_ANSWER', participantAnswer.data)
 }
@@ -182,7 +182,7 @@ export const setParticipantAnswer = async ({ commit }, participantAnswer) => {
 export const updateMark = async ({ commit, state }, payload) => {
     if (payload.id && payload.attemptId === null) {
         let { data } = await axios.patch(
-            `/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark/${payload.id}`,
+            `${urlBase}/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark/${payload.id}`,
             payload
         )
 
@@ -190,13 +190,13 @@ export const updateMark = async ({ commit, state }, payload) => {
 
         window.events.$emit('assessment:mark-update', data.data)
     } else if (!payload.id && payload.attemptId === null) {
-        let { data } = await axios.post(`/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark`, payload)
+        let { data } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark`, payload)
 
         await commit('PUSH_NEW_MARK', data.data)
 
         window.events.$emit('assessment:mark-update', data.data)
     } else if (!payload.id && payload.attemptId !== null) {
-        let { data } = await axios.post(`/api/assessments/${state.assessment.id}/attempt/${payload.attemptId}/mark`, payload)
+        let { data } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/attempt/${payload.attemptId}/mark`, payload)
 
         await commit('PUSH_NEW_MARK_ATTEMPT', {
             data: data.data,
@@ -209,7 +209,7 @@ export const updateMark = async ({ commit, state }, payload) => {
         })
     } else if (payload.id && payload.attemptId !== null) {
         let { data } = await axios.patch(
-            `/api/assessments/${state.assessment.id}/attempt/${payload.attemptId}/mark/${payload.id}`,
+            `${urlBase}/api/assessments/${state.assessment.id}/attempt/${payload.attemptId}/mark/${payload.id}`,
             payload
         )
 
@@ -231,7 +231,7 @@ export const updateAssessmentMarkingCompletion = async ({ commit }, payload) => 
 
 export const updateMarkScore = async ({ state, commit }, payload) => {
     let { data } = await axios.patch(
-        `/api/assessments/${state.assessment.id}/attempt/${payload.attempt.id}/mark/${payload.mark.id}/update-score`,
+        `${urlBase}/api/assessments/${state.assessment.id}/attempt/${payload.attempt.id}/mark/${payload.mark.id}/update-score`,
         payload
     )
 
@@ -248,4 +248,16 @@ export const updateMarkScore = async ({ state, commit }, payload) => {
 
 export const removeMarkingCompleted = async ({ commit }) => {
     await commit('REMOVE_MARKING_COMPLETED')
+}
+
+export const setReviewStatusAll = async ({ commit, state }, status) => {
+    let { data: participantAnswers } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/review/all`, { status })
+
+    await commit('SET_ATTEMPT_ANSWERS', participantAnswers.data)
+}
+
+export const setReviewStatus = async ({ commit, state }, payload) => {
+    let { data: participantAnswers } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/attempts/${payload.attemptId}/review`, { payload })
+
+    await commit('SET_ATTEMPT_ANSWERS', participantAnswers.data)
 }

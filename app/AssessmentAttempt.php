@@ -16,7 +16,15 @@ class AssessmentAttempt extends Model
         'assessment_id',
         'completed',
         'marked',
-        'marked_on'
+        'marked_on',
+        'published',
+        'publish_date',
+        'show'
+    ];
+
+    protected $casts = [
+        'marked_on' => 'date',
+        'publish_date' => 'date'
     ];
 
     public function participant()

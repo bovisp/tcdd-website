@@ -39,6 +39,8 @@ Route::get('/api/users/{user}', 'Users\Api\UsersController@show');
 Route::get('/api/users', 'Users\Api\UsersController@index');
 Route::get('/api/users/moodle/create', 'MoodleUsers\Api\MoodleUsersController@create');
 Route::post('/api/users/moodle', 'MoodleUsers\Api\MoodleUsersController@store');
+Route::patch('/api/users/{user}/password', 'Users\Api\PasswordChangeController@update');
+Route::get('/api/users/{user}/attempt/{attempt}/review', 'Users\Api\AttemptReviewController@show');
 
 Route::get('/api/roles', 'Roles\Api\RolesController@index');
 Route::get('/api/supervisors/{role}', 'Supervisors\Api\SupervisorsController@index');
@@ -78,6 +80,8 @@ Route::get('/api/assessments/{assessment}/attempt/{attempt}/answer', 'Assessment
 Route::post('/api/assessments/{assessment}/attempt/{attempt}/mark', 'Assessments\Assessments\Api\AssessmentMarksController@store');
 Route::patch('/api/assessments/{assessment}/attempt/{attempt}/mark/{mark}', 'Assessments\Assessments\Api\AssessmentMarksController@update');
 Route::patch('/api/assessments/{assessment}/attempt/{attempt}/mark/{mark}/update-score', 'Assessments\Assessments\Api\AssessmentMarksController@updateScore');
+Route::patch('/api/assessments/{assessment}/review/all', 'Assessments\Assessments\Api\AssessmentReviewAllController@update');
+Route::patch('/api/assessments/{assessment}/attempts/{attempt}/review', 'Assessments\Assessments\Api\AssessmentReviewController@update');
 
 Route::get('/assessment/{assessment}', 'Assessments\Assessment\AssessmentAttemptController@index');
 Route::post('/api/assessment/{assessment}/attempt', 'Assessments\Assessment\Api\AssessmentAttemptController@store');

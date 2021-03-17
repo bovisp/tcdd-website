@@ -2,10 +2,10 @@
     <div>
         <table
             v-if="!editing"
-            class="mx-auto"
+            class="w-full overflow-auto"
         >
             <thead>
-                <tr>
+                <tr class="border-b-2">
                     <th></th>
 
                     <th
@@ -14,6 +14,10 @@
                     >Q{{ q.number }}({{ q.score }})</th>
 
                     <th>Total ({{ assessmentTotal(attemptAnswers[0]) }})</th>
+
+                    <th>
+                        <assessment-results-show-all />
+                    </th>
                 </tr>
             </thead>
 
@@ -21,6 +25,7 @@
                 <tr
                     v-for="attempt in orderBy(attemptsMarkingCompleted, ['participant_lastname'], ['asc'])"
                     :key="attempt.id"
+                    class="border-b"
                 >
                     <td>
                         <strong>{{ attempt.participant_fullname }}</strong>
@@ -40,6 +45,12 @@
 
                     <td class="p-2 text-center">
                         <assessment-results-mark-total
+                            :attempt="attempt"
+                        />
+                    </td>
+
+                    <td class="text-center">
+                        <assessment-results-show
                             :attempt="attempt"
                         />
                     </td>
