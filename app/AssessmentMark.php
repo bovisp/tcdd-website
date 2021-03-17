@@ -29,4 +29,9 @@ class AssessmentMark extends Model
     {
         $this->belongsTo(AssessmentAttempt::class);
     }
+
+    public function marker()
+    {
+        return $this->belongsTo(User::class, 'marker_id');
+    }
 }

@@ -40,6 +40,7 @@ Route::get('/api/users', 'Users\Api\UsersController@index');
 Route::get('/api/users/moodle/create', 'MoodleUsers\Api\MoodleUsersController@create');
 Route::post('/api/users/moodle', 'MoodleUsers\Api\MoodleUsersController@store');
 Route::patch('/api/users/{user}/password', 'Users\Api\PasswordChangeController@update');
+Route::get('/api/users/{user}/attempt/{attempt}/review', 'Users\Api\AttemptReviewController@show');
 
 Route::get('/api/roles', 'Roles\Api\RolesController@index');
 Route::get('/api/supervisors/{role}', 'Supervisors\Api\SupervisorsController@index');
