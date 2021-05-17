@@ -1,7 +1,5 @@
 <?php
 
-return [
-
-    'switch_to' => 'Switch to:',
-
-];
+return array (
+  'switch_to' => 'Switch to:',
+);

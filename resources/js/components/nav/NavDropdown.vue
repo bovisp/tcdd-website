@@ -3,7 +3,7 @@
         <button
             class="btn relative z-20"
             @click.prevent="isOpen = !isOpen"
-        >Menu&nbsp;&dtrif;</button>
+        >{{ trans('usermenu.menu') }}&nbsp;&dtrif;</button>
 
         <button 
             class="fixed inset-0 h-full w-full transparent cursor-default z-10"

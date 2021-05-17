@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         ied3vil\LanguageSwitcher\Providers\LanguageSwitcherProvider::class,
+        Barryvdh\TranslationManager\ManagerServiceProvider::class,
         
         /*
          * Application Service Providers...
