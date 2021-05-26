@@ -1,7 +1,9 @@
 <template>
     <div class="flex">
         <div class="flex flex-col items-center">
-            <p class="font-medium">Pen</p>
+            <p class="font-medium">
+                {{ trans('js_components_draw.pen') }}
+            </p>
 
             <v-swatches
                 v-model="strokeColor"
@@ -14,7 +16,7 @@
             <button 
                 @click.prevent="isEraser = true"
                 class="border rounded-xl px-3 py-2 mt-3"
-                title="Eraser tool"
+                :title="trans('js_components_draw.erasertool')"
             >
                 <i class="fas fa-eraser"></i>
             </button>
@@ -22,7 +24,7 @@
             <button 
                 @click.prevent="clearCanvasConfirm"
                 class="border rounded-xl px-3 py-2 mt-3"
-                title="Erase all work"
+                :title="trans('js_components_draw.eraseallwork')"
             >
                 <i class="fas fa-trash-alt"></i>
             </button>
@@ -45,8 +47,7 @@
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to erase all of your work? 
-                        This operation cannot be undone.
+                        {{ trans('js_components_draw.eraseconfirm') }}
                     </p>
                 </div>
             </template>

@@ -5,7 +5,7 @@
                 type="text" 
                 v-model="textFilter"
                 class="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                placeholder="Search..."
+                :placeholder="trans('js_components_datatable.search')"
                 @keydown.esc="textFilter = ''"
             >
 

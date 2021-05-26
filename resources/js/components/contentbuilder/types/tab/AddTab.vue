@@ -8,7 +8,7 @@
                 :class="{ 'text-red-500': errors.title }"
                 for="title"
             >
-                Tab part title (optional)
+                {{ trans('js_components_contentbuilder_types_tab_addtab.tabparttitle') }}
             </label>
 
             <input 
@@ -34,7 +34,7 @@
                 :class="{ 'text-red-500': errors.caption }"
                 for="caption"
             >
-                Tab part caption (optional)
+                {{ trans('js_components_contentbuilder_types_tab_addtab.tabpartcaption') }}
             </label>
 
             <textarea 
@@ -68,7 +68,7 @@
             class="btn w-full btn-outline btn-sm text-sm mb-12"
             @click.prevent="addTabSection"
         >
-            Add a tab
+            {{ trans('js_components_contentbuilder_types_tab_addtab.addatab') }}
         </button>
 
         <div class="flex">
@@ -77,14 +77,14 @@
                 @click.prevent="store"
                 :disabled="form.tabSections.length === 0"
             >
-                Create tab part
+                {{ trans('js_components_contentbuilder_types_tab_addtab.createtabpart') }}
             </button>
             
             <button 
                 class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="cancel"
             >
-                Cancel
+                {{ trans('js_components_contentbuilder_types_tab_addtab.cancel') }}
             </button>
         </div>
     </div>

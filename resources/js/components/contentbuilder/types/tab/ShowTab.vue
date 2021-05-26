@@ -51,7 +51,7 @@
                     :class="{ 'text-red-500': errors.title }"
                     for="title-tab"
                 >
-                    Tab part title (optional)
+                    {{ trans('js_components_contentbuilder_types_tab_showtab.tabparttitle') }}
                 </label>
 
                 <input 
@@ -77,7 +77,7 @@
                     :class="{ 'text-red-500': errors.caption }"
                     for="caption"
                 >
-                    Tab part caption (optional)
+                    {{ trans('js_components_contentbuilder_types_tab_showtab.tabpartcaption') }}
                 </label>
 
                 <textarea 
@@ -96,7 +96,9 @@
 
             <hr class="mt-12 mb-4">
 
-            <h3>Sections</h3>
+            <h3>
+                {{ trans('js_components_contentbuilder_types_tab_showtab.sections') }}
+            </h3>
 
             <edit-tab-section
                 v-for="section in part.data.tabSections"
@@ -109,7 +111,7 @@
                 class="alert alert-red"
                 v-if="form.tabSections.length === 0"
             >
-                You must add some tab content first.
+                {{ trans('js_components_contentbuilder_types_tab_showtab.maustaddtabcontent') }}
             </div>
 
             <template v-if="addingTabSection">
@@ -125,7 +127,7 @@
                 @click="addTabSection"
                 v-if="!addingTabSection"
             >
-                Add a tab
+                {{ trans('js_components_contentbuilder_types_tab_showtab.addatab') }}
             </button>
 
             <div class="flex my-2">
@@ -134,14 +136,14 @@
                     @click.prevent="update"
                     :disabled="form.tabSections.length === 0"
                 >
-                    Update tab part
+                    {{ trans('js_components_contentbuilder_types_tab_showtab.updatetabpart') }}
                 </button>
 
                 <button 
                     class="btn btn-text btn-sm text-sm ml-auto"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_components_contentbuilder_types_tab_showtab.cancel') }}
                 </button>
             </div>
         </div>
@@ -151,7 +153,7 @@
 <script>
 import ucfirst from '../../../../helpers/ucfirst'
 import uuid from 'uuid/v4'
-import { map, findIndex, forEach, filter, find, indexOf } from 'lodash-es'
+import { map, findIndex, forEach, filter, indexOf } from 'lodash-es'
 
 export default {
     props: {

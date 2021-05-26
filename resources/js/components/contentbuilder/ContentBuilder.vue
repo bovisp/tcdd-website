@@ -10,7 +10,7 @@
                 :class="editingClasses"
                 @click.prevent="editing = !editing"
             >
-                Turn editing {{ editing ? 'off' : 'on' }}
+                {{ trans('js_components_contentbuilder_contentbuilder.turnediting') }} {{ editing ? trans('js_components_contentbuilder_contentbuilder.off') : trans('js_components_contentbuilder_contentbuilder.on') }}
             </button>
         </div>
 

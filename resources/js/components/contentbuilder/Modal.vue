@@ -21,7 +21,7 @@
                                 <button 
                                     class="btn btn-primary" 
                                     @click="$emit('close')"
-                                >OK</button>
+                                >{{ trans('js_components_contentbuilder_modal.ok') }}</button>
                             </slot>
                         </div>
                     </div>

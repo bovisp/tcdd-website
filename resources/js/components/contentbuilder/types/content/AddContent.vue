@@ -26,7 +26,7 @@
                     class="btn btn-text ml-auto btn-sm text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_components_contentbuilder_types_animation_addcontent.cancel') }}
                 </button>
             </div>
         </form>
@@ -50,7 +50,7 @@ export default {
         createButtonText: {
             type: String,
             required: false,
-            default: 'Create'
+            default: this.trans('js_components_contentbuilder_types_animation_addcontent.create')
         },
         createButtonClasses: {
             type: String,

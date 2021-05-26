@@ -33,10 +33,12 @@
             @submit="destroy"
             @close="showModal = false"
         >
-            <h3 slot="header" class="mb-4">Delete part</h3>
+            <h3 slot="header" class="mb-4">
+                {{ trans('js_components_contentbuilder_partpart.deletepart') }}
+            </h3>
 
             <p slot="body" class="mb-4">
-                Are you ure you want to do this? Like, really sure?
+                {{ trans('js_components_contentbuilder_partpart.areyousure') }}
             </p>
         </modal>
     </div>

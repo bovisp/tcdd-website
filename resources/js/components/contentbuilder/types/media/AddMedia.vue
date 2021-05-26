@@ -8,7 +8,7 @@
                 :class="{ 'text-red-500': errors.title }"
                 for="title"
             >
-                Title (optional)
+                {{ trans('js_components_contentbuilder_types_media_addmedia.title') }}
             </label>
 
             <input 
@@ -34,7 +34,7 @@
                 :class="{ 'text-red-500': errors.caption }"
                 for="caption"
             >
-                Caption (optional)
+                {{ trans('js_components_contentbuilder_types_media_addmedia.caption') }}
             </label>
 
             <textarea 
@@ -93,7 +93,7 @@
                 class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="cancel"
             >
-                Cancel
+                {{ trans('js_components_contentbuilder_types_media_addmedia.cancel') }}
             </button>
         </div>
     </div>
@@ -111,7 +111,7 @@ export default {
         createButtonText: {
             type: String,
             required: false,
-            default: 'Create'
+            default: this.trans('js_components_contentbuilder_types_media_addmedia.create')
         },
         createButtonClasses: {
             type: String,

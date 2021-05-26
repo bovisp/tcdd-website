@@ -8,7 +8,7 @@
                 :class="{ 'text-red-500': errors.title }"
                 for="title"
             >
-                Tab title
+                {{ trans('js_components_contentbuilder_types_tab_components_newtabsection.tabtitle') }}
             </label>
 
             <input 
@@ -30,7 +30,7 @@
             <label 
                 class="block text-gray-700 font-bold mb-2"
                 for="content"
-            >Content type</label>
+            >{{ trans('js_components_contentbuilder_types_tab_components_newtabsection.contenttype') }}</label>
 
             <select 
                 class="form-select block w-full" 
@@ -54,7 +54,7 @@
                 class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="$emit('canceladd', data.id)"
             >
-                Cancel adding tab
+                {{ trans('js_components_contentbuilder_types_tab_components_newtabsection.canceladdingtab') }}
             </button>
         </div>
 
