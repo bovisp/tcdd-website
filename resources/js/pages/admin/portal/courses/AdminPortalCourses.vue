@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Add course</a>
+            >{{ trans('js_pages_admin_portal_courses_adminportalcourses.addcourse') }}</a>
         </nav>
 
         <admin-portal-courses-create 

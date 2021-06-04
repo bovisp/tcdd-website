@@ -50,7 +50,7 @@ export default {
         createButtonText: {
             type: String,
             required: false,
-            default: this.trans('js_components_contentbuilder_types_animation_addcontent.create')
+            default: () => this.trans('js_components_contentbuilder_types_animation_addcontent.create')
         },
         createButtonClasses: {
             type: String,

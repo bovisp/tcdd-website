@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            New tag
+            {{ trans('js_pages_admin_tags_tagscreate.newtag') }}
         </h1>
 
         <form 
@@ -15,7 +15,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    Name (English)
+                    {{ trans('js_pages_admin_tags_tagscreate.nameenglish') }}
                 </label>
 
                 <input 
@@ -41,7 +41,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    Name (French)
+                    {{ trans('js_pages_admin_tags_tagscreate.namefrench') }}
                 </label>
 
                 <input 
@@ -65,14 +65,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Add tag
+                    {{ trans('js_pages_admin_tags_tagscreate.addtag') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_admin_tags_tagscreate.cancel') }}
                 </button>
             </div>
         </form>

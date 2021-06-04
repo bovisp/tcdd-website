@@ -61,7 +61,7 @@ export default {
 
     methods: {
         createTotalsGraph () {
-            let dataX = ['Course views']
+            let dataX = [this.trans('js_pages_admin_reports_components_types_trainingportal_trainingportalreportgraphs.courseviews')]
 
             let dataY = [this.stats.totals.totals]
 
@@ -75,7 +75,7 @@ export default {
             ]
 
             let layout = {
-                title: 'Total Training Portal Course Views',
+                title: this.trans('js_pages_admin_reports_components_types_trainingportal_trainingportalreportgraphs.graphtitletotals'),
             }
 
             let d3 = Plotly.d3
@@ -151,7 +151,7 @@ export default {
                 ]
 
                 let layout = {
-                    title: 'Top 5 Training Portal Courses by Views',
+                    title: this.trans('js_pages_admin_reports_components_types_trainingportal_trainingportalreportgraphs.graphtitletopfive'),
                 }
 
                 let d3 = Plotly.d3

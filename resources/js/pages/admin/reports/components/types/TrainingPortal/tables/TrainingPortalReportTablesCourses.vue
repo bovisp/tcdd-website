@@ -7,8 +7,12 @@
             <table class="border-collapse border-0 w-full text-sm">
                 <thead>
                     <tr>
-                        <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">Course</th>
-                        <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">Views</th>
+                        <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">
+                            {{ trans('js_pages_admin_reports_components_types_trainingportal_tables_trainingportalreporttablescourses.course') }}
+                        </th>
+                        <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">
+                            {{ trans('js_pages_admin_reports_components_types_trainingportal_tables_trainingportalreporttablescourses.views') }}
+                        </th>
                     </tr>
                 </thead>
             
@@ -22,7 +26,7 @@
                     </tr>
 
                     <tr>
-                        <td class="px-4 py-2"><strong>Totals:</strong></td>
+                        <td class="px-4 py-2"><strong>{{ trans('js_pages_admin_reports_components_types_trainingportal_tables_trainingportalreporttablescourses.totals') }}:</strong></td>
                         <td class="px-4 py-2 text-right">{{ stats.totals.totals }}</td>
                     </tr>
                 </tbody>

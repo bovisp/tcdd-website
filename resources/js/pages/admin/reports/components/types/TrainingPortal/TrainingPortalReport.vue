@@ -5,13 +5,13 @@
                 class="btn mr-4"
                 :class="btnGraphsState"
                 @click.prevent="viewGraphs = true"
-            >View graphs</button>
+            >{{ trans('js_pages_admin_reports_components_types_trainingportal_trainingportalreport.viewgraphs') }}</button>
             
             <button
                 class="btn"
                 :class="btnViewsState"
                 @click.prevent="viewGraphs = false"
-            >View tables</button>
+            >{{ trans('js_pages_admin_reports_components_types_trainingportal_trainingportalreport.viewtables') }}</button>
         </div>
 
         <template v-if="viewGraphs && isEmpty(stats) === false">

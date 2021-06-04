@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Edit: Language - {{ language.name }}
+            {{ trans('js_pages_admin_portal_languages_adminportallanguagesedit.edit') }}: {{ trans('js_pages_admin_portal_languages_adminportallanguagesedit.language') }} - {{ language.name }}
         </h1>
 
         <form 
@@ -15,7 +15,7 @@
                     :class="{ 'text-red-500': errors.language_en }"
                     for="language_en"
                 >
-                    Language (English)
+                    {{ trans('js_pages_admin_portal_languages_adminportallanguagesedit.languageenglish') }}
                 </label>
 
                 <input 
@@ -41,7 +41,7 @@
                     :class="{ 'text-red-500': errors.language_fr }"
                     for="language_fr"
                 >
-                    Language (French)
+                    {{ trans('js_pages_admin_portal_languages_adminportallanguagesedit.languagefrench') }}
                 </label>
 
                 <input 
@@ -65,14 +65,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Update language
+                    {{ trans('js_pages_admin_portal_languages_adminportallanguagesedit.updatelanguage') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_admin_portal_languages_adminportallanguagesedit.cancel') }}
                 </button>
             </div>
         </form>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
     data() {

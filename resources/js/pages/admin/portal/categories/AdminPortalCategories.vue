@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Add category</a>
+            >{{ trans('js_pages_admin_portal_categories_adminportalcategories.addcategory') }}</a>
         </nav>
 
         <admin-portal-categories-create 

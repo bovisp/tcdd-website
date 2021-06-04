@@ -3,9 +3,15 @@
         <table class="border-collapse border-0 w-full text-sm">
             <thead>
                 <tr>
-                    <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">Fiscal year</th>
-                    <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">Quarter</th>
-                    <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">Modules viewed</th>
+                    <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">
+                        {{ trans('js_pages_admin_reports_components_tables_tablesquarterviewed.fiscalyear') }}
+                    </th>
+                    <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">
+                        {{ trans('js_pages_admin_reports_components_tables_tablesquarterviewed.quarter') }}
+                    </th>
+                    <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">
+                        {{ trans('js_pages_admin_reports_components_tables_tablesquarterviewed.modulesviewed') }}
+                    </th>
                 </tr>
             </thead>
         

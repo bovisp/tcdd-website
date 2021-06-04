@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Tags
+            {{ trans('js_pages_admin_tags_tagsindex.tags') }}
         </h1> 
 
         <datatable 
@@ -12,7 +12,7 @@
             :order-key-directions="['asc']"
             :has-text-filter="true"
             :has-event="true"
-            event-text="Edit"
+            :event-text="trans('js_pages_admin_tags_tagsindex.tags')"
             event="tags:edit"
         />
     </div>
@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'name', title: 'Name', sortable: true }
+                { field: 'name', title: this.trans('js_pages_admin_tags_tagsindex.name'), sortable: true }
             ]
         }
     },

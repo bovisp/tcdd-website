@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Add tag</a>
+            >{{ trans('js_pages_admin_tags_tags.addtag') }}</a>
         </nav>
 
         <tags-create 

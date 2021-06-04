@@ -64,8 +64,7 @@ export default {
         },
         okButtonText: {
             type: String,
-            required: false,
-            default: this.trans('js_components_modal.submit')
+            required: false
         },
         hasCancelButton: {
             type: Boolean,
@@ -74,8 +73,7 @@ export default {
         },
         cancelButtonText: {
             type: String,
-            required: false,
-            default: this.trans('js_components_modal.cancel')
+            required: false
         },
         hasSpinner: {
             type: Boolean,

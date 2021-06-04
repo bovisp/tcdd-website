@@ -28,6 +28,8 @@
             v-if="addingPart" 
             @submit="add"
             @close="cancel"
+            ok-button-text="Submit"
+            cancel-button-text="Cancel"
             okButtonText="trans('js_components_contentbuilder_addpart.create')"
         >
             <h3 slot="header" class="mb-4">

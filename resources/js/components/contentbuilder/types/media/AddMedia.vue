@@ -111,7 +111,7 @@ export default {
         createButtonText: {
             type: String,
             required: false,
-            default: this.trans('js_components_contentbuilder_types_media_addmedia.create')
+            default: () => this.trans('js_components_contentbuilder_types_media_addmedia.create')
         },
         createButtonClasses: {
             type: String,

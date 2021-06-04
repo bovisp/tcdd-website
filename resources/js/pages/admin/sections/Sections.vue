@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Add sections</a>
+            >{{ trans('js_pages_admin_sections_sections.addsections') }}</a>
         </nav>
 
         <sections-create 

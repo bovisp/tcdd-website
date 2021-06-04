@@ -2,7 +2,7 @@
     <div>
         <tabs>
             <tab  
-                name="Views by quarter" 
+                :name="trans('js_pages_admin_reports_components_tables_tablesquarter.views')" 
                 :selected="true"
             >
                 <tables-quarter-viewed
@@ -11,7 +11,7 @@
             </tab>
 
             <!-- <tab  
-                name="Completions by quarter" 
+                :name="trans('js_pages_admin_reports_components_tables_tablesquarter.completions')" 
             >
                 <tables-quarter-completed />
             </tab> -->

@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Edit: Section - {{ section.name }}
+            {{ trans('js_pages_admin_sections_sectionsedit.edit') }}: {{ trans('js_pages_admin_sections_sectionsedit.section') }} - {{ section.name }}
         </h1>
 
         <form 
@@ -15,7 +15,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    Name (English)
+                    {{ trans('js_pages_admin_sections_sectionsedit.nameenglish') }}
                 </label>
 
                 <input 
@@ -41,7 +41,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    Name (French)
+                    {{ trans('js_pages_admin_sections_sectionsedit.namefrench') }}
                 </label>
 
                 <input 
@@ -65,14 +65,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Update section
+                    {{ trans('js_pages_admin_sections_sectionsedit.updatesection') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_admin_sections_sectionsedit.cancel') }}
                 </button>
             </div>
         </form>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
     data() {

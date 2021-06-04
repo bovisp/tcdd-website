@@ -41,6 +41,8 @@
 
         <modal 
             v-show="modalActive"
+            ok-button-text="OK"
+            cancel-button-text="Cancel"
             @close="close"
             @submit="clearCanvas"
         >

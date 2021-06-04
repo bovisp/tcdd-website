@@ -1,7 +1,7 @@
 <template>
     <div>
         <strong class="block font-bold text-md mb-2">
-            Fiscal year
+            {{ trans('js_pages_admin_reports_components_filters_filtersfiscal.fiscalyear') }}
         </strong>
 
         <label 

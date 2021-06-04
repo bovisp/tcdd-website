@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Training Portal languages
+            {{ trans('js_pages_admin_portal_languages_adminportallanguagesindex.portallanguages') }}
         </h1> 
 
         <datatable 
@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'language', title: 'Language', sortable: true }
+                { field: 'language', title: trans('js_pages_admin_portal_languages_adminportallanguagesindex.language'), sortable: true }
             ]
         }
     },

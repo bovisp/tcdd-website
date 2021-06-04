@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Training Portal courses
+            {{ trans('js_pages_admin_portal_courses_adminportalcoursesindex.portalcourses') }}
         </h1> 
 
         <datatable 
@@ -25,9 +25,9 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'categoryName', title: 'Category', sortable: true },
-                { field: 'name', title: 'Name', sortable: true },
-                { field: 'languageName', title: 'Language', sortable: true }
+                { field: 'categoryName', title: trans('js_pages_admin_portal_courses_adminportalcoursesindex.category'), sortable: true },
+                { field: 'name', title: trans('js_pages_admin_portal_courses_adminportalcoursesindex.name'), sortable: true },
+                { field: 'languageName', title: trans('js_pages_admin_portal_courses_adminportalcoursesindex.language'), sortable: true }
             ]
         }
     },
