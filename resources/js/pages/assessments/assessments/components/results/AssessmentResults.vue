@@ -13,7 +13,7 @@
                         :key="q.number"
                     >Q{{ q.number }}({{ q.score }})</th>
 
-                    <th>Total ({{ assessmentTotal(attemptAnswers[0]) }})</th>
+                    <th>{{ trans('js_pages_assessments_assessments_components_results_assessmentresults.total') }} ({{ assessmentTotal(attemptAnswers[0]) }})</th>
 
                     <th>
                         <assessment-results-show-all />
@@ -60,7 +60,7 @@
             <tfoot>
                 <tr class="border border-b-0 border-l-0 border-r-0">
                     <td class="text-right p-2">
-                        <strong>Average</strong>
+                        <strong>{{ trans('js_pages_assessments_assessments_components_results_assessmentresults.average') }}</strong>
                     </td>
 
                     <td
@@ -87,7 +87,7 @@
         <div v-else>
             <div class="flex items-center w-full">
                 <h2 class="text-3xl font-medium mb-2">
-                    Edit: Question {{ question.question_number }} - {{ participantAnswer.participant_fullname }}
+                    {{ trans('js_pages_assessments_assessments_components_results_assessmentresults.edit') }}: {{ trans('js_pages_assessments_assessments_components_results_assessmentresults.question') }} {{ question.question_number }} - {{ participantAnswer.participant_fullname }}
                 </h2>
 
                 <button 
@@ -95,7 +95,7 @@
                     @click.prevent="cancel"
                 >
                     <i class="fas fa-chevron-left mr-1"></i>
-                    Return to results table
+                    {{ trans('js_pages_assessments_assessments_components_results_assessmentresults.returntoresultstable') }}
                 </button>
             </div>
 
@@ -108,7 +108,7 @@
                 ></component>
 
                 <h2 class="mb-4 font-medium text-lg">
-                    Answer:
+                    {{ trans('js_pages_assessments_assessments_components_results_assessmentresults.answer') }}:
                 </h2>
 
                 <component 
@@ -138,7 +138,7 @@
                     @click.prevent="cancel"
                 >
                     <i class="fas fa-chevron-left mr-1"></i>
-                    Return to results table
+                    {{ trans('js_pages_assessments_assessments_components_results_assessmentresults.returntoresultstable') }}
                 </button>
             </div>
         </div>

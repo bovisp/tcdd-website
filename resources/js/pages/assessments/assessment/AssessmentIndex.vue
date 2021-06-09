@@ -10,7 +10,9 @@
         ></p>
 
         <div>
-            <h2 class="font-light text-2xl mb-4">Exam questions by page</h2>
+            <h2 class="font-light text-2xl mb-4">
+                {{ trans('js_pages_assessments_assessment_assessmentindex.examquestionsbypage') }}
+            </h2>
 
             <dl
                 v-for="(questions, page) in pages"
@@ -18,7 +20,7 @@
                 class="text-normal mb-3"
             >
                 <dt>
-                    <strong>Page {{ page }}</strong>
+                    <strong>{{ trans('js_pages_assessments_assessment_assessmentindex.page') }} {{ page }}</strong>
                 </dt>
 
                 <template v-if="questions[0].questions.length">
@@ -27,13 +29,13 @@
                         :key="question.number"
                         class="ml-2"
                     >
-                        Question {{ question.number }} ({{ question.score }} points)
+                        {{ trans('js_pages_assessments_assessment_assessmentindex.question') }} {{ question.number }} ({{ question.score }} {{ trans('js_pages_assessments_assessment_assessmentindex.points') }})
                     </dd>
                 </template>
 
                 <template v-else>
                     <dd class="ml-2">
-                        No questions on this page.
+                        {{ trans('js_pages_assessments_assessment_assessmentindex.noquestions') }}
                     </dd>
                 </template>
             </dl>
@@ -44,24 +46,25 @@
                 class="btn btn-blue"
                 @click.prevent="modalActive = true"
             >
-                Start assessment
+                {{ trans('js_pages_assessments_assessment_assessmentindex.startassessment') }}
             </button>
         </div>
 
         <modal 
             v-show="modalActive"
             ok-button-text="Start"
+            cancel-button-text="Cancel"
             @close="close"
             @submit="confirm"
         >
             <template slot="header">
-                Begin: {{ assessment.name }}
+                {{ trans('js_pages_assessments_assessment_assessmentindex.begin') }}: {{ assessment.name }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
                     <p>
-                        Are you sure you want to start this exam?
+                        {{ trans('js_pages_assessments_assessment_assessmentindex.beginconfirm') }}
                     </p>
                 </div>
             </template>

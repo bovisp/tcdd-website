@@ -10,7 +10,7 @@
             >
                 <i class="fas fa-chevron-left mr-1"></i>
 
-                Back to assessments
+                {{ trans('js_pages_assessments_assessments_assessmentsedit.backtoassessments') }}
             </button>
 
             <button 
@@ -23,19 +23,19 @@
         </div>
 
         <h1 class="text-3xl font-bold mb-4">
-            {{ duplicating ? 'Duplicating' : 'Edit' }}: Assessment - {{ assessment.name }}
+            {{ duplicating ? trans('js_pages_assessments_assessments_assessmentsedit.duplicating') : trans('js_pages_assessments_assessments_assessmentsedit.edit') }}: {{ trans('js_pages_assessments_assessments_assessmentsedit.assessment') }} - {{ assessment.name }}
         </h1>
 
         <div
             class="alert alert-blue my-4"
             v-if="assessment.marking_completed"
         >
-            Marking for this assessment was completed on {{ dayjs(assessment.marking_completed_on).format('YYYY-MM-DD') }}.
+            {{ trans('js_pages_assessments_assessments_assessmentsedit.markingassessmentcompleted') }} {{ dayjs(assessment.marking_completed_on).format('YYYY-MM-DD') }}.
         </div>
 
         <tabs v-if="!duplicating">
             <tab  
-                name="Edit settings" 
+                :name="trans('js_pages_assessments_assessments_assessmentsedit.editsettings')" 
                 :selected="true"
             >
                 <assessment-edit-form
@@ -44,32 +44,32 @@
             </tab>
 
             <tab  
-                name="Instructors" 
+                :name="trans('js_pages_assessments_assessments_assessmentsedit.instructors')" 
             >
                 <assessment-instructors />
             </tab>
 
             <tab  
-                name="Participants" 
+                :name="trans('js_pages_assessments_assessments_assessmentsedit.participants')" 
             >
                 <assessment-participants />
             </tab>
 
             <tab  
-                name="Questions" 
+                :name="trans('js_pages_assessments_assessments_assessmentsedit.questions')" 
             >
                 <assessment-questions />
             </tab>
 
             <tab  
-                name="Marking" 
+                :name="trans('js_pages_assessments_assessments_assessmentsedit.marking')" 
                 v-if="attemptAnswers.length"
             >
                 <assessment-marking />
             </tab>
 
             <tab  
-                name="Results" 
+                :name="trans('js_pages_assessments_assessments_assessmentsedit.results')" 
                 v-if="attemptAnswers.length"
             >
                 <assessment-results />
@@ -103,7 +103,7 @@ export default {
         }),
 
         lockText () {
-            return this.assessment.locked ? 'Assessment locked' : 'Lock assessment'
+            return this.assessment.locked ? this.trans('js_pages_assessments_assessments_assessmentsedit.assessmentlocked') : this.trans('js_pages_assessments_assessments_assessmentsedit.lockassessment')
         },
 
         lockClass () {

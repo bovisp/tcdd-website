@@ -7,7 +7,7 @@
                     @click.prevent="update"
                     v-if="typeof assessment.participants !== 'undefined' && assessment.participants.length"
                 >
-                    Update
+                    {{ trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.update') }}
                 </button>
 
                 <button 
@@ -18,7 +18,7 @@
                     }"
                     @click.prevent="$emit('create')"
                 >
-                    Add more participants
+                    {{ trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.addmoreparticipants') }}
                 </button>
             </div>
         </div>
@@ -39,11 +39,11 @@
                     :checkable="true"
                     :has-event="true"
                     event-text-boolean="pivot.activated"
-                    event-text-true="Deactivate"
-                    event-text-false="Activate"
+                    :event-text-true="trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.deactivate')"
+                    :event-text-false="trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.activate')"
                     event="assessment:activate"
                     no-event-if-text-column-boolean="completed"
-                    text-column-text="Completed"
+                    :text-column-text="trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.completed')"
                 ></datatable>
             </div>
 
@@ -51,7 +51,7 @@
                 class="alert alert-blue w-full lg:w-1/2"
                 v-else
             >
-                There are currently no users who can participate in this assessment.
+                {{ trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.nousers') }}
             </div>
         </div>
     </div>
@@ -66,8 +66,8 @@ export default {
         return {
             selected: [],
             columns: [
-                { field: 'firstname', title: 'First name', sortable: true },
-                { field: 'lastname', title: 'Last name', sortable: true },
+                { field: 'firstname', title: this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.firstname'), sortable: true },
+                { field: 'lastname', title: this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.lastname'), sortable: true },
             ]
         }
     },
@@ -136,7 +136,7 @@ export default {
                 isActivated: participant.pivot.activated
             })
 
-            this.$toasted.success(`${participant.fullname} has been successfully ${participant.pivot.activated ? 'deactivated' : 'activated'}.`)
+            this.$toasted.success(`${participant.fullname} ${this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.hasbeensuccessfully')} ${participant.pivot.activated ? this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.deactivated') : this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.activated')}.`)
         })
     }
 }

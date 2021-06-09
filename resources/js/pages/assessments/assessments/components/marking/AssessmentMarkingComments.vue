@@ -6,7 +6,7 @@
             class="block text-gray-700 font-bold mb-2" 
             for="comment"
         >
-            Comment
+            {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingcomments.comment') }}
         </label>
 
         <vue-editor 

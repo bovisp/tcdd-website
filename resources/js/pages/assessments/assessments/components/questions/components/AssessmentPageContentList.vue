@@ -12,14 +12,14 @@
                 v-if="data.type === 'Question'"
                 class="fas fa-edit ml-2"
                 :class="{ 'ml-auto':  assessment.locked }"
-                title="Edit question"
+                :title="trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.editquestion')"
                 @click.prevent="editQuestion"
             ></i>
 
             <i 
                 class="fas fa-trash-alt text-red-500 ml-2"
                 @click.prevent="confirmDestroy"
-                :title="`Delete ${data.type === 'ContentBuilder' ? 'content' : 'question'}`"
+                :title="`${this.trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.delete')} ${data.type === 'ContentBuilder' ? this.trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.content') : this.trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.question')}`"
                 v-if="!assessment.locked || (assessment.locked && data.type === 'ContentBuilder')"
             ></i>
         </div>
@@ -51,15 +51,17 @@
             v-show="modalActive"
             @close="close"
             @submit="destroy"
+            ok-button-text="Submit"
+            cancel-button-text="Cancel"
         >
             <template slot="header">
-                Delete assessment {{ data.type === 'ContentBuilder' ? 'content' : 'question' }}
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.deleteassessment') }} {{ data.type === 'ContentBuilder' ? trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.content') : trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.question') }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to delete this {{ data.type === 'ContentBuilder' ? 'content' : 'question' }}?
+                        {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.deleteassessmentconfirm') }} {{ data.type === 'ContentBuilder' ? trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.content') : trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.question') }}?
                     </p>
                 </div>
             </template>

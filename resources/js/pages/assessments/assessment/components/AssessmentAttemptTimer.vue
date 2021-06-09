@@ -5,7 +5,7 @@
             :class="{ 'text-red-700': warningClass }"
             v-if="attempt.time_remaining"
         >
-            <strong>Time remaining:</strong> {{ attempt.time_remaining }} minutes
+            <strong>{{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.timeremaining') }}:</strong> {{ attempt.time_remaining }} {{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.minutes') }}
         </div>
 
         <modal 
@@ -13,17 +13,15 @@
             @submit="warningConfirmed"
             :has-cancel-button="false"
             ok-button-text="OK"
+            cancel-button-text="Cancel"
         >
             <template slot="header">
-                Two minute warning
+                {{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.twominute') }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
-                    You have less than two minutes left to complete the assessment. 
-                    Please check your work and submit. If the timer reaches 0 minutes, 
-                    your work will automatically be saved and you will be locked 
-                    out of this exam.
+                    {{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.twominutetext') }}
                 </div>
             </template>
         </modal>

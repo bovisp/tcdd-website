@@ -5,7 +5,7 @@
                 for="question"
                 class="block text-gray-700 font-bold mb-2"
             >
-                Select a question to mark...
+                {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingquestionmenu.selectquestion') }}...
             </label>
 
             <div class="relative">
@@ -20,7 +20,7 @@
                         :value="q.id"
                         v-for="q in questions"
                         :key="q.id"
-                        v-text="`Question ${q.question_number}`"
+                        v-text="`${trans('js_pages_assessments_assessments_components_marking_assessmentmarkingquestionmenu.selectquestion')} ${q.question_number}`"
                     ></option>
                 </select>
 

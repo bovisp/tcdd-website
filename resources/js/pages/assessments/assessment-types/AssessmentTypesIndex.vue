@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Assessment types
+            {{ trans('js_pages_assessments_assessment-types_assessmenttypesindex.assessmenttypes') }}
         </h1> 
 
         <datatable 
@@ -12,7 +12,7 @@
             :order-key-directions="['asc']"
             :has-text-filter="false"
             :has-event="true"
-            event-text="Edit"
+            :event-text="trans('js_pages_assessments_assessment-types_assessmenttypesindex.edit')"
             event="assessment-types:edit"
         />
     </div>
@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'name', title: 'Name', sortable: true }
+                { field: 'name', title: this.trans('js_pages_assessments_assessment-types_assessmenttypesindex.name'), sortable: true }
             ]
         }
     },

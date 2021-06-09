@@ -1,7 +1,7 @@
 <template>
     <div class="w-full px-4 lg:px-0">
         <h1 class="text-3xl font-bold mb-4">
-            New assessment
+            {{ trans('js_pages_assessments_assessments_assessmentscreate.newassessment') }}
         </h1>
 
         <form 
@@ -14,7 +14,7 @@
                     for="section_id"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    Section
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.section') }}
                 </label>
 
                 <div class="relative">
@@ -53,7 +53,7 @@
                     for="assessment_type_id"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    Type
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.type') }}
                 </label>
 
                 <div class="relative">
@@ -93,7 +93,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    Name (English)
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.nameenglish') }}
                 </label>
 
                 <input 
@@ -119,7 +119,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    Name (French)
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.namefrench') }}
                 </label>
 
                 <input 
@@ -145,7 +145,7 @@
                     :class="{ 'text-red-500': errors.description_en }"
                     for="description_en"
                 >
-                    Description (English)
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.descriptionenglish') }}
                 </label>
 
                 <vue-editor 
@@ -167,7 +167,7 @@
                     :class="{ 'text-red-500': errors.description_fr }"
                     for="description_fr"
                 >
-                    Description (French)
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.descriptionfrench') }}
                 </label>
 
                 <vue-editor 
@@ -189,7 +189,7 @@
                     :class="{ 'text-red-500': errors.completion_time }"
                     for="name_en"
                 >
-                    Completion time (minutes)
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.completiontime') }}
                 </label>
 
                 <input 
@@ -214,14 +214,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Create assessment
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.createassessment') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.cancel') }}
                 </button>
             </div>
         </form>

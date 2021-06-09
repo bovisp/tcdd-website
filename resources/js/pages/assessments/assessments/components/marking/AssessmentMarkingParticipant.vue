@@ -10,7 +10,7 @@
                 @click.prevent="cancel"
             >
                 <i class="fas fa-chevron-left mr-1"></i>
-                Return to marking table
+                {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingparticipant.returnmarkingtable') }}
             </button>
         </div>
 
@@ -18,7 +18,7 @@
             class="alert alert-blue my-4"
             v-if="participantAnswer.marked"
         >
-            This attempt was fully marked on {{ participantAnswer.marked_on }}.
+            {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingparticipant.attemptfullymarked') }} {{ participantAnswer.marked_on }}.
         </div>
         
         <ul>
@@ -40,7 +40,7 @@
                     ></component>
 
                     <h2 class="mb-4 font-medium text-lg">
-                        Answer:
+                        {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingparticipant.answer') }}:
                     </h2>
 
                     <component 
@@ -72,7 +72,7 @@
                 @click.prevent="cancel"
             >
                 <i class="fas fa-chevron-left mr-1"></i>
-                Return to marking table
+                {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingparticipant.returnmarkingtable') }}
             </button>
         </div>
     </div>

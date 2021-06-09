@@ -6,14 +6,14 @@
                 @click.prevent="add"
                 v-if="type === 'content'"
             >
-                Add to page
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentadd.addtopage') }}
             </button>
 
             <button 
                 class="btn btn-text text-sm btn-sm ml-auto"
                 @click.prevent="destroy"
             >
-                Cancel
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentadd.cancel') }}
             </button>
         </div>
 
@@ -31,14 +31,14 @@
                 @click.prevent="add"
                 v-if="type === 'content'"
             >
-                Add to page
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentadd.addtopage') }}
             </button>
 
             <button 
                 class="btn btn-text text-sm btn-sm ml-auto"
                 @click.prevent="destroy"
             >
-                Cancel
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentadd.cancel') }}
             </button>
         </div>
     </div>

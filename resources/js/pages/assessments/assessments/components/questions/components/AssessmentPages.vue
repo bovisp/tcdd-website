@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <strong>Total score:</strong> {{ totalScore }}
+            <strong>{{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpages.totalscore') }}:</strong> {{ totalScore }}
         </div>
 
         <div class="flex items-end">
@@ -16,7 +16,7 @@
                     :disabled="assessment.locked"
                 >
                     <i class="fas fa-plus mr-1"></i>
-                    Add page
+                    {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpages.addpage') }}
                 </button>
             </div>
             
@@ -25,7 +25,7 @@
                     for="content_type"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    Choose a page...
+                    {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpages.chooseapage') }}...
                 </label>
 
                 <div class="relative">
@@ -38,7 +38,7 @@
                             :value="p.number"
                             v-for="p in pages"
                             :key="p.id"
-                            v-text="`Page ${p.number}`"
+                            v-text="`${trans('js_pages_assessments_assessments_components_questions_components_assessmentpages.page')} ${p.number}`"
                         ></option>
                     </select>
 

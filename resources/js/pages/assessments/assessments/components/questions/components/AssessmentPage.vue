@@ -6,20 +6,24 @@
             class="text-2xl font-light"
             v-if="!updatePage"
         >
-            <span v-if="currentPage">Page {{ currentPage.number }}</span> 
+            <span v-if="currentPage">
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.page') }} {{ currentPage.number }}
+            </span> 
             
-            <span v-if="currentPageScore">({{ currentPageScore }} points) </span>
+            <span v-if="currentPageScore">
+                ({{ currentPageScore }} {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.points') }})
+            </span>
 
             <i 
                 class="fas fa-trash-alt text-red-500 ml-2"
-                title="Delete page"
+                :title="trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.deletepage')"
                 @click.prevent="confirmDestroy"
                 v-if="!assessment.locked"
             ></i>
 
             <i 
                 class="fas fa-edit ml-2"
-                title="Update page number"
+                :title="trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.updatepagenumber')"
                 @click.prevent="updatePage = true"
                 v-if="!assessment.locked"
             ></i>
@@ -33,7 +37,7 @@
                 for="page_number"
                 class="block text-gray-700 font-bold mb-2"
             >
-                Change page number
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.changepagenumber') }}
             </label>
 
             <div class="relative">
@@ -47,7 +51,7 @@
                         :value="page.number"
                         v-for="page in filter(pages, page => page.number !== currentPage.number)"
                         :key="page.id"
-                        v-text="`Page ${page.number}`"
+                        v-text="`${trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.page')} ${page.number}`"
                     ></option>
                 </select>
 
@@ -61,14 +65,14 @@
                     class="btn btn-sm btn-text text-sm"
                     @click.prevent="updatePage = false"
                 >
-                    Cancel
+                    {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.cancel') }}
                 </button>
 
                 <button 
                     class="btn btn-sm btn-blue text-sm ml-2"
                     @click.prevent="update"
                 >
-                    Change
+                    {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.change') }}
                 </button>
             </div>
         </div>
@@ -103,17 +107,17 @@
             v-show="modalActive"
             @close="close"
             @submit="destroyPage"
+            ok-button-text="Submit"
+            cancel-button-text="Cancel"
         >
             <template slot="header">
-                Delete page
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.deletepage') }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to delete this page? 
-                        All content and questions on this page will also be removed from the assessment. 
-                        This operation cannot be undone.
+                        {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.deletepageconfirm') }}
                     </p>
                 </div>
             </template>

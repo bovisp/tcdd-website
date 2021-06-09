@@ -1,7 +1,7 @@
 <template>
     <div v-if="attemptReview">
         <h2 class="font-normal text-2xl my-6">
-            Review your exam
+            {{ trans('js_pages_assessments_assessment_components_assessmentattemptreview.reviewexam') }}
         </h2>
 
         <table
@@ -13,7 +13,7 @@
                 :key="question.question_number"
             >
                 <td class="p-2">
-                    <strong>Question {{ question.question_number }}: ({{ question.question_score }} points)</strong>
+                    <strong>{{ trans('js_pages_assessments_assessment_components_assessmentattemptreview.question') }} {{ question.question_number }}: ({{ question.question_score }} {{ trans('js_pages_assessments_assessment_components_assessmentattemptreview.points') }})</strong>
                 </td>
                 
                 <td
@@ -73,12 +73,12 @@ export default {
             if (question.required_answer_keys.length === existingKeys.length) {
                 this.setIncompleteQuestions(false)
 
-                return 'Complete'
+                return this.trans('js_pages_assessments_assessment_components_assessmentattemptreview.complete')
             }
 
             this.setIncompleteQuestions(true)
 
-            return 'Incomplete'
+            return this.trans('js_pages_assessments_assessment_components_assessmentattemptreview.incomplete')
         }
     },
 

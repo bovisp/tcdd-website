@@ -13,7 +13,7 @@
             <span
                 class="ml-auto text-xl"
                 v-if="totalScore"
-            ><strong>Total score:</strong> {{ totalScore }} points</span>
+            ><strong>{{ trans('js_pages_assessments_assessment_assessmentshow.totalscore') }}:</strong> {{ totalScore }} {{ trans('js_pages_assessments_assessment_assessmentshow.points') }}</span>
         </div>
 
         <assessment-attempt-page 

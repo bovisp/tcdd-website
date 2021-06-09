@@ -2,7 +2,7 @@
     <div>
         <div class="flex items-center">
             <h3 class="text-3xl font-medium mb-4">
-                Marking question {{ questionMarkingObj.question.question_number }}
+                {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingquestion.markingquestion') }} {{ questionMarkingObj.question.question_number }}
             </h3>
 
             <button 
@@ -10,7 +10,7 @@
                 @click.prevent="$emit('assessments:mark-return-to-table')"
             >
                 <i class="fas fa-chevron-left mr-1"></i>
-                Return to marking table
+                {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingquestion.returnmarkingtable') }}
             </button>
         </div>
 
@@ -61,7 +61,7 @@
                 @click.prevent="$emit('assessments:mark-return-to-table')"
             >
                 <i class="fas fa-chevron-left mr-1"></i>
-                Return to marking table
+                {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingquestion.returnmarkingtable') }}
             </button>
         </div>
     </div>

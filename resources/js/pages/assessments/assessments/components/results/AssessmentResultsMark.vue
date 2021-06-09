@@ -5,7 +5,7 @@
         <i 
             class="fas fa-edit text-gray-600 cursor-pointer ml-1"
             v-if="markScore >= 0"
-            :title="`Edit question ${question.question_number} score for ${attempt.participant_fullname}`"
+            :title="`${trans('js_pages_assessments_assessments_components_results_assessmentmark.editquestion')} ${question.question_number} ${trans('js_pages_assessments_assessments_components_results_assessmentmark.scorefor')} ${attempt.participant_fullname}`"
             @click.prevent="$emit('assessment:update-mark-from-results', { attempt, mark, question })"
         ></i>
     </div>

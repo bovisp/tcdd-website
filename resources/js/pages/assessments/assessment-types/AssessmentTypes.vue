@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Add assessment type</a>
+            >{{ trans('js_pages_assessments_assessment-types_assessmenttypes.addassessmenttype') }}</a>
         </nav>
 
         <assessment-types-create 

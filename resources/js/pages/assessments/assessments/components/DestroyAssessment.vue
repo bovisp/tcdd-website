@@ -4,24 +4,25 @@
             class="btn btn-text text-red-500 text-sm"
             @click.prevent="modalActive = true"
         >
-            Delete {{ isDuplicate ? 'duplicate ': '' }}assessment
+            {{ trans('js_pages_assessments_assessments_components_destroyassessment.delete') }} {{ isDuplicate ? trans('js_pages_assessments_assessments_components_destroyassessment.duplicate'): '' }}{{ trans('js_pages_assessments_assessments_components_destroyassessment.assessment') }}
         </button>
 
         <modal 
             v-show="modalActive"
             @close="close"
             @submit="destroy"
+            ok-button-text="Submit"
+            cancel-button-text="Cancel"
         >
             <template slot="header">
-                Delete {{ isDuplicate ? 'duplicate ': '' }}assessment: {{ assessment.name }}
+                {{ trans('js_pages_assessments_assessments_components_destroyassessment.delete') }} {{ isDuplicate ? trans('js_pages_assessments_assessments_components_destroyassessment.duplicate'): '' }}{{ trans('js_pages_assessments_assessments_components_destroyassessment.assessment') }}: {{ assessment.name }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to do this? All test scores associated with this assessment 
-                        will also be deleted. Are you sure you want to do this?
-                        <strong>Only do this if you are absolutely sure this is what you want</strong>.
+                        {{ trans('js_pages_assessments_assessments_components_destroyassessment.deleteassessmentconfirm1') }}
+                        <strong>{{ trans('js_pages_assessments_assessments_components_destroyassessment.deleteassessmentconfirm2') }}</strong>.
                     </p>
                 </div>
             </template>
