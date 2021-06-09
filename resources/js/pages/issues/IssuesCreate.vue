@@ -7,11 +7,11 @@
             <a 
                 href=""
                 class="btn btn-text"
-            >Cancel</a>
+            >{{ trans('js_pages_issues_issuescreate.cancel') }}</a>
         </nav>
 
         <h1 class="text-3xl font-bold mb-4">
-            New Issue
+            {{ trans('js_pages_issues_issuescreate.newissue') }}
         </h1> 
 
         <form @submit.prevent="store">
@@ -23,7 +23,7 @@
                     :class="{ 'text-red-500': errors.title }"
                     for="title"
                 >
-                    Issue 
+                    {{ trans('js_pages_issues_issuescreate.issue') }} 
                 </label>
 
                 <input 
@@ -49,7 +49,7 @@
                     :class="{ 'text-red-500': errors.body }"
                     for="body"
                 >
-                    Please describe this issue
+                    {{ trans('js_pages_issues_issuescreate.describeissue') }}
                 </label>
 
                 <vue-editor 
@@ -69,14 +69,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Submit new issue
+                    {{ trans('js_pages_issues_issuescreate.submitnewissue') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_issues_issuescreate.cancel') }}
                 </button>
             </div>
         </form>
@@ -84,7 +84,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import { VueEditor, Quill } from 'vue2-editor'
 
 export default {

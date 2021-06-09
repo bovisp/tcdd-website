@@ -7,31 +7,51 @@
             <a 
                 href=""
                 class="btn btn-text"
-            >Cancel</a>
+            >{{ trans('js_pages_issues_issuesedit.cancel') }}</a>
         </nav>
 
         <h1 class="text-3xl font-bold mb-4">
-            Update issue
+            {{ trans('js_pages_issues_issuesedit.updateissue') }}
         </h1>
 
         <form @submit.prevent="update">
             <div class="w-full mb-4">
-                <p><strong class="text-gray-700">Issued by:</strong> {{ issue.issuer }}</p>
+                <p>
+                    <strong class="text-gray-700">
+                        {{ trans('js_pages_issues_issuesedit.issuedby') }}:
+                    </strong> 
+                    {{ issue.issuer }}
+                </p>
             </div>
 
             <div class="w-full mb-4">
-                <p><strong class="text-gray-700">Issued number:</strong> {{ issue.code }}</p>
+                <p>
+                    <strong class="text-gray-700">
+                        {{ trans('js_pages_issues_issuesedit.issuenumber') }}:
+                    </strong> 
+                    {{ issue.code }}
+                </p>
             </div>
 
             <div class="w-full mb-4">
-                <p><strong class="text-gray-700">Issued created:</strong> {{ issue.created_at }}</p>
+                <p>
+                    <strong class="text-gray-700">
+                        {{ trans('js_pages_issues_issuesedit.issuecreated') }}:
+                    </strong> 
+                    {{ issue.created_at }}
+                </p>
             </div>
 
             <div
                 class="w-full mb-4"
                 v-if="issue.updated_at"
             >
-                <p><strong class="text-gray-700">Issued updated:</strong> {{ issue.updated_at }}</p>
+                <p>
+                    <strong class="text-gray-700">
+                        {{ trans('js_pages_issues_issuesedit.issueupdated') }}:
+                    </strong> 
+                    {{ issue.updated_at }}
+                </p>
             </div>
 
             <div
@@ -42,7 +62,7 @@
                     for="status"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    Status
+                    {{ trans('js_pages_issues_issuesedit.status') }}
                 </label>
 
                 <div class="relative">
@@ -78,7 +98,12 @@
                 class="w-full mb-4"
                 v-if="issue.closed !== 'No'"
             >
-                <p><strong class="text-gray-700">Issued closed:</strong> {{ issue.closed_at }}</p>
+                <p>
+                    <strong class="text-gray-700">
+                        {{ trans('js_pages_issues_issuesedit.issueclosed') }}:
+                    </strong> 
+                    {{ issue.closed_at }}
+                </p>
             </div>
 
             <div
@@ -89,7 +114,7 @@
                     :class="{ 'text-red-500': errors.title }"
                     for="title"
                 >
-                    Issue 
+                    {{ trans('js_pages_issues_issuesedit.issue') }} 
                 </label>
 
                 <input 
@@ -115,7 +140,7 @@
                     :class="{ 'text-red-500': errors.body }"
                     for="body"
                 >
-                    Issue description
+                    {{ trans('js_pages_issues_issuesedit.issuedescription') }}
                 </label>
 
                 <vue-editor 
@@ -135,14 +160,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Update issue
+                    {{ trans('js_pages_issues_issuesedit.updateissue') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_issues_issuesedit.cancel') }}
                 </button>
             </div>
         </form>
@@ -150,7 +175,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { VueEditor, Quill } from 'vue2-editor'
 
 export default {
@@ -166,9 +191,9 @@ export default {
                 status: ''
             },
             statuses: [
-                { code: 'submitted', name: 'Submitted' },
-                { code: 'in_progress', name: 'In Progress' },
-                { code: 'resolved', name: 'Resolved' }
+                { code: 'submitted', name: this.trans('js_pages_issues_issuesedit.submitted') },
+                { code: 'in_progress', name: this.trans('js_pages_issues_issuesedit.inprogress') },
+                { code: 'resolved', name: this.trans('js_pages_issues_issuesedit.resolved') }
             ]      
         }
     },

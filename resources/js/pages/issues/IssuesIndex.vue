@@ -1,7 +1,7 @@
 <template>
     <div class="w-full mt-8">
         <h1 class="text-3xl font-bold mb-4">
-            Issues
+            {{ trans('js_pages_issues_issuesindex.issues') }}
         </h1> 
 
         <datatable 
@@ -12,7 +12,7 @@
             :order-key-directions="['asc']"
             :has-text-filter="true"
             :has-event="true"
-            event-text="Edit"
+            :event-text="trans('js_pages_issues_issuesindex.edit')"
             event="issues:edit"
         />
     </div>
@@ -25,10 +25,10 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'code', title: 'Code', sortable: true },
-                { field: 'title', title: 'Title', sortable: true },
-                { field: 'status', title: 'Status', sortable: true },
-                { field: 'closed_at', title: 'Closed', sortable: true }
+                { field: 'code', title: this.trans('js_pages_issues_issuesindex.code'), sortable: true },
+                { field: 'title', title: this.trans('js_pages_issues_issuesindex.title'), sortable: true },
+                { field: 'status', title: this.trans('js_pages_issues_issuesindex.status'), sortable: true },
+                { field: 'closed_at', title: this.trans('js_pages_issues_issuesindex.closed'), sortable: true }
             ]
         }
     },
