@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Add permission</a>
+            >{{ trans('js_pages_permissions_permissions.addpermission') }}</a>
         </nav>
 
         <permissions-create 

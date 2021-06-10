@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            New permission
+            {{ trans('js_pages_permissions_permissionscreate.newpermission') }}
         </h1>
 
         <form 
@@ -15,7 +15,7 @@
                     :class="{ 'text-red-500': errors.name }"
                     for="name"
                 >
-                    Name
+                    {{ trans('js_pages_permissions_permissionscreate.name') }}
                 </label>
 
                 <input 
@@ -39,14 +39,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Add permission
+                    {{ trans('js_pages_permissions_permissionscreate.addpermission') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_permissions_permissionscreate.cancel') }}
                 </button>
             </div>
         </form>
@@ -54,8 +54,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
 export default {
     data() {
         return {
