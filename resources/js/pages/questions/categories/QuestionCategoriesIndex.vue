@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Question bank categories
+            {{ trans('js_pages_questions_categories_questioncategoriesindex.questioncategories') }}
         </h1> 
 
         <datatable 
@@ -13,7 +13,7 @@
             :order-key-directions="['asc']"
             :has-text-filter="true"
             :has-event="true"
-            event-text="Edit"
+            :event-text="trans('js_pages_questions_categories_questioncategoriesindex.edit')"
             event="question-categories:edit"
         />
 
@@ -21,7 +21,7 @@
             class="alert alert-blue"
             v-else
         >
-            No question bank categories have been created.
+            {{ trans('js_pages_questions_categories_questioncategoriesindex.nocategories') }}
         </div>
     </div>
 </template>
@@ -33,7 +33,7 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'name', title: 'Name', sortable: true },
+                { field: 'name', title: this.trans('js_pages_questions_categories_questioncategoriesindex.name'), sortable: true },
             ]
         }
     },

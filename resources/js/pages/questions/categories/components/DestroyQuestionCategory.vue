@@ -4,24 +4,25 @@
             class="btn btn-text text-red-500 text-sm"
             @click.prevent="modalActive = true"
         >
-            Delete question bank category
+            {{ trans('js_pages_questions_categories_components_destroyquestioncategory.deletecategory') }}
         </button>
 
         <modal 
             v-show="modalActive"
             @close="close"
             @submit="destroy"
+            ok-button-text="Submit"
+            cancel-button-text="Cancel"
         >
             <template slot="header">
-                Delete question bank category: {{ questionCategory.name }}
+                {{ trans('js_pages_questions_categories_components_destroyquestioncategory.deletecategory') }}: {{ questionCategory.name }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to do this? All questions associated with this category will be 
-                        added to the Miscellaneous category.
-                        <strong>Only do this if you are absolutely sure this is what you want</strong>.
+                        {{ trans('js_pages_questions_categories_components_destroyquestioncategory.deletecategoryconfirm1') }}
+                        <strong>{{ trans('js_pages_questions_categories_components_destroyquestioncategory.deletecategoryconfirm2') }}</strong>.
                     </p>
                 </div>
             </template>
