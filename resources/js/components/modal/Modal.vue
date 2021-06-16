@@ -1,11 +1,11 @@
 <template>
-    <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+    <div class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
         <overlay 
             @close="close"
         />
 
         <div 
-            class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto p-5"
+            class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-100 overflow-y-auto p-5"
         >
             <h1
                 v-if="this.$slots.header"
