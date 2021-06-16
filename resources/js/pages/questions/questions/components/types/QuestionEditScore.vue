@@ -1,6 +1,8 @@
 <template>
     <div class="flex items-center">
-        <strong class="text-gray-700 mr-1">Points:</strong> 
+        <strong class="text-gray-700 mr-1">
+            {{ trans('js_pages_questions_questions_components_types_questioneditscore.points') }}:
+        </strong> 
         
         <template v-if="!editingScore">
             {{ totalPoints }} 
@@ -8,7 +10,7 @@
                 class="btn btn-text text-sm btn-sm text-blue-500 ml-2"
                 @click.prevent="editScore"
                 v-if="!assessment.locked"
-            >Edit</button>
+            >{{ trans('js_pages_questions_questions_components_types_questioneditscore.edit') }}</button>
         </template>
 
         <template v-if="editingScore && !assessment.locked">
@@ -21,12 +23,12 @@
             <button 
                 class="btn btn-blue text-sm btn-sm ml-2"
                 @click.prevent="changeScore"
-            >Change</button>
+            >{{ trans('js_pages_questions_questions_components_types_questioneditscore.change') }}</button>
 
             <button 
                 class="btn btn-text text-sm btn-sm ml-2"
                 @click.prevent="cancelEditScore"
-            >Cancel</button>
+            >{{ trans('js_pages_questions_questions_components_types_questioneditscore.cancel') }}</button>
         </template>
     </div>
 </template>

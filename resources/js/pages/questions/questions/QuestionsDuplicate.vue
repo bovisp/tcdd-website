@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Duplicate: Question - {{ question.name }}
+            {{ trans('js_pages_questions_questions_questionsduplicate.duplicate') }}: {{ trans('js_pages_questions_questions_questionsduplicate.question') }} - {{ question.name }}
         </h1>
 
         <form 
@@ -15,14 +15,14 @@
                     :class="{ 'text-red-500': errors.editors }"
                     for="editors"
                 >
-                    Editors
+                    {{ trans('js_pages_questions_questions_questionsduplicate.editors') }}
                 </label>
 
                 <multiselect 
                     v-model="form.editors" 
                     :options="availableEditors" 
                     :multiple="true" 
-                    placeholder="Search editors"
+                    :placeholder="trans('js_pages_questions_questions_questionsduplicate.searcheditors')"
                     label="fullname" 
                     track-by="id" 
                     :taggable="true"
@@ -43,7 +43,7 @@
                     class="block text-gray-700 font-bold mb-2"
                     :class="{ 'text-red-500': errors.section_id }"
                 >
-                    Section
+                    {{ trans('js_pages_questions_questions_questionsduplicate.section') }}
                 </label>
 
                 <div class="relative">
@@ -83,7 +83,7 @@
                     class="block text-gray-700 font-bold mb-2"
                     :class="{ 'text-red-500': errors.question_category_id }"
                 >
-                    Question category
+                    {{ trans('js_pages_questions_questions_questionsduplicate.questioncategory') }}
                 </label>
 
                 <div class="relative">
@@ -123,7 +123,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    Name (English)
+                    {{ trans('js_pages_questions_questions_questionsduplicate.nameenglish') }}
                 </label>
 
                 <input 
@@ -149,7 +149,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    Name (French)
+                    {{ trans('js_pages_questions_questions_questionsduplicate.namefrench') }}
                 </label>
 
                 <input 
@@ -175,7 +175,7 @@
                     :class="{ 'text-red-500': errors.description_en }"
                     for="description_en"
                 >
-                    Question text (English)
+                    {{ trans('js_pages_questions_questions_questionsduplicate.questiontextenglish') }}
                 </label>
 
                 <template v-if="contentIdsChanged || tempIdChanged">
@@ -193,7 +193,7 @@
                     :class="{ 'text-red-500': errors.description_fr }"
                     for="description_fr"
                 >
-                    Question text (French)
+                    {{ trans('js_pages_questions_questions_questionsduplicate.questiontextfrench') }}
                 </label>
 
                 <template v-if="contentIdsChanged || tempIdChanged">
@@ -208,7 +208,7 @@
                     class="block text-gray-700 font-bold mb-2" 
                     :class="{ 'text-red-500': errors.marking_guide_en }"
                 >
-                    Marking guide (English)
+                    {{ trans('js_pages_questions_questions_questionsduplicate.markingguideenglish') }}
                 </label>
 
                 <vue-editor 
@@ -227,7 +227,7 @@
                     class="block text-gray-700 font-bold mb-2" 
                     :class="{ 'text-red-500': errors.marking_guide_fr }"
                 >
-                    Marking guide (French)
+                    {{ trans('js_pages_questions_questions_questionsduplicate.markingguidefrench') }}
                 </label>
 
                 <vue-editor 
@@ -249,15 +249,15 @@
                     :class="{ 'text-red-500': errors.tags }"
                     for="tags"
                 >
-                    Tags
+                    {{ trans('js_pages_questions_questions_questionsduplicate.tags') }}
                 </label>
 
                 <multiselect 
                     v-model="form.tags" 
                     :options="avalaibleTags" 
                     :multiple="true" 
-                    placeholder="Search or add a tag" 
-                    tag-placeholder="Add this as new tag"
+                    :placeholder="trans('js_pages_questions_questions_questionsduplicate.searchaddtag')" 
+                    :tag-placeholder="trans('js_pages_questions_questions_questionsduplicate.addasnewtag')"
                     label="name" 
                     track-by="id" 
                     :taggable="true"
@@ -277,7 +277,7 @@
                 class="text-2xl font-light my-4"
                 v-if="typeof questionTypeData.type !== 'undefined'"
             >
-                {{ capitalCase(questionTypeData.type) }} Question Settings
+                {{ capitalCase(questionTypeData.type) }} {{ trans('js_pages_questions_questions_questionsduplicate.questionsettings') }}
             </h3>
 
             <component 
@@ -293,14 +293,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Create question
+                    {{ trans('js_pages_questions_questions_questionsduplicate.createquestion') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_questions_questions_questionsduplicate.cancel') }}
                 </button>
             </div>
         </form>
@@ -309,16 +309,17 @@
             v-show="modalAddTag"
             @close="close"
             @submit="storeTag"
+            ok-button-text="Submit"
+            cancel-button-text="Cancel"
         >
             <template slot="header">
-                Add {{ currentLang === 'en' ? 'French' : 'English' }} translation of new tag: {{ tag }}
+                {{ trans('js_pages_questions_questions_questionsduplicate.add') }} {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionsduplicate.french') : trans('js_pages_questions_questions_questionsduplicate.english') }} {{ trans('js_pages_questions_questions_questionsduplicate.translationtag') }}: {{ tag }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
-                    <p>In order to add this tag, you will need to provide a {{ currentLang === 'en' ? 'French' : 'English' }} 
-                    translation for the new tag '{{ tag }}'. If you do not have the translation, click the cancel button 
-                    and you can always add it later by editing this new question.</p>
+                    <p>{{ trans('js_pages_questions_questions_questionsduplicate.newtagmessage1') }} {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionsduplicate.french') : trans('js_pages_questions_questions_questionsduplicate.english') }} 
+                    {{ trans('js_pages_questions_questions_questionsduplicate.newtagmessage2') }} '{{ tag }}'. {{ trans('js_pages_questions_questions_questionsduplicate.newtagmessage3') }}</p>
 
                     <div
                         class="w-full mb-4"
@@ -328,7 +329,7 @@
                             :class="{ 'text-red-500': errors.name_en || errors.name_fr }"
                             for="name"
                         >
-                            {{ currentLang === 'en' ? 'French' : 'English' }} translation for '{{ tag }}'
+                            {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionsduplicate.french') : trans('js_pages_questions_questions_questionsduplicate.english') }} {{ trans('js_pages_questions_questions_questionsduplicate.translationfor') }} '{{ tag }}'
                         </label>
 
                         <input 

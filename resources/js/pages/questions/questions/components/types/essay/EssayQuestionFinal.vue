@@ -17,7 +17,7 @@
         >
             <label 
                 class="block text-gray-700 font-bold mb-2"
-            >Answer</label>
+            >{{ trans('js_pages_questions_questions_components_types_essay_essayquestionfinal.answer') }}</label>
 
             <template v-if="data.data.rich_text">
                 <vue-editor 

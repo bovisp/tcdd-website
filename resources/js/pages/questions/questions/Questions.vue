@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Create a new question...</a>
+            >{{ trans('js_pages_questions_questions_questions.createnewquestions') }}...</a>
         </nav>
 
         <questions-create 

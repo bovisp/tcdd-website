@@ -34,7 +34,7 @@
                 >
                     <label 
                         class="block text-gray-700 font-bold mb-2"
-                    >Answer</label>
+                    >{{ trans('js_pages_questions_questions_components_types_essay_essayquestionassessmentpreview.answer') }}</label>
 
                     <template v-if="questionData.rich_text">
                         <vue-editor 
@@ -54,8 +54,7 @@
                     class="alert alert-blue mt-4"
                     v-if="submitting"
                 >
-                    Since this question type has to be manually graded, no answer will be displayed in this preview.
-                    Please click the "Cancel preview" button to finish.
+                    {{ trans('js_pages_questions_questions_components_types_essay_essayquestionassessmentpreview.cancelpreviewtext') }}
                 </div>
 
                 <div class="flex w-full mt-4">
@@ -64,14 +63,14 @@
                         @click.prevent="submitting = true"
                         v-if="!submitting"
                     >
-                        Submit
+                        {{ trans('js_pages_questions_questions_components_types_essay_essayquestionassessmentpreview.submit') }}
                     </button>
 
                     <button 
                         class="btn btn-text btn-sm text-sm ml-auto"
                         @click.prevent="cancel"
                     >
-                        Cancel preview
+                        {{ trans('js_pages_questions_questions_components_types_essay_essayquestionassessmentpreview.cancelpreview') }}
                     </button>
                 </div>
             </div>

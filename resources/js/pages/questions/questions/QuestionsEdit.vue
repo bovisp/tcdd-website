@@ -53,7 +53,7 @@
                             v-model="form.editors" 
                             :options="availableEditors" 
                             :multiple="true" 
-                            placeholder="Search editors"
+                            :placeholder="Search editors"
                             label="fullname" 
                             track-by="id" 
                             :taggable="true"
@@ -283,8 +283,8 @@
                             v-model="form.tags" 
                             :options="avalaibleTags" 
                             :multiple="true" 
-                            placeholder="Search or add a tag" 
-                            tag-placeholder="Add this as new tag"
+                            :placeholder="Search or add a tag" 
+                            :tag-placeholder="Add this as new tag"
                             label="name" 
                             track-by="id" 
                             :taggable="true"
@@ -394,6 +394,8 @@
                 v-show="modalAddTag"
                 @close="close"
                 @submit="storeTag"
+                ok-button-text="Submit"
+                cancel-button-text="Cancel"
             >
                 <template slot="header">
                     Add {{ currentLang === 'en' ? 'French' : 'English' }} translation of new tag: {{ tag }}

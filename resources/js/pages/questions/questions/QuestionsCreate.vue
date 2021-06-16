@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            New question
+            {{ trans('js_pages_questions_questions_questionscreate.newquestion') }}
         </h1>
 
         <form 
@@ -15,7 +15,7 @@
                     class="block text-gray-700 font-bold mb-2"
                     :class="{ 'text-red-500': errors.section_id }"
                 >
-                    Section
+                    {{ trans('js_pages_questions_questions_questionscreate.section') }}
                 </label>
 
                 <div class="relative">
@@ -55,7 +55,7 @@
                     class="block text-gray-700 font-bold mb-2"
                     :class="{ 'text-red-500': errors.question_category_id }"
                 >
-                    Question category
+                    {{ trans('js_pages_questions_questions_questionscreate.questioncategory') }}
                 </label>
 
                 <div class="relative">
@@ -95,7 +95,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    Name (English)
+                    {{ trans('js_pages_questions_questions_questionscreate.nameenglish') }}
                 </label>
 
                 <input 
@@ -121,7 +121,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    Name (French)
+                    {{ trans('js_pages_questions_questions_questionscreate.namefrench') }}
                 </label>
 
                 <input 
@@ -145,7 +145,7 @@
                 <label 
                     class="block text-gray-700 font-bold mb-2" 
                 >
-                    Question text (English)
+                    {{ trans('js_pages_questions_questions_questionscreate.questiontextenglish') }}
                 </label>
 
                 <content-builder 
@@ -159,7 +159,7 @@
                 <label 
                     class="block text-gray-700 font-bold mb-2" 
                 >
-                    Question text (French)
+                    {{ trans('js_pages_questions_questions_questionscreate.questiontextfrench') }}
                 </label>
 
                 <content-builder 
@@ -172,7 +172,7 @@
                     class="block text-gray-700 font-bold mb-2" 
                     :class="{ 'text-red-500': errors.marking_guide_en }"
                 >
-                    Marking guide (English)
+                    {{ trans('js_pages_questions_questions_questionscreate.markingguideenglish') }}
                 </label>
 
                 <vue-editor 
@@ -191,7 +191,7 @@
                     class="block text-gray-700 font-bold mb-2" 
                     :class="{ 'text-red-500': errors.marking_guide_fr }"
                 >
-                    Marking guide (French)
+                    {{ trans('js_pages_questions_questions_questionscreate.markingguidefrench') }}
                 </label>
 
                 <vue-editor 
@@ -213,15 +213,15 @@
                     :class="{ 'text-red-500': errors.tags }"
                     for="tags"
                 >
-                    Tags
+                    {{ trans('js_pages_questions_questions_questionscreate.tags') }}
                 </label>
 
                 <multiselect 
                     v-model="form.tags" 
                     :options="avalaibleTags" 
                     :multiple="true" 
-                    placeholder="Search or add a tag" 
-                    tag-placeholder="Add this as new tag"
+                    :placeholder="trans('js_pages_questions_questions_questionscreate.searchfortag')" 
+                    :tag-placeholder="trans('js_pages_questions_questions_questionscreate.addasnewtag')"
                     label="name" 
                     track-by="id" 
                     :taggable="true"
@@ -243,7 +243,7 @@
                     class="block text-gray-700 font-bold mb-2"
                     :class="{ 'text-red-500': errors.question_type_id }"
                 >
-                    Question type
+                    {{ trans('js_pages_questions_questions_questionscreate.questiontype') }}
                 </label>
 
                 <div class="relative">
@@ -281,7 +281,7 @@
                 <h3
                     class="text-2xl font-light my-4"
                 >
-                    {{ capitalCase(type) }} Question Settings
+                    {{ capitalCase(type) }} {{ trans('js_pages_questions_questions_questionscreate.questionsettings') }}
                 </h3>
 
                 <component 
@@ -297,7 +297,7 @@
                 v-if="noQuestionType"
             >
                 <div class="alert alert-red">
-                    You need to associate this question with a question type.
+                    {{ trans('js_pages_questions_questions_questionscreate.needquestiontype') }}
                 </div>
             </div>
 
@@ -307,14 +307,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Add question
+                    {{ trans('js_pages_questions_questions_questionscreate.addquestion') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="remove"
                 >
-                    Cancel
+                    {{ trans('js_pages_questions_questions_questionscreate.cancel') }}
                 </button>
             </div>
         </form>
@@ -323,16 +323,17 @@
             v-show="modalAddTag"
             @close="close"
             @submit="storeTag"
+            ok-button-text="Submit"
+            cancel-button-text="Cancel"
         >
             <template slot="header">
-                Add {{ currentLang === 'en' ? 'French' : 'English' }} translation of new tag: {{ tag }}
+                {{ trans('js_pages_questions_questions_questionscreate.add') }} {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionscreate.french') : trans('js_pages_questions_questions_questionscreate.english') }} {{ trans('js_pages_questions_questions_questionscreate.translationtag') }}: {{ tag }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
-                    In order to add this tag, you will need to provide a {{ currentLang === 'en' ? 'French' : 'English' }} 
-                    translation for the new tag '{{ tag }}'. If you do not have the translation, click the cancel button 
-                    and you can always add it later by editing this new question.
+                    {{ trans('js_pages_questions_questions_questionscreate.newtagmessage1') }} {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionscreate.french') : trans('js_pages_questions_questions_questionscreate.english') }} 
+                    {{ trans('js_pages_questions_questions_questionscreate.newtagmessage2') }} '{{ tag }}'. {{ trans('js_pages_questions_questions_questionscreate.newtagmessage3') }}
 
                     <div
                         class="w-full mb-4"
@@ -342,7 +343,7 @@
                             :class="{ 'text-red-500': errors.name_en || errors.name_fr }"
                             for="name"
                         >
-                            {{ currentLang === 'en' ? 'French' : 'English' }} translation for '{{ tag }}'
+                            {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionscreate.french') : trans('js_pages_questions_questions_questionscreate.english') }} {{ trans('js_pages_questions_questions_questionscreate.translationfor') }} '{{ tag }}'
                         </label>
 
                         <input 
@@ -369,7 +370,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import { VueEditor, Quill } from 'vue2-editor'
-import { map, find } from 'lodash-es'
+import { find } from 'lodash-es'
 import ucfirst from '../../../helpers/ucfirst'
 import { capitalCase, pascalCase } from 'change-case'
 
