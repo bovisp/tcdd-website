@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Create question type</a>
+            >{{ trans('js_pages_questions_types_questiontypes.createquestiontype') }}</a>
         </nav>
 
         <question-types-create 

@@ -34,9 +34,9 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'categoryName', title: trans('js_pages_questions_questions_questionsindex.category'), sortable: true },
-                { field: 'sectionName', title: trans('js_pages_questions_questions_questionsindex.section'), sortable: true },
-                { field: 'name', title: trans('js_pages_questions_questions_questionsindex.name'), sortable: true }
+                { field: 'categoryName', title: this.trans('js_pages_questions_questions_questionsindex.category'), sortable: true },
+                { field: 'sectionName', title: this.trans('js_pages_questions_questions_questionsindex.section'), sortable: true },
+                { field: 'name', title: this.trans('js_pages_questions_questions_questionsindex.name'), sortable: true }
             ]
         }
     },
