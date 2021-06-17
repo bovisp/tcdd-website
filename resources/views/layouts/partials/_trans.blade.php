@@ -8,4 +8,4 @@
         }
         echo json_encode($trans);
     ?>
-  </script>
+</script>

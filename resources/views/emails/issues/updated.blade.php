@@ -33,7 +33,7 @@ a, a:hover {
  	</style>
 
 	<!-- MESSAGE SUBJECT -->
-	<title>TCDD Website issue "{{$issue->title}}" has been updated</title>
+	<title>{{ __('views_emails_issues_updated.tcddwebsiteissue') }} "{{$issue->title}}" {{ __('views_emails_issues_updated.hasbeenupdated') }}</title>
 
 </head>
 
@@ -94,7 +94,7 @@ a, a:hover {
 			padding-top: 25px;
 			color: #000000;
 			font-family: sans-serif;" class="header">
-				Hi {{ $issue->issuer->fullname }}
+				{{ __('views_emails_issues_updated.hi') }} {{ $issue->issuer->fullname }}
 		</td>
 	</tr>
 	
@@ -105,7 +105,7 @@ a, a:hover {
 			padding-top: 5px;
 			color: #000000;
 			font-family: sans-serif;" class="subheader">
-				The issue that you submitted has been updated. 
+				{{ __('views_emails_issues_updated.thisissueupdated1') }}
 		</td>
 	</tr>
 
@@ -118,11 +118,11 @@ a, a:hover {
 			padding-top: 25px; 
 			color: #000000;
             font-family: sans-serif;" class="paragraph">
-            The issue that you submitted has just been updated.<br><br>
+            {{ __('views_emails_issues_updated.thisissueupdated2') }}<br><br>
 
-            <strong>Issue:</strong> {{ $issue->title }}<br>
-			<strong>Date issued:</strong> {{ $issue->created_at->format('m/d/y') }}<br>
-			<strong>Status:</strong> {{ $issue->status }}
+            <strong>{{ __('views_emails_issues_updated.issue') }}:</strong> {{ $issue->title }}<br>
+			<strong>{{ __('views_emails_issues_updated.dateissued') }}:</strong> {{ $issue->created_at->format('m/d/y') }}<br>
+			<strong>{{ __('views_emails_issues_updated.status') }}:</strong> {{ $issue->status }}
 		</td>
 	</tr>
 

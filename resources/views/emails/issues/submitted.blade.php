@@ -33,7 +33,7 @@ a, a:hover {
  	</style>
 
 	<!-- MESSAGE SUBJECT -->
-	<title>TCDD Website issue "{{$issue->title}}" has been submitted</title>
+	<title>{{ __('views_emails_issues_submitted.tcddwebsiteissue') }} "{{$issue->title}}" {{ __('views_emails_issues_submitted.hasbeensubmitted') }}</title>
 
 </head>
 
@@ -94,7 +94,7 @@ a, a:hover {
 			padding-top: 25px;
 			color: #000000;
 			font-family: sans-serif;" class="header">
-				Hi {{ $issue->issuer->fullname }}
+				{{ __('views_emails_issues_submitted.hi') }} {{ $issue->issuer->fullname }}
 		</td>
 	</tr>
 	
@@ -105,7 +105,7 @@ a, a:hover {
 			padding-top: 5px;
 			color: #000000;
 			font-family: sans-serif;" class="subheader">
-				Thank you for submitting this issue to us. 
+				{{ __('views_emails_issues_submitted.thankyouforsubmitting') }}
 		</td>
 	</tr>
 
@@ -120,8 +120,8 @@ a, a:hover {
             font-family: sans-serif;" class="paragraph">
             We apologize for the inconvenience this issue has caused you and your team. We hope to resolve every issue within 1-3 business days.<br><br>
 
-            <strong>Issue:</strong> {{ $issue->title }}<br>
-            <strong>Date issued:</strong> {{ $issue->created_at->format('m/d/y') }}
+            <strong>{{ __('views_emails_issues_submitted.issue') }}:</strong> {{ $issue->title }}<br>
+            <strong>{{ __('views_emails_issues_submitted.dateissued') }}:</strong> {{ $issue->created_at->format('m/d/y') }}
 		</td>
 	</tr>
 
