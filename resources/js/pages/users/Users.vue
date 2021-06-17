@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Add users</a>
+            >{{ trans('js_pages_users_users.addusers') }}</a>
         </nav>
 
         <users-create 

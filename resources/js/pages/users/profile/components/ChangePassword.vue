@@ -7,7 +7,7 @@
             v-if="!changing"
             @click.prevent="changing = true"
             class="btn btn-text text-sm"
-        >Change password</button>
+        >{{ trans('js_pages_users_profile_components_changepassword.changepassword') }}</button>
 
         <template v-else>
             <div
@@ -18,7 +18,7 @@
                     :class="{ 'text-red-500': errors.password }"
                     for="password"
                 >
-                    New password
+                    {{ trans('js_pages_users_profile_components_changepassword.newpassword') }}
                 </label>
 
                 <input 
@@ -43,7 +43,7 @@
                     :class="{ 'text-red-500': errors.passwordConfirm }"
                     for="passwordConfirm"
                 >
-                    Confirm password
+                    {{ trans('js_pages_users_profile_components_changepassword.confirmpassword') }}
                 </label>
 
                 <input 
@@ -67,14 +67,14 @@
                     class="btn btn-blue text-sm"
                     @click.prevent="update"
                 >
-                    Change password
+                    {{ trans('js_pages_users_profile_components_changepassword.changepassword') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_users_profile_components_changepassword.cancel') }}
                 </button>
             </div>
         </template>

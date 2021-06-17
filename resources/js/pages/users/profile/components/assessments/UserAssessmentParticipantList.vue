@@ -4,22 +4,22 @@
         class="w-full"
     >
         <h2 class="text-2xl">
-            Active assessments
+            {{ trans('js_pages_users_profile_components_assessments_userassessmentparticipantlist.activeassessments') }}
         </h2>
 
         <table>
             <thead>
                 <tr class="border-b-2">
                     <th class="p-2 text-left">
-                        Section
+                        {{ trans('js_pages_users_profile_components_assessments_userassessmentparticipantlist.section') }}
                     </th>
 
                     <th class="p-2 text-left">
-                        Type
+                        {{ trans('js_pages_users_profile_components_assessments_userassessmentparticipantlist.type') }}
                     </th>
 
                     <th class="p-2 text-left">
-                        Title
+                        {{ trans('js_pages_users_profile_components_assessments_userassessmentparticipantlist.title') }}
                     </th>
 
                     <th class="p-2"></th>
@@ -48,7 +48,7 @@
                         <a 
                             :href="`${urlBase}/assessment/${assessment.id}`"
                         >
-                            Enter exam
+                            {{ trans('js_pages_users_profile_components_assessments_userassessmentparticipantlist.enterexam') }}
                         </a>
                     </td>
                 </tr>

@@ -2,7 +2,7 @@
     <div class="w-full mt-6 pt-6 border-t border-gray-200">
         <div class="flex items-center mb-4">
             <h2 class="text-2xl">
-                Reporting Structure
+                {{ trans('js_pages_users_profile_components_reportingstructure.reportingstructure') }}
             </h2>
 
             <button 
@@ -10,7 +10,7 @@
                 class="btn btn-text text-blue-500 no-underline"
                 @click.prevent="reportingModal = true"
                 v-if="hasRole(['administrator'])"
-            >Edit</button>
+            >{{ trans('js_pages_users_profile_components_reportingstructure.edit') }}</button>
         </div>
 
         <div
@@ -19,7 +19,7 @@
         >
             <reporting-structure-item
                 role="director"
-                title="Director"
+                :title="trans('js_pages_users_profile_components_reportingstructure.director')"
             />
         </div>
 
@@ -29,7 +29,7 @@
         >
             <reporting-structure-item
                 role="manager"
-                title="Manager"
+                :title="trans('js_pages_users_profile_components_reportingstructure.manager')"
             />
         </div>
 
@@ -39,7 +39,7 @@
         >
             <reporting-structure-item
                 role="employee"
-                title="Employee"
+                :title="trans('js_pages_users_profile_components_reportingstructure.employee')"
             />
         </div>
 
@@ -49,7 +49,7 @@
         >
             <reporting-structure-item
                 role="intern"
-                title="Intern"
+                :title="trans('js_pages_users_profile_components_reportingstructure.intern')"
             />
         </div>
 
@@ -58,7 +58,7 @@
         >
             <reporting-structure-item
                 role="student"
-                title="Student"
+                :title="trans('js_pages_users_profile_components_reportingstructure.student')"
             />
         </div>
 
@@ -66,9 +66,11 @@
             v-show="reportingModal"
             @close="close"
             @submit="updateReporting"
+            ok-button-text="Submit"
+            cancel-button-text="Cancel"
         >
             <template slot="header" v-if="role">
-                {{ ucfirst(role) }} for {{ user.firstname }} {{ user.lastname }}
+                {{ ucfirst(role) }} {{ trans('js_pages_users_profile_components_reportingstructure.for') }} {{ user.firstname }} {{ user.lastname }}
             </template>
 
             <template slot="body">
@@ -79,7 +81,7 @@
                                 for="roles"
                                 class="block text-gray-700 font-bold mb-2"
                             >
-                                Select role
+                                {{ trans('js_pages_users_profile_components_reportingstructure.selectrole') }}
                             </label>
 
                             <div class="relative">
@@ -119,7 +121,7 @@
                     </template>
 
                     <div class="alert alert-gray mt-2" v-else>
-                        Please select a role.
+                        {{ trans('js_pages_users_profile_components_reportingstructure.pleaseselectrole') }}
                     </div>
                 </div>
             </template>
@@ -164,8 +166,8 @@ export default {
             users: [],
             selected: [],
             columns: [
-                { field: 'firstname', title: 'First name', sortable: true },
-                { field: 'lastname', title: 'Last name', sortable: true },
+                { field: 'firstname', title: this.trans('js_pages_users_profile_components_reportingstructure.firstname'), sortable: true },
+                { field: 'lastname', title: this.trans('js_pages_users_profile_components_reportingstructure.lastname'), sortable: true },
             ],
         }
     },

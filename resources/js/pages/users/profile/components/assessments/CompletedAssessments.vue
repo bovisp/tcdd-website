@@ -4,34 +4,34 @@
         class="w-full"
     >
         <h2 class="text-2xl">
-            Completed assessments
+            {{ trans('js_pages_users_profile_components_assessments_completedassessments.completedassessments') }}
         </h2>
 
         <table class="w-full">
             <thead>
                 <tr class="border-b-2">
                     <th class="p-2 text-left">
-                        Section
+                        {{ trans('js_pages_users_profile_components_assessments_completedassessments.section') }}
                     </th>
 
                     <th class="p-2 text-left">
-                        Type
+                        {{ trans('js_pages_users_profile_components_assessments_completedassessments.type') }}
                     </th>
 
                     <th class="p-2 text-left">
-                        Title
+                        {{ trans('js_pages_users_profile_components_assessments_completedassessments.title') }}
                     </th>
 
                     <th class="p-2 text-left">
-                        Marked
+                        {{ trans('js_pages_users_profile_components_assessments_completedassessments.marked') }}
                     </th>
 
                     <th class="p-2 text-left">
-                        Score
+                        {{ trans('js_pages_users_profile_components_assessments_completedassessments.score') }}
                     </th>
 
                     <th class="p-2">
-                        Review
+                        {{ trans('js_pages_users_profile_components_assessments_completedassessments.review') }}
                     </th>
                 </tr>
             </thead>
@@ -68,7 +68,7 @@
                             @click.prevent="($emit('assessment:review', attempt.id))"
                             v-if="attempt.show"
                         >
-                            Review
+                            {{ trans('js_pages_users_profile_components_assessments_completedassessments.review') }}
                         </button>
                     </td>
                 </tr>

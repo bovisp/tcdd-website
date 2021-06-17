@@ -1,7 +1,7 @@
 <template>
     <div class="w-full lg:w-9/12">   
         <h1 class="text-3xl font-bold mb-4">
-            Add users
+            {{ trans('js_pages_users_userscreate.addusers') }}
         </h1> 
 
         <div class="flex justify-around w-full mb-6 pb-6 border-b border-gray-200">
@@ -10,7 +10,7 @@
                     for="roles"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    Register users as...
+                    {{ trans('js_pages_users_userscreate.registeruseras') }}...
                 </label>
 
                 <div class="relative">
@@ -40,7 +40,7 @@
                     for="roles"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    Put into section...
+                    {{ trans('js_pages_users_userscreate.putintosection') }}...
                 </label>
 
                 <div class="relative">
@@ -78,18 +78,17 @@
             <button
                 @click.prevent="cancel"
                 class="btn btn-text text-red-500 mr-2"
-            >Cancel</button>
+            >{{ trans('js_pages_users_userscreate.cancel') }}</button>
 
             <button 
                 @click.prevent="store"
                 class="btn btn-blue"
-            >Submit</button>
+            >{{ trans('js_pages_users_userscreate.submit') }}</button>
         </datatable>
     </div>
 </template>
 
 <script>
-import { map, forEach, reject, isEmpty } from 'lodash-es'
 import ucfirst from '../../helpers/ucfirst'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -98,9 +97,9 @@ export default {
         return {
             users: [],
             columns: [
-                { field: 'firstname', title: 'First name', sortable: true },
-                { field: 'lastname', title: 'Last name', sortable: true },
-                { field: 'email', title: 'Email', sortable: false }
+                { field: 'firstname', title: this.trans('js_pages_users_userscreate.firstname'), sortable: true },
+                { field: 'lastname', title: this.trans('js_pages_users_userscreate.lastname'), sortable: true },
+                { field: 'email', title: this.trans('js_pages_users_userscreate.email'), sortable: false }
             ],
             selected: [],
             roles: [],
