@@ -110,8 +110,7 @@ export default {
         },
         createButtonText: {
             type: String,
-            required: false,
-            default: 'Create'
+            required: false
         },
         createButtonClasses: {
             type: String,

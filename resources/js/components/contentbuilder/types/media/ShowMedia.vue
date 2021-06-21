@@ -26,7 +26,7 @@
                         class="block mx-auto max-w-full h-auto"
                     >
                         <source 
-                            :src="part.data.filename[0].file"
+                            :src="`${urlBase}${part.data.filename[0].file}`"
                             type="video/mp4"
                         >
                     </video>
