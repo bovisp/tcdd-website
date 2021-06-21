@@ -5,5 +5,5 @@ return array (
   'cancel' => 'f Cancel',
   'nameenglish' => 'f Name (English)',
   'namefrench' => 'f Name (French)',
-  'newsection' => 'f Add section',
+  'newsection' => 'f New section',
 );

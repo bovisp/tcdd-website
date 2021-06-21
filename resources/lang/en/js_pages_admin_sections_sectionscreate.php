@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'newsection' => 'Add section',
+  'newsection' => 'New section',
   'nameenglish' => 'Name (English)',
   'namefrench' => 'Name (French)',
   'addsection' => 'Add section',

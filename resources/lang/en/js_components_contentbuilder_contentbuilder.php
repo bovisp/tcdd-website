@@ -2,6 +2,6 @@
 
 return array (
   'turnediting' => 'Turn editing',
-  'off' => 'on',
-  'on' => 'off',
+  'off' => 'off',
+  'on' => 'on',
 );
