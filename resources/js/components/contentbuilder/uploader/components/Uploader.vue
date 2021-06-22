@@ -2,6 +2,8 @@
     <div>
         <uploader-form 
             @chosen="handleFilesChosen"
+            v-show="oneUploadedFileOnly"
+            :options="options"
         />
 
         <div class="mb-4 flex justify-between px-4 text-gray-700 text-sm">
@@ -47,6 +49,14 @@ export default {
     },
 
     computed: {
+        oneUploadedFileOnly () {
+            if (this.options.maxFiles !== 1) {
+                return true
+            }
+
+            return this.completedUploadCount !== this.options.maxFiles
+        },
+
         currentUploadCount () {
             return filter(this.uploads, upload => upload.uploading).length
         },

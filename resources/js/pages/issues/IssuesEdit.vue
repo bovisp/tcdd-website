@@ -45,33 +45,39 @@
                     Status
                 </label>
 
-                <div class="relative">
-                    <select 
-                        id="status"
-                        v-model="form.status"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        :class="{ 'border-red-500': errors.status }"
-                    >
-                        <option value=""></option>
-                        
-                        <option
-                            :value="status.code"
-                            v-for="status in statuses"
-                            :key="status.code"
-                            v-text="status.name"
-                        ></option>
-                    </select>
+                <template v-if="hasRole(['administrator'])">
+                    <div class="relative">
+                        <select 
+                            id="status"
+                            v-model="form.status"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            :class="{ 'border-red-500': errors.status }"
+                        >
+                            <option value=""></option>
+                            
+                            <option
+                                :value="status.code"
+                                v-for="status in statuses"
+                                :key="status.code"
+                                v-text="status.name"
+                            ></option>
+                        </select>
 
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
                     </div>
-                </div>
 
-                <p
-                    v-if="errors.status"
-                    v-text="errors.status[0]"
-                    class="text-red-500 text-sm"
-                ></p>
+                    <p
+                        v-if="errors.status"
+                        v-text="errors.status[0]"
+                        class="text-red-500 text-sm"
+                    ></p>
+                </template>
+
+                <template v-else>
+                    <p>{{ form.status }}</p>
+                </template>
             </div>
 
             <div
@@ -92,19 +98,25 @@
                     Issue 
                 </label>
 
-                <input 
-                    type="text" 
-                    v-model="form.title"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="title"
-                    :class="{ 'border-red-500': errors.title }"
-                >
+                <template v-if="hasRole(['administrator'])">
+                    <input 
+                        type="text" 
+                        v-model="form.title"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
+                        id="title"
+                        :class="{ 'border-red-500': errors.title }"
+                    >
 
-                <p
-                    v-if="errors.title"
-                    v-text="errors.title[0]"
-                    class="text-red-500 text-sm"
-                ></p>
+                    <p
+                        v-if="errors.title"
+                        v-text="errors.title[0]"
+                        class="text-red-500 text-sm"
+                    ></p>
+                </template>
+
+                <template v-else>
+                    <p>{{ form.title }}</p>
+                </template>
             </div>
 
             <div
@@ -118,15 +130,25 @@
                     Issue description
                 </label>
 
-                <vue-editor 
-                    v-model="form.body"
-                ></vue-editor>
+                
+                <template  v-if="hasRole(['administrator']) || authUser.id === issue.issuer_id">
+                    <vue-editor 
+                        v-model="form.body"
+                    ></vue-editor>
 
-                <p
-                    v-if="errors.body"
-                    v-text="errors.body[0]"
-                    class="text-red-500 text-sm mt-2"
-                ></p>
+                    <p
+                        v-if="errors.body"
+                        v-text="errors.body[0]"
+                        class="text-red-500 text-sm mt-2"
+                    ></p>
+                </template>  
+
+                <template v-else>
+                    <div 
+                        class="content"
+                        v-html="form.body"
+                    ></div>
+                </template>
             </div>
 
             <div
@@ -134,6 +156,7 @@
             >
                 <button 
                     class="btn btn-blue text-sm"
+                    v-if="hasRole(['administrator']) || authUser.id === issue.issuer_id"
                 >
                     Update issue
                 </button>

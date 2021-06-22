@@ -25,7 +25,7 @@
         />
 
         <issues-index 
-            v-if="!creating && !updating && hasRole(['administrator'])"
+            v-if="!creating && !updating"
         />
     </div>
 </template>

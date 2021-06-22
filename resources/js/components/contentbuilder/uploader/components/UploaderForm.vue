@@ -24,14 +24,28 @@
 
         <template v-else>
            <div class="text-grey-700">
-                Drop here to upload or <span class="text-blue-400">choose files</span>
+                Drop here to upload or <span class="text-blue-400">choose {{ pluralize('file', options.maxFiles) }}</span>
+                <template v-if="options.maxFiles === 1">
+                    </br><span class="text-red-400 text-sm">You may only upload one file.</span>
+                </template>
             </div>
         </template>
     </form>
 </template>
 
 <script>
+import pluralize from 'pluralize'
+import options from '../options'
+
 export default {
+    props: {
+        options: {
+            required: false,
+            type: Object,
+            default: () => options
+        }
+    },
+
     data () {
         return {
             dragging: false,
@@ -40,6 +54,8 @@ export default {
     },
 
     methods: {
+        pluralize,
+
         handleFilesChosen (e) {
             this.dragging = false
             this.$emit('chosen', e.target.files)

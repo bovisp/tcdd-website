@@ -18,18 +18,29 @@ class IssuesController extends Controller
     {
         $this->middleware(['auth']);
 
-        $this->middleware(['role:administrator'])->only(['update']);
+        $this->middleware(function ($request, $next) {
+            preg_match_all("/\/issues\/([\d]+)/",request()->url(),$matches);
+
+            $issue = Issue::find((int) $matches[1][0]);
+
+            if (auth()->user()->hasRole('administrator') || ($issue->issuer_id === auth()->id())) {
+                return $next($request);
+                
+            }
+
+            return response()->json([
+                'data' => [
+                    'message' => 'You cannot update this issue.'
+                ]
+            ], 403);
+        })->only(['update']);
     }
 
     public function index()
     {
-        if (auth()->user()->hasAnyRole(['administrator'])) {
-            return IssueResource::collection(
-                Issue::orderBy('code')->get()
-            );
-        }
-
-        return response()->json([]);
+        return IssueResource::collection(
+            Issue::orderBy('code')->get()
+        );
     }
     
     public function store()
