@@ -64,7 +64,7 @@
             <component 
                 :is="`Add${ucfirst(type)}`"
                 :edit-status="true"
-                create-button-text="Save"
+                create-button-text="Apply"
                 create-button-classes="btn-sm text-sm btn-outline"
                 :is-tab-section-part="true"
                 :part-id="partId"

@@ -182,11 +182,13 @@ export default {
         },
 
         cancelAdd (sectionId) {
-            this.addingTabSection = false
-
             this.form.tabSections = filter(this.form.tabSections, section => {
                 return sectionId !== section.id
             })
+
+            if (this.form.tabSections === 0) {
+                this.addingTabSection = false
+            }
         }
     },
 
