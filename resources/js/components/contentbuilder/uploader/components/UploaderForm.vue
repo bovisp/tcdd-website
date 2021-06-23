@@ -17,7 +17,16 @@
         >
 
         <template v-if="draggingCount">
-            <div>
+            <div v-if="allUploaded">
+                <div class="text-grey-700">
+                    Drop here to upload or <span class="text-blue-400">choose {{ pluralize('file', options.maxFiles) }}</span>
+                    <template v-if="options.maxFiles === 1">
+                        </br><span class="text-red-400 text-sm">You may only upload one file.</span>
+                    </template>
+                </div>
+            </div>
+            
+            <div v-else>
                 Nearly there. Let go to upload <span class="font-bold">{{ draggingCount }}</span> items!
             </div>
         </template>
@@ -49,7 +58,8 @@ export default {
     data () {
         return {
             dragging: false,
-            draggingCount: 0
+            draggingCount: 0,
+            allUploaded: false
         }
     },
 
@@ -70,6 +80,12 @@ export default {
         handleDragLeave (e) {
             this.dragging = false
         }
+    },
+
+    mounted () {
+        window.events.$on('uploader:complete', () => {
+            this.allUploaded = true
+        })
     }
 }
 </script>

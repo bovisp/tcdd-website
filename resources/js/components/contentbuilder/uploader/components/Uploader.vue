@@ -76,9 +76,16 @@ export default {
                 return 0
             }
 
-            return parseInt(
+            let progress = parseInt(
                 reduce(uploads, (a, b) => a + b.progress, 0) / uploads.length
             )
+
+            if (progress === 100) {
+                console.log('here')
+                window.events.$emit('uploader:complete')
+            }
+
+            return progress
         }
     },
 
