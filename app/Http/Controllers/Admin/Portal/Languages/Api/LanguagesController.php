@@ -37,7 +37,7 @@ class LanguagesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Language successfully added.'
+                'message' => __('app_http_controllers_admin_portal_languages_api_languages.store_message')
             ]
         ], 200);
     }
@@ -59,7 +59,7 @@ class LanguagesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Language successfully updated'
+                'message' => __('app_http_controllers_admin_portal_languages_api_languages.update_message')
             ]
         ], 200);
     }

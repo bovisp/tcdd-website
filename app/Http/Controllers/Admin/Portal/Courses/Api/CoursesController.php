@@ -43,7 +43,7 @@ class CoursesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Category successfully added.'
+                'message' => __('app_http_controllers_admin_portal_courses_api_courses.store_message')
             ]
         ], 200);
     }
@@ -64,7 +64,7 @@ class CoursesController extends Controller
                     $courseIdExists = PortalCourse::where('moodle_course_id', (int) request('moodle_course_id'))->exists();
 
                     if ($courseIdExists) {
-                        $fail('This Moodle course ID already exists.');
+                        $fail(__('app_http_controllers_admin_portal_courses_api_courses.moodleidexists'));
                     }
                 }
             ],
@@ -85,7 +85,7 @@ class CoursesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Course successfully updated'
+                'message' => __('app_http_controllers_admin_portal_courses_api_courses.update_message')
             ]
         ], 200);
     }
@@ -97,7 +97,7 @@ class CoursesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Course successfully deleted'
+                'message' => __('app_http_controllers_admin_portal_courses_api_courses.destroy_message')
             ]
         ], 200);
     }
