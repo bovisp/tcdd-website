@@ -31,6 +31,7 @@
         <modal 
             v-if="showModal" 
             @submit="destroy"
+            ok-button-text="Delete"
             @close="showModal = false"
         >
             <h3 slot="header" class="mb-4">Delete part</h3>
