@@ -45,14 +45,20 @@
 
             <tab  
                 name="Instructors" 
+                @tabs:isactive="initiateInstructorTab"
             >
-                <assessment-instructors />
+                <assessment-instructors 
+                    v-if="showInstructors"
+                />
             </tab>
 
             <tab  
                 name="Participants" 
+                @tabs:isactive="initiateParticipantTab"
             >
-                <assessment-participants />
+                <assessment-participants 
+                    v-if="showParticipants"
+                />
             </tab>
 
             <tab  
@@ -91,7 +97,9 @@ export default {
     data () {
         return {
             duplicating: false,
-            duplicateForm: {}
+            duplicateForm: {},
+            showInstructors: false,
+            showParticipants: false
         }
     },
     
@@ -136,6 +144,16 @@ export default {
 
         back () {
             window.events.$emit('assessments:edit-cancel')
+        },
+
+        initiateInstructorTab () {
+            this.showInstructors = true
+            this.showParticipants = false
+        },
+
+        initiateParticipantTab () {
+            this.showInstructors = false
+            this.showParticipants = true
         }
     },
 

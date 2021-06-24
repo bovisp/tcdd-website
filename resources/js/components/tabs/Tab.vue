@@ -24,6 +24,14 @@ export default {
             isActive: false
         };
     },
+
+    watch: {
+        isActive () {
+            if (this.isActive) {
+                this.$emit('tabs:isactive')
+            }
+        }
+    },
     
     computed: {
         href() {

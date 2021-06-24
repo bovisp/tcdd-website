@@ -89,7 +89,7 @@ export default {
 
     methods: {
         ...mapActions({
-            fetchAssessments: 'assessments/fetch'
+            fetchAssessment: 'assessments/fetchAssessment'
         }),
 
         async update () {
@@ -103,16 +103,30 @@ export default {
         },
 
         async reload () {
-            await this.fetchAssessments()
+            await this.fetchAssessment(this.assessment.id)
 
-            window.events.$emit('datatable:reload-selected', map(this.assessment.editors, editor => editor.id))
+            window.events.$emit('datatable:reload-selected', map(
+                this.assessment.editors, editor => editor.id
+            ))
         }
     },
 
     async mounted () {
+        await this.reload()
+
         this.selected = this.selectedUsers
 
-        window.events.$on('users:selected', selectedUsers => {
+        window.events.$on('users:selected', async selectedUsers => {
+            if (selectedUsers.length === 0) {
+                await this.reload()
+
+                window.events.$emit('datatable:reload-selected', map(
+                    this.assessment.editors, editor => editor.id
+                ))
+
+                return
+            }
+
             this.selected = selectedUsers
         })
 
