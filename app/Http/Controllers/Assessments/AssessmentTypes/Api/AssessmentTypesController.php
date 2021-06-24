@@ -37,7 +37,7 @@ class AssessmentTypesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Assessment type successfully added.'
+                'message' => __('app_http_controllers_assessments_assessmentypes_api_assessmenttypes.store_message')
             ]
         ], 200);
     }
@@ -59,7 +59,7 @@ class AssessmentTypesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Assessment type successfully updated'
+                'message' => __('app_http_controllers_assessments_assessmentypes_api_assessmenttypes.update_message')
             ]
         ], 200);
     }

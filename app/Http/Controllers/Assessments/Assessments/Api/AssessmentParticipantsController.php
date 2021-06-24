@@ -38,7 +38,7 @@ class AssessmentParticipantsController extends Controller
             if (AssessmentAttempt::whereAssessmentParticipantId($assessmentParticipantId)->count()) {
                 return response()->json([
                     'data' => [
-                        'message' => 'You cannot remove participants who have already attempted this exam.'
+                        'message' => __('app_http_controllers_assessments_assessments_api_assessmentparticipants.cannotremove')
                     ]
                 ], 403);
             }
@@ -68,7 +68,7 @@ class AssessmentParticipantsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Participants updated'
+                'message' => __('app_http_controllers_assessments_assessments_api_assessmentparticipants.update_message')
             ]
         ], 200);
     }
@@ -103,7 +103,7 @@ class AssessmentParticipantsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Participants successfully added.'
+                'message' => __('app_http_controllers_assessments_assessments_api_assessmentparticipants.update_message')
             ]
         ], 200);
     }

@@ -28,7 +28,7 @@ class AttemptTimeController extends Controller
                 return $next($request);
             }
     
-            return response()->json('You are not authorized to view this exam', 422);
+            return response()->json(__('app_http_controllers_assessments_assessment_api_assessmentattempt.notauthorizedexam'), 422);
         });
     }
 

@@ -68,7 +68,7 @@ class AssessmentsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Assessment successfully created.'
+                'message' => __('app_http_controllers_assessments_assessments_api_assessments.store_message')
             ]
         ], 200);
     }
@@ -102,7 +102,7 @@ class AssessmentsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Assessment successfully updated.'
+                'message' => __('app_http_controllers_assessments_assessments_api_assessments.update_message')
             ]
         ], 200);
     }
@@ -156,7 +156,7 @@ class AssessmentsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Assessment successfully deleted'
+                'message' => __('app_http_controllers_assessments_assessments_api_assessments.destroy_message')
             ]
         ], 200);
     }

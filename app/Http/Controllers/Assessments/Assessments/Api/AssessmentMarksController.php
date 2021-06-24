@@ -31,7 +31,7 @@ class AssessmentMarksController extends Controller
                 function ($attribute, $value, $fail) {
                     $item = AssessmentPageContentItem::find((int) request('itemId'));
                     if (request()->has('mark') && request('mark') > $item->question_score) {
-                        $fail('The most a participant can score on this question is ' . $item->question_score . ' points');
+                        $fail(__('app_http_controllers_assessments_assessments_api_assessmentmarks.maxscore1') . $item->question_score . __('app_http_controllers_assessments_assessments_api_assessmentmarks.maxscore2'));
                     }
                 }
             ]
@@ -66,7 +66,7 @@ class AssessmentMarksController extends Controller
                 function ($attribute, $value, $fail) {
                     $item = AssessmentPageContentItem::find((int) request('itemId'));
                     if (request()->has('mark') && request('mark') > $item->question_score) {
-                        $fail('The most a participant can score on this qiestion is ' . $item->question_score . ' points');
+                        $fail(__('app_http_controllers_assessments_assessments_api_assessmentmarks.maxscore1') . $item->question_score . __('app_http_controllers_assessments_assessments_api_assessmentmarks.maxscore2'));
                     }
                 }
             ]

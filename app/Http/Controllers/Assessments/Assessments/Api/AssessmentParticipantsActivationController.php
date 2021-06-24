@@ -20,7 +20,7 @@ class AssessmentParticipantsActivationController extends Controller
         if (optional(AssessmentAttempt::whereAssessmentParticipantId((int) request()->query('id')))->first()) {
             return response()->json([
                 'data' => [
-                    'message' => 'You cannot deactivate a participant who has started their attempt.'
+                    'message' => __('app_http_controllers_assessments_assessments_api_assessmentparticipantsactivation.cannotdeactivate')
                 ]
             ], 403);
         }

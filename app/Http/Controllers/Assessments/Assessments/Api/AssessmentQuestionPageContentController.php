@@ -26,7 +26,7 @@ class AssessmentQuestionPageContentController extends Controller
             if ($assessment->locked) {
                 return response()->json([
                     'data' => [
-                        'message' => 'You cannot do this when the assessment is locked.'
+                        'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
                     ]
                 ], 403);
             }
@@ -154,7 +154,7 @@ class AssessmentQuestionPageContentController extends Controller
         if ($assessment->locked && $moved->assessmentPageContentItems->first()->type === 'Question') {
             return response()->json([
                 'data' => [
-                    'message' => 'You cannot do this when the assessment is locked.'
+                    'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
                 ]
             ], 403);
         }
@@ -235,7 +235,7 @@ class AssessmentQuestionPageContentController extends Controller
         if ($assessment->locked && $content->assessmentPageContentItems->first()->type === 'Question') {
             return response()->json([
                 'data' => [
-                    'message' => 'You cannot do this when the assessment is locked.'
+                    'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
                 ]
             ], 403);
         }
