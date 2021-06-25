@@ -7,7 +7,7 @@
                     @click.prevent="update"
                     v-if="typeof assessment.editors !== 'undefined' && assessment.editors.length"
                 >
-                    Update
+                    Update instructors
                 </button>
 
                 <button 
