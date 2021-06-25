@@ -7,7 +7,7 @@
                     @click.prevent="update"
                     v-if="typeof assessment.participants !== 'undefined' && assessment.participants.length"
                 >
-                    Update
+                    Update participants
                 </button>
 
                 <button 
