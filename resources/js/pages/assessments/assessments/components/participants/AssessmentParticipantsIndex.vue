@@ -125,8 +125,6 @@ export default {
 
         window.events.$on('users:selected', selectedUsers => {
             this.selected = intersection(selectedUsers, this.selectedUsers)
-
-            console.log(this.selected)
         })
 
         window.events.$on('assessments:reload', async () => {
