@@ -48,7 +48,7 @@
                 @tabs:isactive="initiateInstructorTab"
             >
                 <assessment-instructors 
-                    v-if="showInstructors"
+                    :visible="showInstructors"
                 />
             </tab>
 
@@ -57,7 +57,7 @@
                 @tabs:isactive="initiateParticipantTab"
             >
                 <assessment-participants 
-                    v-if="showParticipants"
+                    :visible="showParticipants"
                 />
             </tab>
 

@@ -37,6 +37,7 @@
                     :order-key-directions="['asc', 'asc']"
                     :has-text-filter="false"
                     :checkable="true"
+                    key="instructors"
                 ></datatable>
 
                 <div 

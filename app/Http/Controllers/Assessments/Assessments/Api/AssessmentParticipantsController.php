@@ -56,7 +56,7 @@ class AssessmentParticipantsController extends Controller
             })->count();
         }
 
-        if (($numParticipants * $assessment->questions()->count()) === $totalScoredAnswers) {
+        if (($totalScoredAnswers > 0) && ($numParticipants * $assessment->questions()->count()) === $totalScoredAnswers) {
             $assessment->update([
                 'marking_completed' => 1,
                 'marking_completed_on' => Carbon::now()

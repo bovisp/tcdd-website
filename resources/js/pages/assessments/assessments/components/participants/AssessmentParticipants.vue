@@ -1,12 +1,12 @@
 <template>
     <div>
         <assessment-participants-index 
-            v-if="showIndex"
+            v-if="showIndex && visible"
             @create="showIndex = false"
         />
 
         <assessment-participants-create 
-            v-else
+            v-if="!showIndex && visible"
             @cancel="reload"
         />
     </div>
@@ -16,6 +16,13 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+    props: {
+        visible: {
+            type: Boolean,
+            required: true
+        }
+    },
+
     data () {
         return {
             showIndex: true

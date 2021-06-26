@@ -44,6 +44,7 @@
                     event="assessment:activate"
                     no-event-if-text-column-boolean="completed"
                     text-column-text="Completed"
+                    key="participants"
                 ></datatable>
             </div>
 
@@ -59,7 +60,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { map } from 'lodash-es'
+import { map, intersection } from 'lodash-es'
 
 export default {
     data () {
@@ -123,7 +124,9 @@ export default {
         this.selected = this.selectedUsers
 
         window.events.$on('users:selected', selectedUsers => {
-            this.selected = selectedUsers
+            this.selected = intersection(selectedUsers, this.selectedUsers)
+
+            console.log(this.selected)
         })
 
         window.events.$on('assessments:reload', async () => {
@@ -136,7 +139,7 @@ export default {
                 isActivated: participant.pivot.activated
             })
 
-            this.$toasted.success(`${participant.fullname} has been successfully ${participant.pivot.activated ? 'deactivated' : 'activated'}.`)
+            // this.$toasted.success(`${participant.fullname} has been successfully ${participant.pivot.activated ? 'deactivated' : 'activated'}.`)
         })
     }
 }
