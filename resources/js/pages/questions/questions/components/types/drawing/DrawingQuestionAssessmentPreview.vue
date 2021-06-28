@@ -121,40 +121,18 @@ export default {
         }
     },
 
-    watch: {
-        imageSaved () {
-            this.submitting = true
-        }
-    },
-
     methods: {
         async submit () {
-            window.events.$emit('draw:save')
+            this.submitting = true
         },
 
         async cancel () {
-            await axios.delete(`${this.urlBase}/uploads`, {
-                data: {
-                    files: [
-                        {
-                            file: this.form.answer.image
-                        }
-                    ]
-                }
-            })
-
             this.form.answer.text = ''
             this.form.answer.image = ''
             this.submitting = false
+
+            window.events.$emit('draw:clear-preview')
         }
-    },
-
-    async mounted () {
-        window.events.$on('draw:saved', file => {
-            this.form.answer.image = file
-
-            this.imageSaved = true
-        })
     }
 }
 </script>

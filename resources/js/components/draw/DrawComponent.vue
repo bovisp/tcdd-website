@@ -246,6 +246,10 @@ export default {
             
             window.events.$emit('draw:saved', data.file)
         })
+
+        window.events.$on('draw:clear-preview', () => {
+            this.clearCanvas()
+        })
     }
 }
 </script>
