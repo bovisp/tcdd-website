@@ -31,14 +31,14 @@ class AssessmentAttemptController extends Controller
             $attempt = AssessmentAttempt::whereAssessmentParticipantId($participantActive->id)->first();
 
             if ($attempt) {
-                abort(403, 'You are not authorized to view this exam');
+                abort(403, __('app_http_controllers_assessments_assessment_api_assessmentattempt.notauthorizedexam'));
             }
 
             if ($participantActive) {
                 return $next($request);
             }
 
-            abort(403, 'You are not authorized to view this exam');
+            abort(403, __('app_http_controllers_assessments_assessment_api_assessmentattempt.notauthorizedexam'));
         })->only(['store']);
 
         $this->middleware(function ($request, $next) {
@@ -57,7 +57,7 @@ class AssessmentAttemptController extends Controller
                 ->first();
 
             if (!$participantActive) {
-                abort(403, 'You are not authorized to view this exam');
+                abort(403, __('app_http_controllers_assessments_assessment_api_assessmentattempt.notauthorizedexam'));
             }
 
             preg_match_all("/\/attempt\/([\d]+)/",request()->url(),$matches);
@@ -65,7 +65,7 @@ class AssessmentAttemptController extends Controller
             $attempt = AssessmentAttempt::find((int) $matches[1][0]);
 
             if (!$attempt) {
-                abort(403, 'You are not authorized to view this exam');
+                abort(403, __('app_http_controllers_assessments_assessment_api_assessmentattempt.notauthorizedexam'));
             }
 
             if ($attempt->completed) {
@@ -75,7 +75,7 @@ class AssessmentAttemptController extends Controller
             $isValidAttemptForUser = $participantActive->pivot->id === $attempt->assessment_participant_id;
 
             if (!$isValidAttemptForUser) {
-                abort(403, 'You are not authorized to view this exam');;    
+                abort(403, __('app_http_controllers_assessments_assessment_api_assessmentattempt.notauthorizedexam'));;    
             }
 
             $time_remaining = $assessment->completion_time - Carbon::now()->diffInMinutes($attempt->created_at);
@@ -85,7 +85,7 @@ class AssessmentAttemptController extends Controller
 
                 $participantActive->pivot->save();
 
-                abort(403, 'You are not authorized to view this exam');
+                abort(403, __('app_http_controllers_assessments_assessment_api_assessmentattempt.notauthorizedexam'));
             }
 
             return $next($request);

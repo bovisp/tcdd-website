@@ -37,7 +37,7 @@
                     :class="{ 'text-red-500': errors.title }"
                     for="title-animation"
                 >
-                    Title (optional)
+                    {{ trans('js_components_contentbuilder_types_animation_showanimation.title') }}
                 </label>
 
                 <input 
@@ -63,7 +63,7 @@
                     :class="{ 'text-red-500': errors.caption }"
                     for="caption-animation"
                 >
-                    Caption (optional)
+                    {{ trans('js_components_contentbuilder_types_animation_showanimation.caption') }}
                 </label>
 
                 <textarea 
@@ -88,14 +88,14 @@
                     class="btn btn-blue btn-sm text-sm"
                     @click.prevent="update"
                 >
-                    Update
+                    {{ trans('js_components_contentbuilder_types_animation_showanimation.update') }}
                 </button>
 
                 <button 
                     class="btn btn-text btn-sm text-sm ml-auto"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_components_contentbuilder_types_animation_showanimation.cancel') }}
                 </button>
             </div>
         </div>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { isEmpty, merge } from 'lodash-es'
+import { merge } from 'lodash-es'
 
 export default {
     props: {

@@ -4,24 +4,25 @@
             class="btn btn-text text-red-500 text-sm"
             @click.prevent="modalActive = true"
         >
-            Delete permission
+            {{ trans('js_pages_permissions_components_destroypermission.deletepermission') }}
         </button>
 
         <modal 
             v-show="modalActive"
             @close="close"
             @submit="destroy"
+            ok-button-text="Submit"
+            cancel-button-text="Cancel"
         >
             <template slot="header">
-                Delete permission: {{ permission.name }}
+                {{ trans('js_pages_permissions_components_destroypermission.deletepermission') }}: {{ permission.name }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to do this? This permission will be removed from all 
-                        employees who have it.
-                        <strong>Only do this if you are absolutely sure this is what you want</strong>.
+                        {{ trans('js_pages_permissions_components_destroypermission.deletepermissionconfirm1') }}
+                        <strong>{{ trans('js_pages_permissions_components_destroypermission.deletepermissionconfirm2') }}</strong>.
                     </p>
                 </div>
             </template>

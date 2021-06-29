@@ -5,7 +5,7 @@
                 class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="$emit('question-preview:cancel')"
             >
-                Cancel preview
+                {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionpreview.cancelpreview') }}
             </button>
         </div>
 
@@ -65,7 +65,7 @@
             class="alert alert-blue mt-4"
             v-if="submitting"
         >
-            The correct answers are highlighted in green. Please click the "Cancel preview" button to finish.
+            {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionpreview.cancelpreviewtext') }}
         </div>
 
         <div class="flex w-full mt-4">
@@ -74,14 +74,14 @@
                 @click.prevent="submit"
                 v-if="!submitting"
             >
-                Submit
+                {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionpreview.submit') }}
             </button>
 
             <button 
                 class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="cancel"
             >
-                Cancel preview
+                {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionpreview.cancelpreview') }}
             </button>
         </div>
     </div>

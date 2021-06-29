@@ -74,14 +74,14 @@
                         @click.prevent="submit"
                         v-if="!submitting"
                     >
-                        Submit
+                        {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionassessmentpreview.submit') }}
                     </button>
 
                     <button 
                         class="btn btn-text btn-sm text-sm ml-auto"
                         @click.prevent="cancel"
                     >
-                        Cancel preview
+                        {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionassessmentpreview.cancelpreview') }}
                     </button>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h4 class="text-lg font-medium mb-3">
-            General options
+            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.generaloptions') }}
         </h4>
 
         <div
@@ -17,7 +17,7 @@
                 <span 
                     class="ml-2"
                     :class="{ 'text-red-500': errors.text_answer }"
-                >Requires a text answer as well (default: <span class="font-bold">false</span>)</span>
+                >{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.requirestextanswer') }} ({{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.default') }}: <span class="font-bold">{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.false') }}</span>)</span>
             </label>
 
             <p
@@ -41,7 +41,7 @@
                 <span 
                     class="ml-2"
                     :class="{ 'text-red-500': errors.rich_text }"
-                >Answer can have a rich text editor (default: <span class="font-bold">false</span>)</span>
+                >{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.answerrichtexteditor') }} ({{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.default') }}: <span class="font-bold">{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.false') }}</span>)</span>
             </label>
 
             <p
@@ -52,7 +52,7 @@
         </div>
 
         <h4 class="text-lg font-medium mb-2">
-            Drawing options
+            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.drawingoptions') }}
         </h4>
 
         <div
@@ -62,7 +62,7 @@
         ></div>
 
         <h4 class="text-base font-medium mb-2 ml-4">
-            Pen colors
+            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.pencolors') }}
         </h4>
 
         <div 
@@ -87,7 +87,7 @@
         </div>
 
         <h4 class="text-base font-medium mb-2 ml-4">
-            Eraser
+            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.eraser') }}
         </h4>
 
         <div
@@ -102,12 +102,12 @@
 
                 <span 
                     class="ml-2"
-                >Eraser tool</span>
+                >{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.erasertool') }}</span>
             </label>
         </div>
 
         <h4 class="text-base font-medium mb-2 ml-4">
-            Clear tool
+            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.cleartool') }}
         </h4>
 
         <div
@@ -122,12 +122,12 @@
 
                 <span 
                     class="ml-2"
-                >Tool to clear all drawing work</span>
+                >{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.toolclearall') }}</span>
             </label>
         </div>
 
         <h4 class="text-base font-medium mb-2 ml-4">
-            Background image
+            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.backgroundimage') }}
         </h4>
 
         <div
@@ -160,7 +160,7 @@
                 class="btn btn-text btn-sm text-sm text-red-500"
                 @click.prevent="forceRerender"
             >
-                Delete current image
+                {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.deleteimage') }}
             </button>
         </div>
     </div>
@@ -183,7 +183,13 @@ export default {
                 }
             },
             penColors: [
-                'white', 'black', 'red', 'green', 'blue', 'purple', 'brown'
+                'white',
+                'black',
+                'red',
+                'green',
+                'blue',
+                'purple',
+                'brown'
             ],
             rerenderUploader: 0
         }

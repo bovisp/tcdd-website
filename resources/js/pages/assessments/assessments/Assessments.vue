@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Create assessment</a>
+            >{{ trans('js_pages_assessments_assessments_assessments.createassessment') }}</a>
         </nav>
 
         <assessments-create 

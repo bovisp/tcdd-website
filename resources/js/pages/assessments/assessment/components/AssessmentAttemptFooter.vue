@@ -17,7 +17,7 @@
             >
                 <i class="fas fa-chevron-left"></i>
 
-                Previous page
+               {{ trans('js_pages_assessments_assessment_components_assessmentattemptfooter.previouspage') }}
             </button>
 
             <button 
@@ -26,7 +26,7 @@
                 :disabled="!hasNextPage"
                 @click.prevent="changePage(currentPage.number + 1)"
             >
-                Next page
+                {{ trans('js_pages_assessments_assessment_components_assessmentattemptfooter.nextpage') }}
 
                 <i class="fas fa-chevron-right"></i>
             </button>
@@ -35,7 +35,7 @@
                 class="btn btn-green ml-4"
                 @click.prevent="review"
             >
-                Review all and submit
+                {{ trans('js_pages_assessments_assessment_components_assessmentattemptfooter.reviewallsubmit') }}
             </button>
         </template>
 
@@ -44,24 +44,26 @@
                 class="btn btn-green ml-auto"
                 @click.prevent="review"
             >
-                Return to assessment
+                {{ trans('js_pages_assessments_assessment_components_assessmentattemptfooter.returnassessment') }}
             </button>
 
             <button 
                 class="btn btn-blue ml-4"
                 @click.prevent="modalActive = true"
             >
-                Submit and finish
+                {{ trans('js_pages_assessments_assessment_components_assessmentattemptfooter.submitfinish') }}
             </button>
 
             <modal 
                 v-show="modalActive"
                 @close="close"
                 @submit="submit"
+                ok-button-text="Submit"
+                cancel-button-text="Cancel"
                 :has-spinner="true"
             >
                 <template slot="header" v-if="attempt.assessment">
-                    Submit {{ attempt.assessment.name }}
+                    {{ trans('js_pages_assessments_assessment_components_assessmentattemptfooter.submit') }} {{ attempt.assessment.name }}
                 </template>
 
                 <template slot="body">
@@ -70,11 +72,10 @@
                             class="text-red-700 mb-4"
                             v-if="hasIncompleteQuestions"
                         >
-                            <strong>Warning. Some of your answers have not yet been completed.</strong>
+                            <strong>{{ trans('js_pages_assessments_assessment_components_assessmentattemptfooter.incompletequestions') }}</strong>
                         </p>
 
-                        Are you sure you want to submit this exam? Once you submit your exam questions, you will not be 
-                        allowed to re-enter this assessment.
+                        {{ trans('js_pages_assessments_assessment_components_assessmentattemptfooter.incompletequestionsconfirm') }}
                     </div>
                 </template>
             </modal>

@@ -2,7 +2,7 @@
     <div>
         <tabs>
             <tab  
-                name="Views by fiscal year" 
+                :name="trans('js_pages_admin_reports_components_tables_tablesfiscal.views')" 
                 :selected="true"
             >
                 <tables-fiscal-viewed
@@ -12,7 +12,7 @@
             </tab>
 
             <!-- <tab  
-                name="Completions by fiscal year" 
+                :name="trans('js_pages_admin_reports_components_tables_tablesfiscal.completions')" 
             >
                 <tables-fiscal-completed />
             </tab> -->

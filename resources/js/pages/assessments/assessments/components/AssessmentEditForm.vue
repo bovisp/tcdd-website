@@ -10,7 +10,7 @@
                     for="section_id"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    Section
+                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.section') }}
                 </label>
 
                 <div class="relative">
@@ -49,7 +49,7 @@
                     for="assessment_type_id"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    Type
+                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.type') }}
                 </label>
 
                 <div class="relative">
@@ -89,7 +89,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    Name (English)
+                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.nameenglish') }}
                 </label>
 
                 <input 
@@ -115,7 +115,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    Name (French)
+                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.namefrench') }}
                 </label>
 
                 <input 
@@ -141,7 +141,7 @@
                     :class="{ 'text-red-500': errors.description_en }"
                     for="description_en"
                 >
-                    Description (English)
+                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.descriptionenglish') }}
                 </label>
 
                 <vue-editor 
@@ -163,7 +163,7 @@
                     :class="{ 'text-red-500': errors.description_fr }"
                     for="description_fr"
                 >
-                    Description (French)
+                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.descriptionfrnech') }}
                 </label>
 
                 <vue-editor 
@@ -185,7 +185,7 @@
                     :class="{ 'text-red-500': errors.completion_time }"
                     for="completion_time"
                 >
-                    Completion time (minutes)
+                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.completiontime') }}
                 </label>
 
                 <input 
@@ -210,7 +210,7 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    {{ isDuplicate ? 'Save' : 'Update' }} assessment
+                    {{ isDuplicate ? trans('js_pages_assessments_assessments_components_assessmenteditform.save') : trans('js_pages_assessments_assessments_components_assessmenteditform.update') }} {{ trans('js_pages_assessments_assessments_components_assessmenteditform.assessment') }}
                 </button>
 
                 <button 
@@ -218,7 +218,7 @@
                     @click.prevent="duplicate"
                     v-if="!isDuplicate"
                 >
-                    Duplicate
+                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.duplicate') }}
                 </button>
 
                 <button 
@@ -226,7 +226,7 @@
                     @click.prevent="cancel"
                     v-if="isDuplicate"
                 >
-                    Cancel
+                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.cancel') }}
                 </button>
             </div>
         </form>
@@ -242,7 +242,7 @@
             class="alert alert-red"
             v-if="assessment.locked"
         >
-            You cannot delete this assessment when it has been locked and/or when there are one or more attempts that have been saved to the database.
+            {{ trans('js_pages_assessments_assessments_components_assessmenteditform.cannotdelete') }}
         </div>
     </div>
 </template>
@@ -268,9 +268,9 @@ export default {
                 completion_time: null
             },
             assessmentTabs: [
-                { id: 1, name: 'Edit settings' },
-                { id: 2, name: 'Instructors' },
-                { id: 3, name: 'Participants' }
+                { id: 1, name: this.trans('js_pages_assessments_assessments_components_assessmenteditform.editsettings') },
+                { id: 2, name: this.trans('js_pages_assessments_assessments_components_assessmenteditform.instructors') },
+                { id: 3, name: this.trans('js_pages_assessments_assessments_components_assessmenteditform.participants') }
             ]
         }
     },

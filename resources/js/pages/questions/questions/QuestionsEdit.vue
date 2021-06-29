@@ -11,7 +11,7 @@
                 class="alert alert-red content mb-4"
                 v-if="question.inAssessment"
             >
-                <p>Note that this question has been added to the following assessments:</p>
+                <p>{{ trans('js_pages_questions_questions_questionsedit.questionaddedassessments') }}</p>
 
                 <ul>
                     <li
@@ -28,11 +28,11 @@
                 id="edit-pane"
             >
                 <h1 class="text-3xl font-bold mb-4">
-                    Edit: Question - {{ question.name }}
+                    {{ trans('js_pages_questions_questions_questionsedit.edit') }}: {{ trans('js_pages_questions_questions_questionsedit.question') }} - {{ question.name }}
                 </h1>
 
                 <p class="mb-4 text-gray-700">
-                    <strong>Owner:</strong> {{ question.author.fullname }}
+                    <strong>{{ trans('js_pages_questions_questions_questionsedit.owner') }}:</strong> {{ question.author.fullname }}
                 </p>
 
                 <form 
@@ -46,14 +46,14 @@
                             :class="{ 'text-red-500': errors.editors }"
                             for="editors"
                         >
-                            Editors
+                            {{ trans('js_pages_questions_questions_questionsedit.editors') }}
                         </label>
 
                         <multiselect 
                             v-model="form.editors" 
                             :options="availableEditors" 
                             :multiple="true" 
-                            placeholder="Search editors"
+                            :placeholder="trans('js_pages_questions_questions_questionsedit.searcheditors')"
                             label="fullname" 
                             track-by="id" 
                             :taggable="true"
@@ -74,7 +74,7 @@
                             class="block text-gray-700 font-bold mb-2"
                             :class="{ 'text-red-500': errors.section_id }"
                         >
-                            Section
+                            {{ trans('js_pages_questions_questions_questionsedit.section') }}
                         </label>
 
                         <div class="relative">
@@ -114,7 +114,7 @@
                             class="block text-gray-700 font-bold mb-2"
                             :class="{ 'text-red-500': errors.question_category_id }"
                         >
-                            Question category
+                            {{ trans('js_pages_questions_questions_questionsedit.questioncategory') }}
                         </label>
 
                         <div class="relative">
@@ -154,7 +154,7 @@
                             :class="{ 'text-red-500': errors.name_en }"
                             for="name_en"
                         >
-                            Name (English)
+                            {{ trans('js_pages_questions_questions_questionsedit.nameenglish') }}
                         </label>
 
                         <input 
@@ -180,7 +180,7 @@
                             :class="{ 'text-red-500': errors.name_fr }"
                             for="name_fr"
                         >
-                            Name (French)
+                            {{ trans('js_pages_questions_questions_questionsedit.namefrench') }}
                         </label>
 
                         <input 
@@ -206,7 +206,7 @@
                             :class="{ 'text-red-500': errors.description_en }"
                             for="description_en"
                         >
-                            Question text (English)
+                            {{ trans('js_pages_questions_questions_questionsedit.questiontextenglish') }}
                         </label>
 
                         <content-builder 
@@ -222,7 +222,7 @@
                             :class="{ 'text-red-500': errors.description_fr }"
                             for="description_fr"
                         >
-                            Question text (French)
+                            {{ trans('js_pages_questions_questions_questionsedit.questiontextfrench') }}
                         </label>
 
                         <content-builder 
@@ -235,7 +235,7 @@
                             class="block text-gray-700 font-bold mb-2" 
                             :class="{ 'text-red-500': errors.marking_guide_en }"
                         >
-                            Marking guide (English)
+                            {{ trans('js_pages_questions_questions_questionsedit.markingguideenglish') }}
                         </label>
 
                         <vue-editor 
@@ -254,7 +254,7 @@
                             class="block text-gray-700 font-bold mb-2" 
                             :class="{ 'text-red-500': errors.marking_guide_fr }"
                         >
-                            Marking guide (French)
+                            {{ trans('js_pages_questions_questions_questionsedit.markingguidefrench') }}
                         </label>
 
                         <vue-editor 
@@ -276,15 +276,15 @@
                             :class="{ 'text-red-500': errors.tags }"
                             for="tags"
                         >
-                            Tags
+                            {{ trans('js_pages_questions_questions_questionsedit.tags') }}
                         </label>
 
                         <multiselect 
                             v-model="form.tags" 
                             :options="avalaibleTags" 
                             :multiple="true" 
-                            placeholder="Search or add a tag" 
-                            tag-placeholder="Add this as new tag"
+                            :placeholder="trans('js_pages_questions_questions_questionsedit.searchaddtag')" 
+                            :tag-placeholder="trans('js_pages_questions_questions_questionsedit.addasnewtag')"
                             label="name" 
                             track-by="id" 
                             :taggable="true"
@@ -304,7 +304,7 @@
                         class="text-2xl font-light my-4"
                         v-if="typeof questionTypeData.type !== 'undefined'"
                     >
-                        {{ capitalCase(question.type) }} Question Settings
+                        {{ capitalCase(question.type) }} {{ trans('js_pages_questions_questions_questionsedit.questionsettings') }}
                     </h3>
 
                     <template v-if="typeof question.type !== 'undefined'">
@@ -322,14 +322,14 @@
                         <button 
                             class="btn btn-blue text-sm"
                         >
-                            Edit question
+                            {{ trans('js_pages_questions_questions_questionsedit.editquestion') }}
                         </button>
 
                         <button 
                             class="btn btn-text text-sm"
                             @click.prevent="cancel"
                         >
-                            Cancel
+                            {{ trans('js_pages_questions_questions_questionsedit.cancel') }}
                         </button>
 
                         <button 
@@ -337,7 +337,7 @@
                             @click.prevent="preview"
                             v-scroll-to="'#preview-pane'"
                         >
-                            Preview
+                            {{ trans('js_pages_questions_questions_questionsedit.preview') }}
                         </button>
 
                         <button 
@@ -345,7 +345,7 @@
                             @click.prevent="duplicate"
                             v-scroll-to="'#duplicate-pane'"
                         >
-                            Duplicate
+                            {{ trans('js_pages_questions_questions_questionsedit.duplicate') }}
                         </button>
                     </div>
                 </form>
@@ -361,11 +361,9 @@
                     class="alert alert-red content mt-4"
                     v-if="question.inAssessment"
                 >
-                    <p>You cannot delete a question that has been added to at least one assessment. 
-                    If the assessments have not been locked and/or they have not been attempted, 
-                    you must remove remove the question from the assessment before you can delete this question.</p>
+                    <p>{{ trans('js_pages_questions_questions_questionsedit.cannotdeletetext1') }}</p>
 
-                    <p><strong>Assessments:</strong></p>
+                    <p><strong>{{ trans('js_pages_questions_questions_questionsedit.assessments') }}:</strong></p>
 
                     <ul>
                         <li
@@ -394,16 +392,17 @@
                 v-show="modalAddTag"
                 @close="close"
                 @submit="storeTag"
+                ok-button-text="Submit"
+                cancel-button-text="Cancel"
             >
                 <template slot="header">
-                    Add {{ currentLang === 'en' ? 'French' : 'English' }} translation of new tag: {{ tag }}
+                    {{ trans('js_pages_questions_questions_questionsedit.add') }} {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionsedit.french') : trans('js_pages_questions_questions_questionsedit.english') }} {{ trans('js_pages_questions_questions_questionsedit.translationtag') }}: {{ tag }}
                 </template>
 
                 <template slot="body">
                     <div class="my-4">
-                        <p>In order to add this tag, you will need to provide a {{ currentLang === 'en' ? 'French' : 'English' }} 
-                        translation for the new tag '{{ tag }}'. If you do not have the translation, click the cancel button 
-                        and you can always add it later by editing this new question.</p>
+                        <p>{{ trans('js_pages_questions_questions_questionsedit.newtagmessage1') }} {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionsedit.french') : trans('js_pages_questions_questions_questionsedit.english') }} 
+                        {{ trans('js_pages_questions_questions_questionsedit.newtagmessage2') }} '{{ tag }}'. {{ trans('js_pages_questions_questions_questionsedit.newtagmessage3') }}</p>
 
                         <div
                             class="w-full mb-4"
@@ -413,7 +412,7 @@
                                 :class="{ 'text-red-500': errors.name_en || errors.name_fr }"
                                 for="name"
                             >
-                                {{ currentLang === 'en' ? 'French' : 'English' }} translation for '{{ tag }}'
+                                {{ currentLang === 'en' ? 'French' : 'English' }} {{ trans('js_pages_questions_questions_questionsedit.translationfor') }} '{{ tag }}'
                             </label>
 
                             <input 
@@ -440,7 +439,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Multiselect from 'vue-multiselect'
-import { map } from'lodash-es'
 import ucfirst from '../../../helpers/ucfirst'
 import { pascalCase, capitalCase } from 'change-case'
 

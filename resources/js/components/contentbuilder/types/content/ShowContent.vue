@@ -27,14 +27,14 @@
                         class="btn btn-blue btn-sm text-sm"
                         @click.prevent="update"
                     >
-                        Update
+                        {{ trans('js_components_contentbuilder_types_animation_showcontent.update') }}
                     </button>
 
                     <button 
                         class="btn btn-text btn-sm text-sm ml-auto"
                         @click.prevent="cancel"
                     >
-                        Cancel
+                        {{ trans('js_components_contentbuilder_types_animation_showcontent.cancel') }}
                     </button>
                 </div>
             </form>

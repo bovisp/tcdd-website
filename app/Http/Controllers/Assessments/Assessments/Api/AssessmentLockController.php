@@ -17,7 +17,7 @@ class AssessmentLockController extends Controller
         if ($assessment->locked === 1 && $assessment->attempts->count()) {
             return response()->json([
                 'data' => [
-                    'message' => 'You cannot unlock an assessment in which participants have attempted or are attempting.'
+                    'message' => __('app_http_controllers_assessments_assessments_api_assessmentlock.cannotunlock')
                 ]
             ], 403);
         }

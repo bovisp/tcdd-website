@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            New category
+            {{ trans('js_pages_admin_portal_categories_adminportalcategoriescreate.newcategory') }}
         </h1>
 
         <form 
@@ -15,7 +15,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    Name (English)
+                    {{ trans('js_pages_admin_portal_categories_adminportalcategoriescreate.nameenglish') }}
                 </label>
 
                 <input 
@@ -41,7 +41,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    Name (French)
+                    {{ trans('js_pages_admin_portal_categories_adminportalcategoriescreate.namefrench') }}
                 </label>
 
                 <input 
@@ -67,7 +67,7 @@
                     :class="{ 'text-red-500': errors.moodle_course_category_id }"
                     for="moodle_course_category_id"
                 >
-                    Training Portal course category ID
+                    {{ trans('js_pages_admin_portal_categories_adminportalcategoriescreate.portalcategoryid') }}
                 </label>
 
                 <input 
@@ -93,7 +93,7 @@
                     :class="{ 'text-red-500': errors.moodle_parent_course_category_id }"
                     for="moodle_parent_course_category_id"
                 >
-                    Training Portal parent course category ID
+                    {{ trans('js_pages_admin_portal_categories_adminportalcategoriescreate.portalparentcategoryid') }}
                 </label>
 
                 <input 
@@ -117,14 +117,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Add category
+                    {{ trans('js_pages_admin_portal_categories_adminportalcategoriescreate.addcategory') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_admin_portal_categories_adminportalcategoriescreate.cancel') }}
                 </button>
             </div>
         </form>
@@ -132,8 +132,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
 export default {
     data() {
         return {

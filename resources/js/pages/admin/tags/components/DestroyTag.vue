@@ -4,24 +4,25 @@
             class="btn btn-text text-red-500 text-sm"
             @click.prevent="modalActive = true"
         >
-            Delete tag
+            {{ trans('js_pages_admin_tags_components_destroytag.deletetag') }}
         </button>
 
         <modal 
             v-show="modalActive"
+            ok-button-text="Delete"
+            cancel-button-text="Cancel"
             @close="close"
             @submit="destroy"
         >
             <template slot="header">
-                Delete tag: {{ tag.name }}
+                {{ trans('js_pages_admin_tags_components_destroytag.deletetag') }}: {{ tag.name }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to do this? This tag will be removed from any items associated 
-                        with it.
-                        <strong>Only do this if you are absolutely sure this is what you want</strong>.
+                        {{ trans('js_pages_admin_tags_components_destroytag.deletetagconfirm1') }}
+                        <strong>{{ trans('js_pages_admin_tags_components_destroytag.deletetagconfirm2') }}</strong>.
                     </p>
                 </div>
             </template>

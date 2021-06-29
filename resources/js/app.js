@@ -13,35 +13,14 @@ import authUser from './mixins/authUser'
 import error from './mixins/errors'
 import currentLang from './mixins/currentLang'
 import shuffleArray from './mixins/shuffleArray'
-
-/**
- * Gives Vue access to the Laravel translation strings on a per language basis.
- * 
- * @param  {string} key The translation string key.
- * 
- * @return {string}     The translation string value.
- */
- Vue.prototype.trans = (key) => {
-	let paths = key.split('.'),
-	    current = window.trans,
-      i;
-
-	for (i = 0; i < paths.length; ++i) {
-		if (current[paths[i]] == undefined) {
-			return undefined;
-		} else {
-			current = current[paths[i]];
-		}
-	}
-	
-	return current;
-}
+import trans from './mixins/trans'
 
 Vue.mixin(getUrlBase)
 Vue.mixin(authUser)
 Vue.mixin(error)
 Vue.mixin(currentLang)
 Vue.mixin(shuffleArray)
+Vue.mixin(trans)
 
 import Toasted from 'vue-toasted'
 Vue.use(Toasted, {

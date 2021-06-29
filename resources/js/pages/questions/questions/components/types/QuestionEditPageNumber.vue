@@ -1,6 +1,8 @@
 <template>
     <div class="flex items-center mt-3">
-        <strong class="text-gray-700 mr-1">Page number:</strong>
+        <strong class="text-gray-700 mr-1">
+            {{ trans('js_pages_questions_questions_components_types_questioneditpagenumber.pagenumber') }}:
+        </strong>
 
         <template v-if="!editingPageNumber">
             {{ pageNumber }} 
@@ -8,7 +10,7 @@
                 class="btn btn-text text-sm btn-sm text-blue-500 ml-2"
                 @click.prevent="editPageNumber"
                 v-if="!assessment.locked"
-            >Edit</button>
+            >{{ trans('js_pages_questions_questions_components_types_questioneditpagenumber.edit') }}</button>
         </template>
 
         <template v-if="editingPageNumber && !assessment.locked">
@@ -24,7 +26,7 @@
                         :value="page.id"
                         v-for="page in availablePages"
                         :key="page.id"
-                        v-text="`Page ${page.number}`"
+                        v-text="`${trans('js_pages_questions_questions_components_types_questioneditpagenumber.page')} ${page.number}`"
                     ></option>
                 </select>
 
@@ -36,12 +38,12 @@
             <button 
                 class="btn btn-blue text-sm btn-sm ml-2"
                 @click.prevent="changePageNumber"
-            >Change</button>
+            >{{ trans('js_pages_questions_questions_components_types_questioneditpagenumber.change') }}</button>
 
             <button 
                 class="btn btn-text text-sm btn-sm ml-2"
                 @click.prevent="cancelEditPageNumber"
-            >Cancel</button>
+            >{{ trans('js_pages_questions_questions_components_types_questioneditpagenumber.cancel') }}</button>
         </template>
     </div>
 </template>

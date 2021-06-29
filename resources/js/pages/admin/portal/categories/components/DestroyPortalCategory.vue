@@ -4,24 +4,25 @@
             class="btn btn-text text-red-500 text-sm"
             @click.prevent="modalActive = true"
         >
-            Delete category
+            {{ trans('js_pages_admin_portal_categories_components_destroyportalcategory.deletecategory') }}
         </button>
 
         <modal 
             v-show="modalActive"
+            ok-button-text="Delete"
+            cancel-button-text="Cancel"
             @close="close"
             @submit="destroy"
         >
             <template slot="header">
-                Delete category: {{ category.name }}
+                {{ trans('js_pages_admin_portal_categories_components_destroyportalcategory.deletecategory') }}: {{ category.name }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to do this? Any courses associated with this category will not be deleted. 
-                        Courses associated with category will be placed into the "Miscellaneous" category.
-                        <strong>Only do this if you are absolutely sure this is what you want.</strong>.
+                        {{ trans('js_pages_admin_portal_categories_components_destroyportalcategory.deletecategoryconfirm1') }}
+                        <strong>{{ trans('js_pages_admin_portal_categories_components_destroyportalcategory.deletecategoryconfirm2') }}</strong>.
                     </p>
                 </div>
             </template>

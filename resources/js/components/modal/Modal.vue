@@ -64,8 +64,7 @@ export default {
         },
         okButtonText: {
             type: String,
-            required: false,
-            default: 'Submit'
+            required: false
         },
         hasCancelButton: {
             type: Boolean,
@@ -74,8 +73,7 @@ export default {
         },
         cancelButtonText: {
             type: String,
-            required: false,
-            default: 'Cancel'
+            required: false
         },
         hasSpinner: {
             type: Boolean,

@@ -30,7 +30,7 @@ a, a:hover {
  	</style>
 
 	<!-- MESSAGE SUBJECT -->
-	<title>You have been added to the TCDD website</title>
+	<title>{{ __('views_emails_users_registered.youhavebeenadded') }}</title>
 
 </head>
 
@@ -57,7 +57,7 @@ a, a:hover {
 			padding-top: 25px;
 			color: #000000;
 			font-family: sans-serif;" class="header">
-				Hi {{ $user->firstname }} {{ $user->lastname }}
+				{{ __('views_emails_users_registered.hi') }} {{ $user->firstname }} {{ $user->lastname }}
 		</td>
 	</tr>
 	
@@ -68,7 +68,7 @@ a, a:hover {
 			padding-top: 5px;
 			color: #000000;
 			font-family: sans-serif;" class="subheader">
-				You have been added to the TCDD website
+				{{ __('views_emails_users_registered.youhavebeenadded') }}
 		</td>
 	</tr>
 
@@ -81,9 +81,9 @@ a, a:hover {
 			padding-top: 25px; 
 			color: #000000;
 			font-family: sans-serif;" class="paragraph">
-      <strong>Your username is:</strong> {{ $user->email }}<br>
-      <strong>Your password is:</strong> {{ $password }}<br><br>
-      You may change your password by clicking on the "Change password" link at the top of your profile page
+      <strong>{{ __('views_emails_users_registered.username') }}:</strong> {{ $user->email }}<br>
+      <strong>{{ __('views_emails_users_registered.password') }}:</strong> {{ $password }}<br><br>
+      {{ __('views_emails_users_registered.passwordtext') }}
 		</td>
 	</tr>
 
@@ -96,7 +96,7 @@ a, a:hover {
 					bgcolor="#0E2980"><a target="_blank" style="text-decoration: none;
 					color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;"
 					href="{{ env('APP_URL') }}/login">
-						Click here to access the TCDD website
+					{{ __('views_emails_users_registered.clickhere') }}
 					</a>
 			</td></tr></table></a>
 		</td>

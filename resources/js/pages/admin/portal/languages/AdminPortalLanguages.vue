@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Add language</a>
+            >{{ trans('js_pages_admin_portal_languages_adminportallanguages.addlanguage') }}</a>
         </nav>
 
         <admin-portal-languages-create 

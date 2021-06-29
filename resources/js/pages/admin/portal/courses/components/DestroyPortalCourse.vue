@@ -4,24 +4,25 @@
             class="btn btn-text text-red-500 text-sm"
             @click.prevent="modalActive = true"
         >
-            Delete course
+            {{ trans('js_pages_admin_portal_courses_components_destroyportalcourse.deletecourse') }}
         </button>
 
         <modal 
             v-show="modalActive"
+            ok-button-text="Delete"
+            cancel-button-text="Cancel"
             @close="close"
             @submit="destroy"
         >
             <template slot="header">
-                Delete course: {{ course.name }}
+                {{ trans('js_pages_admin_portal_courses_components_destroyportalcourse.deletecourse') }}: {{ course.name }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to do this? No metrics will be collected for this course after 
-                        it has been deleted. This course will still remain on the Training Portal. 
-                        <strong>Only do this if you are absolutely sure this is what you want</strong>.
+                        {{ trans('js_pages_admin_portal_courses_components_destroyportalcourse.deletecourseconfirm1') }}
+                        <strong>{{ trans('js_pages_admin_portal_courses_components_destroyportalcourse.deletecourseconfirm2') }}</strong>.
                     </p>
                 </div>
             </template>

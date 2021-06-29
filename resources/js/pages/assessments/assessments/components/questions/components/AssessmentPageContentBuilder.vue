@@ -2,7 +2,7 @@
     <div class="p-4 border rounded mb-2">
         <div class="flex items-center">
             <strong>
-                {{ lang === 'en' ? 'English' : 'French' }}
+                {{ lang === 'en' ? trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilder.english') : trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilder.french') }}
             </strong>
 
             <button 
@@ -10,7 +10,7 @@
                 :class="editingClasses"
                 @click.prevent="editing = !editing"
             >
-                Turn editing {{ editing ? 'off' : 'on' }}
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilder.turnediting') }} {{ editing ? trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilder.off') : trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilder.on') }}
             </button>
         </div>
 

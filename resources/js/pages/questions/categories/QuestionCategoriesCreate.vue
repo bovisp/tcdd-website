@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            New question bank category
+            {{ trans('js_pages_questions_categories_questioncategoriescreate.newcategory') }}
         </h1>
 
         <form 
@@ -15,7 +15,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    Name (English)
+                    {{ trans('js_pages_questions_categories_questioncategoriescreate.nameenglish') }}
                 </label>
 
                 <input 
@@ -41,7 +41,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    Name (French)
+                    {{ trans('js_pages_questions_categories_questioncategoriescreate.namefrench') }}
                 </label>
 
                 <input 
@@ -67,7 +67,7 @@
                     :class="{ 'text-red-500': errors.description_en }"
                     for="description_en"
                 >
-                    Description (English)
+                    {{ trans('js_pages_questions_categories_questioncategoriescreate.descriptionenglish') }}
                 </label>
 
                 <textarea 
@@ -93,7 +93,7 @@
                     :class="{ 'text-red-500': errors.description_fr }"
                     for="description_fr"
                 >
-                    Description (French)
+                    {{ trans('js_pages_questions_categories_questioncategoriescreate.descriptionfrench') }}
                 </label>
 
                 <textarea 
@@ -117,14 +117,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Add question bank category
+                    {{ trans('js_pages_questions_categories_questioncategoriescreate.addcategory') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_questions_categories_questioncategoriescreate.cancel') }}
                 </button>
             </div>
         </form>
@@ -132,8 +132,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
 export default {
     data() {
         return {

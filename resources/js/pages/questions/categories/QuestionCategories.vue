@@ -8,7 +8,7 @@
                 href=""
                 @click.prevent="creating = true"
                 class="btn btn-text"
-            >Create question bank category</a>
+            >{{ trans('js_pages_questions_categories_questioncategories.createcategory') }}</a>
         </nav>
 
         <question-categories-create 

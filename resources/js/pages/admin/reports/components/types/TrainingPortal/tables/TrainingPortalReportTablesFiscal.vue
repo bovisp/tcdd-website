@@ -7,8 +7,12 @@
             <table class="border-collapse border-0 w-full text-sm">
                 <thead>
                     <tr>
-                        <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">Quarter</th>
-                        <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">Modules viewed</th>
+                        <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">
+                            {{ trans('js_pages_admin_reports_components_types_trainingportal_tables_trainingportalreporttablesfiscal.quarter') }}
+                        </th>
+                        <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">
+                            {{ trans('js_pages_admin_reports_components_types_trainingportal_tables_trainingportalreporttablesfiscal.modulesviewed') }}
+                        </th>
                     </tr>
                 </thead>
 
@@ -22,7 +26,7 @@
                     </tr>
 
                     <tr v-if="typeof stats.totals !== 'undefined'">
-                        <td class="px-4 py-2"><strong>Totals:</strong></td>
+                        <td class="px-4 py-2"><strong>{{ trans('js_pages_admin_reports_components_types_trainingportal_tables_trainingportalreporttablesfiscal.totals') }}:</strong></td>
                         <td class="px-4 py-2 text-right">{{ stats.totals.totals }}</td>
                     </tr>
                 </tbody>

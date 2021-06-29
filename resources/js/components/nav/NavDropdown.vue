@@ -17,15 +17,15 @@
             style="top: 50px;"
             v-if="isOpen"
         >
-            <span class="pb-2 px-3">Logged in as: <a :href="`${urlBase}/users/${me.id}`"><strong>{{ me.fullname }}</strong></a></span>  
+            <span class="pb-2 px-3">{{ trans('usermenu.loggedInAs') }}: <a :href="`${urlBase}/users/${me.id}`"><strong>{{ me.fullname }}</strong></a></span>  
 
             <hr class="border-t border-gray-300">
 
             <template v-if="hasRole(['administrator', 'director', 'manager', 'employee'])">
-                <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/admin`">Admin section</a>
+                <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/admin`">{{ trans('usermenu.adminSection') }}</a>
             </template>
 
-            <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/issues`">Submit an issue</a>
+            <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/issues`">{{ trans('usermenu.submitAnIssue') }}</a>
 
             <hr class="border-t border-gray-300">
 
@@ -33,7 +33,7 @@
                 href="#"
                 class="text-gray-900 pt-2 px-3"
                 @click.prevent="logout"
-            >Logout</a>
+            >{{ trans('usermenu.logout') }}</a>
         </div>
     </div>
 </template>

@@ -8,7 +8,7 @@
                 :class="{ 'text-red-500': errors.length > 0 }"
                 :for="`title-${section.id}`"
             >
-                Tab title
+                {{ trans('js_components_contentbuilder_types_tab_components_edittabsection.tabtitle') }}
             </label>
 
             <input 
@@ -30,7 +30,7 @@
             class="mb-4"
         >
             <h5 class="mt-6 -mb-4 text-2xl">
-                Tab Content ({{ section.type }})
+                {{ trans('js_components_contentbuilder_types_tab_components_edittabsection.tabcontent') }} ({{ section.type }})
             </h5>
 
             <component 
@@ -50,7 +50,7 @@
                 class="btn btn-sm text-sm btn-outline"
                 @click="deleteTab"
             >
-                Delete tab
+                {{ trans('js_components_contentbuilder_types_tab_components_edittabsection.deletetab') }}
             </button>
         </div>
 

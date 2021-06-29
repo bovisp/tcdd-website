@@ -2,26 +2,26 @@
     <div>
         <tabs>
             <tab  
-                name="Edit settings" 
+                :name="trans('js_pages_assessments_assessments_duplicate_assessmentsduplicate.editsettings')" 
                 :selected="true"
             >
                 <assessment-edit-form />
             </tab>
 
             <tab  
-                name="Instructors" 
+                :name="trans('js_pages_assessments_assessments_duplicate_assessmentsduplicate.instructors')" 
             >
                 <assessment-instructors />
             </tab>
 
             <tab  
-                name="Participants" 
+                :name="trans('js_pages_assessments_assessments_duplicate_assessmentsduplicate.participants')" 
             >
                 <assessment-participants />
             </tab>
 
             <tab  
-                name="Questions" 
+                :name="trans('js_pages_assessments_assessments_duplicate_assessmentsduplicate.questions')" 
             >
                 <assessment-questions />
             </tab>

@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Questions
+            {{ trans('js_pages_questions_questions_questionsindex.questions') }}
         </h1> 
 
         <datatable 
@@ -13,7 +13,7 @@
             :order-key-directions="['asc', 'asc', 'asc']"
             :has-text-filter="true"
             :has-event="true"
-            event-text="Edit"
+            :event-text="trans('js_pages_questions_questions_questionsindex.edit')"
             event="questions:edit"
         />
 
@@ -21,7 +21,7 @@
             class="alert alert-blue"
             v-else
         >
-            No questions have been created.
+            {{ trans('js_pages_questions_questions_questionsindex.noquestions') }}
         </div>
     </div>
 </template>
@@ -34,9 +34,9 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'categoryName', title: 'Category', sortable: true },
-                { field: 'sectionName', title: 'Section', sortable: true },
-                { field: 'name', title: 'Name', sortable: true }
+                { field: 'categoryName', title: this.trans('js_pages_questions_questions_questionsindex.category'), sortable: true },
+                { field: 'sectionName', title: this.trans('js_pages_questions_questions_questionsindex.section'), sortable: true },
+                { field: 'name', title: this.trans('js_pages_questions_questions_questionsindex.name'), sortable: true }
             ]
         }
     },

@@ -18,7 +18,7 @@
                     }"
                     @click.prevent="$emit('create')"
                 >
-                    Add more instructors
+                    {{ trans('js_pages_assessments_assessments_components_instructors_assessmentinstructorsindex.addmoreinstructors') }}
                 </button>
             </div>
         </div>
@@ -44,7 +44,7 @@
                     class="alert alert-blue w-full lg:w-1/2"
                     v-else
                 >
-                    There are currently no users who can edit this assessment.
+                    {{ trans('js_pages_assessments_assessments_components_instructors_assessmentinstructorsindex.nousers') }}
                 </div>
             </div>
         </div>
@@ -60,8 +60,8 @@ export default {
         return {
             selected: [],
             columns: [
-                { field: 'firstname', title: 'First name', sortable: true },
-                { field: 'lastname', title: 'Last name', sortable: true },
+                { field: 'firstname', title: this.trans('js_pages_assessments_assessments_components_instructors_assessmentinstructorsindex.firstname'), sortable: true },
+                { field: 'lastname', title: this.trans('js_pages_assessments_assessments_components_instructors_assessmentinstructorsindex.lastname	'), sortable: true },
             ]
         }
     },

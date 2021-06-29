@@ -41,7 +41,7 @@ class CategoriesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Category successfully added.'
+                'message' => __('app_http_controllers_admin_portal_categories_api_categories.store_message')
             ]
         ], 200);
     }
@@ -62,7 +62,7 @@ class CategoriesController extends Controller
                     $categoryExists = PortalCategory::where('moodle_course_category_id', (int) request('moodle_course_category_id'))->exists();
 
                     if ($categoryExists) {
-                        $fail('This course category already exists.');
+                        $fail(__('app_http_controllers_admin_portal_categories_api_categories.coursecategoryexists'));
                     }
                 }
             ],
@@ -81,7 +81,7 @@ class CategoriesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Category successfully updated'
+                'message' => __('app_http_controllers_admin_portal_categories_api_categories.update_message')
             ]
         ], 200);
     }
@@ -89,7 +89,7 @@ class CategoriesController extends Controller
     public function destroy(PortalCategory $category)
     {
         if ($category->id === 1) {
-            abort(422, 'You cannot delete the default Miscelaneous category');
+            abort(422, __('app_http_controllers_admin_portal_categories_api_categories.destroy_youcannotdelete'));
         }
 
         $category->courses->each->update([
@@ -101,7 +101,7 @@ class CategoriesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Category successfully deleted'
+                'message' => __('app_http_controllers_admin_portal_categories_api_categories.destroy_message')
             ]
         ], 200);
     }

@@ -2,7 +2,7 @@
     <div class="w-full" v-if="attempt">
         <div class="flex items-center w-full">
             <h2 class="text-3xl font-medium mb-2">
-                Review: {{ attempt.title }}
+                {{ trans('js_pages_users_profile_components_assessments_attemtpreview.review') }}: {{ attempt.title }}
             </h2>
 
             <button 
@@ -10,30 +10,30 @@
                 @click.prevent="cancel"
             >
                 <i class="fas fa-chevron-left mr-1"></i>
-                Return to profile
+                {{ trans('js_pages_users_profile_components_assessments_attemtpreview.returntoprofile') }}
             </button>
         </div>
 
         <div class="mt-4">
-            <strong>Section: </strong> {{ attempt.section }}
+            <strong>{{ trans('js_pages_users_profile_components_assessments_attemtpreview.section') }}: </strong> {{ attempt.section }}
         </div>
 
         <div class="mt-2">
-            <strong>Type: </strong> {{ attempt.type }}
+            <strong>{{ trans('js_pages_users_profile_components_assessments_attemtpreview.type') }}: </strong> {{ attempt.type }}
         </div>
 
         <div class="mt-2">
-            <strong>Marked: </strong> {{ dayjs(attempt.marked_on).format('YYYY-MM-DD') }}
+            <strong>{{ trans('js_pages_users_profile_components_assessments_attemtpreview.marked') }}: </strong> {{ dayjs(attempt.marked_on).format('YYYY-MM-DD') }}
         </div>
 
         <div class="mt-2">
-            <strong>Score: </strong> {{ attempt.participant_score }}/{{ attempt.total_score }} ({{ attempt.percentage }}%)
+            <strong>{{ trans('js_pages_users_profile_components_assessments_attemtpreview.score') }}: </strong> {{ attempt.participant_score }}/{{ attempt.total_score }} ({{ attempt.percentage }}%)
         </div>
 
         <hr class="my-6">
 
         <h3 class="text-2xl font-light mb-4">
-            Results
+            {{ trans('js_pages_users_profile_components_assessments_attemtpreview.results') }}
         </h3>
 
         <ul>
@@ -55,7 +55,7 @@
                     ></component>
 
                     <h4 class="mb-4 font-medium text-lg">
-                        Answer:
+                        {{ trans('js_pages_users_profile_components_assessments_attemtpreview.answer') }}:
                     </h4>
 
                     <component 
@@ -66,7 +66,7 @@
 
                     <template v-if="question.type !== 'multiple_choice'">
                         <h4 class="my-4 font-medium text-lg">
-                            Marker comments:
+                            {{ trans('js_pages_users_profile_components_assessments_attemtpreview.markercomments') }}:
                         </h4>
 
                         <div
@@ -77,20 +77,20 @@
                         <div 
                             class="alert alert-blue"
                             v-else
-                        >No comments available.</div>
+                        >{{ trans('js_pages_users_profile_components_assessments_attemtpreview.nocomments') }}</div>
                     </template>
 
                     <div class="mt-4">
-                        <strong>Score: </strong> 
+                        <strong>{{ trans('js_pages_users_profile_components_assessments_attemtpreview.score') }}: </strong> 
 
-                        {{ question.mark.score }}/{{ question.score }} points
+                        {{ question.mark.score }}/{{ question.score }} {{ trans('js_pages_users_profile_components_assessments_attemtpreview.points') }}
                     </div>
 
                     <p 
                         v-if="question.mark.marker"
                         class="text-sm"
                     >
-                        <strong>Marked by: </strong>{{ question.mark.marker.fullname }}
+                        <strong>{{ trans('js_pages_users_profile_components_assessments_attemtpreview.markedby') }}: </strong>{{ question.mark.marker.fullname }}
                     </p>
                 </div>
             </li>
@@ -102,7 +102,7 @@
                 @click.prevent="cancel"
             >
                 <i class="fas fa-chevron-left mr-1"></i>
-                Return to profile
+                {{ trans('js_pages_users_profile_components_assessments_attemtpreview.returntoprofile') }}
             </button>
         </div>
     </div>

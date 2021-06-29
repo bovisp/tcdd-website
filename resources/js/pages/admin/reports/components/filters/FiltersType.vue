@@ -1,7 +1,7 @@
 <template>
     <div>
         <strong class="block font-bold text-md mb-2">
-            Type
+            {{ trans('js_pages_admin_reports_components_filters_filterstype.type') }}
         </strong>
 
         <label 
@@ -27,9 +27,9 @@ export default {
         return {
             type: null,
             types: [
-                { code: 'training_portal', name: 'Training Portal' },
-                { code: 'comet', name: 'COMET' },
-                { code: 'stay_connected', name: 'Stay Connected' }
+                { code: 'training_portal', name: this.trans('js_pages_admin_reports_components_filters_filterstype.trainingportal') },
+                { code: 'comet', name: this.trans('js_pages_admin_reports_components_filters_filterstype.comet') },
+                { code: 'stay_connected', name: this.trans('js_pages_admin_reports_components_filters_filterstype.stayconnected') }
             ]
         }
     },

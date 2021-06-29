@@ -5,7 +5,7 @@
             v-if="showAddButton"
             @click.prevent="addPartModal"
         >
-            Add part
+            {{ trans('js_components_contentbuilder_addpart.addpart') }}
         </button>
 
         <div 
@@ -14,7 +14,7 @@
             <hr class="my-8">
 
             <h4 class="w-full font-light text-center mb-6 text-2xl">
-                 New {{ ucfirst(type) }} Part
+                 {{ trans('js_components_contentbuilder_addpart.new') }} {{ ucfirst(type) }} {{ trans('js_components_contentbuilder_addpart.part') }}
             </h4>
 
             <component 
@@ -29,9 +29,13 @@
             v-if="addingPart" 
             @submit="add"
             @close="cancel"
-            okButtonText="Create"
+            ok-button-text="Submit"
+            cancel-button-text="Cancel"
+            okButtonText="trans('js_components_contentbuilder_addpart.create')"
         >
-            <h3 slot="header" class="mb-4">Add part</h3>
+            <h3 slot="header" class="mb-4">
+                {{ trans('js_components_contentbuilder_addpart.addpart') }}
+            </h3>
 
             <div slot="body">
                 <div class="flex mb-4">
@@ -63,7 +67,7 @@
 
                     <div class="w-8/12 px-4">
                         <p v-if="!description">
-                            Please select a type
+                            {{ trans('js_components_contentbuilder_addpart.pleaseselecttype') }}
                         </p>
 
                         <div 

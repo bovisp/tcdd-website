@@ -4,7 +4,7 @@
             class="btn btn-text text-red-500 text-sm"
             @click.prevent="modalActive = true"
         >
-            Delete question
+            {{ trans('js_pages_questions_questions_components_destroyquestion.deletequestion') }}
         </button>
 
         <modal 
@@ -19,9 +19,8 @@
             <template slot="body">
                 <div class="my-4">
                     <p class="text-red-500">
-                        Are you sure you want to do this? It is critical that you do not delete questions that 
-                        are associated with active assessments as this can cause serious errors. Are you sure you want to do this? 
-                        <strong>Only do this if you are absolutely sure this is what you want</strong>.
+                        {{ trans('js_pages_questions_questions_components_destroyquestion.deletequestionconfirm1') }}
+                        <strong>{{ trans('js_pages_questions_questions_components_destroyquestion.deletequestionconfirm2') }}</strong>.
                     </p>
                 </div>
             </template>

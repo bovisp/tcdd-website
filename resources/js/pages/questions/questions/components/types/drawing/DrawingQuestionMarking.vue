@@ -2,7 +2,7 @@
     <div>
         <img 
             :src="`${urlBase}${answer.drawing.data.replace('public', 'storage')}`" 
-            alt="Drawing image for answer"
+            :alt="trans('js_pages_questions_components_types_drawing_drawingquestionmarking.imagealttext')"
             class="block mx-auto max-w-full"
         >
 

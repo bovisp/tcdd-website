@@ -5,12 +5,12 @@
                 class="btn btn-text text-blue-500 ml-auto"
                 @click.prevent="cancel"
             >
-                Back to permissions
+                {{ trans('js_pages_permissions_permissionsedit.backtopermissions') }}
             </button>
         </div>
 
         <h1 class="text-3xl font-bold mb-4">
-            Edit: Permission - {{ permission.name }}
+            {{ trans('js_pages_permissions_permissionsedit.edit') }}: {{ trans('js_pages_permissions_permissionsedit.permission') }} - {{ permission.name }}
         </h1>
 
         <users-permissions-index 
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
     data () {

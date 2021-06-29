@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Assessments
+            {{ trans('js_pages_assessments_assessments_assessmentsindex.assessments') }}
         </h1> 
 
         <datatable 
@@ -13,7 +13,7 @@
             :order-key-directions="['asc', 'asc', 'asc']"
             :has-text-filter="true"
             :has-event="true"
-            event-text="Edit"
+            :event-text="trans('js_pages_assessments_assessments_assessmentsindex.edit')"
             event="assessments:edit"
         />
 
@@ -21,7 +21,7 @@
             class="alert alert-blue"
             v-else
         >
-            No assessments have been created.
+            {{ trans('js_pages_assessments_assessments_assessmentsindex.noassessments') }}
         </div>
     </div>
 </template>
@@ -33,9 +33,9 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'typeName', title: 'Type', sortable: true },
-                { field: 'name', title: 'Name', sortable: true },
-                { field: 'sectionName', title: 'Section', sortable: true }
+                { field: 'typeName', title: this.trans('js_pages_assessments_assessments_assessmentsindex.type	'), sortable: true },
+                { field: 'name', title: this.trans('js_pages_assessments_assessments_assessmentsindex.name'), sortable: true },
+                { field: 'sectionName', title: this.trans('js_pages_assessments_assessments_assessmentsindex.section'), sortable: true }
             ]
         }
     },

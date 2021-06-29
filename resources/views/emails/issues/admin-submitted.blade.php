@@ -33,7 +33,7 @@
  	</style>
 
 	<!-- MESSAGE SUBJECT -->
-	<title>TCDD Website - {{$issue->issuer->fullname}} has submitted an issue: {{$issue->code}}</title>
+	<title>{{ __('views_emails_issues_adminsubmitted.tcddwebsite') }} - {{$issue->issuer->fullname}} {{ __('views_emails_issues_adminsubmitted.hassubmitted') }}: {{$issue->code}}</title>
 
 </head>
 
@@ -94,7 +94,7 @@
 			padding-top: 25px;
 			color: #000000;
 			font-family: sans-serif;" class="header">
-				New issue submitted
+				{{ __('views_emails_issues_adminsubmitted.newissuesubmitted') }}
 		</td>
 	</tr>
 	
@@ -105,7 +105,7 @@
 			padding-top: 5px;
 			color: #000000;
 			font-family: sans-serif;" class="subheader">
-				Issue: {{$issue->code}}
+				{{ __('views_emails_issues_adminsubmitted.issue') }}: {{$issue->code}}
 		</td>
 	</tr>
 
@@ -118,9 +118,9 @@
 			padding-top: 25px; 
 			color: #000000;
             font-family: sans-serif;" class="paragraph">
-			<strong>Issue:</strong> {{ $issue->title }}<br>
-			<strong>Issuer:</strong> {{ $issue->issuer->fullname }}<br>
-            <strong>Date issued:</strong> {{ $issue->created_at->format('m/d/y') }}
+			<strong>{{ __('views_emails_issues_adminsubmitted.issue') }}:</strong> {{ $issue->title }}<br>
+			<strong>{{ __('views_emails_issues_adminsubmitted.issuer') }}:</strong> {{ $issue->issuer->fullname }}<br>
+            <strong>{{ __('views_emails_issues_adminsubmitted.dateissued') }}:</strong> {{ $issue->created_at->format('m/d/y') }}
 		</td>
 	</tr>
 

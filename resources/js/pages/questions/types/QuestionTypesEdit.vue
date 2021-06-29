@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            Edit: Question type - {{ questionType.name }}
+            {{ trans('js_pages_questions_types_questiontypesedit.edit') }}: {{ trans('js_pages_questions_types_questiontypesedit.questiontype') }} - {{ questionType.name }}
         </h1>
 
         <form 
@@ -15,7 +15,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    Name (English)
+                    {{ trans('js_pages_questions_types_questiontypesedit.nameenglish') }}
                 </label>
 
                 <input 
@@ -41,7 +41,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    Name (French)
+                    {{ trans('js_pages_questions_types_questiontypesedit.namefrench') }}
                 </label>
 
                 <input 
@@ -67,7 +67,7 @@
                     :class="{ 'text-red-500': errors.description_en }"
                     for="description_en"
                 >
-                    Description (English)
+                    {{ trans('js_pages_questions_types_questiontypesedit.descriptionenglish') }}
                 </label>
 
                 <textarea 
@@ -93,7 +93,7 @@
                     :class="{ 'text-red-500': errors.description_fr }"
                     for="description_fr"
                 >
-                    Description (French)
+                    {{ trans('js_pages_questions_types_questiontypesedit.descriptionfrnech') }}
                 </label>
 
                 <textarea 
@@ -117,14 +117,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Update question type
+                    {{ trans('js_pages_questions_types_questiontypesedit.updatequestiontype') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_questions_types_questiontypesedit.cancel') }}
                 </button>
             </div>
         </form>
@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
     data() {

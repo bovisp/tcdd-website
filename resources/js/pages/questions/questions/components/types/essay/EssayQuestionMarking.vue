@@ -1,6 +1,5 @@
 <template>
     <div 
-        
         class="content"
         v-html="answer.text.data"
     >

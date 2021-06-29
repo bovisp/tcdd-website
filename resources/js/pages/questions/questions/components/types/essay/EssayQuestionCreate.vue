@@ -12,7 +12,7 @@
             <span 
                 class="ml-2"
                 :class="{ 'text-red-500': errors.rich_text }"
-            >Answer can have a rich text editor (default: <span class="font-bold">false</span>)</span>
+            >{{ trans('js_pages_questions_questions_components_types_essay_essayquestioncreate.answerrichtexteditor') }} ({{ trans('js_pages_questions_questions_components_types_essay_essayquestioncreate.default') }}: <span class="font-bold">{{ trans('js_pages_questions_questions_components_types_essay_essayquestioncreate.false') }}</span>)</span>
         </label>
 
         <p

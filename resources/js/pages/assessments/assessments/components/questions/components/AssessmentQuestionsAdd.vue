@@ -9,7 +9,7 @@
                 :order-keys="['categoryName', 'name']"
                 :order-key-directions="['asc', 'asc']"
                 :has-event="true"
-                event-text="Add"
+                :event-text="trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.add')"
                 event="questions:add"
             />
 
@@ -17,7 +17,7 @@
                 class="alert alert-blue"
                 v-else
             >
-                No questions have been created.
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.noquestions') }}
             </div>
         </template>
 
@@ -32,7 +32,7 @@
                         class="block text-gray-700 font-bold mb-2" 
                         for="score"
                     >
-                        Question score
+                        {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.questionscore') }}
                     </label>
 
                     <input 
@@ -48,13 +48,13 @@
                         class="btn btn-blue btn-sm text-sm"
                         @click.prevent="add"
                     >
-                        Add score
+                        {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.addscore') }}
                     </button>
                 </div>
             </div>
 
             <div v-else>
-                Please click either of the "Add to page" buttons to add the question.
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.pleaseclick') }}
             </div>
 
             <hr class="my-8">
@@ -69,8 +69,8 @@ export default {
     data () {
         return {
             columns: [
-                { field: 'categoryName', title: 'Category', sortable: true },
-                { field: 'name', title: 'Name', sortable: true }
+                { field: 'categoryName', title: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.category'), sortable: true },
+                { field: 'name', title: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.name'), sortable: true }
             ],
             showQuestionSettings: false,
             score: null,

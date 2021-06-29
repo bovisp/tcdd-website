@@ -2,10 +2,10 @@
 	<strong class="mr-2">{{ __('langswitcher.switch_to') }}</strong>
 
 	<a href="{{ url('lang/en') }}" class="{{ app()->getLocale() === 'en' ? 'hidden' : 'block' }}">
-		English
+		{{ __('views_layouts_partials_langswitcher.english') }}
 	</a>
 
 	<a href="{{ url('lang/fr') }}" class="{{ app()->getLocale() === 'fr' ? 'hidden' : 'block' }}">
-		French
+		{{ __('views_layouts_partials_langswitcher.french') }}
 	</a>
 </div>

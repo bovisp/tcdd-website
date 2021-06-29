@@ -6,7 +6,7 @@
                 @click.prevent="update"
                 v-if="typeof permission.users !== 'undefined' && permission.users.length"
             >
-                Update
+                {{ trans('js_pages_permissions_components_userspermissionsindex.update') }}
             </button>
 
             <button 
@@ -17,7 +17,7 @@
                 }"
                 @click.prevent="$emit('create')"
             >
-                Give other users this permission
+                {{ trans('js_pages_permissions_components_userspermissionsindex.giveotheruserspermission') }}
             </button>
         </div>
 
@@ -37,7 +37,7 @@
             class="alert alert-blue"
             v-else
         >
-            No users currently have this permission.
+            {{ trans('js_pages_permissions_components_userspermissionsindex.nousers') }}
         </div>
     </div>
 </template>
@@ -51,8 +51,8 @@ export default {
         return {
             selected: [],
             columns: [
-                { field: 'firstname', title: 'First name', sortable: true },
-                { field: 'lastname', title: 'Last name', sortable: true },
+                { field: 'firstname', title: this.trans('js_pages_permissions_components_userspermissionsindex.firstname'), sortable: true },
+                { field: 'lastname', title: this.trans('js_pages_permissions_components_userspermissionsindex.lastname'), sortable: true },
             ],
         }
     },

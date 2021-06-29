@@ -103,7 +103,7 @@ export default {
                 str[i] = str[i].slice(0,1).toUpperCase() + str[i].slice(1,str[i].length);
             }
 
-            return `${str.join('')}Report`;
+            return `${str.join('')}${this.trans('js_pages_admin_reports_reports.report')}`;
         }
     },
 

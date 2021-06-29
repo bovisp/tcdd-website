@@ -8,7 +8,7 @@
                 :order-keys="['participant_lastname', 'participant_firstname']"
                 :order-key-directions="['asc', 'asc']"
                 :has-event="true"
-                event-text="Mark"
+                :event-text="trans('js_pages_assessments_assessments_components_marking_assessmentmarkingindex.mark')"
                 event="assessment:mark"
             ></datatable>
         </div>
@@ -22,9 +22,9 @@ export default {
     data () {
         return {
             columns: [
-                { field: 'participant_firstname', title: 'First name', sortable: true },
-                { field: 'participant_lastname', title: 'Last name', sortable: true },
-                { field: 'marked_on', title: 'Marking completed', sortable: false }
+                { field: 'participant_firstname', title: this.trans('js_pages_assessments_assessments_components_marking_assessmentmarkingindex.firstname'), sortable: true },
+                { field: 'participant_lastname', title: this.trans('js_pages_assessments_assessments_components_marking_assessmentmarkingindex.lastname'), sortable: true },
+                { field: 'marked_on', title: this.trans('js_pages_assessments_assessments_components_marking_assessmentmarkingindex.markingcompleted'), sortable: false }
             ]
         }
     },

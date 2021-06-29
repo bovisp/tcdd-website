@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            New course
+            {{ trans('js_pages_admin_portal_courses_adminportalcoursescreate.newcourse') }}
         </h1>
 
         <form 
@@ -14,7 +14,7 @@
                     for="portal_language_id"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    Language
+                    {{ trans('js_pages_admin_portal_courses_adminportalcoursescreate.language') }}
                 </label>
 
                 <div class="relative">
@@ -53,7 +53,7 @@
                     for="portal_category_id"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    Category
+                    {{ trans('js_pages_admin_portal_courses_adminportalcoursescreate.category') }}
                 </label>
 
                 <div class="relative">
@@ -93,7 +93,7 @@
                     :class="{ 'text-red-500': errors.moodle_course_id }"
                     for="moodle_course_id"
                 >
-                    Training Portal course ID
+                    {{ trans('js_pages_admin_portal_courses_adminportalcoursescreate.portalcourseid') }}
                 </label>
 
                 <input 
@@ -119,7 +119,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    Name (English)
+                    {{ trans('js_pages_admin_portal_courses_adminportalcoursescreate.nameenglish') }}
                 </label>
 
                 <input 
@@ -145,7 +145,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    Name (French)
+                    {{ trans('js_pages_admin_portal_courses_adminportalcoursescreate.namefrench') }}
                 </label>
 
                 <input 
@@ -169,14 +169,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    Add course
+                    {{ trans('js_pages_admin_portal_courses_adminportalcoursescreate.addcourse') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    Cancel
+                    {{ trans('js_pages_admin_portal_courses_adminportalcoursescreate.cancel') }}
                 </button>
             </div>
         </form>

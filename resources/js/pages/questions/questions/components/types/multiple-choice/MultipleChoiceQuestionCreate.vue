@@ -1,7 +1,7 @@
 <template>
     <div>
         <h4 class="text-lg font-medium mb-3">
-            General options
+            {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.generaloptions') }}
         </h4>
 
         <div
@@ -17,7 +17,7 @@
                 <span 
                     class="ml-2"
                     :class="{ 'text-red-500': errors.multiple_answers }"
-                >Question can have multiple answers (default: <span class="font-bold">false</span>)</span>
+                >{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.questionmultipleanswers') }} ({{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.default') }}: <span class="font-bold">{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.false') }}</span>)</span>
             </label>
 
             <p
@@ -40,7 +40,7 @@
                 <span 
                     class="ml-2"
                     :class="{ 'text-red-500': errors.shuffle_answers }"
-                >Answers should be randomly shuffled (default: <span class="font-bold">true</span>)</span>
+                >{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.answersrandomlyshuffled') }} ({{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.default') }}: <span class="font-bold">{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.true') }}</span>)</span>
             </label>
 
             <p
@@ -51,7 +51,7 @@
         </div>
 
         <h4 class="text-lg font-medium mb-3">
-            Possible answers
+            {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.possibleanswers') }}
         </h4>
 
         <div
@@ -63,7 +63,7 @@
                 class="w-32 flex flex-col items-center justify-start"
             >
                 <p class="block text-gray-700 font-bold mb-2">
-                    Correct
+                    {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.correct') }}
                 </p>
 
                 <input 
@@ -79,7 +79,7 @@
                     <label 
                         :for="`answer-${answer.id}-en`"
                         class="block text-gray-700 font-bold mb-2"
-                    >Answer (English)</label>
+                    >{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.answerenglish') }}</label>
 
                     <textarea 
                         :id="`answer-${answer.id}-en`"
@@ -93,7 +93,7 @@
                     <label 
                         :for="`answer-${answer.id}-fr`"
                         class="block text-gray-700 font-bold mb-2"
-                    >Answer (French)</label>
+                    >{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.answerfrench') }}</label>
 
                     <textarea 
                         :id="`answer-${answer.id}-fr`"
@@ -112,7 +112,7 @@
                 class="btn btn-blue btn-sm text-sm ml-auto"
                 @click.prevent="addAnswers"
             >
-                Add 3 more answers...
+                {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestioncreate.addmoreanswers') }}...
             </button>
         </div>
 

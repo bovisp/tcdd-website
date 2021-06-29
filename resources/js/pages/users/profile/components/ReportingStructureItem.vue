@@ -23,7 +23,7 @@
         </ul>
 
         <div class="alert alert-gray mt-2" v-else>
-            No {{ pluralize(title) }} have been linked to this user.
+            {{ trans('js_pages_users_profile_components_reportingstructureitem.no') }} {{ pluralize(title) }} {{ trans('js_pages_users_profile_components_reportingstructureitem.havebeenlinked') }}
         </div>
     </div>
 </template>

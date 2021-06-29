@@ -38,7 +38,7 @@ class SectionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Section successfully created'
+                'message' => __('app_http_controllers_admin_portal_sections_api_sections.store_message')
             ]
         ], 200);
     }
@@ -60,7 +60,7 @@ class SectionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Section successfully updated'
+                'message' => __('app_http_controllers_admin_portal_sections_api_sections.update_message')
             ]
         ], 200);
     }
@@ -72,7 +72,7 @@ class SectionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Section successfully deleted'
+                'message' => __('app_http_controllers_admin_portal_sections_api_sections.destroy_message')
             ]
         ], 200);
     }

@@ -25,7 +25,7 @@ class AssessmentInstructorsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Instructors updated'
+                'message' => __('app_http_controllers_assessments_assessments_api_assessmentinstructors.update_message')
             ]
         ], 200);
     }
@@ -57,7 +57,7 @@ class AssessmentInstructorsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Instructors successfully given permission to edit this exam.'
+                'message' => __('app_http_controllers_assessments_assessments_api_assessmentinstructors.store_message')
             ]
         ], 200);
     }

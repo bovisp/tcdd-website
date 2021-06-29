@@ -37,7 +37,7 @@ class TagsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Tag successfully created',
+                'message' => __('app_http_controllers_admin_portal_tags_api_tags.store_message'),
                 'tag' => $newTag
             ]
         ], 200);
@@ -60,7 +60,7 @@ class TagsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Tag successfully updated'
+                'message' => __('app_http_controllers_admin_portal_tags_api_tags.update_message')
             ]
         ], 200);
     }
@@ -72,7 +72,7 @@ class TagsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Tag successfully deleted'
+                'message' => __('app_http_controllers_admin_portal_tags_api_tags.destroy_message')
             ]
         ], 200);
     }

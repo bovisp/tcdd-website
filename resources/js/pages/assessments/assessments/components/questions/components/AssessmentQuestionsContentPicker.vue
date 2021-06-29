@@ -6,7 +6,7 @@
             @click.prevent="add"
         >
             <i class="fas fa-plus mr-1"></i>
-            Add content
+            {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentpicker.addcontent') }}
         </button>
 
         <div
@@ -17,7 +17,7 @@
                 for="content_type"
                 class="block text-gray-700 font-bold mb-2"
             >
-                Choose a type...
+                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentpicker.choosetype') }}...
             </label>
 
             <div class="relative">
@@ -63,13 +63,13 @@ export default {
         types () {
             if (this.assessment.locked) {
                 return  [
-                    { code: 'content', name: 'Explanitory content' }
+                    { code: 'content', name: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentpicker.explanitorycontent') }
                 ]
             }
 
             return [
-                { code: 'question', name: 'Question' },
-                { code: 'content', name: 'Explanitory content' },
+                { code: 'question', name: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentpicker.question') },
+                { code: 'content', name: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentpicker.explanitorycontent') },
             ]
         }
     },
