@@ -8,6 +8,21 @@ import './helpers/interceptors'
 window.Vue = require('vue')
 window.events = new Vue()
 
+import { 
+    Button,
+    Table,
+    Input,
+    Field,
+    Snackbar
+} from 'buefy'
+import 'buefy/dist/buefy.css'
+
+Vue.use(Button)
+Vue.use(Table)
+Vue.use(Input)
+Vue.use(Field)
+Vue.use(Snackbar)
+
 import getUrlBase from './mixins/urlBase'
 import authUser from './mixins/authUser'
 import error from './mixins/errors'

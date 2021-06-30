@@ -1,79 +1,46 @@
 <template>
-    <div class="w-full">
-        <h1 class="text-3xl font-bold mb-4">
+    <div>
+        <h1 class="title">
             {{ trans('js_pages_assessments_assessment-types_assessmenttypescreate.newassessmenttype') }}
         </h1>
 
-        <form 
-            @submit.prevent="store"
-        >
-            <div
-                class="w-full mb-4"
+        <form>
+            <b-field 
+                :label="trans('generic.nameenglish')"
+                :type="errors.name_en ? 'is-danger' : ''"
+                :message="errors.name_en ? errors.name_en[0] : ''"
             >
-                <label 
-                    class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.name_en }"
-                    for="name_en"
-                >
-                    {{ trans('js_pages_assessments_assessment-types_assessmenttypescreate.nameenglish') }}
-                </label>
+                <b-input v-model="form.name_en"></b-input>
+            </b-field>
 
-                <input 
-                    type="text" 
-                    v-model="form.name_en"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="name_en"
-                    :class="{ 'border-red-500': errors.name_en }"
-                >
-
-                <p
-                    v-if="errors.name_en"
-                    v-text="errors.name_en[0]"
-                    class="text-red-500 text-sm"
-                ></p>
-            </div>
-
-            <div
-                class="w-full mb-4"
+            <b-field 
+                :label="trans('generic.namefrench')"
+                :type="errors.name_fr ? 'is-danger' : ''"
+                :message="errors.name_fr ? errors.name_fr[0] : ''"
             >
-                <label 
-                    class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.name_fr }"
-                    for="name_fr"
-                >
-                    {{ trans('js_pages_assessments_assessment-types_assessmenttypescreate.namefrench') }}
-                </label>
+                <b-input v-model="form.name_fr"></b-input>
+            </b-field>
 
-                <input 
-                    type="text" 
-                    v-model="form.name_fr"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="name_fr"
-                    :class="{ 'border-red-500': errors.name_fr }"
-                >
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <b-button 
+                            type="is-info is-small"
+                            @click.prevent="store"
+                        >
+                            {{ trans('js_pages_assessments_assessment-types_assessmenttypesedit.updateassessmenttype') }}
+                        </b-button>
+                    </div>
 
-                <p
-                    v-if="errors.name_fr"
-                    v-text="errors.name_fr[0]"
-                    class="text-red-500 text-sm"
-                ></p>
-            </div>
-
-            <div
-                class="w-full"
-            >
-                <button 
-                    class="btn btn-blue text-sm"
-                >
-                    {{ trans('js_pages_assessments_assessment-types_assessmenttypescreate.addassessmenttype') }}
-                </button>
-
-                <button 
-                    class="btn btn-text text-sm"
-                    @click.prevent="cancel"
-                >
-                    {{ trans('js_pages_assessments_assessment-types_assessmenttypescreate.cancel') }}
-                </button>
+                    <div class="level-item">
+                        <b-button 
+                            type="is-text is-small"
+                            @click.prevent="cancel"
+                        >
+                            {{ trans('generic.cancel') }}
+                        </b-button>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -103,7 +70,12 @@ export default {
 
             this.cancel()
 
-            this.$toasted.success(data.data.message)
+            this.$buefy.snackbar.open({
+                message: data.data.message,
+                type: 'is-success',
+                position: 'is-top',
+                actionText: null
+            })
         },
     }
 }

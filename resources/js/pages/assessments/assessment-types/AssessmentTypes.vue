@@ -1,36 +1,46 @@
 <template>
-    <div class="flex flex-col items-center w-full lg:w-8/12 py-16 mx-auto">
-        <nav 
-            class="flex justify-end w-full items-center"
-            v-if="!creating && !updating"
-        >
-            <a 
-                href=""
-                @click.prevent="creating = true"
-                class="btn btn-text"
-            >{{ trans('js_pages_assessments_assessment-types_assessmenttypes.addassessmenttype') }}</a>
-        </nav>
+    <section
+        class="section"
+    >
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <nav
+                    class="level"
+                    v-if="!creating && !updating"
+                >
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <div class="level-item">
+                            <b-button 
+                                @click.prevent="creating = true"
+                                type="is-text"
+                            >{{ trans('js_pages_assessments_assessment-types_assessmenttypes.addassessmenttype') }}</b-button>
+                        </div>
+                    </div>
+                </nav>
 
-        <assessment-types-create 
-            v-if="creating"
-        />
+                <assessment-types-edit 
+                    v-if="updating"
+                />
 
-        <assessment-types-edit 
-            v-if="updating"
-        />
+                <assessment-types-create 
+                    v-if="creating"
+                />
 
-        <assessment-types-index 
-            v-if="!creating && !updating"
-        />
-    </div>
+                <assessment-types-index 
+                    v-if="!creating && !updating"
+                />
+            </div>
+        </div>
+    </section>
 </template>
 
 <script>
 export default {
-     data() {
+    data () {
         return {
-            creating: false,
-            updating: false
+            updating: false,
+            creating: false
         }
     },
 

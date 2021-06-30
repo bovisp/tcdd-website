@@ -30,7 +30,6 @@
 
         <modal 
             v-if="showModal" 
-            ok-button-text="Submit"
             cancel-button-text="Cancel"
             @submit="destroy"
             ok-button-text="Delete"

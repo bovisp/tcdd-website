@@ -1,20 +1,30 @@
 <template>
-    <div class="w-full">
-        <h1 class="text-3xl font-bold mb-4">
+    <div>
+        <h1 class="title">
             {{ trans('js_pages_assessments_assessment-types_assessmenttypesindex.assessmenttypes') }}
         </h1> 
 
-        <datatable 
-            :data="types"
-            :columns="columns"
-            :per-page="10"
-            :order-keys="['name']"
-            :order-key-directions="['asc']"
-            :has-text-filter="false"
-            :has-event="true"
-            :event-text="trans('js_pages_assessments_assessment-types_assessmenttypesindex.edit')"
-            event="assessment-types:edit"
-        />
+        <b-table 
+            :data="types" 
+            :default-sort="['name']"
+        >
+            <b-table-column 
+                field="name" 
+                :label="trans('js_pages_assessments_assessment-types_assessmenttypesindex.name')" 
+                v-slot="props"
+            >
+                {{ props.row.name }}
+            </b-table-column>
+
+            <b-table-column 
+                v-slot="props"
+            >
+                <b-button
+                    type="is-text is-small"
+                    @click.prevent="edit(props.row)"
+                >{{ trans('generic.edit') }}</b-button>
+            </b-table-column>
+        </b-table>
     </div>
 </template>
 
@@ -22,14 +32,6 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-    data() {
-        return {
-            columns: [
-                { field: 'name', title: this.trans('js_pages_assessments_assessment-types_assessmenttypesindex.name'), sortable: true }
-            ]
-        }
-    },
-
     computed: {
         ...mapGetters({
             types: 'assessmentTypes/assessmentTypes'
@@ -40,15 +42,17 @@ export default {
         ...mapActions({
             fetch: 'assessmentTypes/fetch',
             setEdit: 'assessmentTypes/setEdit'
-        })
+        }),
+
+        edit (type) {
+            this.setEdit(type)
+
+            window.events.$emit('assessment-types:edit')
+        }
     },
     
     async mounted () {
         await this.fetch()
-
-        window.events.$on('assessment-types:edit', type => {
-            this.setEdit(type)
-        })
     }
 }
 </script>
