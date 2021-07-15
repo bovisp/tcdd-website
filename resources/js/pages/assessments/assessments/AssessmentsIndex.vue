@@ -63,16 +63,16 @@ export default {
         edit (assessment) {
             this.setEdit(assessment)
 
-            window.events.$emit('assessment:edit')
+            window.events.$emit('assessments:edit')
         }
     },
     
     async mounted () {
         await this.fetch()
 
-        window.events.$on('assessments:edit', assessment => {
-            this.setEdit(assessment)
-        })
+        // window.events.$on('assessments:edit', assessment => {
+        //     this.setEdit(assessment)
+        // })
     }
 }
 </script>

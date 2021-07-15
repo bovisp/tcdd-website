@@ -15,7 +15,7 @@ export const fetch = async ({ commit, state }) => {
 export const setEdit = async ({ commit, state }, assessment) => {
     await commit('SET_ASSESSMENT', assessment)
 
-    await commit('SET_LOCK_STATUS', state.assessment.locked)
+    // await commit('SET_LOCK_STATUS', state.assessment.locked)
 
     return
 }

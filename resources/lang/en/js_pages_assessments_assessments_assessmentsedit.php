@@ -3,8 +3,6 @@
 return array (
   'backtoassessments' => 'Back to assessments',
   'duplicating' => 'Duplicating',
-  'edit' => 'Edit',
-  'assessment' => 'Assessment',
   'markingassessmentcompleted' => 'Marking for this assessment was completed on',
   'editsettings' => 'Edit settings',
   'instructors' => 'Instructors',

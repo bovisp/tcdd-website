@@ -23,9 +23,16 @@
                     v-if="!creating && !updating"
                 />
             </div>
-                <!-- <assessment-edit 
-                    v-if="updating"
-                /> -->
+
+            
+            
+            <div 
+                class="column is-two-thirds"
+                v-if="updating"
+            >
+                <assessments-edit />
+            </div>
+
             <div 
                 class="column is-half"
                 v-if="creating"

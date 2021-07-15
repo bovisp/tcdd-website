@@ -15,7 +15,9 @@ import {
     Field,
     Snackbar,
     Select,
-    Numberinput
+    Numberinput,
+    Tabs,
+    Modal
 } from 'buefy'
 import 'buefy/dist/buefy.css'
 
@@ -26,6 +28,8 @@ Vue.use(Field)
 Vue.use(Snackbar)
 Vue.use(Select)
 Vue.use(Numberinput)
+Vue.use(Tabs)
+Vue.use(Modal)
 
 import getUrlBase from './mixins/urlBase'
 import authUser from './mixins/authUser'

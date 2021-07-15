@@ -28,6 +28,6 @@ class CanEditAssessment
             return $next($request);
         }
         
-        abort(403, 'You are not authorized to view this assessment');
+        abort(403, __('app_http_middleware_caneditassessment.noviewassessment'));
     }
 }

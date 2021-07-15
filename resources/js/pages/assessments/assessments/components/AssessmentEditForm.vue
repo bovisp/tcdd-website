@@ -1,137 +1,57 @@
 <template>
     <div>
-        <form 
-            @submit.prevent="update"
-        >
-            <div
-                class="w-full lg:w-1/3 mb-4"
+        <form>
+            <b-field
+                :label="trans('generic.section')"
+                :type="errors.section_id ? 'is-danger' : ''"
+                :message="errors.section_id ? errors.section_id[0] : ''"
             >
-                <label 
-                    for="section_id"
-                    class="block text-gray-700 font-bold mb-2"
+                <b-select 
+                    expanded
+                    v-model="form.section_id"
                 >
-                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.section') }}
-                </label>
+                    <option
+                        :value="section.id"
+                        v-for="section in sections"
+                        :key="section.id"
+                        v-text="section.name"
+                    ></option>
+                </b-select>
+            </b-field>
 
-                <div class="relative">
-                    <select 
-                        id="section_id"
-                        v-model="form.section_id"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        :class="{ 'border-red-500': errors.section_id }"
-                    >
-                        <option value=""></option>
-
-                        <option
-                            :value="section.id"
-                            v-for="section in sections"
-                            :key="section.id"
-                            v-text="section.name"
-                        ></option>
-                    </select>
-
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
-
-                <p
-                    v-if="errors.section_id"
-                    v-text="errors.section_id[0]"
-                    class="text-red-500 text-sm"
-                ></p>
-            </div>
-
-            <div
-                class="w-full lg:w-1/3 mb-4"
+            <b-field
+                :label="trans('generic.type')"
+                :type="errors.assessment_type_id ? 'is-danger' : ''"
+                :message="errors.assessment_type_id ? errors.assessment_type_id[0] : ''"
             >
-                <label 
-                    for="assessment_type_id"
-                    class="block text-gray-700 font-bold mb-2"
+                <b-select 
+                    expanded
+                    v-model="form.assessment_type_id"
                 >
-                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.type') }}
-                </label>
+                    <option
+                        :value="type.id"
+                        v-for="type in types"
+                        :key="type.id"
+                        v-text="type.name"
+                    ></option>
+                </b-select>
+            </b-field>
 
-                <div class="relative">
-                    <select 
-                        id="assessment_type_id"
-                        v-model="form.assessment_type_id"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        :class="{ 'border-red-500': errors.assessment_type_id }"
-                    >
-                        <option value=""></option>
-
-                        <option
-                            :value="type.id"
-                            v-for="type in types"
-                            :key="type.id"
-                            v-text="type.name"
-                        ></option>
-                    </select>
-
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
-
-                <p
-                    v-if="errors.assessment_type_id"
-                    v-text="errors.assessment_type_id[0]"
-                    class="text-red-500 text-sm"
-                ></p>
-            </div>
-
-            <div
-                class="w-full mb-4"
+            <b-field 
+                :label="trans('generic.nameenglish')"
+                :type="errors.name_en ? 'is-danger' : ''"
+                :message="errors.name_en ? errors.name_en[0] : ''"
             >
-                <label 
-                    class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.name_en }"
-                    for="name_en"
-                >
-                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.nameenglish') }}
-                </label>
+                <b-input v-model="form.name_en"></b-input>
+            </b-field>
 
-                <input 
-                    type="text" 
-                    v-model="form.name_en"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="name_en"
-                    :class="{ 'border-red-500': errors.name_en }"
-                >
-
-                <p
-                    v-if="errors.name_en"
-                    v-text="errors.name_en[0]"
-                    class="text-red-500 text-sm"
-                ></p>
-            </div>
-
-            <div
-                class="w-full mb-4"
+            <b-field 
+                :label="trans('generic.namefrench')"
+                :type="errors.name_fr ? 'is-danger' : ''"
+                :message="errors.name_fr ? errors.name_fr[0] : ''"
             >
-                <label 
-                    class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.name_fr }"
-                    for="name_fr"
-                >
-                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.namefrench') }}
-                </label>
-
-                <input 
-                    type="text" 
-                    v-model="form.name_fr"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="name_fr"
-                    :class="{ 'border-red-500': errors.name_fr }"
-                >
-
-                <p
-                    v-if="errors.name_fr"
-                    v-text="errors.name_fr[0]"
-                    class="text-red-500 text-sm"
-                ></p>
-            </div>
+                <b-input v-model="form.name_fr"></b-input>
+            </b-field>
 
             <div
                 class="w-full mb-4"
@@ -141,7 +61,7 @@
                     :class="{ 'text-red-500': errors.description_en }"
                     for="description_en"
                 >
-                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.descriptionenglish') }}
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.descriptionenglish') }}
                 </label>
 
                 <vue-editor 
@@ -163,7 +83,7 @@
                     :class="{ 'text-red-500': errors.description_fr }"
                     for="description_fr"
                 >
-                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.descriptionfrnech') }}
+                    {{ trans('js_pages_assessments_assessments_assessmentscreate.descriptionfrench') }}
                 </label>
 
                 <vue-editor 
@@ -177,73 +97,46 @@
                 ></p>
             </div>
 
-            <div
-                class="w-full mb-4"
+            <b-field 
+                :label="trans('generic.completiontime')"
+                :type="errors.completion_time ? 'is-danger' : ''"
+                :message="errors.completion_time ? errors.completion_time[0] : ''"
             >
-                <label 
-                    class="block text-gray-700 font-bold mb-2" 
-                    :class="{ 'text-red-500': errors.completion_time }"
-                    for="completion_time"
-                >
-                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.completiontime') }}
-                </label>
-
-                <input 
-                    type="number" 
-                    min="1"
+                <b-numberinput 
                     v-model="form.completion_time"
-                    class="shadow appearance-none border rounded w-full md:w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                    id="completion_time"
-                    :class="{ 'border-red-500': errors.completion_time }"
-                >
+                    type="is-info"
+                ></b-numberinput>
+            </b-field>
 
-                <p
-                    v-if="errors.completion_time"
-                    v-text="errors.completion_time[0]"
-                    class="text-red-500 text-sm"
-                ></p>
-            </div>
+            <div class="level mt-6">
+                <div class="level-left">
+                    <div class="level-item">
+                        <b-button 
+                            type="is-info is-small"
+                            @click.prevent="update"
+                        >
+                            {{ trans('generic.update') }} {{ trans('generic.assessment') }}
+                        </b-button>
+                    </div>
 
-            <div
-                class="w-full"
-            >
-                <button 
-                    class="btn btn-blue text-sm"
-                >
-                    {{ isDuplicate ? trans('js_pages_assessments_assessments_components_assessmenteditform.save') : trans('js_pages_assessments_assessments_components_assessmenteditform.update') }} {{ trans('js_pages_assessments_assessments_components_assessmenteditform.assessment') }}
-                </button>
-
-                <button 
-                    class="btn btn-text text-sm"
-                    @click.prevent="duplicate"
-                    v-if="!isDuplicate"
-                >
-                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.duplicate') }}
-                </button>
-
-                <button 
-                    class="btn btn-text text-sm"
-                    @click.prevent="cancel"
-                    v-if="isDuplicate"
-                >
-                    {{ trans('js_pages_assessments_assessments_components_assessmenteditform.cancel') }}
-                </button>
+                    <div class="level-item">
+                        <b-button 
+                            type="is-text is-small"
+                            @click.prevent="cancel"
+                        >
+                            {{ trans('generic.cancel') }}
+                        </b-button>
+                    </div>
+                </div>
             </div>
         </form>
 
-        <hr class="block w-full mt-6 pt-6 border-t border-gray-200">
+        <hr>
 
         <destroy-assessment 
             v-if="hasRole(['administrator']) && !assessment.locked"
             @close="cancel"
         />
-
-        <div 
-            class="alert alert-red"
-            v-if="assessment.locked"
-        >
-            {{ trans('js_pages_assessments_assessments_components_assessmenteditform.cannotdelete') }}
-        </div>
     </div>
 </template>
 
@@ -255,7 +148,7 @@ export default {
     components: {
         VueEditor
     },
-    
+
     data() {
         return {
             form: {
@@ -266,12 +159,7 @@ export default {
                 section_id: null,
                 assessment_type_id: null,
                 completion_time: null
-            },
-            assessmentTabs: [
-                { id: 1, name: this.trans('js_pages_assessments_assessments_components_assessmenteditform.editsettings') },
-                { id: 2, name: this.trans('js_pages_assessments_assessments_components_assessmenteditform.instructors') },
-                { id: 3, name: this.trans('js_pages_assessments_assessments_components_assessmenteditform.participants') }
-            ]
+            }
         }
     },
 
@@ -279,8 +167,7 @@ export default {
         ...mapGetters({
             sections: 'sections/sections',
             types: 'assessmentTypes/assessmentTypes',
-            assessment: 'assessments/assessment',
-            isDuplicate: 'assessments/isDuplicate'
+            assessment: 'assessments/assessment'
         })
     },
 
@@ -290,12 +177,10 @@ export default {
             fetchTypes: 'assessmentTypes/fetch'
         }),
 
-        ...mapMutations({
-            cancelDuplication: 'assessments/SET_DUPLICATE_STATUS'
-        }),
+        async update () {
+            let { data } = await axios.put(`${this.urlBase}/api/assessments/${this.assessment.id}`, this.form)
 
-        duplicate () {
-            this.$emit('assessments:duplicate', this.form)
+            this.$toasted.success(data.data.message)
         },
 
         cancel () {
@@ -309,13 +194,7 @@ export default {
             this.form.type_id = null
             this.form.completion_time = null
 
-            this.cancelDuplication(false)
-        },
-
-        async update () {
-            let { data } = await axios.put(`${this.urlBase}/api/assessments/${this.assessment.id}`, this.form)
-
-            this.$toasted.success(data.data.message)
+            // this.cancelDuplication(false)
         }
     },
 
