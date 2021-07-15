@@ -1,36 +1,47 @@
 <template>
-    <div class="flex flex-col items-center w-full py-16 mx-auto">
-        <nav 
-            class="flex justify-end w-full items-center"
-            v-if="!creating && !updating"
-        >
-            <a 
-                href=""
-                @click.prevent="creating = true"
-                class="btn btn-text"
-            >{{ trans('js_pages_assessments_assessments_assessments.createassessment') }}</a>
-        </nav>
+    <section
+        class="section"
+    >
+        <div class="columns is-centered">
+            <div 
+                class="column"
+                v-if="!creating && !updating"
+            >
+                <nav class="level">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <div class="level-item">
+                            <b-button 
+                                @click.prevent="creating = true"
+                                type="is-text"
+                            >{{ trans('js_pages_assessments_assessments_assessments.createassessment') }}</b-button>
+                        </div>
+                    </div>
+                </nav>
 
-        <assessments-create 
-            v-if="creating"
-        />
-
-        <assessments-edit 
-            v-if="updating"
-        />
-
-        <assessments-index 
-            v-if="!creating && !updating"
-        />
-    </div>
+                <assessments-index 
+                    v-if="!creating && !updating"
+                />
+            </div>
+                <!-- <assessment-edit 
+                    v-if="updating"
+                /> -->
+            <div 
+                class="column is-half"
+                v-if="creating"
+            >
+                <assessments-create />
+            </div>
+        </div>
+    </section>
 </template>
 
 <script>
 export default {
-     data() {
+    data () {
         return {
-            creating: false,
-            updating: false
+            updating: false,
+            creating: false
         }
     },
 
