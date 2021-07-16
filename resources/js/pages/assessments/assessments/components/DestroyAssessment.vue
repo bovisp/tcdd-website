@@ -75,6 +75,8 @@ export default {
 
             this.isComponentModalActive = false
 
+            this.$toasted.success(data.message)
+
             this.$emit('close')
         }
     }
