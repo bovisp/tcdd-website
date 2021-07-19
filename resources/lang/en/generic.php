@@ -9,6 +9,8 @@ return array (
   'duplicate' => 'Dupliacte',
   'delete' => 'Delete',
   'update' => 'Update',
+  'firstname' => 'First name',
+  'lastname' => 'Last name',
   'descriptionenglish' => 'Description (English)',
   'assessment' => 'Assessment',
   'completiontime' => 'Completion time (minutes)',

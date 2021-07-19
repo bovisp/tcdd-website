@@ -51,7 +51,7 @@ Route::resource('/api/assessments/assessment-types', 'Assessments\AssessmentType
 Route::get('/assessments', 'Assessments\Assessments\AssessmentsController@index');
 Route::get('/assessments/{assessment}', 'Assessments\Assessments\AssessmentsController@show');
 Route::resource('/api/assessments', 'Assessments\Assessments\Api\AssessmentsController');
-Route::put('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@update');
+Route::delete('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@destroy');
 Route::get('/api/assessments/{assessment}/instructors/create', 'Assessments\Assessments\Api\AssessmentInstructorsController@create');
 Route::post('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@store');
 Route::put('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@update');

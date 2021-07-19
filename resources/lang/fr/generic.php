@@ -13,6 +13,8 @@ return array (
   'save' => 'f Save',
   'delete' => 'f Delete',
   'update' => 'f Update',
+  'firstname' => 'f First name',
+  'lastname' => 'f Last name',
   'descriptionenglish' => 'f Description (English)',
   'assessment' => 'f Assessment',
   'participants' => 'f Participants',

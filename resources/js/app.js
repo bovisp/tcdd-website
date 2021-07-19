@@ -13,11 +13,13 @@ import {
     Table,
     Input,
     Field,
-    Snackbar,
+    Toast,
     Select,
     Numberinput,
     Tabs,
-    Modal
+    Modal,
+    Message,
+    Dialog
 } from 'buefy'
 import 'buefy/dist/buefy.css'
 
@@ -25,11 +27,13 @@ Vue.use(Button)
 Vue.use(Table)
 Vue.use(Input)
 Vue.use(Field)
-Vue.use(Snackbar)
+Vue.use(Toast)
 Vue.use(Select)
 Vue.use(Numberinput)
 Vue.use(Tabs)
 Vue.use(Modal)
+Vue.use(Message)
+Vue.use(Dialog)
 
 import getUrlBase from './mixins/urlBase'
 import authUser from './mixins/authUser'

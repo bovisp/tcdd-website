@@ -70,11 +70,9 @@ export default {
 
             this.cancel()
 
-            this.$buefy.snackbar.open({
+            this.$buefy.toast.open({
                 message: data.data.message,
-                type: 'is-success',
-                position: 'is-top',
-                actionText: null
+                type: 'is-success'
             })
         },
     }

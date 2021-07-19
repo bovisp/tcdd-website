@@ -112,7 +112,7 @@
                 ></b-numberinput>
             </b-field>
 
-            <div class="level">
+            <div class="level mt-6">
                 <div class="level-left">
                     <div class="level-item">
                         <b-button 

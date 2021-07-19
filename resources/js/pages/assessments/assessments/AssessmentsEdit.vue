@@ -14,7 +14,7 @@
             </b-tab-item>
 
             <b-tab-item :label="trans('generic.instructors')">
-                Instructors
+                <assessment-instructors />
             </b-tab-item>
 
             <b-tab-item :label="trans('generic.participants')">

@@ -1,38 +1,25 @@
 <template>
-    <div>
-        <assessment-instructors-index 
-            v-if="showIndex && visible"
-            @create="showIndex = false"
-        />
+    <div class="columns is-centered">
+        <div class="column is-two-thirds">
+            <assessment-instructors-index 
+                v-if="showIndex"
+                @create="showIndex = false"
+            />
 
-        <assessment-instructors-create 
-            v-if="!showIndex && visible"
-            @cancel="reload"
-        />
+            <assessment-instructors-create 
+                v-else
+                @cancel="showIndex = true"
+            />
+        </div>
     </div>
 </template>
 
 <script>
 export default {
-    props: {
-        visible: {
-            type: Boolean,
-            required: true
-        }
-    },
-
     data () {
         return {
             showIndex: true
         }
-    },
-
-    methods: {
-        reload () {
-            this.showIndex = true
-
-            window.events.$emit('assessments:reload')
-        },
     }
 }
 </script>

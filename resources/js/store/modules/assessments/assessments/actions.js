@@ -261,3 +261,25 @@ export const setReviewStatus = async ({ commit, state }, payload) => {
 
     await commit('SET_ATTEMPT_ANSWERS', participantAnswers.data)
 }
+
+export const removeInstructor = async ({ commit, state }, instructor) => {
+    let { data } = await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/instructors`, {
+        data: { instructor }
+    })
+
+    await commit('REMOVE_INSTRUCTOR', instructor)
+
+    return data
+}
+
+export const addInstructors = async({ commit, state }, instructors) => {
+    let { data } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/instructors`, {
+        users: map(instructors, user => user.id)
+    })
+
+    console.log(data)
+
+    await commit('ADD_INSTRUCTORS', data.data.instructors)
+
+    return data
+}

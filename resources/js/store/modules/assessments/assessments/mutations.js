@@ -1,4 +1,4 @@
-import { orderBy, find, findIndex, isEmpty } from 'lodash-es'
+import { orderBy, find, findIndex, isEmpty, filter } from 'lodash-es'
 
 export const SET_ASSESSMENTS = (state, assessments) => state.assessments = assessments
 
@@ -113,4 +113,12 @@ export const REMOVE_MARKING_COMPLETED = (state) => {
     state.assessment.marking_completed = false
 
     state.assessment.marking_completed_on = null
+}
+
+export const REMOVE_INSTRUCTOR = (state, instructor) => {
+    state.assessment.editors = filter(state.assessment.editors, editor => editor.pivot.editor_id !== instructor.editor_id)
+}
+
+export const ADD_INSTRUCTORS = (state, instructors) => {
+    state.assessment.editors = instructors
 }
