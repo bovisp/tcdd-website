@@ -2,7 +2,5 @@
 
 return array (
   'addparticipants' => 'Add participants',
-  'cancel' => 'Cancel',
-  'firstname' => 'First name',
-  'lastname' => 'Last name',
+  'nousers' => 'There are no more participants that can be added to this exam.',
 );

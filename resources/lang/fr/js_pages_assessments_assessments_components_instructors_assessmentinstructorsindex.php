@@ -1,8 +1,7 @@
 <?php
 
 return array (
-  'update' => 'f Update',
   'addmoreinstructors' => 'f Add more instructors',
-  'nousers' => 'f There are no more instructors to add.',
+  'nousers' => 'f There are no instructors associated with this exam.',
   'addinstructors' => 'f Add instructors',
 );

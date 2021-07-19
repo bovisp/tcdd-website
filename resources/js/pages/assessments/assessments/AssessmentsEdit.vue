@@ -18,7 +18,7 @@
             </b-tab-item>
 
             <b-tab-item :label="trans('generic.participants')">
-                Participants
+                <assessment-participants />
             </b-tab-item>
 
             <b-tab-item :label="trans('generic.settings')">

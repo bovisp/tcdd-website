@@ -119,6 +119,16 @@ export const REMOVE_INSTRUCTOR = (state, instructor) => {
     state.assessment.editors = filter(state.assessment.editors, editor => editor.pivot.editor_id !== instructor.editor_id)
 }
 
+export const REMOVE_PARTICIPANT = (state, participant) => {
+    state.assessment.participants = filter(state.assessment.participants, u => {
+        return u.pivot.participant_id !== participant.participant_id
+    })
+}
+
 export const ADD_INSTRUCTORS = (state, instructors) => {
     state.assessment.editors = instructors
+}
+
+export const ADD_PARTICIPANTS = (state, participants) => {
+    state.assessment.participants = participants
 }

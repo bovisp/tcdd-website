@@ -272,14 +272,32 @@ export const removeInstructor = async ({ commit, state }, instructor) => {
     return data
 }
 
+export const removeParticipant = async ({ commit, state }, participant) => {
+    let { data } = await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/participants`, {
+        data: { participant }
+    })
+
+    await commit('REMOVE_PARTICIPANT', participant)
+
+    return data
+}
+
 export const addInstructors = async({ commit, state }, instructors) => {
     let { data } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/instructors`, {
         users: map(instructors, user => user.id)
     })
 
-    console.log(data)
-
     await commit('ADD_INSTRUCTORS', data.data.instructors)
+
+    return data
+}
+
+export const addParticipants = async({ commit, state }, participants) => {
+    let { data } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/participants`, {
+        users: map(participants, user => user.id)
+    })
+
+    await commit('ADD_PARTICIPANTS', data.data.participants)
 
     return data
 }

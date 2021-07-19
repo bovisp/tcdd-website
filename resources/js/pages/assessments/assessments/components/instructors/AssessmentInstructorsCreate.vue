@@ -31,7 +31,7 @@
         >
             <template #empty>
                 <b-message type="is-info">
-                    {{ trans('js_pages_assessments_assessments_components_instructors_assessmentinstructorsindex.nousers') }}
+                    {{ trans('js_pages_assessments_assessments__components_instructors_assessmentinstructorscreate.nousers') }}
                 </b-message>
             </template>
         </b-table>    
@@ -40,7 +40,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { map } from 'lodash-es'
 
 export default {
     data () {

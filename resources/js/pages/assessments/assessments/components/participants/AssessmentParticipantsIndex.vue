@@ -1,144 +1,87 @@
 <template>
     <div>
-        <div class="mx-auto w-full lg:w-1/2 mb-4">
-            <div class="flex justify-end">
-                <button 
-                    class="btn btn-blue btn-sm text-sm"
-                    @click.prevent="update"
-                    v-if="typeof assessment.participants !== 'undefined' && assessment.participants.length"
-                >
-                    Update participants
-                </button>
+        <nav class="level">
+            <div class="level-left"></div>
 
-                <button 
-                    class="btn btn-text btn-sm text-sm"
-                    :class="{ 
-                        'ml-2' : typeof assessment.participants !== 'undefined' && assessment.participants.length,
-                        'ml-auto' : typeof assessment.participants === 'undefined'
-                    }"
-                    @click.prevent="$emit('create')"
-                >
-                    {{ trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.addmoreparticipants') }}
-                </button>
+            <div class="level-right">
+                <div class="level-item">
+                    <b-button 
+                        @click.prevent="$emit('create')"
+                        type="is-text is-small"
+                    >{{ trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.addmoreparticipants') }}</b-button>
+                </div>
             </div>
-        </div>
+        </nav>
 
-        <div class="flex justify-center">
-            <div 
-                class="w-full lg:w-1/2"
-                v-if="typeof assessment.participants !== 'undefined' && assessment.participants.length"
+        <b-table 
+            :data="assessment.participants" 
+            :default-sort="['lastname']"
+        >
+            <b-table-column 
+                field="firstname" 
+                :label="trans('generic.firstname')" 
+                v-slot="props"
             >
-                <datatable 
-                    :data="assessment.participants"
-                    :columns="columns"
-                    :selected-items="selectedUsers"
-                    :per-page="10"
-                    :order-keys="['lastname', 'firstname']"
-                    :order-key-directions="['asc', 'asc']"
-                    :has-text-filter="false"
-                    :checkable="true"
-                    :has-event="true"
-                    event-text-boolean="pivot.activated"
-                    :event-text-true="trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.deactivate')"
-                    :event-text-false="trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.activate')"
-                    event="assessment:activate"
-                    no-event-if-text-column-boolean="completed"
-                    text-column-text="Completed"
-                    key="participants"
-                ></datatable>
-            </div>
+                {{ props.row.firstname }}
+            </b-table-column>
 
-            <div 
-                class="alert alert-blue w-full lg:w-1/2"
-                v-else
+            <b-table-column 
+                field="lastname" 
+                :label="trans('generic.lastname')" 
+                v-slot="props"
             >
-                {{ trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.nousers') }}
-            </div>
-        </div>
+                {{ props.row.lastname }}
+            </b-table-column>
+
+            <b-table-column 
+                 v-slot="props"
+            >
+                <b-button
+                    type="is-text"
+                    class="is-small has-text-danger"
+                    @click.prevent="$buefy.dialog.confirm({
+                        title: 'Remove participant',
+                        message: 'Are you sure you want to <b>remove</b> this participant?',
+                        confirmText: 'Remove',
+                        type: 'is-danger',
+                        hasIcon: true,
+                        onConfirm: () => destroy(props.row.pivot)
+                    })"
+                >Remove</b-button>
+            </b-table-column>
+
+            <template #empty>
+                <b-message type="is-info">
+                    There are no participants associated with this assessment.
+                </b-message>
+            </template>
+        </b-table>
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { map, intersection } from 'lodash-es'
 
 export default {
-    data () {
-        return {
-            selected: [],
-            columns: [
-                { field: 'firstname', title: this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.firstname'), sortable: true },
-                { field: 'lastname', title: this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.lastname'), sortable: true },
-            ]
-        }
-    },
-
     computed: {
         ...mapGetters({
             assessment: 'assessments/assessment'
-        }),
-
-        selectedUsers () {
-            return map(this.assessment.participants, user => user.id)
-        }
-    },
-
-    watch: {
-        assessment: {
-            deep: true,
-
-            handler () {
-                this.selected = this.selectedUsers
-
-                window.events.$emit('datatable:reload-selected', this.selected)
-            }
-        }
+        })
     },
 
     methods: {
         ...mapActions({
-            fetchAssessment: 'assessments/fetchAssessment',
-            activateParticipant: 'assessments/activateParticipant'
+            removeParticipant: 'assessments/removeParticipant'
         }),
 
-        async update () {
-            let { data } = await axios.put(`${this.urlBase}/api/assessments/${this.assessment.id}/participants`, {
-                users: this.selected
+        async destroy (participant) {
+            let data = await this.removeParticipant(participant)
+
+            this.$buefy.toast.open({
+                message: data.data.message,
+                type: 'is-success'
             })
-
-            await this.reload()
-
-            window.events.$emit('datatable:reload-selected', map(
-                this.assessment.participants, participant => participant.id
-            ))
-
-            this.$toasted.success(data.data.message)
-        },
-
-        async reload () {
-            await this.fetchAssessment(this.assessment.id)
         }
-    },
-
-    async mounted () {
-        this.selected = this.selectedUsers
-
-        window.events.$on('users:selected', selectedUsers => {
-            this.selected = intersection(selectedUsers, this.selectedUsers)
-        })
-
-        window.events.$on('assessments:reload', async () => {
-            await this.reload()
-        })
-
-        window.events.$on('assessment:activate', async (participant) => {
-            await this.activateParticipant({
-                participantId: participant.pivot.id,
-                isActivated: participant.pivot.activated
-            })
-
-            // this.$toasted.success(`${participant.fullname} has been successfully ${participant.pivot.activated ? 'deactivated' : 'activated'}.`)
-        })
     }
 }
 </script>

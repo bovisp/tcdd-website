@@ -16,7 +16,7 @@ class AssessmentInstructorsController extends Controller
 
     public function destroy(Assessment $assessment)
     {
-        $instructor = DB::table('assessment_editors')
+        DB::table('assessment_editors')
             ->where('assessment_id', $assessment->id)
             ->where('editor_id', request('instructor')['editor_id'])
             ->delete();
