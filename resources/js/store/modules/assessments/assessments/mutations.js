@@ -132,3 +132,7 @@ export const ADD_INSTRUCTORS = (state, instructors) => {
 export const ADD_PARTICIPANTS = (state, participants) => {
     state.assessment.participants = participants
 }
+
+export const SET_DUPLICATION_STATUS = (state, status) => {
+    state.isDuplicating = status
+}

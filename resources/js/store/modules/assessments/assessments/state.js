@@ -9,5 +9,6 @@ export default {
 	isDuplicate: false,
 	attempts: [],
 	attemptAnswers: [],
-	participantAnswer: null
+	participantAnswer: null,
+	isDuplicating: false
 }

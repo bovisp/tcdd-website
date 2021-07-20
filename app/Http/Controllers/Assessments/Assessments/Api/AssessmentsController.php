@@ -103,7 +103,8 @@ class AssessmentsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => __('app_http_controllers_assessments_assessments_api_assessments.update_message')
+                'message' => __('app_http_controllers_assessments_assessments_api_assessments.update_message'),
+                'assessment' => new AssessmentShowResource($assessment)
             ]
         ], 200);
     }

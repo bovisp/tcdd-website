@@ -119,14 +119,25 @@
                         </b-button>
                     </div>
 
-                    <div class="level-item">
-                        <b-button 
-                            type="is-text is-small"
-                            @click.prevent="cancel"
-                        >
-                            {{ trans('generic.cancel') }}
-                        </b-button>
-                    </div>
+                    <template v-if="!isDuplicating">
+                        <div class="level-item">
+                            <b-button 
+                                type="is-text is-small"
+                                @click.prevent="duplicate"
+                            >
+                                {{ trans('generic.duplicate') }}
+                            </b-button>
+                        </div>
+
+                        <div class="level-item">
+                            <b-button 
+                                type="is-text is-small"
+                                @click.prevent="cancel"
+                            >
+                                {{ trans('generic.cancel') }}
+                            </b-button>
+                        </div>
+                    </template>
                 </div>
             </div>
         </form>
@@ -167,20 +178,36 @@ export default {
         ...mapGetters({
             sections: 'sections/sections',
             types: 'assessmentTypes/assessmentTypes',
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            isDuplicating: 'assessments/isDuplicating'
         })
     },
 
     methods: {
         ...mapActions({
             fetchSections: 'sections/fetch',
-            fetchTypes: 'assessmentTypes/fetch'
+            fetchTypes: 'assessmentTypes/fetch',
+            duplicateAssessment: 'assessments/duplicateAssessment',
+            setAssessment: 'assessments/setEdit'
+        }),
+
+        ...mapMutations({
+            setDuplicationStatus: 'assessments/SET_DUPLICATION_STATUS'
         }),
 
         async update () {
             let { data } = await axios.put(`${this.urlBase}/api/assessments/${this.assessment.id}`, this.form)
 
-            this.$toasted.success(data.data.message)
+            await this.setAssessment(data.data.assessment)
+
+            await this.setDuplicationStatus(false)
+
+            this.$scrollTo('#title')
+
+            this.$buefy.toast.open({
+                message: data.data.message,
+                type: 'is-success'
+            })
         },
 
         cancel () {
@@ -193,8 +220,33 @@ export default {
             this.form.section_id = null
             this.form.type_id = null
             this.form.completion_time = null
+        },
 
-            // this.cancelDuplication(false)
+        async duplicate () {
+            await this.duplicateAssessment()
+
+            await this.populateForm()
+
+            this.$scrollTo('#title')
+
+            this.$buefy.toast.open({
+                message: 'Assessment successfully duplicated.',
+                type: 'is-success'
+            })
+        },
+
+        async cancelDuplication () {
+
+        },
+
+        populateForm () {
+            this.form.name_en = this.assessment.name_en
+            this.form.name_fr = this.assessment.name_fr
+            this.form.description_en = this.assessment.description_en
+            this.form.description_fr = this.assessment.description_fr
+            this.form.section_id = this.assessment.section_id
+            this.form.assessment_type_id = this.assessment.assessment_type_id
+            this.form.completion_time = this.assessment.completion_time
         }
     },
 
@@ -202,13 +254,7 @@ export default {
         await this.fetchSections()
         await this.fetchTypes()
 
-        this.form.name_en = this.assessment.name_en
-        this.form.name_fr = this.assessment.name_fr
-        this.form.description_en = this.assessment.description_en
-        this.form.description_fr = this.assessment.description_fr
-        this.form.section_id = this.assessment.section_id
-        this.form.assessment_type_id = this.assessment.assessment_type_id
-        this.form.completion_time = this.assessment.completion_time
+        this.populateForm()
     }
 }
 </script>

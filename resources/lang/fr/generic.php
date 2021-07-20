@@ -9,6 +9,7 @@ return array (
   'nameenglish' => 'f Name (English)',
   'namefrench' => 'f  Name (French)',
   'cancel' => 'f Cancel',
+  'cancelduplication' => 'f Cancel duplication',
   'duplicate' => 'f Duplicate',
   'save' => 'f Save',
   'delete' => 'f Delete',

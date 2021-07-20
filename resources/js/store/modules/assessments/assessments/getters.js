@@ -19,3 +19,5 @@ export const attempts = state => state.attempts
 export const attemptAnswers = state => state.attemptAnswers
 
 export const participantAnswer = state => state.participantAnswer
+
+export const isDuplicating = state => state.isDuplicating

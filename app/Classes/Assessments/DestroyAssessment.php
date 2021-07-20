@@ -16,5 +16,14 @@ class DestroyAssessment
     public function destroy()
     {
         $this->assessment->delete();
+
+        $this->removeParticipantsAndInstructors();
+    }
+
+    protected function removeParticipantsAndInstructors()
+    {
+        $this->assessment->editors()->detach();
+
+        $this->assessment->participants()->detach();
     }
 }

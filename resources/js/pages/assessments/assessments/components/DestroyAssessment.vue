@@ -4,7 +4,9 @@
             type="is-text has-text-danger"
             @click.prevent="isComponentModalActive = true"
         >
-            {{ trans('generic.delete') }} {{ trans('generic.assessment') }}
+            <span v-if="!isDuplicating">{{ trans('generic.delete') }} {{ trans('generic.assessment') }}</span>
+            
+            <span v-else>{{ trans('generic.cancelduplication') }}</span>
         </b-button>
 
         <b-modal
@@ -54,7 +56,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
     data () {
@@ -65,17 +67,27 @@ export default {
 
     computed: {
         ...mapGetters({
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            isDuplicating: 'assessments/isDuplicating'
         })
     },
 
     methods: {
+        ...mapMutations({
+            setDuplicationStatus: 'assessments/SET_DUPLICATION_STATUS'
+        }),
+
         async destroy () {
             let { data } = await axios.delete(`${this.urlBase}/api/assessments/${this.assessment.id}`)
 
+            await this.setDuplicationStatus(false)
+
             this.isComponentModalActive = false
 
-            this.$toasted.success(data.message)
+            this.$buefy.toast.open({
+                message: data.data.message,
+                type: 'is-success'
+            })
 
             this.$emit('close')
         }

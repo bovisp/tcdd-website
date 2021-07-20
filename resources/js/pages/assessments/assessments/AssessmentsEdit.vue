@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 class="title">
+        <h1 class="title" id="title">
             {{ trans('generic.edit') }}: {{ trans('generic.assessment') }} - {{ assessment.name }}
         </h1>
 
