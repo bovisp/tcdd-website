@@ -40,6 +40,12 @@
                     @click.prevent="edit(props.row)"
                 >{{ trans('generic.edit') }}</b-button>
             </b-table-column>
+
+            <template #empty>
+                <b-message type="is-info">
+                    You have no assessments linked to you.
+                </b-message>
+            </template>
         </b-table>
     </div>
 </template>

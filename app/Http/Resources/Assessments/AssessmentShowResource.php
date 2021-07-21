@@ -4,6 +4,7 @@ namespace App\Http\Resources\Assessments;
 
 use App\AssessmentAttempt;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Assessments\AssessmentPageResource;
 
 class AssessmentShowResource extends JsonResource
 {

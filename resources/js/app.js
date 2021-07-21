@@ -12,6 +12,7 @@ import {
     Button,
     Table,
     Input,
+    Icon,
     Field,
     Toast,
     Select,
@@ -34,6 +35,7 @@ Vue.use(Tabs)
 Vue.use(Modal)
 Vue.use(Message)
 Vue.use(Dialog)
+Vue.use(Icon)
 
 import getUrlBase from './mixins/urlBase'
 import authUser from './mixins/authUser'
@@ -63,6 +65,7 @@ window.events.$on('errors-general', error => {
 })
 
 import store from './store'
+import Vue from 'vue'
 
 const files = require.context('./', true, /\.vue$/i)
 files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))

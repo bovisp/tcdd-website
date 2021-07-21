@@ -10,7 +10,7 @@
             type="is-boxed"
         >
             <b-tab-item :label="trans('generic.assessment')">
-                Assessment
+                <assessment-pages />
             </b-tab-item>
 
             <b-tab-item :label="trans('generic.instructors')">
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     data () {
