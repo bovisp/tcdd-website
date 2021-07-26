@@ -62,7 +62,7 @@ Route::patch('/api/assessments/{assessment}/participants/activate', 'Assessments
 Route::post('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@store');
 Route::delete('/api/assessments/{assessment}/page/{page}', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@destroy');
 Route::patch('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@update');
-Route::get('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@index');
+Route::get('/api/assessments/{assessment}/pages', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@index');
 Route::get('/api/assessments/{assessment}/questions', 'Assessments\Assessments\Api\AssessmentQuestionsController@index');
 Route::patch('/api/assessments/{assessment}/lock', 'Assessments\Assessments\Api\AssessmentLockController@update');
 Route::post('/api/assessments/{assessment}/duplicate', 'Assessments\Assessments\Api\DuplicateAssessmentController@store');

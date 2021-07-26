@@ -1,44 +1,28 @@
 <template>
-    <div>
+    <div v-if="assessment">
         <div class="level">
-            <div class="level-left">
-                <div class="level-item">
-                    <strong class="mr-2">{{ trans('generic.totalscore') }}:</strong> {{ totalScore }}
-                </div>
-            </div>
+            <div class="level-left"></div>
 
             <div class="level-right">
                 <div class="level-item">
-                    <b-button 
+                    <b-button
                         type="is-info"
-                        :class="{ 'btn-disabled': assessment.locked }"
+                        icon-left="plus"
                         @click.prevent="add"
-                        :disabled="assessment.locked"
-                    >
-                        <b-icon
-                            icon="plus"
-                            size="is-small"
-                            class="mr-1"
-                        />
-
-                        {{ trans('generic.addpage') }}
-                    </b-button>
+                    >{{ trans('generic.addpage') }}</b-button>
                 </div>
 
                 <div 
                     class="level-item"
-                    v-if="pages.length !== 0"
+                    v-if="assessment.pages"
                 >
                     <b-field>
-                        <b-select 
-                            v-model="page"
-                            @change.native="setPage"
-                        >
+                        <b-select v-model="pageNumber">
                             <option
-                                :value="p.number"
-                                v-for="p in pages"
-                                :key="p.id"
-                                v-text="`${trans('generic.page')} ${p.number}`"
+                                :value="p"
+                                v-for="p in assessment.pages"
+                                :key="p"
+                                v-text="`${trans('generic.page')} ${p}`"
                             ></option>
                         </b-select>
                     </b-field>
@@ -46,79 +30,62 @@
             </div>
         </div>
 
-        <template v-if="currentPage">
+        <template v-if="assessment.pages">
+            <hr class="my-4">
+
             <assessment-page />
         </template>
     </div>
-    <!-- <div id="list-container" class="content">
-        <ol id="list">
-          
-        </ol>
-    </div> -->
 </template>
 
 <script>
-import autoScroll from 'dom-autoscroller'
-import dragula from 'dragula'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     data () {
         return {
-            page: null
+            pageNumber: null
         }
     },
 
     computed: {
         ...mapGetters({
-            pages: 'assessments/pages',
-            totalScore: 'assessments/totalScore',
             assessment: 'assessments/assessment',
-            currentPage: 'assessments/currentPage'
+            page: 'assessments/page'
         })
+    },
+
+    watch: {
+        async pageNumber () {
+            await this.fetchPage(this.pageNumber)
+
+            this.pageNumber = this.page.number
+        }
     },
 
     methods: {
         ...mapActions({
-            add: 'assessments/addPage',
-            fetch: 'assessments/fetchPages',
-            setCurrentPage: 'assessments/setCurrentPage' 
+            fetchPage: 'assessments/fetchPage',
+            addPage: 'assessments/addPage'
         }),
 
-        async setPage () {
-            await this.setCurrentPage(this.page)
+        async add () {
+            await this.addPage()
 
-            this.changePageNumber()
-        },
-
-        changePageNumber () {
-            if (!this.currentPage) {
-                this.page = null
-
-                return
-            }
-            
-            this.page = this.currentPage.number
+            this.pageNumber = this.page.number
         }
     },
 
     async mounted () {
-        await this.fetch(this.assessment.id)
+        await this.fetchPage()
 
-        this.changePageNumber()
-        // var drake = dragula([document.querySelector('#list')]);
+        if (this.page) {
+            this.pageNumber = this.page.number
+        }
 
-        // drake.on('dragend', () => console.log('dropped'))
+        window.events.$on('page:deleted', () => this.pageNumber = null)
 
-        // var scroll = autoScroll([
-        //         window,
-        //         document.querySelector('#list-container')
-        //     ],{
-        //     margin: 20,
-        //     autoScroll: function(){
-        //         return this.down && drake.dragging;
-        //     }
-        // });
+        window.events.$on('page:update', pageNumber => this.pageNumber = pageNumber)
     }
 }
 </script>

@@ -11,6 +11,7 @@ return array (
   'cancel' => 'f Cancel',
   'cancelduplication' => 'f Cancel duplication',
   'totalscore' => 'f Total score',
+  'points' => 'f Points',
   'page' => 'f Page',
   'addpage' => 'f Add page',
   'duplicate' => 'f Duplicate',

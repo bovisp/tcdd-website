@@ -2,7 +2,7 @@ export const assessments = state => state.assessments
 
 export const assessment = state => state.assessment
 
-export const pages = state => state.pages
+export const page = state => state.page
 
 export const currentPage = state => state.currentPage
 

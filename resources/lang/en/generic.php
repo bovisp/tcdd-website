@@ -8,6 +8,7 @@ return array (
   'totalscore' => 'Total score',
   'addpage' => 'Add page',
   'cancelduplication' => 'Cancel duplication',
+  'points' => 'Points',
   'page' => 'Page',
   'save' => 'Save',
   'duplicate' => 'Duplicate',

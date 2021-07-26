@@ -20,16 +20,14 @@ export const setEdit = async ({ commit, state }, assessment) => {
     return
 }
 
-export const fetchPages = async ({ commit, dispatch }, assessmentId) => {
-    let { data: pages } = await axios.get(`${urlBase}/api/assessments/${assessmentId}/page`)
+export const fetchPage = async ({ state, commit, dispatch }, page = null) => {
+    let data = await axios.get(`${urlBase}/api/assessments/${state.assessment.id}/pages?page=${page ? page : ''}`)
 
-    await commit('SET_PAGES', pages.data)
+    await commit('SET_PAGE', data.data.data)
 
-    await commit('SET_CURRENT_PAGE')
+    // await commit('SET_CURRENT_PAGE_SCORE')
 
-    await commit('SET_CURRENT_PAGE_SCORE')
-
-    await dispatch('getTotalScore')
+    // await dispatch('getTotalScore')
 }
 
 export const getTotalScore = async ({ state, commit }) => {
@@ -51,34 +49,21 @@ export const getTotalScore = async ({ state, commit }) => {
 export const addPage = async ({ state, commit }) => {
     let { data: page } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/page`)
 
-    await commit('ADD_PAGE', page)
+    await commit('ADD_PAGE', page.data.number)
 
-    await commit('SET_CURRENT_PAGE', page.number)
+    await commit('SET_PAGE', page.data)
 
-    await commit('SET_CURRENT_PAGE_SCORE')
+    // await commit('SET_CURRENT_PAGE_SCORE')
 }
 
-export const setCurrentPage = async ({ commit }, page) => {
-    await commit('SET_CURRENT_PAGE', page)
+export const destroyPage = async ({ dispatch, commit, state }) => {
+    await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/page/${state.page.id}`)
 
-    await commit('SET_CURRENT_PAGE_SCORE')
+    await commit('CHANGE_PAGE_COUNT', state.assessment.pages - 1)
 }
 
-export const destroyPage = async ({ dispatch, commit, state }, pageId) => {
-    await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/page/${pageId}`)
-
-    await dispatch('fetchPages', state.assessment.id)
-}
-
-export const updatePageNumber = async ({ dispatch, commit, state }, payload) => {
-    await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/page`, {
-        newPageNumber: payload.newPageNumber,
-        oldPageNumber: payload.oldPageNumber
-    })
-
-    await dispatch('fetchPages', state.assessment.id)
-
-    await commit('SET_CURRENT_PAGE', payload.newPageNumber)
+export const updatePageNumber = async ({ state }, payload) => {
+    await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/page`, payload)
 }
 
 export const fetchAvailableQuestions = async ({ commit }, assessmentId) => {

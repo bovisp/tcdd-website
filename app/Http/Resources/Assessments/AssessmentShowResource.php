@@ -42,7 +42,8 @@ class AssessmentShowResource extends JsonResource
             }),
             'locked' => $this->locked ? true : false,
             'marking_completed' => $this->marking_completed ? true : false,
-            'marking_completed_on' => $this->marking_completed_on
+            'marking_completed_on' => $this->marking_completed_on,
+            'pages' => $this->pages->count()
         ];
     }
 }
