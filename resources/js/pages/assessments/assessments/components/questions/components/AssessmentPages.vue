@@ -86,6 +86,23 @@ export default {
         window.events.$on('page:deleted', () => this.pageNumber = null)
 
         window.events.$on('page:update', pageNumber => this.pageNumber = pageNumber)
+
+        window.events.$on('assessment:question-added', async () => {
+            await this.fetchPage(this.pageNumber)
+
+            this.$buefy.toast.open({
+                message: 'Question successfully added to page.',
+                type: 'is-success'
+            })
+        })
+
+        window.events.$on('page:item-reorder', () => this.fetchPage(this.pageNumber))
+
+        window.events.$on('assessment:question-page-change', (pageNumber) => {
+            this.pageNumber = pageNumber
+        })
+
+        window.events.$on('assessment:question-score-change', () => this.fetchPage(this.pageNumber))
     }
 }
 </script>

@@ -18,21 +18,21 @@ class AssessmentQuestionPageContentController extends Controller
     {
         $this->middleware(['assessment-edit']);
 
-        $this->middleware(function ($request, $next) {
-            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
+        // $this->middleware(function ($request, $next) {
+        //     preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
 
-            $assessment = Assessment::find((int) $matches[1][0]);
+        //     $assessment = Assessment::find((int) $matches[1][0]);
 
-            if ($assessment->locked) {
-                return response()->json([
-                    'data' => [
-                        'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
-                    ]
-                ], 403);
-            }
+        //     if ($assessment->locked) {
+        //         return response()->json([
+        //             'data' => [
+        //                 'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
+        //             ]
+        //         ], 403);
+        //     }
 
-            return $next($request);
-        })->only(['addQuestion']);
+        //     return $next($request);
+        // })->only(['addQuestion']);
     }
 
     public function addQuestion(Assessment $assessment, AssessmentPage $page)
@@ -58,13 +58,11 @@ class AssessmentQuestionPageContentController extends Controller
 
         $assessmentPageContentItem = AssessmentPageContentItem::create([
             'type' => 'Question',
-            'model_id' => request('payload')['question']['id'],
+            'model_id' => request('questionId'),
             'assessment_page_content_id' => $assessmentPageContent->id,
             'question_number' => 999,
-            'question_score' => (int) request('payload')['score']
+            'question_score' => (int) request('score')
         ]);
-
-        $assessment = Assessment::find($page->assessment_id);
 
         $assessmentQuestions = $assessment->pages->map(function ($page) {
             return $page->assessmentPageContents->map(function ($assessmentPageContent) {

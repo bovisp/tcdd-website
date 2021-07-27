@@ -1,6 +1,6 @@
 <template>
     <div v-if="page">
-        <div class="flex items-center">
+        <div class="flex items-center mb-4">
             <h2 class="subtitle is-4 mb-0">
                 {{ trans('generic.page') }} {{ page.number }}
             </h2>
@@ -29,18 +29,38 @@
                 :title="trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.updatepagenumber')"
                 @click.prevent="updatePage = true" 
             />
+
+            <assessment-item-add />
+
+            <assessment-page-update 
+                v-if="updatePage && assessment.pages > 1"
+            />
         </div>
 
-        <assessment-page-update 
-            v-if="updatePage && assessment.pages > 1"
-        />
+        <draggable
+            :list="page.data"
+            @start="drag = true"
+            @end="drag = false"
+            @change="updateOrder"
+        >
+            <assessment-page-item 
+                v-for="item in page.data"
+                :key="item.order"
+                :data="item"
+            />
+        </draggable>
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { Draggable } from 'vuedraggable'
 
 export default {
+    componets: {
+        Draggable
+    },
+
     data () {
         return {
             updatePage: false
@@ -56,7 +76,8 @@ export default {
 
     methods: {
         ...mapActions({
-            destroyPage: 'assessments/destroyPage'
+            destroyPage: 'assessments/destroyPage',
+            changeCurrentPageItemOrder: 'assessments/changeCurrentPageItemOrder'
         }),
 
         destroy () {
@@ -68,6 +89,16 @@ export default {
                 message: `${this.trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.pagedeleted')}`,
                 type: 'is-success'
             })
+        },
+
+        async updateOrder (e) {
+            await this.changeCurrentPageItemOrder({
+                moved: e.moved.element.model.id,
+                newOrderNumber: e.moved.newIndex + 1,
+                oldOrderNumber: e.moved.oldIndex + 1
+            })
+
+            window.events.$emit('page:item-reorder')
         }
     },
 

@@ -23,10 +23,10 @@
                     <option value=""></option>
 
                     <option
-                        :value="page.id"
-                        v-for="page in availablePages"
-                        :key="page.id"
-                        v-text="`${trans('js_pages_questions_questions_components_types_questioneditpagenumber.page')} ${page.number}`"
+                        :value="p"
+                        v-for="p in availablePages"
+                        :key="p"
+                        v-text="`${trans('js_pages_questions_questions_components_types_questioneditpagenumber.page')} ${p}`"
                     ></option>
                 </select>
 
@@ -49,8 +49,7 @@
 </template>
 
 <script>
-import { filter } from 'lodash-es'
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
     props: {
@@ -69,48 +68,35 @@ export default {
 
     computed: {
         ...mapGetters({
-            currentPage: 'assessments/currentPage',
-            assessment: 'assessments/assessment',
-            pages: 'assessments/pages'
+            page: 'assessments/page',
+            assessment: 'assessments/assessment'
         }),
 
         pageNumber () {
-            return this.currentPage.number
+            return this.page.number
         },
 
         availablePages () {
-            return filter(this.pages, page => page.number !== this.currentPage.number)
+            return Array.from({length: this.assessment.pages}, (_, i) => i + 1)
+                .filter(p => p !== this.page.number)
         }
     },
 
     methods: {
-        ...mapActions({
-            fetchPages: 'assessments/fetchPages'
-        }),
-
-        ...mapMutations({
-            updatePage: 'assessments/SET_CURRENT_PAGE',
-            updatePageScore: 'assessments/SET_CURRENT_PAGE_SCORE'
-        }),
-
         editPageNumber () {
             this.editingPageNumber = true
 
-            this.number = this.currentPage.number
+            this.number = this.page.number
         },
 
         async changePageNumber () {
             let assessmentPageContentItemId = this.question.model.assessment_page_content_items[0].id
 
             let { data } = await axios.patch(`${this.urlBase}/api/assessments/${this.assessment.id}/questions/${assessmentPageContentItemId}/change-page`, {
-                page_number_id: this.number
+                page_number: this.number
             })
 
-            await this.fetchPages(this.assessment.id)
-
-            await this.updatePage(data)
-
-            await this.updatePageScore()
+            window.events.$emit('assessment:question-page-change', this.number)
 
             this.cancelEditPageNumber()
         },

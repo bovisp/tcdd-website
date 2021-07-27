@@ -53,13 +53,34 @@ class AssessmentQuestionContentController extends Controller
     public function changePage(Assessment $assessment, AssessmentPageContentItem $item)
     {
         request()->validate([
-            'page_number_id' => 'required|min:0|integer|exists:assessment_pages,id'
+            'page_number' => [
+                'required',
+                'min:0',
+                'integer',
+                function ($attribute, $value, $fail) use ($item) {
+                    $assessmentId = $item->assessmentPageContent->assessmentPage->assessment->id;
+
+                    $assessmentPage = AssessmentPage::whereAssessmentId($assessmentId)
+                        ->whereNumber(request('page_number'))
+                        ->first();
+
+                    if (!$assessmentPage) {
+                        $fail('This page does not exist.');
+                    }
+                },
+            ]
         ]);
 
         $assessmentPageContent = AssessmentPageContent::find($item->assessment_page_content_id);
 
+        $assessmentId = $item->assessmentPageContent->assessmentPage->assessment->id;
+
+        $assessmentPage = AssessmentPage::whereAssessmentId($assessmentId)
+            ->whereNumber(request('page_number'))
+            ->first();
+
         $assessmentPageContent->update([
-            'assessment_page_id' => request('page_number_id')
+            'assessment_page_id' => $assessmentPage->id
         ]);
 
         $assessmentQuestions = $assessment->pages->map(function ($page) {
@@ -84,6 +105,6 @@ class AssessmentQuestionContentController extends Controller
             ]);
         }
 
-        return AssessmentPage::find($assessmentPageContent->assessment_page_id)->number;
+        return $assessmentPage->number;
     }
 }

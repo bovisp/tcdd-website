@@ -14,11 +14,18 @@
         </template>
 
         <template v-if="editingScore && !assessment.locked">
-            <input 
-                type="number"
-                class="shadow appearance-none border rounded w-32 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
-                v-model="score"
+
+            <b-field 
+                :type="errors.score ? 'is-danger' : ''"
+                :message="errors.score ? errors.score[0] : ''"
+                class="mb-0"
             >
+                <b-input 
+                    v-model="score"
+                    type="number"
+                    size="is-small"
+                ></b-input>
+            </b-field>
 
             <button 
                 class="btn btn-blue text-sm btn-sm ml-2"
@@ -90,13 +97,7 @@ export default {
                 score: this.score
             })
 
-            await this.fetchPages(this.assessment.id)
-
-            await this.updatePage()
-
-            await this.updatePageScore()
-
-            this.$emit('question:update-score', data)
+           window.events.$emit('assessment:question-score-change')
 
             this.cancelEditScore()
         }
