@@ -10,6 +10,7 @@ use App\ContentBuilderType;
 use App\AssessmentPageContent;
 use App\AssessmentPageContentItem;
 use App\Http\Controllers\Controller;
+use App\Classes\Assessments\RenumberAssessmentQuestions;
 use App\Http\Resources\Assessments\AssessmentPageResource;
 
 class AssessmentQuestionPageContentController extends Controller
@@ -64,27 +65,7 @@ class AssessmentQuestionPageContentController extends Controller
             'question_score' => (int) request('score')
         ]);
 
-        $assessmentQuestions = $assessment->pages->map(function ($page) {
-            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
-                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
-                    return [
-                        'id' => $item->id,
-                        'question' => $item->question_number,
-                        'order' => $assessmentPageContent->order
-                    ];
-                });
-            });
-        })
-        ->flatten(2)
-        ->sortBy('order');
-
-        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
-            $item = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
-
-            $item->update([
-                'question_number' => $i +1
-            ]);
-        }
+        (new RenumberAssessmentQuestions($assessment))->renumber();
     }
 
     public function addContent(Assessment $assessment, AssessmentPage $page)
@@ -169,29 +150,7 @@ class AssessmentQuestionPageContentController extends Controller
             'order' => request('oldOrderNumber')
         ]);
         
-        $assessment = Assessment::find($page->assessment_id);
-
-        $assessmentQuestions = $assessment->pages->map(function ($page) {
-            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
-                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
-                    return [
-                        'id' => $item->id,
-                        'question' => $item->question_number,
-                        'order' => $assessmentPageContent->order
-                    ];
-                });
-            });
-        })
-        ->flatten(2)
-        ->sortBy('order');
-
-        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
-            $assessmentPageContentItem = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
-
-            $assessmentPageContentItem->update([
-                'question_number' => $i + 1
-            ]);
-        }
+        (new RenumberAssessmentQuestions($assessment))->renumber();
     }
 
     public function destroyTempItem (Assessment $assessment, AssessmentPage $page)
@@ -230,64 +189,40 @@ class AssessmentQuestionPageContentController extends Controller
 
     public function destroy(Assessment $assessment, AssessmentPageContent $content)
     {
-        if ($assessment->locked && $content->assessmentPageContentItems->first()->type === 'Question') {
-            return response()->json([
-                'data' => [
-                    'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
-                ]
-            ], 403);
-        }
+        // if ($assessment->locked && $content->assessmentPageContentItems->first()->type === 'Question') {
+        //     return response()->json([
+        //         'data' => [
+        //             'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
+        //         ]
+        //     ], 403);
+        // }
 
-        $contentItems = $content->assessmentPageContentItems->each(function($item) {
-            if ($item->type === 'ContentBuilder') {
-                $contentBuilder = ContentBuilder::find($item->model_id);
+        // $contentItems = $content->assessmentPageContentItems->each(function($item) {
+        //     if ($item->type === 'ContentBuilder') {
+        //         $contentBuilder = ContentBuilder::find($item->model_id);
 
-                $contentBuilder->parts->each(function (Part $part) {
-                    $type = ContentBuilderType::find($part->content_builder_type_id)->type;
+        //         $contentBuilder->parts->each(function (Part $part) {
+        //             $type = ContentBuilderType::find($part->content_builder_type_id)->type;
 
-                    $typeClassName = 'App\\' . ucfirst($type) . 'Part';
+        //             $typeClassName = 'App\\' . ucfirst($type) . 'Part';
 
-                    $partType = $typeClassName::wherePartId($part->id)->first();
+        //             $partType = $typeClassName::wherePartId($part->id)->first();
 
-                    $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
+        //             $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
 
-                    (new $destroyClassName($partType))->delete();
+        //             (new $destroyClassName($partType))->delete();
 
-                    $part->delete();
-                });
+        //             $part->delete();
+        //         });
 
-                $contentBuilder->delete();
-            }
-        });
+        //         $contentBuilder->delete();
+        //     }
+        // });
 
-        $contentItems->each->delete();
+        // $contentItems->each->delete();
 
         $content->delete();
 
-        $assessment = Assessment::find($content->assessmentPage->assessment_id);
-
-        $assessmentQuestions = $assessment->pages->map(function ($page) {
-            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
-                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
-                    return [
-                        'id' => $item->id,
-                        'question' => $item->question_number,
-                        'order' => $assessmentPageContent->order
-                    ];
-                });
-            });
-        })
-        ->flatten(2)
-        ->sortBy('order');
-
-        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
-            $assessmentPageContentItem = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
-
-            $assessmentPageContentItem->update([
-                'question_number' => $i +1
-            ]);
-        }
-
-        return;
+        (new RenumberAssessmentQuestions($assessment))->renumber();
     }
 }

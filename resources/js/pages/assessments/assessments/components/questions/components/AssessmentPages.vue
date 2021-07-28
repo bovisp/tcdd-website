@@ -100,9 +100,17 @@ export default {
 
         window.events.$on('assessment:question-page-change', (pageNumber) => {
             this.pageNumber = pageNumber
+
+            this.$scrollTo('#page-top')
         })
 
         window.events.$on('assessment:question-score-change', () => this.fetchPage(this.pageNumber))
+
+        window.events.$on('page:item-delete', async () => {
+            await this.fetchPage(this.pageNumber)
+
+            this.$scrollTo('#page-top')
+        })
     }
 }
 </script>

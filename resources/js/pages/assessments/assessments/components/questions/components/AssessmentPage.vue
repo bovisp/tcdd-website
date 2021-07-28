@@ -1,5 +1,5 @@
 <template>
-    <div v-if="page">
+    <div v-if="page" id="page-top">
         <div class="flex items-center mb-4">
             <h2 class="subtitle is-4 mb-0">
                 {{ trans('generic.page') }} {{ page.number }}
@@ -99,6 +99,8 @@ export default {
             })
 
             window.events.$emit('page:item-reorder')
+
+            this.$scrollTo('#page-top')
         }
     },
 

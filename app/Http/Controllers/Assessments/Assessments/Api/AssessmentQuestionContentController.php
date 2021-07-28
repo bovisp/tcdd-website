@@ -7,6 +7,7 @@ use App\AssessmentPage;
 use App\AssessmentPageContent;
 use App\AssessmentPageContentItem;
 use App\Http\Controllers\Controller;
+use App\Classes\Assessments\RenumberAssessmentQuestions;
 
 class AssessmentQuestionContentController extends Controller
 {
@@ -83,27 +84,7 @@ class AssessmentQuestionContentController extends Controller
             'assessment_page_id' => $assessmentPage->id
         ]);
 
-        $assessmentQuestions = $assessment->pages->map(function ($page) {
-            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
-                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
-                    return [
-                        'id' => $item->id,
-                        'question' => $item->question_number,
-                        'order' => $assessmentPageContent->order
-                    ];
-                });
-            });
-        })
-        ->flatten(2)
-        ->sortBy('order');
-
-        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
-            $assessmentPageContentItem = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
-
-            $assessmentPageContentItem->update([
-                'question_number' => $i + 1
-            ]);
-        }
+        (new RenumberAssessmentQuestions($assessment))->renumber();
 
         return $assessmentPage->number;
     }

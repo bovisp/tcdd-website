@@ -14,6 +14,7 @@ return array (
   'points' => 'f Points',
   'page' => 'f Page',
   'addpage' => 'f Add page',
+  'content' => 'f Content',
   'question' => 'f Question',
   'add' => 'f Add',
   'category' => 'f Category',

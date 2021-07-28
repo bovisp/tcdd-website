@@ -14,6 +14,7 @@ return array (
   'add' => 'Add',
   'category' => 'Category',
   'score' => 'Score',
+  'content' => 'Content',
   'save' => 'Save',
   'duplicate' => 'Duplicate',
   'delete' => 'Delete',

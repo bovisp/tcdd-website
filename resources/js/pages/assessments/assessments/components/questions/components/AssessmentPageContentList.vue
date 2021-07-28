@@ -119,6 +119,8 @@ export default {
             this.close()
             
             await this.deleteAssessmentPageItem(this.data.model.id)
+
+            window.events.$emit('page:item-delete')
         }
     }
 }
