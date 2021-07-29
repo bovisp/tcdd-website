@@ -26,12 +26,26 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
      data() {
         return {
             creating: false,
             updating: false
         }
+    },
+
+    methods: {
+        ...mapActions({
+            fetchAvailableEditors: 'questions/fetchAvailableEditors',
+            fetchSections: 'sections/fetch',
+            fetchQuestionCategories: 'questionCategories/fetch',
+            setContentBuilderIds: 'questions/setContentBuilderIds',
+            fetchTags: 'tags/fetch',
+            fetchQuestionTypeData: 'questions/fetchQuestionTypeData',
+            fetchQuestion: 'questions/setEdit'
+        }),
     },
 
     mounted () {
@@ -45,6 +59,16 @@ export default {
 
         window.events.$on('questions:create-cancel', () => {
             this.creating = false
+        })
+
+        window.events.$on('questions:edit', async (question) => {
+            await this.fetchQuestion(question)
+            await this.fetchAvailableEditors(question.id)
+            await this.fetchSections()
+            await this.fetchQuestionCategories()
+            await this.setContentBuilderIds(question.contentBuilder)
+            await this.fetchTags()
+            await this.fetchQuestionTypeData(question.id)
         })
     }
 }

@@ -14,8 +14,10 @@ export const fetchAvailableEditors = async ({commit}, questionId) => {
     return
 }
 
-export const setEdit = async ({ commit }, question) => {
-    await commit('SET_QUESTION', question)
+export const setEdit = async ({ commit }, q) => {
+    let { data: question } = await axios.get(`${urlBase}/api/questions/${q.id}`)
+
+    await commit('SET_QUESTION', question.data)
 
     return
 }

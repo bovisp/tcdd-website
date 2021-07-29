@@ -56,20 +56,6 @@ export default {
     
     async mounted () {
         await this.fetch()
-
-        let params = (new URL(document.location)).searchParams;
-
-        if (params.get('question')) {
-            let question = await find(this.questions, q => q.id === parseInt(params.get('question')))
-
-            await this.setEdit(question)
-
-            window.events.$emit('questions:edit', question)
-        }
-
-        window.events.$on('questions:edit', question => {
-                this.setEdit(question)
-        })
     }
 }
 </script>

@@ -11,6 +11,7 @@ use App\ContentBuilder;
 use App\ContentBuilderType;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Questions\QuestionShowResource;
 use App\Http\Resources\Questions\QuestionIndexResource;
 use App\Http\Resources\Questions\QuestionTypeDataResource;
 
@@ -150,6 +151,11 @@ class QuestionsController extends Controller
     public function questionTypeData(Question $question)
     {
         return new QuestionTypeDataResource($question);
+    }
+
+    public function show(Question $question)
+    {
+        return new QuestionShowResource($question);
     }
 
     public function update(Question $question)

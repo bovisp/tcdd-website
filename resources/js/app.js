@@ -20,7 +20,8 @@ import {
     Tabs,
     Modal,
     Message,
-    Dialog
+    Dialog,
+    Checkbox
 } from 'buefy'
 import 'buefy/dist/buefy.css'
 
@@ -36,6 +37,7 @@ Vue.use(Modal)
 Vue.use(Message)
 Vue.use(Dialog)
 Vue.use(Icon)
+Vue.use(Checkbox)
 
 import getUrlBase from './mixins/urlBase'
 import authUser from './mixins/authUser'
