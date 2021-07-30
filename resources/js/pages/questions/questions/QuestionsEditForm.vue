@@ -214,7 +214,7 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import setObject from '../../../helpers/setObject'
 import { noCase, capitalCase, pascalCase } from 'change-case'
 

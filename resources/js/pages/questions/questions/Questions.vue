@@ -62,7 +62,7 @@ export default {
         })
 
         window.events.$on('questions:edit', async (question) => {
-            await this.fetchQuestion(question)
+            await this.fetchQuestion(question.id)
             await this.fetchAvailableEditors(question.id)
             await this.fetchSections()
             await this.fetchQuestionCategories()

@@ -41,12 +41,13 @@
 
                 <div 
                     class="mt-6"
-                    v-if="questionData"
+                    v-if="questionData.text_answer"
                 >
                     <label 
                         class="block text-gray-700 font-bold mb-2"
                     >{{ trans('js_pages_questions_components_types_drawing_drawingquestionassessmentpreview.answer') }}</label>
 
+                    
                     <template v-if="questionData.rich_text">
                         <vue-editor 
                             v-model="form.answer.text"

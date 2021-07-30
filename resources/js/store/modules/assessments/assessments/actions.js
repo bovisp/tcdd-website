@@ -21,6 +21,8 @@ export const setEdit = async ({ commit, state }, assessment) => {
 }
 
 export const fetchPage = async ({ state, commit }, page = null) => {
+    await commit('SET_PAGE', {})
+
     let data = await axios.get(`${urlBase}/api/assessments/${state.assessment.id}/pages?page=${page ? page : ''}`)
 
     await commit('SET_PAGE', data.data)
@@ -80,7 +82,7 @@ export const addContentToPage = async ({ state }) => {
     return axios.post(`${urlBase}/api/assessments/${state.assessment.id}/page/${state.currentPage.id}/add-content`)
 }
 
-export const changeCurrentPageItemOrder = async ({ state }, payload) => {
+export const changeCurrentPageItemOrder = async ({ state, commit }, payload) => {
     await axios.patch(`${urlBase}/api/assessment/${state.assessment.id}/page/${state.page.id}/change-order`, payload)
 }
 

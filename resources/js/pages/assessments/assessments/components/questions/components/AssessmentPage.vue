@@ -42,9 +42,10 @@
             @start="drag = true"
             @end="drag = false"
             @change="updateOrder"
+            handle=".drag-item"
         >
             <assessment-page-item 
-                v-for="item in page.data"
+                v-for="item in orderBy(page.data, ['order'], ['asc'])"
                 :key="item.order"
                 :data="item"
             />
@@ -55,6 +56,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { Draggable } from 'vuedraggable'
+import { orderBy } from 'lodash-es'
 
 export default {
     componets: {
@@ -79,6 +81,8 @@ export default {
             destroyPage: 'assessments/destroyPage',
             changeCurrentPageItemOrder: 'assessments/changeCurrentPageItemOrder'
         }),
+
+        orderBy,
 
         destroy () {
             this.destroyPage()

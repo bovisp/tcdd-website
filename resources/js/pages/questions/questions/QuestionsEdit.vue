@@ -175,14 +175,6 @@ export default {
         },
 
         cancel () {
-            let params = (new URL(document.location)).searchParams;
-
-            if (params.get('question')) {
-                window.location.href = `${this.urlBase}/questions`
-
-                return 
-            }
-
             window.events.$emit('questions:edit-cancel')
 
             this.form.name_en = ''
@@ -206,21 +198,6 @@ export default {
 
         updateForm (form) {
             this.form = form
-        },
-
-        tagModal (tag) {
-            this.tag = tag
-
-            this.modalAddTag = true
-        },
-
-        close () {
-            this.tag = ''
-            this.tagTranslation = ''
-
-            this.$store.dispatch('clearErrors')
-
-            this.modalAddTag = false
         }
     }
 }

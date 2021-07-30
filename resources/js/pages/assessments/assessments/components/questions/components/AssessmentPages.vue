@@ -111,6 +111,8 @@ export default {
 
             this.$scrollTo('#page-top')
         })
+
+        window.events.$on('page:question-edit', () => this.fetchPage(this.pageNumber))
     }
 }
 </script>

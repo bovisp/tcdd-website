@@ -197,29 +197,29 @@ class AssessmentQuestionPageContentController extends Controller
         //     ], 403);
         // }
 
-        // $contentItems = $content->assessmentPageContentItems->each(function($item) {
-        //     if ($item->type === 'ContentBuilder') {
-        //         $contentBuilder = ContentBuilder::find($item->model_id);
+        $contentItems = $content->assessmentPageContentItems->each(function($item) {
+            if ($item->type === 'ContentBuilder') {
+                $contentBuilder = ContentBuilder::find($item->model_id);
 
-        //         $contentBuilder->parts->each(function (Part $part) {
-        //             $type = ContentBuilderType::find($part->content_builder_type_id)->type;
+                $contentBuilder->parts->each(function (Part $part) {
+                    $type = ContentBuilderType::find($part->content_builder_type_id)->type;
 
-        //             $typeClassName = 'App\\' . ucfirst($type) . 'Part';
+                    $typeClassName = 'App\\' . ucfirst($type) . 'Part';
 
-        //             $partType = $typeClassName::wherePartId($part->id)->first();
+                    $partType = $typeClassName::wherePartId($part->id)->first();
 
-        //             $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
+                    $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
 
-        //             (new $destroyClassName($partType))->delete();
+                    (new $destroyClassName($partType))->delete();
 
-        //             $part->delete();
-        //         });
+                    $part->delete();
+                });
 
-        //         $contentBuilder->delete();
-        //     }
-        // });
+                $contentBuilder->delete();
+            }
+        });
 
-        // $contentItems->each->delete();
+        $contentItems->each->delete();
 
         $content->delete();
 
