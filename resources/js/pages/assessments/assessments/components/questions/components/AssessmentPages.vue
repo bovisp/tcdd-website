@@ -9,6 +9,7 @@
                         type="is-info"
                         icon-left="plus"
                         @click.prevent="add"
+                        :disabled="assessment.locked === true"
                     >{{ trans('generic.addpage') }}</b-button>
                 </div>
 

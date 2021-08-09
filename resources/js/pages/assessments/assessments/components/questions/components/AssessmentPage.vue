@@ -11,6 +11,7 @@
                 size="is-medium"
                 icon-right="delete"
                 :title="trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.deletepage')"
+                :disabled="assessment.locked === true"
                 @click.prevent="$buefy.dialog.confirm({
                     title: `${trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.deletepage')}`,
                     message: `${trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.deletepageconfirm')}`,
@@ -27,6 +28,7 @@
                 size="is-medium"
                 icon-right="pencil"
                 :title="trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.updatepagenumber')"
+                :disabled="assessment.locked === true"
                 @click.prevent="updatePage = true" 
             />
 

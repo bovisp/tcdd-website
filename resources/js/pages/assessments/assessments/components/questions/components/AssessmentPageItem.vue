@@ -5,6 +5,7 @@
                 icon="arrow-all"
                 class="drag-item mt-3"
                 style="cursor: move;"
+                v-if="!assessment.locked"
             ></b-icon>
 
             <b-button
@@ -22,6 +23,7 @@
                 size="is-medium"
                 :title="`${trans('generic.delete')} ${noCase(data.type === 'ContentBuilder' ? trans('generic.content') : trans('generic.question'))}`"
                 class="has-text-danger"
+                :disabled="assessment.locked"
                 @click.prevent="$buefy.dialog.confirm({
                     title: `${trans('generic.delete')} ${noCase(trans('generic.question'))}`,
                     message: `${trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.deleteassessmentconfirm')} ${data.type === 'ContentBuilder' ? trans('generic.content') : trans('generic.question')}?`,
@@ -125,7 +127,8 @@ export default {
 
     computed: {
         ...mapGetters({
-            question: 'questions/question'
+            question: 'questions/question',
+            assessment: 'assessments/assessment'
         })
     },
 

@@ -31,7 +31,7 @@ export const SET_TOTAL_SCORE = (state, totalScore) => state.totalScore = totalSc
 
 export const SET_AVAILABLE_QUESTIONS = (state, questions) => state.availableQuestions = questions
 
-export const SET_LOCK_STATUS = (state, status) => state.assessment.locked = status
+export const SET_LOCK_STATUS = (state, status) => state.assessment.locked = status ? true : false
 
 export const SET_DUPLICATE_STATUS = (state, status) => state.isDuplicate = status
 

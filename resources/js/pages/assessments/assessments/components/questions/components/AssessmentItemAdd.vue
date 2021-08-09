@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 
 export default {
     data () {
@@ -54,7 +54,17 @@ export default {
     },
 
     computed: {
+        ...mapGetters({
+            assessment: 'assessments/assessment'
+        }),
+
         types () {
+            if (this.assessment.locked) {
+                return [
+                    { code: 'content', name: this.trans('generic.content') }
+                ]
+            }
+
             return [
                 { code: 'question', name: this.trans('generic.question') },
                 { code: 'content', name: this.trans('generic.content') }

@@ -105,6 +105,7 @@
                 <b-numberinput 
                     v-model="form.completion_time"
                     type="is-info"
+                    :disabled="assessment.locked"
                 ></b-numberinput>
             </b-field>
 
