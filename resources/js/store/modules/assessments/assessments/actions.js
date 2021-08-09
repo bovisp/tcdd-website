@@ -79,7 +79,7 @@ export const addQuestionToPage = async ({ state }, payload) => {
 }
 
 export const addContentToPage = async ({ state }) => {
-    return axios.post(`${urlBase}/api/assessments/${state.assessment.id}/page/${state.currentPage.id}/add-content`)
+    return axios.post(`${urlBase}/api/assessments/${state.assessment.id}/page/${state.page.id}/add-content`)
 }
 
 export const changeCurrentPageItemOrder = async ({ state, commit }, payload) => {

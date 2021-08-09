@@ -3,7 +3,6 @@
         v-model="isActive"
         has-modal-card
         trap-focus
-        :destroy-on-hide="false"
         aria-role="dialog"
         aria-label="Example Modal"
         aria-modal
@@ -17,13 +16,17 @@
                 <button
                     type="button"
                     class="delete"
-                    @click="$emit('cancel')"/>
+                    @click="cancel"/>
             </header>
             
             <section class="modal-card-body">
                 <assessment-item-add-question 
                     v-if="type === 'question'"
                     @assessment:question-add="addQuestion"
+                />
+
+                <assessment-questions-content-builder-add 
+                    v-else
                 />
             </section>
 
@@ -32,13 +35,14 @@
             >
                 <b-button
                     :label="trans('generic.cancel')"
-                    @click="$emit('cancel')"
+                    @click="cancel"
                 />
 
                 <b-button
                     :label="trans('generic.add')"
                     type="is-info"
                     v-if="type === 'content'"
+                    @click.prevent="addContent"
                 />
             </footer>
         </div>
@@ -46,7 +50,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { sentenceCase } from 'change-case'
 
 export default {
@@ -59,8 +63,16 @@ export default {
 
     data () {
         return {
-            isActive: false
+            isActive: false,
+            data: null
         }
+    },
+
+    computed: {
+        ...mapGetters({
+            page: 'assessments/page',
+            assessment: 'assessments/assessment'
+        })
     },
 
     methods: {
@@ -70,17 +82,48 @@ export default {
 
         sentenceCase,
 
+        cancel () {
+            if (this.type === 'content') {
+                this.destroy()
+
+                return
+            }
+
+            this.$emit('cancel')
+        },
+
         async addQuestion(question) {
             await this.addQuestionToPage(question)
 
             window.events.$emit('assessment:question-added')
 
             this.isActive = false
-        }
+        },
+
+        addContent () {
+            window.events.$emit('assessment:content-added')
+
+            this.isActive = false
+        },
+
+        async destroy () {
+            let { data } = await axios.delete(`${this.urlBase}/api/assessments/${this.assessment.id}/page/${this.page.id}/content`, {
+                data: {
+                    type: this.type,
+                    data: this.data
+                }
+            })
+
+            this.$emit('cancel')
+        },
     },
 
     mounted () {
         this.isActive = this.type ? true : false
+
+        window.events.$on('assessment-page:content-builder-data', data => {
+            this.data = data
+        })
     }
 }
 </script>

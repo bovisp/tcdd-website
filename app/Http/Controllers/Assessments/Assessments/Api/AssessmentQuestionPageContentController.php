@@ -189,13 +189,13 @@ class AssessmentQuestionPageContentController extends Controller
 
     public function destroy(Assessment $assessment, AssessmentPageContent $content)
     {
-        // if ($assessment->locked && $content->assessmentPageContentItems->first()->type === 'Question') {
-        //     return response()->json([
-        //         'data' => [
-        //             'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
-        //         ]
-        //     ], 403);
-        // }
+        if ($assessment->locked && $content->assessmentPageContentItems->first()->type === 'Question') {
+            return response()->json([
+                'data' => [
+                    'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
+                ]
+            ], 403);
+        }
 
         $contentItems = $content->assessmentPageContentItems->each(function($item) {
             if ($item->type === 'ContentBuilder') {

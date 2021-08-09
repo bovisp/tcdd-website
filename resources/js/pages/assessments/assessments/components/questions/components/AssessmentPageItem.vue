@@ -34,7 +34,7 @@
         </div>
 
         <div class="w-10/12">
-            <!-- <template v-if="data.type === 'ContentBuilder'">
+            <template v-if="data.type === 'ContentBuilder'">
                 <div class="mb-6">
                     <assessment-page-content-builder 
                         v-for="item in orderBy(data.items, ['id'], ['asc'])"
@@ -43,7 +43,7 @@
                         :lang="item.lang"
                     />
                 </div>
-            </template> -->
+            </template>
 
             <template v-if="data.type === 'Question'">
                 <div class="mb-6">
@@ -106,6 +106,7 @@
 <script>
 import { noCase } from 'change-case'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { orderBy } from 'lodash-es'
 
 export default {
     props: {
@@ -159,6 +160,8 @@ export default {
         }),
 
         noCase,
+
+        orderBy,
 
         async destroy () {
             await this.deleteAssessmentPageItem(this.data.model.id)

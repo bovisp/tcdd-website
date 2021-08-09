@@ -56,7 +56,8 @@ export default {
     computed: {
         types () {
             return [
-                { code: 'question', name: this.trans('generic.question') }
+                { code: 'question', name: this.trans('generic.question') },
+                { code: 'content', name: this.trans('generic.content') }
             ]
         }
     },

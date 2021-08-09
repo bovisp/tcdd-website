@@ -96,6 +96,15 @@ export default {
             })
         })
 
+        window.events.$on('assessment:content-added', async () => {
+            await this.fetchPage(this.pageNumber)
+
+            this.$buefy.toast.open({
+                message: 'Content successfully added to page.',
+                type: 'is-success'
+            })
+        })
+
         window.events.$on('page:item-reorder', () => this.fetchPage(this.pageNumber))
 
         window.events.$on('assessment:question-page-change', (pageNumber) => {
