@@ -90,8 +90,8 @@ export const deleteAssessmentPageItem = async ({ state }, itemId) => {
     await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/page/content/${itemId}`)
 }
 
-export const activateParticipant = async ({ dispatch, state, commit }, payload) => {
-    let { data } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/participants/activate?id=${payload.participantId}&activated=${payload.isActivated}`)
+export const activateParticipant = async ({ dispatch, state, }, userId) => {
+    await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/participants/activate/${userId}`)
 
     await dispatch('fetchAssessment', state.assessment.id)
 }

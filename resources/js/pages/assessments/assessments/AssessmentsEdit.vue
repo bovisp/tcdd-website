@@ -56,7 +56,8 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
     data () {
         return {
-            activeTab: 0
+            activeTab: 0,
+            counter: 0
         }
     },
 
@@ -71,6 +72,21 @@ export default {
 
         lockBtnType () {
             return this.assessment.locked ? 'is-danger' : 'is-success'
+        }
+    },
+
+    watch: {
+        'assessment.locked' () {
+            if (this.counter === 0) {
+                this.counter += 1
+
+                return
+            }
+            
+            this.$buefy.toast.open({
+                message: 'Lock status updated',
+                type: 'is-success'
+            })
         }
     },
 

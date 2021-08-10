@@ -38,6 +38,16 @@
             >
                 <b-button
                     type="is-text"
+                    class="is-small"
+                    @click.prevent="changeActivationStatus(props.row.id)"
+                >{{ status(props.row.id, props.row.pivot.id) }}</b-button>
+            </b-table-column>
+
+            <b-table-column 
+                 v-slot="props"
+            >
+                <b-button
+                    type="is-text"
                     class="is-small has-text-danger"
                     @click.prevent="$buefy.dialog.confirm({
                         title: 'Remove participant',
@@ -61,6 +71,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { find } from 'lodash-es'
 
 export default {
     computed: {
@@ -71,8 +82,30 @@ export default {
 
     methods: {
         ...mapActions({
-            removeParticipant: 'assessments/removeParticipant'
+            removeParticipant: 'assessments/removeParticipant',
+            activateParticipant: 'assessments/activateParticipant'
         }),
+
+        status (userId, participantId) {
+            let participant = find(this.assessment.participants, user => user.id === userId)
+
+            console.log(participant)
+            
+            if (participant.pivot.activated) {
+                return 'Deactivate'
+            }
+
+            return 'Activate'
+        },
+
+        async changeActivationStatus (userId) {
+            await this.activateParticipant(userId)
+
+            this.$buefy.toast.open({
+                message: 'Activation successfully updated',
+                type: 'is-success'
+            })
+        },
 
         async destroy (participant) {
             let data = await this.removeParticipant(participant)
