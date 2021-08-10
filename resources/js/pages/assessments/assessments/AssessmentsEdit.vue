@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions,mapMutations } from 'vuex'
 
 export default {
     data () {
@@ -96,6 +96,10 @@ export default {
             setAssessmentLockStatus: 'assessments/setAssessmentLockStatus'
         }),
 
+        ...mapMutations({
+            setLockStatus: 'assessments/SET_LOCK_STATUS'
+        }),
+
         duplicate (form) {
             this.duplicating = true
 
@@ -109,6 +113,28 @@ export default {
 
     async mounted () {
         await this.fetchAssessment(this.assessment.id)
+
+        Echo.private(`assessment.${this.assessment.id}`)
+            .listen('AssessmentCompleted', async (e) => {
+                await this.fetchAssessment(this.assessment.id)
+
+                // await this.fetchAttempt(e.attemptId)
+
+                // await this.fetchParticipantAnswer(e.attemptId)
+            })
+
+        Echo.private(`assessment.${this.assessment.id}.attempting`)
+            .listen('AssessmentAttemptStarted', async (e) => {
+                await this.fetchAssessment(this.assessment.id)
+            })
+
+        // Echo.private(`assessment.${this.assessment.id}.marked`)
+        //     .listen('AssessmentAttemptsMarked', async (e) => {
+        //         await this.updateAssessmentMarkingCompletion({
+        //             assessmentId: e.assessmentId,
+        //             markingCompletedOn: e.markingCompletedOn
+        //         })
+        //     })
     }
 }
 </script>

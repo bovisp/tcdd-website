@@ -18,18 +18,18 @@ class AssessmentParticipantsActivationController extends Controller
     
     public function update(Assessment $assessment, User $user)
     {
-        if (optional(AssessmentAttempt::whereAssessmentParticipantId((int) request()->query('id')))->first()) {
+        $participant = DB::table('assessment_participants')
+            ->where('participant_id', $user->id)
+            ->get()
+            ->first();
+
+        if (optional(AssessmentAttempt::whereAssessmentParticipantId($participant->id))->first()) {
             return response()->json([
                 'data' => [
                     'message' => __('app_http_controllers_assessments_assessments_api_assessmentparticipantsactivation.cannotdeactivate')
                 ]
             ], 403);
         }
-
-        $participant = DB::table('assessment_participants')
-            ->where('participant_id', $user->id)
-            ->get()
-            ->first();
 
         DB::table('assessment_participants')
             ->where('participant_id', $user->id)

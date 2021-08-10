@@ -39,8 +39,13 @@
                 <b-button
                     type="is-text"
                     class="is-small"
+                    v-if="!inExam(props.row.pivot.id)"
                     @click.prevent="changeActivationStatus(props.row.id)"
                 >{{ status(props.row.id, props.row.pivot.id) }}</b-button>
+
+                <span v-else>
+                    {{ status(props.row.id, props.row.pivot.id) }}
+                </span>
             </b-table-column>
 
             <b-table-column 
@@ -49,6 +54,7 @@
                 <b-button
                     type="is-text"
                     class="is-small has-text-danger"
+                    :disabled="inExam(props.row.pivot.id)"
                     @click.prevent="$buefy.dialog.confirm({
                         title: 'Remove participant',
                         message: 'Are you sure you want to <b>remove</b> this participant?',
@@ -89,13 +95,25 @@ export default {
         status (userId, participantId) {
             let participant = find(this.assessment.participants, user => user.id === userId)
 
-            console.log(participant)
-            
-            if (participant.pivot.activated) {
+            let attempt = find(this.assessment.attempts, attempt => attempt.assessment_participant_id === participantId)
+  
+            if (participant.pivot.activated && !attempt) {
                 return 'Deactivate'
             }
 
+            if (participant.pivot.activated && !attempt.completed) {
+                return 'In progress'
+            }
+
+            if (attempt && attempt.completed) {
+                return 'Completed'
+            }
+
             return 'Activate'
+        },
+
+        inExam (participantId) {
+            return find(this.assessment.attempts, attempt => attempt.assessment_participant_id === participantId)
         },
 
         async changeActivationStatus (userId) {
