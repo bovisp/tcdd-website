@@ -57,4 +57,7 @@ return array (
   'namefrench' => 'Name (French)',
   'backgroundimage' => 'Background image',
   'deleteimage' => 'Delete current image',
+  'marking' => 'Marking',
+  'markingcompleted' => 'Marking completed',
+  'mark' => 'Mark',
 );

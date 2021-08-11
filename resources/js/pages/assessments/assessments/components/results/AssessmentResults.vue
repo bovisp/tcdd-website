@@ -23,7 +23,7 @@
 
             <tbody>
                 <tr
-                    v-for="attempt in orderBy(attemptsMarkingCompleted, ['participant_lastname'], ['asc'])"
+                    v-for="attempt in orderBy(attemptAnswers, ['participant_lastname'], ['asc'])"
                     :key="attempt.id"
                     class="border-b"
                 >
@@ -69,14 +69,14 @@
                         class="p-2 text-center"
                     >
                         <assessment-results-mark-average 
-                            :attempts="attemptsMarkingCompleted"
+                            :attempts="attemptAnswers"
                             :question="quest"
                         />
                     </td>
 
                     <td class="p-2 text-center">
                         <assessment-results-average
-                            :attempts="attemptsMarkingCompleted"
+                            :attempts="attemptAnswers"
                             :questions="questions"
                         />
                     </td>
@@ -165,9 +165,9 @@ export default {
             participantAnswer: 'assessments/participantAnswer'
         }),
 
-        attemptsMarkingCompleted () {
-            return filter(this.attemptAnswers, attempt => attempt.marked)
-        }
+        // attemptsMarkingCompleted () {
+        //     return filter(this.attemptAnswers, attempt => attempt.marked)
+        // }
     },
 
     methods: {

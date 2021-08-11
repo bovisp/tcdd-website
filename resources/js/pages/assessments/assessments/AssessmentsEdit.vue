@@ -46,6 +46,20 @@
                     @assessments:duplicate="duplicate"
                 />
             </b-tab-item>
+
+            <b-tab-item 
+                :label="trans('generic.marking')"
+                v-if="attemptAnswers.length"
+            >
+                <assessment-marking />
+            </b-tab-item>
+
+            <b-tab-item 
+                :label="trans('js_pages_assessments_assessments_assessmentsedit.results')"
+                v-if="attemptAnswers.length"
+            >
+                <assessment-results />
+            </b-tab-item>
         </b-tabs>
     </div>
 </template>
@@ -63,7 +77,9 @@ export default {
 
     computed: {
         ...mapGetters({
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            attempts: 'assessments/attempts',
+            attemptAnswers: 'assessments/attemptAnswers'
         }),
 
         lockText () {
@@ -93,7 +109,12 @@ export default {
     methods: {
         ...mapActions({
             fetchAssessment: 'assessments/fetchAssessment',
-            setAssessmentLockStatus: 'assessments/setAssessmentLockStatus'
+            setAssessmentLockStatus: 'assessments/setAssessmentLockStatus',
+            fetchAttempt: 'assessments/fetchAttempt',
+            fetchAttempts: 'assessments/fetchAttempts',
+            fetchParticipantAnswer: 'assessments/fetchParticipantAnswer',
+            fetchParticipantAnswers: 'assessments/fetchParticipantAnswers',
+            updateAssessmentMarkingCompletion: 'assessments/updateAssessmentMarkingCompletion'
         }),
 
         ...mapMutations({
@@ -114,13 +135,17 @@ export default {
     async mounted () {
         await this.fetchAssessment(this.assessment.id)
 
+        await this.fetchAttempts()
+
+        await this.fetchParticipantAnswers()
+
         Echo.private(`assessment.${this.assessment.id}`)
             .listen('AssessmentCompleted', async (e) => {
                 await this.fetchAssessment(this.assessment.id)
 
-                // await this.fetchAttempt(e.attemptId)
+                await this.fetchAttempt(e.attemptId)
 
-                // await this.fetchParticipantAnswer(e.attemptId)
+                await this.fetchParticipantAnswer(e.attemptId)
             })
 
         Echo.private(`assessment.${this.assessment.id}.attempting`)
@@ -128,13 +153,13 @@ export default {
                 await this.fetchAssessment(this.assessment.id)
             })
 
-        // Echo.private(`assessment.${this.assessment.id}.marked`)
-        //     .listen('AssessmentAttemptsMarked', async (e) => {
-        //         await this.updateAssessmentMarkingCompletion({
-        //             assessmentId: e.assessmentId,
-        //             markingCompletedOn: e.markingCompletedOn
-        //         })
-        //     })
+        Echo.private(`assessment.${this.assessment.id}.marked`)
+            .listen('AssessmentAttemptsMarked', async (e) => {
+                await this.updateAssessmentMarkingCompletion({
+                    assessmentId: e.assessmentId,
+                    markingCompletedOn: e.markingCompletedOn
+                })
+            })
     }
 }
 </script>

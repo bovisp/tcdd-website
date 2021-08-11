@@ -57,4 +57,7 @@ return array (
   'answerrichtexteditor' => 'f Answer can have a rich text editor',
   'backgroundimage' => 'f Background image',
   'deleteimage' => 'f Delete current image',
+  'marking' => 'f Marking',
+  'markingcompleted' => 'f Marking completed',
+  'mark' => 'f Mark',
 );

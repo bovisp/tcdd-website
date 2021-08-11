@@ -110,18 +110,6 @@ export const duplicateAssessment = async ({ state, commit, dispatch }, form) => 
     await commit('SET_DUPLICATION_STATUS', true)
 
     return
-
-    // await commit('SET_ASSESSMENT', assessment.data)
-
-    // await commit('SET_LOCK_STATUS', state.assessment.locked)
-
-    // await commit('SET_DUPLICATE_STATUS', true)
-
-    // window.events.$emit('users:selected', map(state.assessment.editors, editor => editor.id))
-
-    // window.events.$emit('datatable:reload-selected', map(state.assessment.editors, editor => editor.id))
-
-    // await dispatch('fetchPages', state.assessment.id)
 }
 
 export const fetchAttempt = async ({ commit, state }, attemptId) => {
@@ -158,7 +146,7 @@ export const setParticipantAnswer = async ({ commit }, participantAnswer) => {
     await commit('SET_ATTEMPT_ANSWER', participantAnswer)
 }
 
-export const updateMark = async ({ commit, state }, payload) => {
+export const updateMark = async ({ commit, state, dispatch }, payload) => {
     if (payload.id && payload.attemptId === null) {
         let { data } = await axios.patch(
             `${urlBase}/api/assessments/${state.assessment.id}/attempt/${state.participantAnswer.id}/mark/${payload.id}`,
@@ -202,6 +190,8 @@ export const updateMark = async ({ commit, state }, payload) => {
             attemptId: payload.attemptId
         })
     }
+
+    await dispatch('fetchParticipantAnswers')
 }
 
 export const updateAssessmentMarkingCompletion = async ({ commit }, payload) => {
