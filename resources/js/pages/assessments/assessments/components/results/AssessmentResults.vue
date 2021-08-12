@@ -51,6 +51,7 @@
 
                     <td class="text-center">
                         <assessment-results-show
+                            v-if="attempt.marked"
                             :attempt="attempt"
                         />
                     </td>

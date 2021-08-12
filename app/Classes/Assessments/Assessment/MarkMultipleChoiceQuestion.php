@@ -31,7 +31,7 @@ class MarkMultipleChoiceQuestion extends MarkQuestion
             $score = 0;
         }
         
-        $this->persistScore($score, null, null);
+        $this->persistScore($score, 9999999, null);
     }
 
     protected function evaluateScore($evalItems)

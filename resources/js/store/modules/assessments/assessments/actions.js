@@ -20,7 +20,7 @@ export const setEdit = async ({ commit, state }, assessment) => {
     return
 }
 
-export const fetchPage = async ({ state, commit }, page = null) => {
+export const fetchPage = async ({ state, commit }, page) => {
     await commit('SET_PAGE', {})
 
     let data = await axios.get(`${urlBase}/api/assessments/${state.assessment.id}/pages?page=${page ? page : ''}`)
@@ -48,12 +48,12 @@ export const getTotalScore = async ({ state, commit }) => {
     await commit('SET_TOTAL_SCORE', totalScore)
 }
 
-export const addPage = async ({ state, commit }) => {
+export const addPage = async ({ state, commit, dispatch }) => {
     let { data: page } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/page`)
 
-    await commit('ADD_PAGE', page.data.number)
+    await dispatch('fetchPage', page.number)
 
-    await commit('SET_PAGE', page.data)
+    await commit('UPDATE_PAGE_NUMBER', 1)
 
     // await commit('SET_CURRENT_PAGE_SCORE')
 }
@@ -61,7 +61,7 @@ export const addPage = async ({ state, commit }) => {
 export const destroyPage = async ({ dispatch, commit, state }) => {
     await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/page/${state.page.id}`)
 
-    await commit('CHANGE_PAGE_COUNT', state.assessment.pages - 1)
+    await commit('UPDATE_PAGE_NUMBER', -1)
 }
 
 export const updatePageNumber = async ({ state }, payload) => {

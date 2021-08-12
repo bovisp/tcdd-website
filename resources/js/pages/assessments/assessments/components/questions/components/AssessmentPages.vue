@@ -84,7 +84,9 @@ export default {
             this.pageNumber = this.page.number
         }
 
-        window.events.$on('page:deleted', () => this.pageNumber = null)
+        window.events.$on('page:deleted', () => {
+            this.pageNumber = null
+        })
 
         window.events.$on('page:update', pageNumber => this.pageNumber = pageNumber)
 

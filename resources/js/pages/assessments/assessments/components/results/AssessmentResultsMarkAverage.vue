@@ -31,6 +31,10 @@ export default {
             return ((reduce(this.assessmentAttempts, (result, value, key) => {
                 let mark = find(value.marks, m => m.question_id === this.question.id)
 
+                if (!mark) {
+                    return result
+                }
+
                 return result + parseFloat(mark.mark) 
             }, 0)) / this.assessmentAttempts.length).toFixed(1)
         }

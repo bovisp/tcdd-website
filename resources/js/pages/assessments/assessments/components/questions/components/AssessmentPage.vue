@@ -86,8 +86,8 @@ export default {
 
         orderBy,
 
-        destroy () {
-            this.destroyPage()
+        async destroy () {
+            await this.destroyPage()
 
             window.events.$emit('page:deleted')
 
