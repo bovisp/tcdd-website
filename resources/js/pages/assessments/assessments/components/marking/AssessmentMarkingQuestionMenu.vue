@@ -9,7 +9,7 @@
             >
                 <option
                     :value="q.id"
-                    v-for="q in attemptAnswers"
+                    v-for="q in questions"
                     :key="q.id"
                     v-text="`${trans('generic.question')} ${q.question_number}`"
                 ></option>
@@ -25,7 +25,7 @@ import { find } from 'lodash-es'
 export default {
     data () {
         return {
-            // questions: [],
+            questions: [],
             question: null
         }
     },
@@ -44,19 +44,13 @@ export default {
                     key: `question_${this.question}`
                 })
             }
-        },
-
-        // attemptAnswers: {
-        //     deep: true,
-
-        //     handler () {
-        //         this.questions = this.attemptAnswers[0].questions
-        //     }
-        // }
+        }
     },
 
-    // mounted () {
-    //     this.questions = this.attemptAnswers[0].questions
-    // }
+    mounted () {
+        setTimeout(() => {
+            this.questions = this.attemptAnswers[0].questions
+        }, 2000)
+    }
 }
 </script>
