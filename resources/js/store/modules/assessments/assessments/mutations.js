@@ -7,14 +7,14 @@ export const SET_ASSESSMENT = (state, assessment) => state.assessment = assessme
 export const SET_PAGE = (state, page) => state.page = page
 
 export const SET_CURRENT_PAGE_SCORE = async (state) => {
-    if (!state.currentPage || !state.currentPage.data.length) {
+    if (!state.page || !state.page.data.length) {
         state.currentPageScore = null
         return
     }
 
     let currentPageScore = 0
 
-    for await (let pageItem of state.currentPage.data) {
+    for await (let pageItem of state.page.data) {
         if (pageItem.type === 'Question') {
             currentPageScore += pageItem.model.assessment_page_content_items[0].question_score
         }

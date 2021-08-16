@@ -20,6 +20,7 @@ class AssessmentPageResource extends JsonResource
             'id' => $this->id,
             'assessment_id' => $this->assessment_id,
             'number' => $this->number,
+            'total_score' => $this->assessment->totalScore(),
             'data' => $this->assessmentPageContents->count() ? $this->assessmentPageContents->map(function ($content) {
                 $pageContentItems = $content->assessmentPageContentItems->map(function ($item) {
                     if ($item->type === 'ContentBuilder') {

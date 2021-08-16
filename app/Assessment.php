@@ -93,6 +93,25 @@ class Assessment extends Model
         })->toArray();
     }
 
+    public function totalScore()
+    {
+        $totalScore = 0;
+
+        foreach ($this->pages as $page) {
+            $assessmentPageContents = $page->assessmentPageContents;
+
+            $assessmentPageContents->each(function ($contentItem) use (&$totalScore) {
+                $contentItem->assessmentPageContentItems->each(function ($item) use (&$totalScore) {
+                    if ($item->type === 'Question') {
+                        $totalScore += $item->question_score;
+                    }
+                });
+            });
+        }
+
+        return $totalScore;
+    }
+
     public function toArray()
     {
         $attributes = parent::toArray();

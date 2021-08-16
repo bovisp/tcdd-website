@@ -3,6 +3,10 @@
         <div class="flex items-center mb-4">
             <h2 class="subtitle is-4 mb-0">
                 {{ trans('generic.page') }} {{ page.number }}
+
+                <span v-if="currentPageScore">
+                    ({{ currentPageScore }} {{ trans('generic.points') }})
+                </span>
             </h2>
 
             <b-button 
@@ -74,7 +78,8 @@ export default {
     computed: {
         ...mapGetters({
             page: 'assessments/page',
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            currentPageScore: 'assessments/currentPageScore'
         })
     },
 

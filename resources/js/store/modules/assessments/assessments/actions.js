@@ -12,10 +12,10 @@ export const fetch = async ({ commit, state }) => {
     return
 }
 
-export const setEdit = async ({ commit, state }, assessment) => {
+export const setEdit = async ({ commit }, assessment) => {
     await commit('SET_ASSESSMENT', assessment)
 
-    // await commit('SET_LOCK_STATUS', state.assessment.locked)
+    await commit('SET_TOTAL_SCORE', assessment.total_score)
 
     return
 }
@@ -27,25 +27,7 @@ export const fetchPage = async ({ state, commit }, page) => {
 
     await commit('SET_PAGE', data.data)
 
-    // await commit('SET_CURRENT_PAGE_SCORE')
-
-    // await dispatch('getTotalScore')
-}
-
-export const getTotalScore = async ({ state, commit }) => {
-    let totalScore = 0
-
-    for await (let page of state.pages) {
-        let pageItems = page.data
-
-        for await (let pageItem of pageItems) {
-            if (pageItem.type === 'Question') {
-                totalScore += pageItem.model.assessment_page_content_items[0].question_score
-            }
-        }
-    }
-
-    await commit('SET_TOTAL_SCORE', totalScore)
+    await commit('SET_TOTAL_SCORE', data.data.total_score)
 }
 
 export const addPage = async ({ state, commit, dispatch }) => {
@@ -55,7 +37,9 @@ export const addPage = async ({ state, commit, dispatch }) => {
 
     await commit('UPDATE_PAGE_NUMBER', 1)
 
-    // await commit('SET_CURRENT_PAGE_SCORE')
+    await commit('SET_CURRENT_PAGE_SCORE')
+
+    await commit('SET_TOTAL_SCORE', page.total_score)
 }
 
 export const destroyPage = async ({ dispatch, commit, state }) => {

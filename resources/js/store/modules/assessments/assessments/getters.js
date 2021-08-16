@@ -4,8 +4,6 @@ export const assessment = state => state.assessment
 
 export const page = state => state.page
 
-export const currentPage = state => state.currentPage
-
 export const totalScore = state => state.totalScore
 
 export const currentPageScore = state => state.currentPageScore

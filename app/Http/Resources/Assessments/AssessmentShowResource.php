@@ -44,7 +44,8 @@ class AssessmentShowResource extends JsonResource
             'marking_completed' => $this->marking_completed ? true : false,
             'marking_completed_on' => $this->marking_completed_on,
             'pages' => count($this->pages),
-            'attempts' => $this->attempts->except(['answers'])
+            'attempts' => $this->attempts->except(['answers']),
+            'total_score' => $this->totalScore()
         ];
     }
 }

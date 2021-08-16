@@ -1,7 +1,9 @@
 <template>
     <div v-if="assessment">
         <div class="level">
-            <div class="level-left"></div>
+            <div class="level-left">
+                <strong class="mr-1">{{ trans('generic.totalscore') }}:</strong> {{ totalScore }}
+            </div>
 
             <div class="level-right">
                 <div class="level-item">
@@ -52,7 +54,8 @@ export default {
     computed: {
         ...mapGetters({
             assessment: 'assessments/assessment',
-            page: 'assessments/page'
+            page: 'assessments/page',
+            totalScore: 'assessments/totalScore'
         })
     },
 
