@@ -25,47 +25,6 @@ class AssessmentParticipantsController extends Controller
             ->where('participant_id', request('participant')['participant_id'])
             ->delete();
 
-        // $assessmentParticipantIds = $assessment->participants->pluck('pivot.participant_id');
-
-        // $participantsNotInRequest = array_diff($assessmentParticipantIds->toArray(), request('users'));
-
-        // foreach ($participantsNotInRequest as $user) {
-        //     $assessmentParticipantId = $assessment->participants->map(function ($participant) use ($user) {
-        //         if ($participant->pivot->participant_id === $user) {
-        //             return $participant->pivot->id;
-        //         }
-        //     })->filter()->first();
-
-        //     if (AssessmentAttempt::whereAssessmentParticipantId($assessmentParticipantId)->count()) {
-        //         return response()->json([
-        //             'data' => [
-        //                 'message' => __('app_http_controllers_assessments_assessments_api_assessmentparticipants.cannotremove')
-        //             ]
-        //         ], 403);
-        //     }
-        // }
-
-        // $assessment->participants()->sync(request('users'));
-
-        // $numParticipants = $assessment->participants()->count();
-
-        // $totalScoredAnswers = 0;
-
-        // foreach ($assessment->attempts->filter->completed as $attempt) {
-        //     $totalScoredAnswers += $attempt->assessmentMarks->filter(function ($mark) {
-        //         return !is_null($mark->mark);
-        //     })->count();
-        // }
-
-        // if (($totalScoredAnswers > 0) && ($numParticipants * $assessment->questions()->count()) === $totalScoredAnswers) {
-        //     $assessment->update([
-        //         'marking_completed' => 1,
-        //         'marking_completed_on' => Carbon::now()
-        //     ]);
-
-        //     event(new AssessmentAttemptsMarked($assessment->id, $assessment->marking_completed_on));
-        // }
-
         return response()->json([
             'data' => [
                 'type' => 'success',

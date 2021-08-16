@@ -1,4 +1,4 @@
-import { isEmpty, find, map } from 'lodash-es'
+import { isEmpty, find, map, filter } from 'lodash-es'
 
 export const fetch = async ({ commit, state }) => {
     let { data: assessments } = await axios.get(`${urlBase}/api/assessments`)
@@ -225,12 +225,21 @@ export const removeInstructor = async ({ commit, state }, instructor) => {
     return data
 }
 
-export const removeParticipant = async ({ commit, state }, participant) => {
+export const removeParticipant = async ({ commit, state, dispatch }, participant) => {
     let { data } = await axios.delete(`${urlBase}/api/assessments/${state.assessment.id}/participants`, {
         data: { participant }
     })
 
     await commit('REMOVE_PARTICIPANT', participant)
+
+    let markedAttempts = filter(state.attemptAnswers, attempt => attempt.marked)
+
+    if (markedAttempts.length === state.assessment.participants.length) {
+        console.log('true')
+        await dispatch('updateMarkingCompletion', true)
+    } else {
+        await dispatch('updateMarkingCompletion', false)
+    }
 
     return data
 }
@@ -245,12 +254,22 @@ export const addInstructors = async({ commit, state }, instructors) => {
     return data
 }
 
-export const addParticipants = async({ commit, state }, participants) => {
+export const addParticipants = async({ commit, state, dispatch }, participants) => {
     let { data } = await axios.post(`${urlBase}/api/assessments/${state.assessment.id}/participants`, {
         users: map(participants, user => user.id)
     })
 
     await commit('ADD_PARTICIPANTS', data.data.participants)
 
+    await dispatch('updateMarkingCompletion', false)
+
     return data
+}
+
+export const updateMarkingCompletion = async({ commit, state }, status) => {
+    let { data } = await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/update-completion`, {
+        status
+    })
+
+    await commit('UPDATE_ASSESSMENT_MARKING_COMLETION', data.data) 
 }

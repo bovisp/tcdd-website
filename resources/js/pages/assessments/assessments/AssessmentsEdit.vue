@@ -24,6 +24,13 @@
             {{ trans('generic.edit') }}: {{ trans('generic.assessment') }} - {{ assessment.name }}
         </h1>
 
+        <b-message
+            v-if="assessment.marking_completed"
+            type="is-info"
+        >
+            {{ trans('js_pages_assessments_assessments_assessmentsedit.markingassessmentcompleted') }} {{ dayjs(assessment.marking_completed_on).format('YYYY-MM-DD') }}.
+        </b-message>
+
         <b-tabs 
             v-model="activeTab"
             :animated="false"
@@ -66,6 +73,7 @@
 
 <script>
 import { mapGetters, mapActions,mapMutations } from 'vuex'
+import dayjs from 'dayjs'
 
 export default {
     data () {
@@ -120,6 +128,8 @@ export default {
         ...mapMutations({
             setLockStatus: 'assessments/SET_LOCK_STATUS'
         }),
+
+        dayjs,
 
         duplicate (form) {
             this.duplicating = true

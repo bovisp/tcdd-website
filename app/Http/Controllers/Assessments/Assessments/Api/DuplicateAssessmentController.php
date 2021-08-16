@@ -38,8 +38,5 @@ class DuplicateAssessmentController extends Controller
         (new DuplicateAssessmentContent($newAssessment, $assessment))->create();
 
         return new AssessmentShowResource($newAssessment);
-        // return new AssessmentResource(
-        //     (new DuplicateAssessment($assessment))->create()
-        // );
     }
 }

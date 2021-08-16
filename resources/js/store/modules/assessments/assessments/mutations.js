@@ -69,9 +69,9 @@ export const UPDATE_MARK_OF_ATTEMPT = async (state, payload) => {
 
 export const UPDATE_ASSESSMENT_MARKING_COMLETION = (state, payload) => {
     if (!isEmpty(state.assessment)) {
-        state.assessment.marking_completed = true
+        state.assessment.marking_completed = payload.marking_completed
 
-        state.assessment.marking_completed_on = payload.markingCompletedOn
+        state.assessment.marking_completed_on = payload.marking_completed_on
     }
 }
 

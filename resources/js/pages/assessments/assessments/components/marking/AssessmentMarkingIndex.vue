@@ -26,7 +26,9 @@
                 :label="trans('generic.markingcompleted')" 
                 v-slot="props"
             >
-                {{ props.row.marked_on }}
+                <span v-if="props.row.marked_on !== 'No'">{{ dayjs(props.row.marked_on).format('YYYY-MM-DD') }}</span>
+
+                <span v-else>No</span>
             </b-table-column>
 
             <b-table-column 
@@ -45,6 +47,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import dayjs from 'dayjs'
 
 export default {
     computed: {
@@ -58,6 +61,8 @@ export default {
             fetchParticipantAnswers: 'assessments/fetchParticipantAnswers',
             setParticipantAnswer: 'assessments/setParticipantAnswer'
         }),
+
+        dayjs,
 
         mark (e) {
             window.events.$emit('assessment:mark', e)
