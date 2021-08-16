@@ -30,7 +30,7 @@
         "dotenv": "^8.2.0",
         "dragula": "^3.7.3",
         "file-saver": "^2.0.2",
-        "jszip": "^3.5.0",
+        "jszip": "^3.7.0",
         "laravel-echo": "^1.10.0",
         "locutus": "^2.0.14",
         "lodash-es": "^4.17.15",
