@@ -1,13 +1,15 @@
 <template>
-    <div>
+    <div class="flex items-center">
         {{ markScore }}
 
-        <i 
-            class="fas fa-edit text-gray-600 cursor-pointer ml-1"
+        <b-button 
+            type="is-text"
+            size="is-small"
+            icon-right="pencil"
             v-if="markScore >= 0"
             :title="`${trans('js_pages_assessments_assessments_components_results_assessmentmark.editquestion')} ${question.question_number} ${trans('js_pages_assessments_assessments_components_results_assessmentmark.scorefor')} ${attempt.participant_fullname}`"
             @click.prevent="$emit('assessment:update-mark-from-results', { attempt, mark, question })"
-        ></i>
+        ></b-button>
     </div>
 </template>
 
@@ -62,15 +64,24 @@ export default {
         if (this.mark) {
             this.markScore = parseFloat(this.mark.mark)
         }   
+
+        window.events.$on('assessment:results-mark-table', payload => {
+            if (this.attempt && this.question) {
+                if (payload.mark.question_id === this.question.id && this.attempt.id === payload.mark.assessment_attempt_id) {
+                    this.mark = payload.mark
+                    this.markScore = parseFloat(payload.mark.mark)
+                }
+            }
+        })
         
-        // window.events.$on('assessment:mark-update-attempt', payload => {
-        //     if (this.attempt && this.question) {
-        //         if (payload.data.question_id === this.question.id && this.attempt.id === payload.data.assessment_attempt_id) {
-        //             this.mark = payload.data
-        //             this.markScore = parseFloat(payload.data.mark)
-        //         }
-        //     }
-        // })
+        window.events.$on('assessment:mark-update-attempt', payload => {
+            if (this.attempt && this.question) {
+                if (payload.data.question_id === this.question.id && this.attempt.id === payload.data.assessment_attempt_id) {
+                    this.mark = payload.data
+                    this.markScore = parseFloat(payload.data.mark)
+                }
+            }
+        })
     }
 }
 </script>

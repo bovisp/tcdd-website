@@ -1,39 +1,45 @@
 <template>
     <div>
-        <div class="mx-auto w-full lg:w-1/2 mb-4">
-            <div class="flex justify-end">
-                <button 
-                    class="ml-auto btn btn-blue btn-sm text-sm"
-                    @click.prevent="store"
-                >
-                    {{ trans('js_pages_assessments_assessments__components_instructors_assessmentinstructorscreate.granteditingrights') }}
-                </button>
+        <nav class="level">
+            <div class="level-left"></div>
 
-                <button 
-                    class="btn btn-text btn-sm text-sm ml-2"
-                    @click.prevent="$emit('cancel')"
-                >
-                    {{ trans('js_pages_assessments_assessments__components_instructors_assessmentinstructorscreate.cancel') }}
-                </button>
+            <div class="level-right">
+                <div class="level-item">
+                    <b-button 
+                        @click.prevent="$emit('cancel')"
+                        type="is-text is-small"
+                    >{{ trans('generic.cancel') }}</b-button>
+                </div>
+
+                <div class="level-item">
+                    <b-button 
+                        type="is-small is-info"
+                        @click.prevent="store"
+                    >{{ trans('js_pages_assessments_assessments_components_instructors_assessmentinstructorsindex.addinstructors') }}</b-button>
+                </div>
             </div>
-        </div>
+        </nav>   
 
-        <div class="mx-auto w-full lg:w-1/2 mb-4">
-            <datatable 
-                :data="users"
-                :columns="columns"
-                :per-page="10"
-                :order-keys="['lastname', 'firstname']"
-                :order-key-directions="['asc', 'asc']"
-                :has-text-filter="false"
-                :checkable="true"
-            ></datatable>
-        </div>
+        <b-table 
+            :data="users" 
+            :columns="columns"
+            :default-sort="['lastname']"
+            :checked-rows.sync="selected"
+            :paginated="true"
+            :per-page="10"
+            checkable
+        >
+            <template #empty>
+                <b-message type="is-info">
+                    {{ trans('js_pages_assessments_assessments__components_instructors_assessmentinstructorscreate.nousers') }}
+                </b-message>
+            </template>
+        </b-table>    
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     data () {
@@ -41,9 +47,9 @@ export default {
             users: [],
             selected: [],
             columns: [
-                { field: 'firstname', title: this.trans('js_pages_assessments_assessments__components_instructors_assessmentinstructorscreate.firstname'), sortable: true },
-                { field: 'lastname', title: this.trans('js_pages_assessments_assessments__components_instructors_assessmentinstructorscreate.lastname'), sortable: true },
-            ],
+                { field: 'firstname', label: this.trans('generic.firstname') },
+                { field: 'lastname', label: this.trans('generic.lastname'), searchable: true }
+            ]
         }
     },
 
@@ -54,16 +60,19 @@ export default {
     },
 
     methods: {
+        ...mapActions({
+            addInstructors: 'assessments/addInstructors'
+        }),
+
         async store () {
-            let { data } = await axios.post(`${this.urlBase}/api/assessments/${this.assessment.id}/instructors`, {
-                users: this.selected
-            })
+            let { data } = await this.addInstructors(this.selected)
 
             this.selected = []
 
-            window.events.$emit('datatable:clear')
-
-            this.$toasted.success(data.data.message)
+            this.$buefy.toast.open({
+                message: data.message,
+                type: 'is-success'
+            })
 
             this.$emit('cancel')
         }
@@ -73,10 +82,6 @@ export default {
         let { data: users } = await axios.get(`${this.urlBase}/api/assessments/${this.assessment.id}/instructors/create`)
 
         this.users = users
-
-        window.events.$on('users:selected', users => {
-            this.selected = users
-        })
     }
 }
 </script>

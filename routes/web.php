@@ -51,18 +51,18 @@ Route::resource('/api/assessments/assessment-types', 'Assessments\AssessmentType
 Route::get('/assessments', 'Assessments\Assessments\AssessmentsController@index');
 Route::get('/assessments/{assessment}', 'Assessments\Assessments\AssessmentsController@show');
 Route::resource('/api/assessments', 'Assessments\Assessments\Api\AssessmentsController');
-Route::put('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@update');
+Route::delete('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@destroy');
 Route::get('/api/assessments/{assessment}/instructors/create', 'Assessments\Assessments\Api\AssessmentInstructorsController@create');
 Route::post('/api/assessments/{assessment}/instructors', 'Assessments\Assessments\Api\AssessmentInstructorsController@store');
-Route::put('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@update');
+Route::delete('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@destroy');
 Route::get('/api/assessments/{assessment}/participants/create', 'Assessments\Assessments\Api\AssessmentParticipantsController@create');
 Route::post('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@store');
-Route::patch('/api/assessments/{assessment}/participants/activate', 'Assessments\Assessments\Api\AssessmentParticipantsActivationController@update');
+Route::patch('/api/assessments/{assessment}/participants/activate/{user}', 'Assessments\Assessments\Api\AssessmentParticipantsActivationController@update');
 
 Route::post('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@store');
 Route::delete('/api/assessments/{assessment}/page/{page}', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@destroy');
 Route::patch('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@update');
-Route::get('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@index');
+Route::get('/api/assessments/{assessment}/pages', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@index');
 Route::get('/api/assessments/{assessment}/questions', 'Assessments\Assessments\Api\AssessmentQuestionsController@index');
 Route::patch('/api/assessments/{assessment}/lock', 'Assessments\Assessments\Api\AssessmentLockController@update');
 Route::post('/api/assessments/{assessment}/duplicate', 'Assessments\Assessments\Api\DuplicateAssessmentController@store');
@@ -82,6 +82,7 @@ Route::patch('/api/assessments/{assessment}/attempt/{attempt}/mark/{mark}', 'Ass
 Route::patch('/api/assessments/{assessment}/attempt/{attempt}/mark/{mark}/update-score', 'Assessments\Assessments\Api\AssessmentMarksController@updateScore');
 Route::patch('/api/assessments/{assessment}/review/all', 'Assessments\Assessments\Api\AssessmentReviewAllController@update');
 Route::patch('/api/assessments/{assessment}/attempts/{attempt}/review', 'Assessments\Assessments\Api\AssessmentReviewController@update');
+Route::patch('/api/assessments/{assessment}/update-completion','Assessments\Assessments\Api\AssessmentMarkingCompletionController@update' );
 
 Route::get('/assessment/{assessment}', 'Assessments\Assessment\AssessmentAttemptController@index');
 Route::post('/api/assessment/{assessment}/attempt', 'Assessments\Assessment\Api\AssessmentAttemptController@store');

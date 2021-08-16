@@ -1,52 +1,20 @@
-import { orderBy, find, findIndex, isEmpty } from 'lodash-es'
+import { findIndex, isEmpty, filter } from 'lodash-es'
 
 export const SET_ASSESSMENTS = (state, assessments) => state.assessments = assessments
 
 export const SET_ASSESSMENT = (state, assessment) => state.assessment = assessment
 
-export const SET_PAGES = (state, pages) => state.pages = orderBy(pages, ['number'], ['asc'])
-
-export const SET_CURRENT_PAGE = async (state, page = null) => {
-    if (!state.currentPage && state.pages.length === 0) {
-        state.currentPage = null
-    }
-
-    if (!state.currentPage && state.pages.length !== 0) {
-        state.currentPage = state.pages[0]
-    }
-
-    if (state.currentPage && state.pages.length === 0) {
-        state.currentPage = null
-    }
-
-    if (state.currentPage && !page) {
-        let pageFound = false
-
-        for await (let p of state.pages) {
-            if (p.id === state.currentPage.id) {
-                pageFound = true
-            }
-        }
-
-        if (pageFound === false) {
-            state.currentPage = state.pages[0]
-        }
-    }
-
-    if (page) {
-        state.currentPage = find(state.pages, ['number', page])
-    }
-}
+export const SET_PAGE = (state, page) => state.page = page
 
 export const SET_CURRENT_PAGE_SCORE = async (state) => {
-    if (!state.currentPage || !state.currentPage.data.length) {
+    if (!state.page || !state.page.data.length) {
         state.currentPageScore = null
         return
     }
 
     let currentPageScore = 0
 
-    for await (let pageItem of state.currentPage.data) {
+    for await (let pageItem of state.page.data) {
         if (pageItem.type === 'Question') {
             currentPageScore += pageItem.model.assessment_page_content_items[0].question_score
         }
@@ -55,13 +23,11 @@ export const SET_CURRENT_PAGE_SCORE = async (state) => {
     state.currentPageScore = currentPageScore
 }
 
-export const ADD_PAGE = (state, page) => state.pages.push(page)
-
 export const SET_TOTAL_SCORE = (state, totalScore) => state.totalScore = totalScore
 
 export const SET_AVAILABLE_QUESTIONS = (state, questions) => state.availableQuestions = questions
 
-export const SET_LOCK_STATUS = (state, status) => state.assessment.locked = status
+export const SET_LOCK_STATUS = (state, status) => state.assessment.locked = status ? true : false
 
 export const SET_DUPLICATE_STATUS = (state, status) => state.isDuplicate = status
 
@@ -103,9 +69,9 @@ export const UPDATE_MARK_OF_ATTEMPT = async (state, payload) => {
 
 export const UPDATE_ASSESSMENT_MARKING_COMLETION = (state, payload) => {
     if (!isEmpty(state.assessment)) {
-        state.assessment.marking_completed = true
+        state.assessment.marking_completed = payload.marking_completed
 
-        state.assessment.marking_completed_on = payload.markingCompletedOn
+        state.assessment.marking_completed_on = payload.marking_completed_on
     }
 }
 
@@ -114,3 +80,27 @@ export const REMOVE_MARKING_COMPLETED = (state) => {
 
     state.assessment.marking_completed_on = null
 }
+
+export const REMOVE_INSTRUCTOR = (state, instructor) => {
+    state.assessment.editors = filter(state.assessment.editors, editor => editor.pivot.editor_id !== instructor.editor_id)
+}
+
+export const REMOVE_PARTICIPANT = (state, participant) => {
+    state.assessment.participants = filter(state.assessment.participants, u => {
+        return u.pivot.participant_id !== participant.participant_id
+    })
+}
+
+export const ADD_INSTRUCTORS = (state, instructors) => {
+    state.assessment.editors = instructors
+}
+
+export const ADD_PARTICIPANTS = (state, participants) => {
+    state.assessment.participants = participants
+}
+
+export const SET_DUPLICATION_STATUS = (state, status) => {
+    state.isDuplicating = status
+}
+
+export const UPDATE_PAGE_NUMBER = (state, increment) => state.assessment.pages += increment

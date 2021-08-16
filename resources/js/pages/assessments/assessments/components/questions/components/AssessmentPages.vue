@@ -1,100 +1,133 @@
 <template>
-    <div>
-        <div>
-            <strong>{{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpages.totalscore') }}:</strong> {{ totalScore }}
-        </div>
-
-        <div class="flex items-end">
-            <div 
-                class="mr-auto"
-                :class="{ 'mt-4' : !this.pages.length }"
-            >
-                <button 
-                    class="btn btn-blue"
-                    :class="{ 'btn-disabled': assessment.locked }"
-                    @click.prevent="add"
-                    :disabled="assessment.locked"
-                >
-                    <i class="fas fa-plus mr-1"></i>
-                    {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpages.addpage') }}
-                </button>
+    <div v-if="assessment">
+        <div class="level">
+            <div class="level-left">
+                <strong class="mr-1">{{ trans('generic.totalscore') }}:</strong> {{ totalScore }}
             </div>
-            
-            <div v-if="pages.length !== 0">
-                <label 
-                    for="content_type"
-                    class="block text-gray-700 font-bold mb-2"
+
+            <div class="level-right">
+                <div class="level-item">
+                    <b-button
+                        type="is-info"
+                        icon-left="plus"
+                        @click.prevent="add"
+                        :disabled="assessment.locked === true"
+                    >{{ trans('generic.addpage') }}</b-button>
+                </div>
+
+                <div 
+                    class="level-item"
+                    v-if="assessment.pages"
                 >
-                    {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpages.chooseapage') }}...
-                </label>
-
-                <div class="relative">
-                    <select 
-                        id="content_type"
-                        v-model="page"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    >
-                        <option
-                            :value="p.number"
-                            v-for="p in pages"
-                            :key="p.id"
-                            v-text="`${trans('js_pages_assessments_assessments_components_questions_components_assessmentpages.page')} ${p.number}`"
-                        ></option>
-                    </select>
-
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
+                    <b-field>
+                        <b-select v-model="pageNumber">
+                            <option
+                                :value="p"
+                                v-for="p in assessment.pages"
+                                :key="p"
+                                v-text="`${trans('generic.page')} ${p}`"
+                            ></option>
+                        </b-select>
+                    </b-field>
                 </div>
             </div>
         </div>
 
-        <template v-if="currentPage">
+        <template v-if="assessment.pages">
+            <hr class="my-4">
+
             <assessment-page />
         </template>
     </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     data () {
         return {
-            page: null
+            pageNumber: null
         }
     },
 
     computed: {
         ...mapGetters({
-            pages: 'assessments/pages',
-            totalScore: 'assessments/totalScore',
-            currentPage: 'assessments/currentPage',
-            assessment: 'assessments/assessment'
+            assessment: 'assessments/assessment',
+            page: 'assessments/page',
+            totalScore: 'assessments/totalScore'
         })
     },
 
     watch: {
-        page () {
-            this.setCurrentPage(this.page)
-        },
+        async pageNumber () {
+            await this.fetchPage(this.pageNumber)
 
-        currentPage () {
-            if (!this.currentPage) {
-                this.page = null
-
-                return
-            }
-            
-            this.page = this.currentPage.number
+            this.pageNumber = this.page.number
         }
     },
 
     methods: {
         ...mapActions({
-            add: 'assessments/addPage',
-            setCurrentPage: 'assessments/setCurrentPage'
+            fetchPage: 'assessments/fetchPage',
+            addPage: 'assessments/addPage'
+        }),
+
+        async add () {
+            await this.addPage()
+
+            this.pageNumber = this.page.number
+        }
+    },
+
+    async mounted () {
+        await this.fetchPage()
+
+        if (this.page) {
+            this.pageNumber = this.page.number
+        }
+
+        window.events.$on('page:deleted', () => {
+            this.pageNumber = null
         })
+
+        window.events.$on('page:update', pageNumber => this.pageNumber = pageNumber)
+
+        window.events.$on('assessment:question-added', async () => {
+            await this.fetchPage(this.pageNumber)
+
+            this.$buefy.toast.open({
+                message: 'Question successfully added to page.',
+                type: 'is-success'
+            })
+        })
+
+        window.events.$on('assessment:content-added', async () => {
+            await this.fetchPage(this.pageNumber)
+
+            this.$buefy.toast.open({
+                message: 'Content successfully added to page.',
+                type: 'is-success'
+            })
+        })
+
+        window.events.$on('page:item-reorder', () => this.fetchPage(this.pageNumber))
+
+        window.events.$on('assessment:question-page-change', (pageNumber) => {
+            this.pageNumber = pageNumber
+
+            this.$scrollTo('#page-top')
+        })
+
+        window.events.$on('assessment:question-score-change', () => this.fetchPage(this.pageNumber))
+
+        window.events.$on('page:item-delete', async () => {
+            await this.fetchPage(this.pageNumber)
+
+            this.$scrollTo('#page-top')
+        })
+
+        window.events.$on('page:question-edit', () => this.fetchPage(this.pageNumber))
     }
 }
 </script>

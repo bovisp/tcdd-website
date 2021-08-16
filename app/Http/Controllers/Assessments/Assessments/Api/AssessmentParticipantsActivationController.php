@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Assessments\Assessments\Api;
 
+use App\User;
 use App\Assessment;
 use App\AssessmentAttempt;
 use Illuminate\Support\Facades\DB;
@@ -15,9 +16,14 @@ class AssessmentParticipantsActivationController extends Controller
         $this->middleware(['assessment-edit']);
     }
     
-    public function update(Assessment $assessment)
+    public function update(Assessment $assessment, User $user)
     {
-        if (optional(AssessmentAttempt::whereAssessmentParticipantId((int) request()->query('id')))->first()) {
+        $participant = DB::table('assessment_participants')
+            ->where('participant_id', $user->id)
+            ->get()
+            ->first();
+
+        if (optional(AssessmentAttempt::whereAssessmentParticipantId($participant->id))->first()) {
             return response()->json([
                 'data' => [
                     'message' => __('app_http_controllers_assessments_assessments_api_assessmentparticipantsactivation.cannotdeactivate')
@@ -26,20 +32,11 @@ class AssessmentParticipantsActivationController extends Controller
         }
 
         DB::table('assessment_participants')
-            ->where('id', (int) request()->query('id'))->update([
-                'activated' => (int) request()->query('activated') ? 0 : 1,
+            ->where('participant_id', $user->id)
+            ->update([
+                'activated' => $participant->activated ? 0 : 1,
             ]);
 
-        $participant = DB::table('assessment_participants')
-            ->where('id', (int) request()->query('id'))
-            ->get()
-            ->first();
-
         event(new AddAssessmentToProfilePage($participant->participant_id));
-
-        return DB::table('assessment_participants')
-            ->where('assessment_id', $assessment->id)
-            ->where('activated', 1)
-            ->count();
     }
 }

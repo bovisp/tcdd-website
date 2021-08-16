@@ -1,28 +1,52 @@
 <template>
-    <div class="w-full">
-        <h1 class="text-3xl font-bold mb-4">
-            {{ trans('js_pages_assessments_assessments_assessmentsindex.assessments') }}
+    <div>
+        <h1 class="title">
+            {{ trans('generic.assessments') }}
         </h1> 
 
-        <datatable 
-            v-if="typeof assessments !== 'undefined' && assessments.length"
-            :data="assessments"
-            :columns="columns"
-            :per-page="10"
-            :order-keys="['typeName', 'name', 'section']"
-            :order-key-directions="['asc', 'asc', 'asc']"
-            :has-text-filter="true"
-            :has-event="true"
-            :event-text="trans('js_pages_assessments_assessments_assessmentsindex.edit')"
-            event="assessments:edit"
-        />
-
-        <div 
-            class="alert alert-blue"
-            v-else
+        <b-table 
+            :data="assessments" 
+            :default-sort="['typeName', 'name', 'section']"
         >
-            {{ trans('js_pages_assessments_assessments_assessmentsindex.noassessments') }}
-        </div>
+            <b-table-column 
+                field="typeName" 
+                :label="trans('generic.type')" 
+                v-slot="props"
+            >
+                {{ props.row.typeName }}
+            </b-table-column>
+
+            <b-table-column 
+                field="name" 
+                :label="trans('generic.name')" 
+                v-slot="props"
+            >
+                {{ props.row.name }}
+            </b-table-column>
+
+            <b-table-column 
+                field="sectionName" 
+                :label="trans('generic.section')" 
+                v-slot="props"
+            >
+                {{ props.row.sectionName }}
+            </b-table-column>
+
+            <b-table-column 
+                v-slot="props"
+            >
+                <b-button
+                    type="is-text is-small"
+                    @click.prevent="edit(props.row)"
+                >{{ trans('generic.edit') }}</b-button>
+            </b-table-column>
+
+            <template #empty>
+                <b-message type="is-info">
+                    You have no assessments linked to you.
+                </b-message>
+            </template>
+        </b-table>
     </div>
 </template>
 
@@ -30,16 +54,6 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-    data() {
-        return {
-            columns: [
-                { field: 'typeName', title: this.trans('js_pages_assessments_assessments_assessmentsindex.type	'), sortable: true },
-                { field: 'name', title: this.trans('js_pages_assessments_assessments_assessmentsindex.name'), sortable: true },
-                { field: 'sectionName', title: this.trans('js_pages_assessments_assessments_assessmentsindex.section'), sortable: true }
-            ]
-        }
-    },
-
     computed: {
         ...mapGetters({
             assessments: 'assessments/assessments'
@@ -50,15 +64,21 @@ export default {
         ...mapActions({
             fetch: 'assessments/fetch',
             setEdit: 'assessments/setEdit'
-        })
+        }),
+
+        edit (assessment) {
+            this.setEdit(assessment)
+
+            window.events.$emit('assessments:edit')
+        }
     },
     
     async mounted () {
         await this.fetch()
 
-        window.events.$on('assessments:edit', assessment => {
-            this.setEdit(assessment)
-        })
+        // window.events.$on('assessments:edit', assessment => {
+        //     this.setEdit(assessment)
+        // })
     }
 }
 </script>

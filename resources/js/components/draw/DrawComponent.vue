@@ -13,21 +13,18 @@
                 popover-x="right"
             ></v-swatches>
 
-            <button 
+            <b-button 
+                icon-right="eraser"
+                class="mb-1"
                 @click.prevent="isEraser = true"
-                class="border rounded-xl px-3 py-2 mt-3"
                 :title="trans('js_components_draw.erasertool')"
-            >
-                <i class="fas fa-eraser"></i>
-            </button>
+            />
 
-            <button 
+            <b-button 
                 @click.prevent="clearCanvasConfirm"
-                class="border rounded-xl px-3 py-2 mt-3"
+                icon-right="delete"
                 :title="trans('js_components_draw.eraseallwork')"
-            >
-                <i class="fas fa-trash-alt"></i>
-            </button>
+            />
         </div>
 
         <canvas 

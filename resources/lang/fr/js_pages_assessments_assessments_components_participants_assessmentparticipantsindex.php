@@ -1,14 +1,12 @@
 <?php
 
 return array (
-  'update' => 'f Update',
+  'addparticipants' => 'f Add participants',
   'addmoreparticipants' => 'f Add more participants',
   'deactivate' => 'f Deactivate',
   'activate' => 'f Activate',
   'completed' => 'f Completed',
-  'nousers' => 'f There are currently no users who can participate in this assessment.',
-  'firstname' => 'f First name',
-  'lastname' => 'f Last name',
+  'nousers' => 'f There are no participants associated with this assessment.',
   'hasbeensuccessfully' => 'f has been successfully',
   'deactivated' => 'f deactivated',
   'activated' => 'f activated',

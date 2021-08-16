@@ -15,25 +15,31 @@ class AssessmentQuestionPagesController extends Controller
     {
         $this->middleware(['assessment-edit']);
 
-        $this->middleware(function ($request, $next) {
-            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
+        // $this->middleware(function ($request, $next) {
+        //     preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
 
-            $assessment = Assessment::find((int) $matches[1][0]);
+        //     $assessment = Assessment::find((int) $matches[1][0]);
 
-            if ($assessment->locked) {
-                return response()->json([
-                    'data' => [
-                        'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
-                    ]
-                ], 403);
-            }
+        //     if ($assessment->locked) {
+        //         return response()->json([
+        //             'data' => [
+        //                 'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
+        //             ]
+        //         ], 403);
+        //     }
 
-            return $next($request);
-        })->except(['index']);
+        //     return $next($request);
+        // })->except(['index']);
     }
 
     public function index(Assessment $assessment) {
-        return AssessmentPageResource::collection($assessment->pages);
+        if ($assessment->pages->count() === 0) return null;
+
+        $page = request()->query('page') ? (int) request()->query('page') : 1;
+
+        return new AssessmentPageResource(
+            $assessment->pages->where('number', '=', $page)->first()
+        );
     }
 
     public function store(Assessment $assessment)
@@ -48,12 +54,12 @@ class AssessmentQuestionPagesController extends Controller
 
     public function update(Assessment $assessment)
     {
-        $moved = AssessmentPage::whereAssessmentId($assessment->id)
-            ->whereNumber((int) request('oldPageNumber'))
+        $moved = $assessment->pages
+            ->where('number', '=', (int) request('oldPageNumber'))
             ->first();
 
-        $replaced = AssessmentPage::whereAssessmentId($assessment->id)
-            ->whereNumber((int) request('newPageNumber'))
+        $replaced = $assessment->pages
+            ->where('number', '=', (int) request('newPageNumber'))
             ->first();
 
         $moved->update([
@@ -101,11 +107,9 @@ class AssessmentQuestionPagesController extends Controller
 
         $page->delete();
 
-        $assessmentPages = AssessmentPage::whereAssessmentId($page->assessment_id)->orderBy('number')->get();
-
         $number = 1;
 
-        foreach ($assessmentPages as $page) {
+        foreach ($assessment->pages->sortBy('number') as $page) {
             $page->update([
                 'number' => $number
             ]);

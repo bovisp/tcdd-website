@@ -16,18 +16,20 @@
                     <th>{{ trans('js_pages_assessments_assessments_components_results_assessmentresults.total') }} ({{ assessmentTotal(attemptAnswers[0]) }})</th>
 
                     <th>
-                        <assessment-results-show-all />
+                        <assessment-results-show-all 
+                            v-if="attemptsMarkingCompleted"
+                        />
                     </th>
                 </tr>
             </thead>
 
             <tbody>
                 <tr
-                    v-for="attempt in orderBy(attemptsMarkingCompleted, ['participant_lastname'], ['asc'])"
+                    v-for="attempt in orderBy(attemptAnswers, ['participant_lastname'], ['asc'])"
                     :key="attempt.id"
                     class="border-b"
                 >
-                    <td>
+                    <td class="align-middle">
                         <strong>{{ attempt.participant_fullname }}</strong>
                     </td>
 
@@ -45,12 +47,14 @@
 
                     <td class="p-2 text-center">
                         <assessment-results-mark-total
+                            v-if="attempt.marked"
                             :attempt="attempt"
                         />
                     </td>
 
-                    <td class="text-center">
+                    <td class="align-middle">
                         <assessment-results-show
+                            v-if="attempt.marked"
                             :attempt="attempt"
                         />
                     </td>
@@ -69,14 +73,14 @@
                         class="p-2 text-center"
                     >
                         <assessment-results-mark-average 
-                            :attempts="attemptsMarkingCompleted"
+                            :attempts="attemptAnswers"
                             :question="quest"
                         />
                     </td>
 
                     <td class="p-2 text-center">
                         <assessment-results-average
-                            :attempts="attemptsMarkingCompleted"
+                            :attempts="attemptAnswers"
                             :questions="questions"
                         />
                     </td>
@@ -162,11 +166,12 @@ export default {
     computed: {
         ...mapGetters({
             attemptAnswers: 'assessments/attemptAnswers',
-            participantAnswer: 'assessments/participantAnswer'
+            participantAnswer: 'assessments/participantAnswer',
+            assessment: 'assessments/assessment'
         }),
 
         attemptsMarkingCompleted () {
-            return filter(this.attemptAnswers, attempt => attempt.marked)
+            return filter(this.attemptAnswers, attempt => attempt.marked).length === this.assessment.participants.length
         }
     },
 

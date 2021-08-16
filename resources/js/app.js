@@ -8,6 +8,37 @@ import './helpers/interceptors'
 window.Vue = require('vue')
 window.events = new Vue()
 
+import { 
+    Button,
+    Table,
+    Input,
+    Icon,
+    Field,
+    Toast,
+    Select,
+    Numberinput,
+    Tabs,
+    Modal,
+    Message,
+    Dialog,
+    Checkbox
+} from 'buefy'
+import 'buefy/dist/buefy.css'
+
+Vue.use(Button)
+Vue.use(Table)
+Vue.use(Input)
+Vue.use(Field)
+Vue.use(Toast)
+Vue.use(Select)
+Vue.use(Numberinput)
+Vue.use(Tabs)
+Vue.use(Modal)
+Vue.use(Message)
+Vue.use(Dialog)
+Vue.use(Icon)
+Vue.use(Checkbox)
+
 import getUrlBase from './mixins/urlBase'
 import authUser from './mixins/authUser'
 import error from './mixins/errors'
@@ -36,6 +67,7 @@ window.events.$on('errors-general', error => {
 })
 
 import store from './store'
+import Vue from 'vue'
 
 const files = require.context('./', true, /\.vue$/i)
 files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))

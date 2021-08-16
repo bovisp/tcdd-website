@@ -4,6 +4,7 @@ namespace App\Http\Resources\Assessments;
 
 use App\AssessmentAttempt;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Assessments\AssessmentPageResource;
 
 class AssessmentShowResource extends JsonResource
 {
@@ -41,7 +42,10 @@ class AssessmentShowResource extends JsonResource
             }),
             'locked' => $this->locked ? true : false,
             'marking_completed' => $this->marking_completed ? true : false,
-            'marking_completed_on' => $this->marking_completed_on
+            'marking_completed_on' => $this->marking_completed_on,
+            'pages' => count($this->pages),
+            'attempts' => $this->attempts->except(['answers']),
+            'total_score' => $this->totalScore()
         ];
     }
 }

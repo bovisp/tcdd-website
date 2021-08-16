@@ -3,17 +3,27 @@
         <div 
             :class="[ editingTurnedOn && !editing ? 'w-2/12 flex items-start' : 'hidden' ]"
         >
-            <i class="fas fa-arrows-alt ml-auto cursor-move"></i>
+            <b-icon 
+                class="ml-auto cursor-move mt-3"
+                icon="arrow-all"
+            ></b-icon>
 
-            <i 
-                class="fas fa-edit ml-2"
+            <b-button
+                icon-right="pencil"
+                type="is-text"
+                size="is-medium"
+                :title="`${trans('generic.edit')} ${noCase(trans('generic.content'))}`"
                 @click.prevent="edit"
-            ></i>
+            ></b-button>
 
-            <i 
-                class="fas fa-trash-alt text-red-500 ml-2"
-                @click="showModal = true"
-            ></i>
+            <b-button
+                icon-right="delete"
+                type="is-text"
+                size="is-medium"
+                :title="`${trans('generic.delete')} ${trans('generic.content')}`"
+                class="has-text-danger"
+                @click.prevent="showModal = true" 
+            ></b-button>
         </div>
         
         <div
@@ -30,7 +40,6 @@
 
         <modal 
             v-if="showModal" 
-            ok-button-text="Submit"
             cancel-button-text="Cancel"
             @submit="destroy"
             ok-button-text="Delete"
@@ -49,6 +58,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { noCase } from 'change-case'
 
 export default {
     props: {
@@ -104,6 +114,8 @@ export default {
     },
 
     methods: {
+        noCase,
+
         async destroy () {
             let { data } = await axios.delete(`${this.urlBase}/api/parts/${this.part.id}`, {
                 data: {

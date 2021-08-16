@@ -1,139 +1,110 @@
 <template>
-    <div
-        v-if="typeof form !== 'undefined'"
-    >
-        <h4 class="text-lg font-medium mb-3">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.generaloptions') }}
+    <div v-if="form.drawing_options">
+        <h4 class="subtitle is-5">
+            {{ trans('generic.generaloptions') }}
         </h4>
 
-        <div
-            class="mb-4"
-        >
-            <label class="flex items-center">
-                <input 
-                    type="checkbox" 
-                    class="form-checkbox"
-                    v-model="form.text_answer"
-                >
-
+        <b-field class="ml-4">
+            <b-checkbox
+                type="is-info"
+                v-model="form.text_answer"
+                :true-value="1"
+                :false-value="0"
+            >
                 <span 
-                    class="ml-2"
-                    :class="{ 'text-red-500': errors.text_answer }"
-                >{{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.requirestextanswer') }} ({{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.default') }}: <span class="font-bold">{{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.false') }}</span>)</span>
-            </label>
+                    :class="{ 'has-text-danger': errors.text_answer }"
+                >{{ trans('generic.requirestextanswer') }} ({{ trans('generic.default') }}: <span class="font-bold">{{ trans('generic.false') }}</span>)</span>
+            </b-checkbox>
 
             <p
                 v-if="errors.text_answer"
                 v-text="errors.text_answer[0]"
-                class="text-red-500 text-sm"
+                class="has-text-danger text-sm"
             ></p>
-        </div>
+        </b-field>
 
-        <div
-            class="mb-4"
+        <b-field 
+            class="ml-4"
             v-if="form.text_answer"
         >
-            <label class="flex items-center">
-                <input 
-                    type="checkbox" 
-                    class="form-checkbox"
-                    v-model="form.rich_text"
-                >
-
+            <b-checkbox
+                type="is-info"
+                v-model="form.rich_text"
+                :true-value="1"
+                :false-value="0"
+            >
                 <span 
-                    class="ml-2"
-                    :class="{ 'text-red-500': errors.rich_text }"
-                >{{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.answerrichtexteditor') }} ({{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.default') }}: <span class="font-bold">{{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.false') }}</span>)</span>
-            </label>
+                    :class="{ 'has-text-danger': errors.rich_text }"
+                >{{ trans('generic.answerrichtexteditor') }} ({{ trans('generic.default') }}: <span class="font-bold">{{ trans('generic.false') }}</span>)</span>
+            </b-checkbox>
 
             <p
                 v-if="errors.rich_text"
                 v-text="errors.rich_text[0]"
-                class="text-red-500 text-sm"
+                class="has-text-danger text-sm"
             ></p>
-        </div>
+        </b-field>
 
-        <h4 class="text-lg font-medium mb-2">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.drawingoptions') }}
+        <h4 class="subtitle is-5">
+            {{ trans('generic.drawingoptions') }}
         </h4>
 
-        <div
+        <b-message
             v-if="errors.drawing_options"
-            v-text="errors.drawing_options[0]"
-            class="alert alert-red text-sm "
-        ></div>
-
-        <h4 class="text-base font-medium mb-2 ml-4">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.pencolors') }}
-        </h4>
-
-        <div 
-            class="mb-4"
-            v-if="typeof form.drawing_options !== 'undefined'"
+            type="is-danger"
         >
-            <label 
-                class="flex items-center ml-4"
+            {{ errors.drawing_options[0] }}
+        </b-message>
+
+        <h5 class="font-bold text-normal mb-2">
+            {{ trans('generic.pencolors') }}
+        </h5>
+
+        <b-field class="ml-4">
+            <b-checkbox
+                type="is-info"
+                v-model="form.drawing_options.pen_colors"
                 v-for="(color, index) in penColors"
                 :key="index"
+                :native-value="color"
             >
-                <input 
-                    type="checkbox" 
-                    class="form-checkbox"
-                    v-model="form.drawing_options.pen_colors"
-                    :value="color"
-                >
+                {{ sentenceCase(color) }}
+            </b-checkbox>
+        </b-field>
 
-                <span 
-                    class="ml-2"
-                >{{ ucfirst(color) }}</span>
-            </label>
-        </div>
+        <h5 class="font-bold text-normal mb-2">
+            {{ trans('generic.eraser') }}
+        </h5>
 
-        <h4 class="text-base font-medium mb-2 ml-4">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.eraser') }}
-        </h4>
+        <b-field class="ml-4">
+            <b-checkbox
+                type="is-info"
+                v-model="form.drawing_options.eraser"
+                :true-value="1"
+                :false-value="0"
+            >
+                {{ trans('generic.erasertool') }}
+            </b-checkbox>
+        </b-field>
 
-        <div
-            class="mb-4"
-            v-if="typeof form.drawing_options !== 'undefined'"
-        >
-            <label class="flex items-center ml-4">
-                <input 
-                    type="checkbox" 
-                    class="form-checkbox"
-                    v-model="form.drawing_options.eraser"
-                >
+        <h5 class="font-bold text-normal mb-2">
+            {{ trans('generic.cleartool') }}
+        </h5>
 
-                <span 
-                    class="ml-2"
-                >{{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.erasertool') }}</span>
-            </label>
-        </div>
+        <b-field class="ml-4">
+            <b-checkbox
+                type="is-info"
+                v-model="form.drawing_options.clear"
+                :true-value="1"
+                :false-value="0"
+            >
+                {{ trans('generic.toolclearall') }}
+            </b-checkbox>
+        </b-field>
 
-        <h4 class="text-base font-medium mb-2 ml-4">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.cleartool') }}
-        </h4>
-
-        <div
-            class="mb-4"
-            v-if="typeof form.drawing_options !== 'undefined'"
-        >
-            <label class="flex items-center ml-4">
-                <input 
-                    type="checkbox" 
-                    class="form-checkbox"
-                    v-model="form.drawing_options.clear"
-                >
-
-                <span 
-                    class="ml-2"
-                >{{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.toolclearall') }}</span>
-            </label>
-        </div>
-
-        <h4 class="text-base font-medium mb-2 ml-4">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.backgroundimage') }}
-        </h4>
+        <h5 class="font-bold text-normal mb-2">
+            {{ trans('generic.backgroundimage') }}
+        </h5>
 
         <template v-if="rerenderUploader !== 0">
             <div
@@ -165,24 +136,24 @@
         <template v-else>
             <img 
                 class="ml-4"
-                v-if="typeof form.drawing_options !== 'undefined'"
-                :src="`${this.urlBase}${form.drawing_options.background_image[0].file}`"
+                v-if="form.drawing_options"
+                :src="`${urlBase}${form.drawing_options.background_image[0].file}`"
             >
         </template>
 
-        <div class="flex justify-end">
+        <div class="flex mt-2">
             <button 
                 class="btn btn-text btn-sm text-sm text-red-500"
                 @click.prevent="forceRerender"
             >
-                {{ trans('js_pages_questions_components_types_drawing_drawingquestionedit.deleteimage') }}
+                {{ trans('generic.deleteimage') }}
             </button>
         </div>
     </div>
 </template>
 
 <script>
-import ucfirst from '../../../../../../helpers/ucfirst'
+import { sentenceCase } from 'change-case'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -204,8 +175,8 @@ export default {
 
     watch: {
         'form.text_answer' () {
-            if (this.form.text_answer === false) {
-                this.form.rich_text = false
+            if (this.form.text_answer === 0) {
+                this.form.rich_text = 0
             }
         },
 
@@ -227,7 +198,7 @@ export default {
     },
 
     methods: {
-        ucfirst,
+        sentenceCase,
 
         async forceRerender() {
             await axios.delete(`${this.urlBase}/uploads`, {
@@ -243,10 +214,6 @@ export default {
     },
 
     mounted () {
-        this.form = this.questionTypeData.data
-
-        this.$emit('question-type:update-data', this.form)
-
         window.events.$on('uploads:file', file => {
             this.form.drawing_options.background_image.push({
                 file: file['file'],

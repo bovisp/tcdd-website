@@ -2,9 +2,7 @@ export const assessments = state => state.assessments
 
 export const assessment = state => state.assessment
 
-export const pages = state => state.pages
-
-export const currentPage = state => state.currentPage
+export const page = state => state.page
 
 export const totalScore = state => state.totalScore
 
@@ -19,3 +17,5 @@ export const attempts = state => state.attempts
 export const attemptAnswers = state => state.attemptAnswers
 
 export const participantAnswer = state => state.participantAnswer
+
+export const isDuplicating = state => state.isDuplicating

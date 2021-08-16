@@ -1,5 +1,6 @@
 <template>
     <div class="flex my-4">
+        <input type="hidden" :value="data.model.id" class="question_id">
         <div 
             class="w-2/12 flex items-start"
         >
@@ -118,6 +119,8 @@ export default {
             this.close()
             
             await this.deleteAssessmentPageItem(this.data.model.id)
+
+            window.events.$emit('page:item-delete')
         }
     }
 }

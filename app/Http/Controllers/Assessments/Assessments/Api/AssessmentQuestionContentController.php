@@ -7,6 +7,7 @@ use App\AssessmentPage;
 use App\AssessmentPageContent;
 use App\AssessmentPageContentItem;
 use App\Http\Controllers\Controller;
+use App\Classes\Assessments\RenumberAssessmentQuestions;
 
 class AssessmentQuestionContentController extends Controller
 {
@@ -53,37 +54,38 @@ class AssessmentQuestionContentController extends Controller
     public function changePage(Assessment $assessment, AssessmentPageContentItem $item)
     {
         request()->validate([
-            'page_number_id' => 'required|min:0|integer|exists:assessment_pages,id'
+            'page_number' => [
+                'required',
+                'min:0',
+                'integer',
+                function ($attribute, $value, $fail) use ($item) {
+                    $assessmentId = $item->assessmentPageContent->assessmentPage->assessment->id;
+
+                    $assessmentPage = AssessmentPage::whereAssessmentId($assessmentId)
+                        ->whereNumber(request('page_number'))
+                        ->first();
+
+                    if (!$assessmentPage) {
+                        $fail('This page does not exist.');
+                    }
+                },
+            ]
         ]);
 
         $assessmentPageContent = AssessmentPageContent::find($item->assessment_page_content_id);
 
+        $assessmentId = $item->assessmentPageContent->assessmentPage->assessment->id;
+
+        $assessmentPage = AssessmentPage::whereAssessmentId($assessmentId)
+            ->whereNumber(request('page_number'))
+            ->first();
+
         $assessmentPageContent->update([
-            'assessment_page_id' => request('page_number_id')
+            'assessment_page_id' => $assessmentPage->id
         ]);
 
-        $assessmentQuestions = $assessment->pages->map(function ($page) {
-            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
-                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
-                    return [
-                        'id' => $item->id,
-                        'question' => $item->question_number,
-                        'order' => $assessmentPageContent->order
-                    ];
-                });
-            });
-        })
-        ->flatten(2)
-        ->sortBy('order');
+        (new RenumberAssessmentQuestions($assessment))->renumber();
 
-        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
-            $assessmentPageContentItem = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
-
-            $assessmentPageContentItem->update([
-                'question_number' => $i + 1
-            ]);
-        }
-
-        return AssessmentPage::find($assessmentPageContent->assessment_page_id)->number;
+        return $assessmentPage->number;
     }
 }

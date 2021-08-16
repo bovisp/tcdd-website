@@ -24,7 +24,8 @@ class AssessmentIndexResource extends JsonResource
             'name_fr' => $this->getTranslation('name', 'fr'),
             'assessment_type_id' => $this->assessment_type_id,
             'assessmentType' => $this->assessmentType,
-            'section_id' => $this->section_id
+            'section_id' => $this->section_id,
+            'total_score' => $this->totalScore()
         ];
     }
 }

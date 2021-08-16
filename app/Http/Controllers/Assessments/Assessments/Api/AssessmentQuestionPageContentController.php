@@ -10,6 +10,7 @@ use App\ContentBuilderType;
 use App\AssessmentPageContent;
 use App\AssessmentPageContentItem;
 use App\Http\Controllers\Controller;
+use App\Classes\Assessments\RenumberAssessmentQuestions;
 use App\Http\Resources\Assessments\AssessmentPageResource;
 
 class AssessmentQuestionPageContentController extends Controller
@@ -18,21 +19,21 @@ class AssessmentQuestionPageContentController extends Controller
     {
         $this->middleware(['assessment-edit']);
 
-        $this->middleware(function ($request, $next) {
-            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
+        // $this->middleware(function ($request, $next) {
+        //     preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
 
-            $assessment = Assessment::find((int) $matches[1][0]);
+        //     $assessment = Assessment::find((int) $matches[1][0]);
 
-            if ($assessment->locked) {
-                return response()->json([
-                    'data' => [
-                        'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
-                    ]
-                ], 403);
-            }
+        //     if ($assessment->locked) {
+        //         return response()->json([
+        //             'data' => [
+        //                 'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
+        //             ]
+        //         ], 403);
+        //     }
 
-            return $next($request);
-        })->only(['addQuestion']);
+        //     return $next($request);
+        // })->only(['addQuestion']);
     }
 
     public function addQuestion(Assessment $assessment, AssessmentPage $page)
@@ -58,35 +59,13 @@ class AssessmentQuestionPageContentController extends Controller
 
         $assessmentPageContentItem = AssessmentPageContentItem::create([
             'type' => 'Question',
-            'model_id' => request('payload')['question']['id'],
+            'model_id' => request('questionId'),
             'assessment_page_content_id' => $assessmentPageContent->id,
             'question_number' => 999,
-            'question_score' => (int) request('payload')['score']
+            'question_score' => (int) request('score')
         ]);
 
-        $assessment = Assessment::find($page->assessment_id);
-
-        $assessmentQuestions = $assessment->pages->map(function ($page) {
-            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
-                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
-                    return [
-                        'id' => $item->id,
-                        'question' => $item->question_number,
-                        'order' => $assessmentPageContent->order
-                    ];
-                });
-            });
-        })
-        ->flatten(2)
-        ->sortBy('order');
-
-        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
-            $item = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
-
-            $item->update([
-                'question_number' => $i +1
-            ]);
-        }
+        (new RenumberAssessmentQuestions($assessment))->renumber();
     }
 
     public function addContent(Assessment $assessment, AssessmentPage $page)
@@ -171,29 +150,7 @@ class AssessmentQuestionPageContentController extends Controller
             'order' => request('oldOrderNumber')
         ]);
         
-        $assessment = Assessment::find($page->assessment_id);
-
-        $assessmentQuestions = $assessment->pages->map(function ($page) {
-            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
-                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
-                    return [
-                        'id' => $item->id,
-                        'question' => $item->question_number,
-                        'order' => $assessmentPageContent->order
-                    ];
-                });
-            });
-        })
-        ->flatten(2)
-        ->sortBy('order');
-
-        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
-            $assessmentPageContentItem = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
-
-            $assessmentPageContentItem->update([
-                'question_number' => $i + 1
-            ]);
-        }
+        (new RenumberAssessmentQuestions($assessment))->renumber();
     }
 
     public function destroyTempItem (Assessment $assessment, AssessmentPage $page)
@@ -266,30 +223,6 @@ class AssessmentQuestionPageContentController extends Controller
 
         $content->delete();
 
-        $assessment = Assessment::find($content->assessmentPage->assessment_id);
-
-        $assessmentQuestions = $assessment->pages->map(function ($page) {
-            return $page->assessmentPageContents->map(function ($assessmentPageContent) {
-                return $assessmentPageContent->assessmentPageContentItems->where('type', '=', 'Question')->map(function ($item) use ($assessmentPageContent) {
-                    return [
-                        'id' => $item->id,
-                        'question' => $item->question_number,
-                        'order' => $assessmentPageContent->order
-                    ];
-                });
-            });
-        })
-        ->flatten(2)
-        ->sortBy('order');
-
-        for ($i = 0; $i < $assessmentQuestions->count(); $i++) {
-            $assessmentPageContentItem = AssessmentPageContentItem::find($assessmentQuestions[$i]['id']);
-
-            $assessmentPageContentItem->update([
-                'question_number' => $i +1
-            ]);
-        }
-
-        return;
+        (new RenumberAssessmentQuestions($assessment))->renumber();
     }
 }

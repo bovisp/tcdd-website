@@ -7,6 +7,7 @@ use App\ContentBuilder;
 use App\ContentBuilderType;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Classes\Assessments\DestroyAssessment;
 use App\Http\Resources\Assessments\AssessmentShowResource;
 use App\Http\Resources\Assessments\AssessmentIndexResource;
 
@@ -102,56 +103,58 @@ class AssessmentsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => __('app_http_controllers_assessments_assessments_api_assessments.update_message')
+                'message' => __('app_http_controllers_assessments_assessments_api_assessments.update_message'),
+                'assessment' => new AssessmentShowResource($assessment)
             ]
         ], 200);
     }
 
     public function destroy(Assessment $assessment)
     {
-        DB::table('assessment_participants')->where('assessment_id', '=', $assessment->id)->delete();
+        (new DestroyAssessment($assessment))->destroy();
+        // DB::table('assessment_participants')->where('assessment_id', '=', $assessment->id)->delete();
 
-        DB::table('assessment_editors')->where('assessment_id', '=', $assessment->id)->delete();
+        // DB::table('assessment_editors')->where('assessment_id', '=', $assessment->id)->delete();
 
-        $assessment->attempts->each->delete();
+        // $assessment->attempts->each->delete();
 
-        foreach($assessment->pages as $page) {
-            $assessmentPageContents = $page->assessmentPageContents;
+        // foreach($assessment->pages as $page) {
+        //     $assessmentPageContents = $page->assessmentPageContents;
 
-            $assessmentPageContents->each(function ($contentItem) {
-                $contentItem->assessmentPageContentItems->each(function ($item) {
-                    if ($item->type === 'ContentBuilder') {
-                        $contentBuilder = ContentBuilder::find($item->model_id);
+        //     $assessmentPageContents->each(function ($contentItem) {
+        //         $contentItem->assessmentPageContentItems->each(function ($item) {
+        //             if ($item->type === 'ContentBuilder') {
+        //                 $contentBuilder = ContentBuilder::find($item->model_id);
         
-                        $contentBuilder->parts->each(function ($part) {
-                            $type = ContentBuilderType::find($part->content_builder_type_id)->type;
+        //                 $contentBuilder->parts->each(function ($part) {
+        //                     $type = ContentBuilderType::find($part->content_builder_type_id)->type;
         
-                            $typeClassName = 'App\\' . ucfirst($type) . 'Part';
+        //                     $typeClassName = 'App\\' . ucfirst($type) . 'Part';
         
-                            $partType = $typeClassName::wherePartId($part->id)->first();
+        //                     $partType = $typeClassName::wherePartId($part->id)->first();
         
-                            $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
+        //                     $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
         
-                            (new $destroyClassName($partType))->delete();
+        //                     (new $destroyClassName($partType))->delete();
         
-                            $part->delete();
-                        });
+        //                     $part->delete();
+        //                 });
         
-                        $contentBuilder->delete();
-                    }
-                });
-            });
+        //                 $contentBuilder->delete();
+        //             }
+        //         });
+        //     });
 
-            $assessmentPageContents->each(function ($content) {
-                $content->assessmentPageContentItems->each->delete();
-            });
+        //     $assessmentPageContents->each(function ($content) {
+        //         $content->assessmentPageContentItems->each->delete();
+        //     });
 
-            $assessmentPageContents->each->delete();
+        //     $assessmentPageContents->each->delete();
 
-            $page->delete();
-        }
+        //     $page->delete();
+        // }
 
-        $assessment->delete();
+        // $assessment->delete();
 
         return response()->json([
             'data' => [

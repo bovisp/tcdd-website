@@ -2,7 +2,5 @@
 
 return array (
   'granteditingrights' => 'Grant editing rights',
-  'cancel' => 'Cancel',
-  'firstname' => 'First name',
-  'lastname' => 'Last name',
+  'nousers' => 'There are no more instructors that can be added to this assessment.',
 );

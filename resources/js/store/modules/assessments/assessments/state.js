@@ -1,13 +1,14 @@
 export default {
 	assessments: [],
 	assessment: {},
-	pages: [],
-	totalScore: null,
+	page: {},
 	currentPage: null,
 	currentPageScore: null,
+	totalScore: null,
 	availableQuestions: null,
 	isDuplicate: false,
 	attempts: [],
 	attemptAnswers: [],
-	participantAnswer: null
+	participantAnswer: null,
+	isDuplicating: false
 }

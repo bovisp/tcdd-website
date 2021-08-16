@@ -1,50 +1,25 @@
 <template>
-    <div>
-        <assessment-participants-index 
-            v-if="showIndex && visible"
-            @create="showIndex = false"
-        />
+    <div class="columns is-centered">
+        <div class="column is-two-thirds">
+            <assessment-participants-index 
+                v-if="showIndex"
+                @create="showIndex = false"
+            />
 
-        <assessment-participants-create 
-            v-if="!showIndex && visible"
-            @cancel="reload"
-        />
+            <assessment-participants-create 
+                v-else
+                @cancel="showIndex = true"
+            />
+        </div>
     </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
 export default {
-    props: {
-        visible: {
-            type: Boolean,
-            required: true
-        }
-    },
-
     data () {
         return {
             showIndex: true
         }
-    },
-
-    computed: {
-        ...mapGetters({
-            assessment: 'assessments/assessment'
-        })
-    },
-
-    methods: {
-        ...mapActions({
-            fetchAssessment: 'assessments/fetchAssessment'
-        }),
-
-        async reload () {
-            this.showIndex = true
-
-            await this.fetchAssessment(this.assessment.id)
-        },
     }
 }
 </script>

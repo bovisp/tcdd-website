@@ -10,52 +10,29 @@ use Illuminate\Support\Str;
 use App\AssessmentPageContent;
 use App\AssessmentPageContentItem;
 
-class DuplicateAssessment
+class DuplicateAssessmentContent
 {
-    protected $assessment;
+    protected $newAssessment;
 
     protected $previousAssessment;
 
-    public function __construct(Assessment $previousAssessment)
+    public function __construct(Assessment $newAssessment, Assessment $previousAssessment)
     {
         $this->previousAssessment = $previousAssessment;
+
+        $this->newAssessment = $newAssessment;
     }
 
     public function create()
     {
-        $this->assessment = $this->persist();
-
-        $this->assessment->editors()->sync(
-            $this->previousAssessment->editors->pluck('id')
-        );
-
         $this->addPages();
-
-        return $this->assessment;
-    }
-
-    protected function persist()
-    {
-        return Assessment::create([
-            'name' => [
-                'en' => request('name_en'),
-                'fr' => request('name_fr')
-            ],
-            'description' => [
-                'en' => request('description_en'),
-                'fr' => request('description_fr')
-            ],
-            'assessment_type_id' => request('assessment_type_id'),
-            'section_id' => request('section_id'),
-            'completion_time' => request('completion_time')
-        ]);
     }
 
     protected function addPages()
     {
         foreach ($this->previousAssessment->pages as $page) {
             $assessmentPage = AssessmentPage::create([
-                'assessment_id' => $this->assessment->id,
+                'assessment_id' => $this->newAssessment->id,
                 'number' => $page->number
             ]);
 
