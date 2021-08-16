@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'name', title: this.trans('js_pages_admin_portal_categories_adminportalcategoriesindex.name'), sortable: true }
+                { field: 'name', title: this.trans('generic.name'), sortable: true }
             ]
         }
     },

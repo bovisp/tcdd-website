@@ -72,7 +72,7 @@
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    {{ trans('js_pages_admin_portal_languages_adminportallanguagescreate.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </form>

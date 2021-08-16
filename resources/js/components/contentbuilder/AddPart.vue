@@ -5,7 +5,7 @@
             v-if="showAddButton"
             @click.prevent="addPartModal"
         >
-            {{ trans('js_components_contentbuilder_addpart.addpart') }}
+            {{ trans('generic.addpart') }}
         </button>
 
         <div 
@@ -14,7 +14,7 @@
             <hr class="my-8">
 
             <h4 class="w-full font-light text-center mb-6 text-2xl">
-                 {{ trans('js_components_contentbuilder_addpart.new') }} {{ ucfirst(type) }} {{ trans('js_components_contentbuilder_addpart.part') }}
+                 {{ trans('js_components_contentbuilder_addpart.new') }} {{ ucfirst(type) }} {{ trans('generic.part') }}
             </h4>
 
             <component 
@@ -31,10 +31,10 @@
             @close="cancel"
             ok-button-text="Submit"
             cancel-button-text="Cancel"
-            okButtonText="trans('js_components_contentbuilder_addpart.create')"
+            okButtonText="trans('generic.create')"
         >
             <h3 slot="header" class="mb-4">
-                {{ trans('js_components_contentbuilder_addpart.addpart') }}
+                {{ trans('generic.addpart') }}
             </h3>
 
             <div slot="body">

@@ -60,4 +60,10 @@ return array (
   'marking' => 'Marking',
   'markingcompleted' => 'Marking completed',
   'mark' => 'Mark',
+  'title' => 'Title (optional)',
+  'caption' => 'Caption (optional)',
+  'create' => 'Create',
+  'part' => 'Part',
+  'addpart' => 'Add part',
+  'language' => 'Language',
 );

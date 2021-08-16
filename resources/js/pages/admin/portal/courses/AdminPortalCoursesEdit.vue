@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            {{ trans('js_pages_admin_portal_courses_adminportalcoursesedit.edit') }}: {{ trans('js_pages_admin_portal_courses_adminportalcoursesedit.course') }} - {{ course.name }}
+            {{ trans('generic.edit') }}: {{ trans('generic.course') }} - {{ course.name }}
         </h1>
 
         <form 
@@ -14,7 +14,7 @@
                     for="portal_language_id"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    {{ trans('js_pages_admin_portal_courses_adminportalcoursesedit.language') }}
+                    {{ trans('generic.language') }}
                 </label>
 
                 <div class="relative">
@@ -53,7 +53,7 @@
                     for="portal_category_id"
                     class="block text-gray-700 font-bold mb-2"
                 >
-                    {{ trans('js_pages_admin_portal_courses_adminportalcoursesedit.category') }}
+                    {{ trans('generic.category') }}
                 </label>
 
                 <div class="relative">
@@ -119,7 +119,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    {{ trans('js_pages_admin_portal_courses_adminportalcoursesedit.nameenglish') }}
+                    {{ trans('generic.nameenglish') }}
                 </label>
 
                 <input 
@@ -145,7 +145,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    {{ trans('js_pages_admin_portal_courses_adminportalcoursesedit.namefrench') }}
+                    {{ trans('generic.namefrench') }}
                 </label>
 
                 <input 
@@ -176,7 +176,7 @@
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    {{ trans('js_pages_admin_portal_courses_adminportalcoursesedit.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </form>

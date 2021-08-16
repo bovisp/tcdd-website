@@ -26,7 +26,7 @@
                     class="btn btn-text ml-auto btn-sm text-sm"
                     @click.prevent="cancel"
                 >
-                    {{ trans('js_components_contentbuilder_types_animation_addcontent.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </form>

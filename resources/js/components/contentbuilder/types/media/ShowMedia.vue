@@ -54,7 +54,7 @@
                     :class="{ 'text-red-500': errors.title }"
                     :for="`title-${form.id}`"
                 >
-                    {{ trans('js_components_contentbuilder_types_media_showmedia.title') }}
+                    {{ trans('generic.title') }}
                 </label>
 
                 <input 
@@ -80,7 +80,7 @@
                     :class="{ 'text-red-500': errors.caption }"
                     :for="`caption-media-${this.part.id}`"
                 >
-                    {{ trans('js_components_contentbuilder_types_media_showmedia.caption') }}
+                    {{ trans('generic.caption') }}
                 </label>
 
                 <textarea 
@@ -105,14 +105,14 @@
                     class="btn btn-blue btn-sm text-sm"
                     @click.prevent="update"
                 >
-                    {{ trans('js_components_contentbuilder_types_media_showmedia.update') }}
+                    {{ trans('generic.update') }}
                 </button>
 
                 <button 
                     class="btn btn-text btn-sm text-sm ml-auto"
                     @click.prevent="cancel"
                 >
-                    {{ trans('js_components_contentbuilder_types_media_showmedia.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </div>

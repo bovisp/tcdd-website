@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            {{ trans('js_pages_admin_portal_languages_adminportallanguagesedit.edit') }}: {{ trans('js_pages_admin_portal_languages_adminportallanguagesedit.language') }} - {{ language.name }}
+            {{ trans('generic.edit') }}: {{ trans('generic.language') }} - {{ language.name }}
         </h1>
 
         <form 
@@ -72,7 +72,7 @@
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    {{ trans('js_pages_admin_portal_languages_adminportallanguagesedit.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </form>

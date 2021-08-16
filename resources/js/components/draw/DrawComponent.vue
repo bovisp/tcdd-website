@@ -17,7 +17,7 @@
                 icon-right="eraser"
                 class="mb-1"
                 @click.prevent="isEraser = true"
-                :title="trans('js_components_draw.erasertool')"
+                :title="trans('generic.erasertool')"
             />
 
             <b-button 

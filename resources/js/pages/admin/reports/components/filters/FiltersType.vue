@@ -1,7 +1,7 @@
 <template>
     <div>
         <strong class="block font-bold text-md mb-2">
-            {{ trans('js_pages_admin_reports_components_filters_filterstype.type') }}
+            {{ trans('generic.type') }}
         </strong>
 
         <label 

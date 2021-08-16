@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'part' => 'f Part',
   'type' => 'f Type',
   'name' => 'f Name',
   'eraser' => 'f Eraser',
@@ -60,4 +61,9 @@ return array (
   'marking' => 'f Marking',
   'markingcompleted' => 'f Marking completed',
   'mark' => 'f Mark',
+  'caption' => 'f Caption (optional)',
+  'create' => 'f Create',
+  'title' => 'f Title (optional)',
+  'addpart' => 'f Add part',
+  'language' => 'f Language',
 );

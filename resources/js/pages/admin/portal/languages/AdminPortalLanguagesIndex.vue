@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'language', title: trans('js_pages_admin_portal_languages_adminportallanguagesindex.language'), sortable: true }
+                { field: 'language', title: trans('generic.language'), sortable: true }
             ]
         }
     },

@@ -5,5 +5,4 @@ return array (
   'languageenglish' => 'Language (English)',
   'languagefrench' => 'Language (French)',
   'addlanguage' => 'Add Language',
-  'cancel' => 'Cancel',
 );

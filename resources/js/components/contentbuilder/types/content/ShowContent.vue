@@ -27,14 +27,14 @@
                         class="btn btn-blue btn-sm text-sm"
                         @click.prevent="update"
                     >
-                        {{ trans('js_components_contentbuilder_types_animation_showcontent.update') }}
+                        {{ trans('generic.update') }}
                     </button>
 
                     <button 
                         class="btn btn-text btn-sm text-sm ml-auto"
                         @click.prevent="cancel"
                     >
-                        {{ trans('js_components_contentbuilder_types_animation_showcontent.cancel') }}
+                        {{ trans('generic.cancel') }}
                     </button>
                 </div>
             </form>

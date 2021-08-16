@@ -25,9 +25,9 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'categoryName', title: trans('js_pages_admin_portal_courses_adminportalcoursesindex.category'), sortable: true },
-                { field: 'name', title: trans('js_pages_admin_portal_courses_adminportalcoursesindex.name'), sortable: true },
-                { field: 'languageName', title: trans('js_pages_admin_portal_courses_adminportalcoursesindex.language'), sortable: true }
+                { field: 'categoryName', title: trans('generic.category'), sortable: true },
+                { field: 'name', title: trans('generic.name'), sortable: true },
+                { field: 'languageName', title: trans('generic.language'), sortable: true }
             ]
         }
     },

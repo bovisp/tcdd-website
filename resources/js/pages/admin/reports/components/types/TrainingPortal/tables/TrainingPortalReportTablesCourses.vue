@@ -8,7 +8,7 @@
                 <thead>
                     <tr>
                         <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">
-                            {{ trans('js_pages_admin_reports_components_types_trainingportal_tables_trainingportalreporttablescourses.course') }}
+                            {{ trans('generic.course') }}
                         </th>
                         <th class="px-4 py-2 border-2 border-t-0 border-l-0 border-r-0 text-gray-800">
                             {{ trans('js_pages_admin_reports_components_types_trainingportal_tables_trainingportalreporttablescourses.views') }}
