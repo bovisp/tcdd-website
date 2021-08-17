@@ -5,7 +5,7 @@
             class="-mb-3 text-lg"
         >
             <strong>
-                {{ trans('js_pages_assessments_assessment_components_assessmentattemptquestion.question') }}: {{ data.items[0].question_number }} ({{ data.items[0].question_score }} {{ trans('js_pages_assessments_assessment_components_assessmentattemptquestion.points') }})
+                {{ trans('generic.question') }}: {{ data.items[0].question_number }} ({{ data.items[0].question_score }} {{ trans('generic.points') }})
             </strong>
         </p>
 

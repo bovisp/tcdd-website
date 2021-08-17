@@ -43,7 +43,7 @@
 
             <template #empty>
                 <b-message type="is-info">
-                    You have no assessments linked to you.
+                    {{ trans('js_pages_assessments_assessments_assessmentsindex.noassessments') }}
                 </b-message>
             </template>
         </b-table>

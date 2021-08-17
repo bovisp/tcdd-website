@@ -32,7 +32,7 @@
                         class="block text-gray-700 font-bold mb-2" 
                         for="score"
                     >
-                        {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.questionscore') }}
+                        {{ trans('generic.questionscore') }}
                     </label>
 
                     <input 
@@ -69,8 +69,8 @@ export default {
     data () {
         return {
             columns: [
-                { field: 'categoryName', title: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.category'), sortable: true },
-                { field: 'name', title: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.name'), sortable: true }
+                { field: 'categoryName', title: this.trans('generic.category'), sortable: true },
+                { field: 'name', title: this.trans('generic.name'), sortable: true }
             ],
             showQuestionSettings: false,
             score: null,

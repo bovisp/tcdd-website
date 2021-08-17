@@ -13,7 +13,7 @@
                         :key="q.number"
                     >Q{{ q.number }}({{ q.score }})</th>
 
-                    <th>{{ trans('js_pages_assessments_assessments_components_results_assessmentresults.total') }} ({{ assessmentTotal(attemptAnswers[0]) }})</th>
+                    <th>{{ trans('generic.total') }} ({{ assessmentTotal(attemptAnswers[0]) }})</th>
 
                     <th>
                         <assessment-results-show-all 
@@ -91,7 +91,7 @@
         <div v-else>
             <div class="flex items-center w-full">
                 <h2 class="text-3xl font-medium mb-2">
-                    {{ trans('js_pages_assessments_assessments_components_results_assessmentresults.edit') }}: {{ trans('js_pages_assessments_assessments_components_results_assessmentresults.question') }} {{ question.question_number }} - {{ participantAnswer.participant_fullname }}
+                    {{ trans('generic.edit') }}: {{ trans('generic.question') }} {{ question.question_number }} - {{ participantAnswer.participant_fullname }}
                 </h2>
 
                 <button 
@@ -112,7 +112,7 @@
                 ></component>
 
                 <h2 class="mb-4 font-medium text-lg">
-                    {{ trans('js_pages_assessments_assessments_components_results_assessmentresults.answer') }}:
+                    {{ trans('generic.answer') }}:
                 </h2>
 
                 <component 

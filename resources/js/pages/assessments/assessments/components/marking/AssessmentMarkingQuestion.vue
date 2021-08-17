@@ -10,7 +10,7 @@
                 @click.prevent="$emit('assessments:mark-return-to-table')"
             >
                 <i class="fas fa-chevron-left mr-1"></i>
-                {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingquestion.returnmarkingtable') }}
+                {{ trans('generic.returnmarkingtable') }}
             </button>
         </div>
 
@@ -61,7 +61,7 @@
                 @click.prevent="$emit('assessments:mark-return-to-table')"
             >
                 <i class="fas fa-chevron-left mr-1"></i>
-                {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingquestion.returnmarkingtable') }}
+                {{ trans('generic.returnmarkingtable') }}
             </button>
         </div>
     </div>

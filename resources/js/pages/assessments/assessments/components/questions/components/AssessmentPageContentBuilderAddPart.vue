@@ -5,7 +5,7 @@
             v-if="showAddButton"
             @click.prevent="addPartModal"
         >
-            {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilderaddpart.addpart') }}
+            {{ trans('generic.addpart') }}
         </button>
 
         <div 
@@ -14,7 +14,7 @@
             <hr class="my-8">
 
             <h4 class="w-full font-light text-center mb-6 text-2xl">
-                 {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilderaddpart.new') }} {{ ucfirst(type) }} {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilderaddpart.part') }}
+                 {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilderaddpart.new') }} {{ ucfirst(type) }} {{ trans('generic.part') }}
             </h4>
 
             <component 
@@ -33,7 +33,7 @@
             cancel-button-text="Cancel"
         >
             <h3 slot="header" class="mb-4">
-                {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilderaddpart.addpart') }}
+                {{ trans('generic.addpart') }}
             </h3>
 
             <div slot="body">

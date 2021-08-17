@@ -26,7 +26,7 @@
                 :disabled="assessment.locked"
                 @click.prevent="$buefy.dialog.confirm({
                     title: `${trans('generic.delete')} ${noCase(trans('generic.question'))}`,
-                    message: `${trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentlist.deleteassessmentconfirm')} ${data.type === 'ContentBuilder' ? trans('generic.content') : trans('generic.question')}?`,
+                    message: `${trans('js_pages_assessments_assessments_components_questions_components_assessmentpageitem.deleteassessmentconfirm')} ${data.type === 'ContentBuilder' ? trans('generic.content') : trans('generic.question')}?`,
                     confirmText: `${trans('generic.delete')} ${noCase(trans('generic.question'))}`,
                     type: 'is-danger',
                     hasIcon: true,

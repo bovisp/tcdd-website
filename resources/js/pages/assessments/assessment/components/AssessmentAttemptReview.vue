@@ -13,7 +13,7 @@
                 :key="question.question_number"
             >
                 <td class="p-2">
-                    <strong>{{ trans('js_pages_assessments_assessment_components_assessmentattemptreview.question') }} {{ question.question_number }}: ({{ question.question_score }} {{ trans('js_pages_assessments_assessment_components_assessmentattemptreview.points') }})</strong>
+                    <strong>{{ trans('generic.question') }} {{ question.question_number }}: ({{ question.question_score }} {{ trans('generic.points') }})</strong>
                 </td>
                 
                 <td

@@ -63,7 +63,7 @@
                 :has-spinner="true"
             >
                 <template slot="header" v-if="attempt.assessment">
-                    {{ trans('js_pages_assessments_assessment_components_assessmentattemptfooter.submit') }} {{ attempt.assessment.name }}
+                    {{ trans('generic.submit') }} {{ attempt.assessment.name }}
                 </template>
 
                 <template slot="body">

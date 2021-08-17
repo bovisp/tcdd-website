@@ -65,7 +65,7 @@
                     :class="{ 'text-red-500': errors.description_en }"
                     for="description_en"
                 >
-                    {{ trans('js_pages_assessments_assessments_assessmentscreate.descriptionenglish') }}
+                    {{ trans('generic.descriptionenglish') }}
                 </label>
 
                 <vue-editor 
@@ -87,7 +87,7 @@
                     :class="{ 'text-red-500': errors.description_fr }"
                     for="description_fr"
                 >
-                    {{ trans('js_pages_assessments_assessments_assessmentscreate.descriptionfrench') }}
+                    {{ trans('generic.descriptionfrench') }}
                 </label>
 
                 <vue-editor 

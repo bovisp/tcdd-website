@@ -20,7 +20,7 @@
                 class="text-normal mb-3"
             >
                 <dt>
-                    <strong>{{ trans('js_pages_assessments_assessment_assessmentindex.page') }} {{ page }}</strong>
+                    <strong>{{ trans('generic.page') }} {{ page }}</strong>
                 </dt>
 
                 <template v-if="questions[0].questions.length">
@@ -29,7 +29,7 @@
                         :key="question.number"
                         class="ml-2"
                     >
-                        {{ trans('js_pages_assessments_assessment_assessmentindex.question') }} {{ question.number }} ({{ question.score }} {{ trans('js_pages_assessments_assessment_assessmentindex.points') }})
+                        {{ trans('generic.question') }} {{ question.number }} ({{ question.score }} {{ trans('generic.points') }})
                     </dd>
                 </template>
 

@@ -68,7 +68,7 @@ export default {
             }
 
             return [
-                { code: 'question', name: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentpicker.question') },
+                { code: 'question', name: this.trans('generic.question') },
                 { code: 'content', name: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentpicker.explanitorycontent') },
             ]
         }

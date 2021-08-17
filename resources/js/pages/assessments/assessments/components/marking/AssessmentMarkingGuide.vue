@@ -11,7 +11,7 @@
                 class="fas mr-1"
                 :class="showMarkingGuide ? 'fa-minus' : 'fa-plus'"
             ></i>
-            {{ showMarkingGuide ? trans('js_pages_assessments_assessments_components_marking_assessmentmarkingguide.hide') : trans('js_pages_assessments_assessments_components_marking_assessmentmarkingguide.show') }} {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingguide.markingguide') }}
+            {{ showMarkingGuide ? trans('generic.hide') : trans('generic.show') }} {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingguide.markingguide') }}
         </button>
 
         <div 

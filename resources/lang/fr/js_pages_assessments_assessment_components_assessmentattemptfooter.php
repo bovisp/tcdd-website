@@ -7,6 +7,5 @@ return array (
   'previouspage' => 'f Previous page',
   'returnassessment' => 'f Return to assessment',
   'reviewallsubmit' => 'f Review all and submit',
-  'submit' => 'f Submit',
   'submitfinish' => 'f Submit and finish',
 );

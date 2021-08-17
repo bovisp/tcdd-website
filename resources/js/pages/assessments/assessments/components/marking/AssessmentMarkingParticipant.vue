@@ -10,7 +10,7 @@
                 @click.prevent="cancel"
             >
                 <i class="fas fa-chevron-left mr-1"></i>
-                {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingparticipant.returnmarkingtable') }}
+                {{ trans('generic.returnmarkingtable') }}
             </button>
         </div>
 
@@ -40,7 +40,7 @@
                     ></component>
 
                     <h2 class="mb-4 font-medium text-lg">
-                        {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingparticipant.answer') }}:
+                        {{ trans('generic.answer') }}:
                     </h2>
 
                     <component 
@@ -72,7 +72,7 @@
                 @click.prevent="cancel"
             >
                 <i class="fas fa-chevron-left mr-1"></i>
-                {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingparticipant.returnmarkingtable') }}
+                {{ trans('generic.returnmarkingtable') }}
             </button>
         </div>
     </div>

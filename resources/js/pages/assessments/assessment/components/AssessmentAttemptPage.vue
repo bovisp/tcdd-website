@@ -3,8 +3,8 @@
         v-if="currentPage"
     >
         <h2 class="font-normal text-2xl my-6">
-            {{ trans('js_pages_assessments_assessment_components_assessmentattemptpage.page') }} {{ currentPage.number }} 
-            <span v-if="currentPageScore">({{ currentPageScore }} {{ trans('js_pages_assessments_assessment_components_assessmentattemptpage.points') }})</span>
+            {{ trans('generic.page') }} {{ currentPage.number }} 
+            <span v-if="currentPageScore">({{ currentPageScore }} {{ trans('generic.points') }})</span>
         </h2>
 
         <assessment-attempt-page-content 

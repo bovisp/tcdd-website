@@ -25,7 +25,7 @@
                     @click.prevent="update"
                     :disabled="!pageNumber"
                 >
-                    {{ trans('js_pages_assessments_assessments_components_questions_components_assessmentpage.change') }}
+                    {{ trans('generic.change') }}
                 </b-button>
             </div>
         </div>

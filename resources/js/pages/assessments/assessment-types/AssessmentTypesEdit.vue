@@ -2,7 +2,7 @@
     <div>
         <h1 class="title">
             {{ trans('generic.edit') }}: 
-            {{ trans('js_pages_assessments_assessment-types_assessmenttypesedit.assessmenttype') }} - 
+            {{ trans('generic.assessmenttype') }} - 
             {{ type.name }}
         </h1>
 

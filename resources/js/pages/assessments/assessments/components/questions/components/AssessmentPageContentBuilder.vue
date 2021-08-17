@@ -2,7 +2,7 @@
     <div class="p-4 border rounded mb-2">
         <div class="flex items-center">
             <strong>
-                {{ lang === 'en' ? trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilder.english') : trans('js_pages_assessments_assessments_components_questions_components_assessmentpagecontentbuilder.french') }}
+                {{ lang === 'en' ? trans('generic.english') : trans('generic.french') }}
             </strong>
 
             <button 

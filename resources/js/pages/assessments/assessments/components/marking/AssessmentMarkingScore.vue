@@ -7,7 +7,7 @@
             :class="{ 'text-red-500': errors.mark }"
             for="score"
         >
-            {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingscore.score') }}
+            {{ trans('generic.score') }}
         </label>
 
         <div class="flex">
@@ -24,7 +24,7 @@
                     class="btn btn-blue btn-sm text-sm mr-2"
                     @click.prevent="update"
                 >
-                    {{ hasExistingScore ? trans('js_pages_assessments_assessments_components_marking_assessmentmarkingscore.update') : trans('js_pages_assessments_assessments_components_marking_assessmentmarkingscore.save') }}
+                    {{ hasExistingScore ? trans('generic.update') : trans('generic.save') }}
                 </button>
 
                 <button 
@@ -32,24 +32,24 @@
                     v-if="hasExistingScore"
                     @click.prevent="scoring = false"
                 >
-                    {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingscore.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </template>
 
             <div class="flex items-center">
                 <template v-if="!scoring && hasExistingScore">
-                    <span>{{ score }} {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingscore.points') }}</span>
+                    <span>{{ score }} {{ trans('generic.points') }}</span>
                 
                     <button 
                         class="btn btn-text btn-sm text-sm ml-2"
                         @click.prevent="scoring = true"
                     >
-                        {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingscore.edit') }}
+                        {{ trans('generic.edit') }}
                     </button>
                 </template>
 
                 <span class="ml-2">
-                    (<strong>{{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingscore.questionscore') }}: </strong>{{ question.question_score }} {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingscore.points') }})
+                    (<strong>{{ trans('generic.questionscore') }}: </strong>{{ question.question_score }} {{ trans('generic.points') }})
                 </span>
             </div>
         </div>
@@ -65,7 +65,7 @@
             class="mt-4"
         >
             <span v-if="hasMarker">
-                <strong>{{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingscore.markedby') }}: </strong>{{ hasMarker ? mark.marked_by : '' }}
+                <strong>{{ trans('generic.markedby') }}: </strong>{{ hasMarker ? mark.marked_by : '' }}
             </span>
         </p>
     </div>

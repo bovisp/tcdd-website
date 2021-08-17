@@ -1,6 +1,10 @@
 <?php
 
 return array (
+  'hide' => 'f Hide',
+  'show' => 'f Show',
+  'answer' => 'f Answer',
+  'markedby' => 'f Marked by',
   'part' => 'f Part',
   'type' => 'f Type',
   'name' => 'f Name',
@@ -66,4 +70,12 @@ return array (
   'title' => 'f Title (optional)',
   'addpart' => 'f Add part',
   'language' => 'f Language',
+  'assessmenttype' => 'f Assessment type',
+  'comment' => 'f Comment',
+  'assessmenttypes' => 'f Assessment types',
+  'returnmarkingtable' => 'f Return to marking table',
+  'questionscore' => 'f Question score',
+  'change' => 'f Change',
+  'total' => 'f Total',
+  'submit' => 'f Submit',
 );

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="title">
-            {{ trans('js_pages_assessments_assessment-types_assessmenttypesindex.assessmenttypes') }}
+            {{ trans('generic.assessmenttypes') }}
         </h1> 
 
         <b-table 
@@ -10,7 +10,7 @@
         >
             <b-table-column 
                 field="name" 
-                :label="trans('js_pages_assessments_assessment-types_assessmenttypesindex.name')" 
+                :label="trans('generic.name')" 
                 v-slot="props"
             >
                 {{ props.row.name }}
