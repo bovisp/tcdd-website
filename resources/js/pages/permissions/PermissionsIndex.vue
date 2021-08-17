@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            {{ trans('js_pages_permissions_permissionsindex.permissions') }}
+            {{ trans('generic.permissions') }}
         </h1> 
 
         <datatable 
@@ -12,7 +12,7 @@
             :order-key-directions="['asc']"
             :has-text-filter="false"
             :has-event="true"
-            :event-text="trans('js_pages_permissions_permissionsindex.edit')"
+            :event-text="trans('generic.edit')"
             event="permissions:edit"
         />
     </div>
@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'name', title: this.trans('js_pages_permissions_permissionsindex.name'), sortable: true }
+                { field: 'name', title: this.trans('generic.name'), sortable: true }
             ]
         }
     },

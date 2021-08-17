@@ -11,15 +11,15 @@
             <thead>
                 <tr class="border-b-2">
                     <th class="p-2 text-left">
-                        {{ trans('js_pages_users_profile_components_assessments_userassessmentparticipantlist.section') }}
+                        {{ trans('generic.section') }}
                     </th>
 
                     <th class="p-2 text-left">
-                        {{ trans('js_pages_users_profile_components_assessments_userassessmentparticipantlist.type') }}
+                        {{ trans('generic.type') }}
                     </th>
 
                     <th class="p-2 text-left">
-                        {{ trans('js_pages_users_profile_components_assessments_userassessmentparticipantlist.title') }}
+                        {{ trans('generic.title') }}
                     </th>
 
                     <th class="p-2"></th>

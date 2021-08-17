@@ -10,7 +10,7 @@
                 class="btn btn-text text-blue-500 no-underline"
                 @click.prevent="reportingModal = true"
                 v-if="hasRole(['administrator'])"
-            >{{ trans('js_pages_users_profile_components_reportingstructure.edit') }}</button>
+            >{{ trans('generic.edit') }}</button>
         </div>
 
         <div
@@ -166,8 +166,8 @@ export default {
             users: [],
             selected: [],
             columns: [
-                { field: 'firstname', title: this.trans('js_pages_users_profile_components_reportingstructure.firstname'), sortable: true },
-                { field: 'lastname', title: this.trans('js_pages_users_profile_components_reportingstructure.lastname'), sortable: true },
+                { field: 'firstname', title: this.trans('generic.firstname'), sortable: true },
+                { field: 'lastname', title: this.trans('generic.lastname'), sortable: true },
             ],
         }
     },

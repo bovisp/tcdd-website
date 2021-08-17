@@ -1,7 +1,7 @@
 <template>
     <div class="w-full lg:w-9/12">
         <h1 class="text-3xl font-bold mb-4">
-            {{ trans('js_pages_users_usersindex.users') }}
+            {{ trans('generic.users') }}
         </h1> 
 
         <datatable 
@@ -12,7 +12,7 @@
             :order-key-directions="['asc']"
             :has-text-filter="true"
             :has-action="true"
-            :action-text="trans('js_pages_users_usersindex.profile')"
+            :action-text="trans('generic.profile')"
             :action-link="`${urlBase}/users`"
             action-id="id"
         />
@@ -25,10 +25,10 @@ export default {
         return {
             users: [],
             columns: [
-                { field: 'firstname', title: this.trans('js_pages_users_usersindex.firstname'), sortable: true },
-                { field: 'lastname', title: this.trans('js_pages_users_usersindex.lastname'), sortable: true },
-                { field: 'section', title: this.trans('js_pages_users_usersindex.section'), sortable: false },
-                { field: 'role', title: this.trans('js_pages_users_usersindex.role'), sortable: false }
+                { field: 'firstname', title: this.trans('generic.firstname'), sortable: true },
+                { field: 'lastname', title: this.trans('generic.lastname'), sortable: true },
+                { field: 'section', title: this.trans('generic.section'), sortable: false },
+                { field: 'role', title: this.trans('generic.role'), sortable: false }
             ]
         }
     },

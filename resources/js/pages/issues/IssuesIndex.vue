@@ -1,7 +1,7 @@
 <template>
     <div class="w-full mt-8">
         <h1 class="text-3xl font-bold mb-4">
-            {{ trans('js_pages_issues_issuesindex.issues') }}
+            {{ trans('generic.issues') }}
         </h1> 
 
         <datatable 
@@ -12,7 +12,7 @@
             :order-key-directions="['asc']"
             :has-text-filter="true"
             :has-event="true"
-            :event-text="trans('js_pages_issues_issuesindex.edit')"
+            :event-text="trans('generic.edit')"
             event="issues:edit"
         />
     </div>
@@ -26,7 +26,7 @@ export default {
         return {
             columns: [
                 { field: 'code', title: this.trans('js_pages_issues_issuesindex.code'), sortable: true },
-                { field: 'title', title: this.trans('js_pages_issues_issuesindex.title'), sortable: true },
+                { field: 'title', title: this.trans('generic.title'), sortable: true },
                 { field: 'status', title: this.trans('js_pages_issues_issuesindex.status'), sortable: true },
                 { field: 'closed_at', title: this.trans('js_pages_issues_issuesindex.closed'), sortable: true }
             ]

@@ -10,7 +10,7 @@
         </div>
 
         <h1 class="text-3xl font-bold mb-4">
-            {{ trans('js_pages_permissions_permissionsedit.edit') }}: {{ trans('js_pages_permissions_permissionsedit.permission') }} - {{ permission.name }}
+            {{ trans('generic.edit') }}: {{ trans('generic.permission') }} - {{ permission.name }}
         </h1>
 
         <users-permissions-index 

@@ -12,7 +12,7 @@
                 class="btn btn-text btn-sm text-sm ml-2"
                 @click.prevent="$emit('cancel')"
             >
-                {{ trans('js_pages_permissions_components_userspermissioncreate.cancel') }}
+                {{ trans('generic.cancel') }}
             </button>
         </div>
 
@@ -37,8 +37,8 @@ export default {
             users: [],
             selected: [],
             columns: [
-                { field: 'firstname', title: this.trans('js_pages_permissions_components_userspermissioncreate.firstname'), sortable: true },
-                { field: 'lastname', title: this.trans('js_pages_permissions_components_userspermissioncreate.lastname'), sortable: true },
+                { field: 'firstname', title: this.trans('generic.firstname'), sortable: true },
+                { field: 'lastname', title: this.trans('generic.lastname'), sortable: true },
             ],
         }
     },

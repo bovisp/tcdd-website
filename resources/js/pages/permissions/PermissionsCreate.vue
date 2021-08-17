@@ -15,7 +15,7 @@
                     :class="{ 'text-red-500': errors.name }"
                     for="name"
                 >
-                    {{ trans('js_pages_permissions_permissionscreate.name') }}
+                    {{ trans('generic.name') }}
                 </label>
 
                 <input 
@@ -46,7 +46,7 @@
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    {{ trans('js_pages_permissions_permissionscreate.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </form>

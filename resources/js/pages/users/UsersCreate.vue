@@ -78,12 +78,12 @@
             <button
                 @click.prevent="cancel"
                 class="btn btn-text text-red-500 mr-2"
-            >{{ trans('js_pages_users_userscreate.cancel') }}</button>
+            >{{ trans('generic.cancel') }}</button>
 
             <button 
                 @click.prevent="store"
                 class="btn btn-blue"
-            >{{ trans('js_pages_users_userscreate.submit') }}</button>
+            >{{ trans('generic.submit') }}</button>
         </datatable>
     </div>
 </template>
@@ -97,8 +97,8 @@ export default {
         return {
             users: [],
             columns: [
-                { field: 'firstname', title: this.trans('js_pages_users_userscreate.firstname'), sortable: true },
-                { field: 'lastname', title: this.trans('js_pages_users_userscreate.lastname'), sortable: true },
+                { field: 'firstname', title: this.trans('generic.firstname'), sortable: true },
+                { field: 'lastname', title: this.trans('generic.lastname'), sortable: true },
                 { field: 'email', title: this.trans('js_pages_users_userscreate.email'), sortable: false }
             ],
             selected: [],

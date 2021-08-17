@@ -7,7 +7,7 @@
             <a 
                 href=""
                 class="btn btn-text"
-            >{{ trans('js_pages_issues_issuescreate.cancel') }}</a>
+            >{{ trans('generic.cancel') }}</a>
         </nav>
 
         <h1 class="text-3xl font-bold mb-4">
@@ -23,7 +23,7 @@
                     :class="{ 'text-red-500': errors.title }"
                     for="title"
                 >
-                    {{ trans('js_pages_issues_issuescreate.issue') }} 
+                    {{ trans('generic.issue') }} 
                 </label>
 
                 <input 
@@ -76,7 +76,7 @@
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    {{ trans('js_pages_issues_issuescreate.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </form>

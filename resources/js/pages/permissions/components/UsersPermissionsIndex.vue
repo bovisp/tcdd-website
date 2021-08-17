@@ -6,7 +6,7 @@
                 @click.prevent="update"
                 v-if="typeof permission.users !== 'undefined' && permission.users.length"
             >
-                {{ trans('js_pages_permissions_components_userspermissionsindex.update') }}
+                {{ trans('generic.update') }}
             </button>
 
             <button 
@@ -51,8 +51,8 @@ export default {
         return {
             selected: [],
             columns: [
-                { field: 'firstname', title: this.trans('js_pages_permissions_components_userspermissionsindex.firstname'), sortable: true },
-                { field: 'lastname', title: this.trans('js_pages_permissions_components_userspermissionsindex.lastname'), sortable: true },
+                { field: 'firstname', title: this.trans('generic.firstname'), sortable: true },
+                { field: 'lastname', title: this.trans('generic.lastname'), sortable: true },
             ],
         }
     },

@@ -74,7 +74,7 @@
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    {{ trans('js_pages_users_profile_components_changepassword.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </template>
