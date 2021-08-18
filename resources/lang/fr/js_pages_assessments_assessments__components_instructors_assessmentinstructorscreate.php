@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'granteditingrights' => 'f Grant editing rights',
-  'nousers' => 'f There are no more instructors that can be added to this assessment.',
+  'granteditingrights' => 'Accorder les droits d\'édition',
+  'nousers' => 'Il n\'y a actuellement aucun utilisateur qui peut modifier cette évaluation.',
 );

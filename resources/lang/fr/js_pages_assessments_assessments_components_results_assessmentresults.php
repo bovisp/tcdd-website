@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'average' => 'f Average',
-  'returntoresultstable' => 'f Return to results table',
+  'average' => 'Moyenne',
+  'returntoresultstable' => 'Retourner au tableau des résultats',
 );

@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'createassessment' => 'f Create assessment',
+  'createassessment' => 'Créer l\'évaluation',
 );

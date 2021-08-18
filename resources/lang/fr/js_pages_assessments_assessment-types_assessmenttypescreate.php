@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'newassessmenttype' => 'f New assessment type',
-  'addassessmenttype' => 'f Add assessment type',
+  'newassessmenttype' => 'Nouveau type d\'évaluation',
+  'addassessmenttype' => 'Ajouter un type d\'évaluation',
 );

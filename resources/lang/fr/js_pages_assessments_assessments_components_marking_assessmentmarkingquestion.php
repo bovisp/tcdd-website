@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'markingquestion' => 'f Marking question',
+  'markingquestion' => 'Correction de la question',
 );

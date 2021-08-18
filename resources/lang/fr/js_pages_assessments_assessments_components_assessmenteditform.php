@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'cannotdelete' => 'f You cannot delete this assessment when it has been locked and/or when there are one or more attempts that have been saved to the database.',
+  'cannotdelete' => 'Vous ne pouvez pas supprimer cette évaluation lorsqu\'elle a été verrouillée et/ou lorsqu\'il y a une ou plusieurs tentatives qui ont été enregistrées dans la base de données.',
 );

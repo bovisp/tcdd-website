@@ -2,5 +2,5 @@
 
 return array (
   'new' => 'f New',
-  'selecttype' => 'f Please select a type',
+  'selecttype' => 'Choisir un type',
 );

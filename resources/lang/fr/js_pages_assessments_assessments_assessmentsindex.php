@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'noassessments' => 'f No assessments have been created.',
+  'noassessments' => 'Aucune évaluation n\'a été créée.',
 );

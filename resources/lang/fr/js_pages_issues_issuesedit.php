@@ -1,15 +1,15 @@
 <?php
 
 return array (
-  'updateissue' => 'f Update issue',
-  'issuedby' => 'f Issued by',
-  'issuenumber' => 'f Issue number',
-  'issuecreated' => 'f Issue created',
-  'issueupdated' => 'f Issue updated',
-  'status' => 'f Status',
-  'issueclosed' => 'f Issue closed',
-  'issuedescription' => 'f Issue description',
-  'submitted' => 'f Submitted',
-  'inprogress' => 'f In Progress',
-  'resolved' => 'f Resolved',
+  'updateissue' => 'Ajouter des informations',
+  'issuedby' => 'Créé par',
+  'issuenumber' => 'Numéro du problème',
+  'issuecreated' => 'Problème créé',
+  'issueupdated' => 'Problème mis à jour',
+  'status' => 'Statut',
+  'issueclosed' => 'Problème fermé',
+  'issuedescription' => 'Description du problème',
+  'submitted' => 'Soumis',
+  'inprogress' => 'En cours',
+  'resolved' => 'Résolu',
 );

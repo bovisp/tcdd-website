@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'attemptfullymarked' => 'f This attempt was fully marked on',
+  'attemptfullymarked' => 'Cette essai a été marqué le',
 );

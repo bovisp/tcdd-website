@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'newassessment' => 'f New assessment',
-  'createassessment' => 'f Create assessment',
+  'newassessment' => 'Nouveau évaluation',
+  'createassessment' => 'Créer l\'évaluation',
 );

@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'addmoreinstructors' => 'f Add more instructors',
-  'nousers' => 'f There are no instructors associated with this exam.',
-  'addinstructors' => 'f Add instructors',
+  'addmoreinstructors' => 'Ajouter d\'autres instructeurs',
+  'nousers' => 'Il n\'y a actuellement aucun utilisateur qui puisse instructeur à cette évaluation.',
+  'addinstructors' => 'Ajouter instructeurs',
 );

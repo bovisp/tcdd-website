@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'updateassessmenttype' => 'f Update assessment type',
+  'updateassessmenttype' => 'Mise à jour du type d\'évaluation',
 );

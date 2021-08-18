@@ -1,6 +1,5 @@
 <?php
 
 return array (
-  'question' => 'f Question',
-  'selectquestion' => 'f Select a question to mark',
+  'selectquestion' => 'Sélectionnez une question à marquer',
 );

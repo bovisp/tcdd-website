@@ -1,11 +1,11 @@
 <?php
 
 return array (
-  'incompletequestions' => 'f Warning. Some of your answers have not yet been completed.',
-  'incompletequestionsconfirm' => 'f Are you sure you want to submit this exam? Once you submit your exam questions, you will not be allowed to re-enter this assessment.',
-  'nextpage' => 'f Next page',
-  'previouspage' => 'f Previous page',
-  'returnassessment' => 'f Return to assessment',
-  'reviewallsubmit' => 'f Review all and submit',
-  'submitfinish' => 'f Submit and finish',
+  'incompletequestions' => 'Attention. Certaines de vos réponses n\'ont pas encore été complétées.',
+  'incompletequestionsconfirm' => 'Êtes-vous sûr de vouloir soumettre cet examen ? Une fois que vous aurez soumis vos questions d\'examen, vous ne serez pas autorisé à vous réinscrire à cette évaluation.',
+  'nextpage' => 'Page suivante',
+  'previouspage' => 'Page précédente',
+  'returnassessment' => 'Retourner à l\'évaluation',
+  'reviewallsubmit' => 'Réviser tout et soumettre',
+  'submitfinish' => 'Soumettre et terminer',
 );

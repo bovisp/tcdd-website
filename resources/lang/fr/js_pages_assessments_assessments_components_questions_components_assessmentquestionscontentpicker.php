@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'addcontent' => 'f Add content',
-  'choosetype' => 'f Choose a type',
-  'explanitorycontent' => 'f Explanitory content',
+  'addcontent' => 'Ajouter du contenu',
+  'choosetype' => 'Choisir un type',
+  'explanitorycontent' => 'Contenu explicatif',
 );

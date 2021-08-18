@@ -18,7 +18,7 @@
             class="alert alert-blue my-4"
             v-if="participantAnswer.marked"
         >
-            {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingparticipant.attemptfullymarked') }} {{ participantAnswer.marked_on }}.
+            {{ trans('js_pages_assessments_assessments_components_marking_assessmentmarkingparticipant.attemptfullymarked') }} {{ dayjs(participantAnswer.marked_on).format('YYYY-MM-DD') }}.
         </div>
         
         <ul>
@@ -82,6 +82,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 import { orderBy } from 'lodash-es'
 import { pascalCase } from 'change-case'
+import dayjs from 'dayjs'
 
 export default {
     computed: {
@@ -96,6 +97,8 @@ export default {
         }),
 
         orderBy,
+
+        dayjs,
 
         pascalCase,
 

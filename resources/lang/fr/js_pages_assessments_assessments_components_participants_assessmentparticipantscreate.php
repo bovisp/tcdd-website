@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'nousers' => 'f There are no more participants that can be added to this exam.',
-  'addparticipants' => 'f Add participants',
+  'nousers' => 'Il n\'y a actuellement aucun utilisateur qui puisse participer à cette évaluation.',
+  'addparticipants' => 'Ajouter des participants',
 );

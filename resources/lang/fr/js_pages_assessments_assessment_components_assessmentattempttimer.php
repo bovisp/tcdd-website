@@ -1,8 +1,8 @@
 <?php
 
 return array (
-  'timeremaining' => 'f Time remaining',
-  'minutes' => 'f minutes',
-  'twominute' => 'f Two minute warning',
-  'twominutetext' => 'f You have less than two minutes left to complete the assessment. Please check your work and submit. If the timer reaches 0 minutes, your work will automatically be saved and you will be locked out of this exam.',
+  'timeremaining' => 'Temps restant',
+  'minutes' => 'minutes',
+  'twominute' => 'Avis de deux minutes',
+  'twominutetext' => 'Il vous reste moins de deux minutes pour compléter l\'évaluation. Veuillez vérifier votre travail et le soumettre. Si le chronomètre atteint 0 minute, votre travail sera automatiquement sauvegardé et vous serez exclu de cet examen.',
 );

@@ -8,13 +8,13 @@
             <ul class="ml-2 mb-6">
                 <li>
                     <a :href="`${urlBase}/users`">
-                        {{ trans('js_pages_admin_adminindex.users') }}
+                        {{ trans('generic.users') }}
                     </a>
                 </li>
 
                 <li>
                     <a :href="`${urlBase}/permissions`">
-                        {{ trans('js_pages_admin_adminindex.permissions') }}
+                        {{ trans('generic.permissions') }}
                     </a>
                 </li>
 
@@ -58,7 +58,7 @@
         
         <template v-if="$can('manage assessments')">
             <h2 class="font-normal text-3xl mb-2">
-                {{ trans('js_pages_admin_adminindex.assessments') }}
+                {{ trans('generic.assessments') }}
             </h2>
 
             <ul class="ml-2 mb-6">
@@ -82,13 +82,13 @@
 
                 <li v-if="hasRole(['administrator'])">
                     <a :href="`${urlBase}/assessments/assessment-types`">
-                        {{ trans('js_pages_admin_adminindex.assessmenttypes') }}
+                        {{ trans('generic.assessmenttypes') }}
                     </a>
                 </li>
 
                 <li>
                     <a :href="`${urlBase}/assessments`">
-                        {{ trans('js_pages_admin_adminindex.assessments') }}
+                        {{ trans('generic.assessments') }}
                     </a>
                 </li>
             </ul>
@@ -98,7 +98,7 @@
             class="font-normal text-3xl mb-2"
             v-if="hasRole(['administrator'])"
         >
-            {{ trans('js_pages_admin_adminindex.reports') }}
+            {{ trans('generic.reports') }}
         </h2>
 
         <ul class="ml-2 mb-6">

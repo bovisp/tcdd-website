@@ -1,13 +1,13 @@
 <?php
 
 return array (
-  'addparticipants' => 'f Add participants',
+  'addparticipants' => 'Ajouter des participants',
   'addmoreparticipants' => 'f Add more participants',
-  'deactivate' => 'f Deactivate',
+  'deactivate' => 'Désactiver',
   'activate' => 'f Activate',
-  'completed' => 'f Completed',
-  'nousers' => 'f There are no participants associated with this assessment.',
+  'completed' => 'Completed',
+  'nousers' => 'Il n\'y a actuellement aucun utilisateur qui puisse participer à cette évaluation.',
   'hasbeensuccessfully' => 'f has been successfully',
-  'deactivated' => 'f deactivated',
+  'deactivated' => 'désactivé',
   'activated' => 'f activated',
 );

@@ -1,14 +1,10 @@
 <?php
 
 return array (
-  'page' => 'f Page',
-  'points' => 'f points',
-  'deletepage' => 'f Delete page',
-  'updatepagenumber' => 'f Update page number',
-  'changepagenumber' => 'f Change page number',
-  'cancel' => 'f Cancel',
-  'change' => 'f Change',
-  'deletepageconfirm' => 'f Are you sure you want to delete this page? All content and questions on this page will also be removed from the assessment. This operation cannot be undone.',
+  'deletepage' => 'Supprimer la page',
+  'updatepagenumber' => 'Mise à jour du numéro de page',
+  'changepagenumber' => 'Modifier le numéro de page',
+  'deletepageconfirm' => 'Êtes-vous sûr de vouloir supprimer cette page ? Tout le contenu et les questions de cette page seront également supprimés de l\'évaluation. Cette opération ne peut être annulée.',
   'changepagenumbersuccess' => 'f Page number successfully changed.',
   'pagedeleted' => 'f Page successfully deleted',
 );

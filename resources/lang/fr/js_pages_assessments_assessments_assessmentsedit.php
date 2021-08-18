@@ -1,15 +1,10 @@
 <?php
 
 return array (
-  'backtoassessments' => 'f Back to assessments',
-  'duplicating' => 'f Duplicating',
-  'markingassessmentcompleted' => 'f Marking for this assessment was completed on',
-  'editsettings' => 'f Edit settings',
-  'instructors' => 'f Instructors',
-  'participants' => 'f Participants',
-  'questions' => 'f Questions',
-  'marking' => 'f Marking',
   'results' => 'f Results',
+  'backtoassessments' => 'Retour aux évaluations',
+  'duplicating' => 'Duplication',
+  'markingassessmentcompleted' => 'La correction de cette évaluation a été effectuée le',
   'assessmentlocked' => 'f Assessment locked',
-  'lockassessment' => 'f Lock assessment',
+  'lockassessment' => 'Vérouiller l\'évaluation',
 );

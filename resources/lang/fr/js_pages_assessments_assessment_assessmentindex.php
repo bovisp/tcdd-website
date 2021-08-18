@@ -1,9 +1,9 @@
 <?php
 
 return array (
-  'examquestionsbypage' => 'f Exam questions by page',
-  'noquestions' => 'f No questions on this page.',
-  'startassessment' => 'f Start assessment',
-  'begin' => 'f Begin',
-  'beginconfirm' => 'f Are you sure you want to start this exam?',
+  'examquestionsbypage' => 'Questions d\'examen par page',
+  'noquestions' => 'Aucune question sur cette page.',
+  'startassessment' => 'Commencer l\'évaluation',
+  'begin' => 'Commencer',
+  'beginconfirm' => 'Êtes-vous sûr de vouloir commencer cet examen ?',
 );

@@ -9,7 +9,7 @@
                 :order-keys="['categoryName', 'name']"
                 :order-key-directions="['asc', 'asc']"
                 :has-event="true"
-                :event-text="trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionsadd.add')"
+                :event-text="trans('generic.add')"
                 event="questions:add"
             />
 

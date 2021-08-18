@@ -1,8 +1,7 @@
 <?php
 
 return array (
-  'add' => 'f Add',
-  'noquestions' => 'f No questions have been created.',
-  'addscore' => 'f Add score',
-  'pleaseclick' => 'f Please click either of the "Add to page" buttons to add the question.',
+  'noquestions' => 'Aucune question sur cette page.',
+  'addscore' => 'Ajouter le score',
+  'pleaseclick' => 'Veuillez cliquer sur l\'un des boutons "Ajouter à la page" pour ajouter la question.',
 );
