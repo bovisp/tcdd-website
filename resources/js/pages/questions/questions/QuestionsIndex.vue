@@ -28,8 +28,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { find } from 'lodash-es'
-
 export default {
     data() {
         return {
