@@ -1,6 +1,18 @@
 <?php
 
 return array (
+  'cancelpreview' => 'f Cancel preview',
+  'possibleanswers' => 'f Possible answers',
+  'translationtag' => 'f translation of new tag',
+  'addmoreanswers' => 'f Add 3 more answers',
+  'answersrandomlyshuffled' => 'f Answers should be randomly shuffled',
+  'addasnewtag' => 'f Add this as new tag',
+  'addquestion' => 'f Add question',
+  'needquestiontype' => 'f You need to associate this question with a question type.',
+  'newtagmessage1' => 'f In order to add this tag, you will need to provide a',
+  'newtagmessage2' => 'f translation for the new tag',
+  'preview' => 'f Preview',
+  'questionaddedassessments' => 'f Note that this question has been added to the following assessments:',
   'hide' => 'f Hide',
   'show' => 'f Show',
   'answer' => 'f Answer',
@@ -89,4 +101,13 @@ return array (
   'profile' => 'f Profile',
   'users' => 'f Users',
   'submit' => 'f Submit',
+  'questionmultipleanswers' => 'f Question can have multiple answers',
+  'correct' => 'f Correct',
+  'pagenumber' => 'f Page number',
+  'newtagmessage3' => 'f If you do not have the translation, click the cancel button and you can always add it later by editing this new question.',
+  'questiontype' => 'f Question type',
+  'searchfortag' => 'f Search or add a tag',
+  'translationfor' => 'f translation for...',
+  'cannotdeletetext1' => 'f You cannot delete a question that has been added to at least one assessment. If the assessments have not been locked and/or they have not been attempted, you must remove remove the question from the assessment before you can delete this question.',
+  'questions' => 'f Questions',
 );

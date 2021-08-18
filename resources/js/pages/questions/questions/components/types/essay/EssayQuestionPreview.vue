@@ -5,7 +5,7 @@
                 class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="$emit('question-preview:cancel')"
             >
-                {{ trans('js_pages_questions_questions_components_types_essay_essayquestionpreview.cancelpreview') }}
+                {{ trans('generic.cancelpreview') }}
             </button>
         </div>
 
@@ -28,7 +28,7 @@
         >
             <label 
                 class="block text-gray-700 font-bold mb-2"
-            >{{ trans('js_pages_questions_questions_components_types_essay_essayquestionpreview.answer') }}</label>
+            >{{ trans('generic.answer') }}</label>
 
             <template v-if="testQuestionData.questionTypeData.rich_text">
                 <vue-editor 
@@ -64,7 +64,7 @@
                 class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="cancel"
             >
-                {{ trans('js_pages_questions_questions_components_types_essay_essayquestionpreview.submit') }}
+                {{ trans('generic.submit') }}
             </button>
         </div>
     </div>

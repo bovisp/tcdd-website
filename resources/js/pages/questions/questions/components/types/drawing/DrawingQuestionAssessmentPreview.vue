@@ -45,7 +45,7 @@
                 >
                     <label 
                         class="block text-gray-700 font-bold mb-2"
-                    >{{ trans('js_pages_questions_components_types_drawing_drawingquestionassessmentpreview.answer') }}</label>
+                    >{{ trans('generic.answer') }}</label>
 
                     
                     <template v-if="questionData.rich_text">
@@ -75,14 +75,14 @@
                         @click.prevent="submit"
                         v-if="!submitting"
                     >
-                        {{ trans('js_pages_questions_components_types_drawing_drawingquestionassessmentpreview.submit') }}
+                        {{ trans('generic.submit') }}
                     </button>
 
                     <button 
                         class="btn btn-text btn-sm text-sm ml-auto"
                         @click.prevent="cancel"
                     >
-                        {{ trans('js_pages_questions_components_types_drawing_drawingquestionassessmentpreview.cancelpreview') }}
+                        {{ trans('generic.cancelpreview') }}
                     </button>
                 </div>
             </div>

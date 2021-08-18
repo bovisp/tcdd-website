@@ -34,7 +34,7 @@
                 >
                     <label 
                         class="block text-gray-700 font-bold mb-2"
-                    >{{ trans('js_pages_questions_questions_components_types_essay_essayquestionassessmentpreview.answer') }}</label>
+                    >{{ trans('generic.answer') }}</label>
 
                     <template v-if="questionData.rich_text">
                         <vue-editor 
@@ -63,14 +63,14 @@
                         @click.prevent="submitting = true"
                         v-if="!submitting"
                     >
-                        {{ trans('js_pages_questions_questions_components_types_essay_essayquestionassessmentpreview.submit') }}
+                        {{ trans('generic.submit') }}
                     </button>
 
                     <button 
                         class="btn btn-text btn-sm text-sm ml-auto"
                         @click.prevent="cancel"
                     >
-                        {{ trans('js_pages_questions_questions_components_types_essay_essayquestionassessmentpreview.cancelpreview') }}
+                        {{ trans('generic.cancelpreview') }}
                     </button>
                 </div>
             </div>

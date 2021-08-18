@@ -44,7 +44,7 @@
         </b-field>
 
         <b-field
-            :label="trans('generic.section')"
+            :label="trans('generic.questioncategory')"
             :type="errors.question_category_id ? 'is-danger' : ''"
             :message="errors.question_category_id ? errors.question_category_id[0] : ''"
             class="w-full lg:w-1/3"
@@ -130,8 +130,8 @@
                 v-model="form.tags" 
                 :options="avalaibleTags" 
                 :multiple="true" 
-                :placeholder="trans('js_pages_questions_questions_questionsedit.searchaddtag')" 
-                :tag-placeholder="trans('js_pages_questions_questions_questionsedit.addasnewtag')"
+                :placeholder="trans('generic.searchaddtag')" 
+                :tag-placeholder="trans('generic.addasnewtag')"
                 label="name" 
                 track-by="id" 
                 :taggable="true"
@@ -166,7 +166,7 @@
                 <div class="modal-card" style="width: auto">
                     <header class="modal-card-head">
                         <p class="modal-card-title">
-                            {{ trans('generic.add') }} {{ currentLang === 'en' ? trans('generic.french') : trans('generic.english') }} {{ trans('js_pages_questions_questions_questionsedit.translationtag') }}: {{ tag }}
+                            {{ trans('generic.add') }} {{ currentLang === 'en' ? trans('generic.french') : trans('generic.english') }} {{ trans('generic.translationtag') }}: {{ tag }}
                         </p>
 
                         <button
@@ -177,8 +177,8 @@
                     </header>
 
                     <section class="modal-card-body">
-                        <p>{{ trans('js_pages_questions_questions_questionsedit.newtagmessage1') }} {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionsedit.french') : trans('js_pages_questions_questions_questionsedit.english') }} 
-                        {{ trans('js_pages_questions_questions_questionsedit.newtagmessage2') }} '{{ tag }}'. {{ trans('js_pages_questions_questions_questionsedit.newtagmessage3') }}</p>
+                        <p>{{ trans('generic.newtagmessage1') }} {{ currentLang === 'en' ? trans('generic.french') : trans('generic.english') }} 
+                        {{ trans('generic.newtagmessage2') }} '{{ tag }}'. {{ trans('generic.newtagmessage3') }}</p>
 
                         <b-field 
                             :label="trans('generic.nameenglish')"

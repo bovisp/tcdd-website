@@ -5,7 +5,7 @@
                 class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="$emit('question-preview:cancel')"
             >
-                {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionpreview.cancelpreview') }}
+                {{ trans('generic.cancelpreview') }}
             </button>
         </div>
 
@@ -74,14 +74,14 @@
                 @click.prevent="submit"
                 v-if="!submitting"
             >
-                {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionpreview.submit') }}
+                {{ trans('generic.submit') }}
             </button>
 
             <button 
                 class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="cancel"
             >
-                {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionpreview.cancelpreview') }}
+                {{ trans('generic.cancelpreview') }}
             </button>
         </div>
     </div>

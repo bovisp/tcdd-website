@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            {{ trans('js_pages_questions_questions_questionsindex.questions') }}
+            {{ trans('generic.questions') }}
         </h1> 
 
         <datatable 
@@ -13,7 +13,7 @@
             :order-key-directions="['asc', 'asc', 'asc']"
             :has-text-filter="true"
             :has-event="true"
-            :event-text="trans('js_pages_questions_questions_questionsindex.edit')"
+            :event-text="trans('generic.edit')"
             event="questions:edit"
         />
 
@@ -34,9 +34,9 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'categoryName', title: this.trans('js_pages_questions_questions_questionsindex.category'), sortable: true },
-                { field: 'sectionName', title: this.trans('js_pages_questions_questions_questionsindex.section'), sortable: true },
-                { field: 'name', title: this.trans('js_pages_questions_questions_questionsindex.name'), sortable: true }
+                { field: 'categoryName', title: this.trans('generic.category'), sortable: true },
+                { field: 'sectionName', title: this.trans('generic.section'), sortable: true },
+                { field: 'name', title: this.trans('generic.name'), sortable: true }
             ]
         }
     },

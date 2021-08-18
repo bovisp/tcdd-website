@@ -1,7 +1,7 @@
 <template>
     <div>
         <h4 class="text-lg font-medium mb-3">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.generaloptions') }}
+            {{ trans('generic.generaloptions') }}
         </h4>
 
         <div
@@ -17,7 +17,7 @@
                 <span 
                     class="ml-2"
                     :class="{ 'text-red-500': errors.text_answer }"
-                >{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.requirestextanswer') }} ({{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.default') }}: <span class="font-bold">{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.false') }}</span>)</span>
+                >{{ trans('generic.requirestextanswer') }} ({{ trans('generic.default') }}: <span class="font-bold">{{ trans('generic.false') }}</span>)</span>
             </label>
 
             <p
@@ -41,7 +41,7 @@
                 <span 
                     class="ml-2"
                     :class="{ 'text-red-500': errors.rich_text }"
-                >{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.answerrichtexteditor') }} ({{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.default') }}: <span class="font-bold">{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.false') }}</span>)</span>
+                >{{ trans('generic.answerrichtexteditor') }} ({{ trans('generic.default') }}: <span class="font-bold">{{ trans('generic.false') }}</span>)</span>
             </label>
 
             <p
@@ -52,7 +52,7 @@
         </div>
 
         <h4 class="text-lg font-medium mb-2">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.drawingoptions') }}
+            {{ trans('generic.drawingoptions') }}
         </h4>
 
         <div
@@ -62,7 +62,7 @@
         ></div>
 
         <h4 class="text-base font-medium mb-2 ml-4">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.pencolors') }}
+            {{ trans('generic.pencolors') }}
         </h4>
 
         <div 
@@ -87,7 +87,7 @@
         </div>
 
         <h4 class="text-base font-medium mb-2 ml-4">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.eraser') }}
+            {{ trans('generic.eraser') }}
         </h4>
 
         <div
@@ -102,12 +102,12 @@
 
                 <span 
                     class="ml-2"
-                >{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.erasertool') }}</span>
+                >{{ trans('generic.erasertool') }}</span>
             </label>
         </div>
 
         <h4 class="text-base font-medium mb-2 ml-4">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.cleartool') }}
+            {{ trans('generic.cleartool') }}
         </h4>
 
         <div
@@ -122,12 +122,12 @@
 
                 <span 
                     class="ml-2"
-                >{{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.toolclearall') }}</span>
+                >{{ trans('generic.toolclearall') }}</span>
             </label>
         </div>
 
         <h4 class="text-base font-medium mb-2 ml-4">
-            {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.backgroundimage') }}
+            {{ trans('generic.backgroundimage') }}
         </h4>
 
         <div
@@ -160,7 +160,7 @@
                 class="btn btn-text btn-sm text-sm text-red-500"
                 @click.prevent="forceRerender"
             >
-                {{ trans('js_pages_questions_components_types_drawing_drawingquestioncreate.deleteimage') }}
+                {{ trans('generic.deleteimage') }}
             </button>
         </div>
     </div>

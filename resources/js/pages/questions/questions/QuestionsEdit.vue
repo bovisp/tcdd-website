@@ -14,7 +14,7 @@
                 class="alert alert-red content mb-4"
                 v-if="question.inAssessment"
             >
-                <p>{{ trans('js_pages_questions_questions_questionsedit.questionaddedassessments') }}</p>
+                <p>{{ trans('generic.questionaddedassessments') }}</p>
 
                 <ul>
                     <li
@@ -31,7 +31,7 @@
                 id="edit-pane"
             >
                 <h1 class="text-3xl font-bold mb-4">
-                    {{ trans('js_pages_questions_questions_questionsedit.edit') }}: {{ trans('js_pages_questions_questions_questionsedit.question') }} - {{ question.name }}
+                    {{ trans('generic.edit') }}: {{ trans('generic.question') }} - {{ question.name }}
                 </h1>
 
                 <form 
@@ -57,7 +57,7 @@
                             class="btn btn-text text-sm"
                             @click.prevent="cancel"
                         >
-                            {{ trans('js_pages_questions_questions_questionsedit.cancel') }}
+                            {{ trans('generic.cancel') }}
                         </button>
 
                         <button 
@@ -65,7 +65,7 @@
                             @click.prevent="preview"
                             v-scroll-to="'#preview-pane'"
                         >
-                            {{ trans('js_pages_questions_questions_questionsedit.preview') }}
+                            {{ trans('generic.preview') }}
                         </button>
 
                         <button 
@@ -73,7 +73,7 @@
                             @click.prevent="duplicate"
                             v-scroll-to="'#duplicate-pane'"
                         >
-                            {{ trans('js_pages_questions_questions_questionsedit.duplicate') }}
+                            {{ trans('generic.duplicate') }}
                         </button>
                     </div>
                 </form>
@@ -89,9 +89,9 @@
                     class="alert alert-red content mt-4"
                     v-if="question.inAssessment"
                 >
-                    <p>{{ trans('js_pages_questions_questions_questionsedit.cannotdeletetext1') }}</p>
+                    <p>{{ trans('generic.cannotdeletetext1') }}</p>
 
-                    <p><strong>{{ trans('js_pages_questions_questions_questionsedit.assessments') }}:</strong></p>
+                    <p><strong>{{ trans('generic.assessments') }}:</strong></p>
 
                     <ul>
                         <li

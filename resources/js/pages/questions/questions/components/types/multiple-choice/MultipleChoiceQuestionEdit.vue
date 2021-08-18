@@ -1,7 +1,7 @@
 <template>
     <div v-if="typeof form !== 'undefined'">
         <h4 class="text-lg font-medium mb-3">
-            {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.generaloptions') }}
+            {{ trans('generic.generaloptions') }}
         </h4>
 
         <div
@@ -18,7 +18,7 @@
                 <span 
                     class="ml-2"
                     :class="{ 'text-red-500': errors.multiple_answers }"
-                >{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.questionmultipleanswers') }} ({{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.default') }}: <span class="font-bold">{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.false') }}</span>)</span>
+                >{{ trans('generic.questionmultipleanswers') }} ({{ trans('generic.default') }}: <span class="font-bold">{{ trans('generic.false') }}</span>)</span>
             </label>
 
             <p
@@ -41,7 +41,7 @@
                 <span 
                     class="ml-2"
                     :class="{ 'text-red-500': errors.shuffle_answers }"
-                >{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.answersrandomlyshuffled') }} ({{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.default') }}: <span class="font-bold">{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.true') }}</span>)</span>
+                >{{ trans('generic.answersrandomlyshuffled') }} ({{ trans('generic.default') }}: <span class="font-bold">{{ trans('generic.true') }}</span>)</span>
             </label>
 
             <p
@@ -52,7 +52,7 @@
         </div>
 
         <h4 class="text-lg font-medium mb-3">
-            {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.possibleanswers') }}
+            {{ trans('generic.possibleanswers') }}
         </h4>
 
         <div
@@ -64,7 +64,7 @@
                 class="w-32 flex flex-col items-center justify-start"
             >
                 <p class="block text-gray-700 font-bold mb-2">
-                    {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.correct') }}
+                    {{ trans('generic.correct') }}
                 </p>
 
                 <input 
@@ -81,7 +81,7 @@
                     <label 
                         :for="`answer-${answer.id}-en`"
                         class="block text-gray-700 font-bold mb-2"
-                    >{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.answerenglish') }}</label>
+                    >{{ trans('generic.answerenglish') }}</label>
 
                     <textarea 
                         :id="`answer-${answer.id}-en`"
@@ -95,7 +95,7 @@
                     <label 
                         :for="`answer-${answer.id}-fr`"
                         class="block text-gray-700 font-bold mb-2"
-                    >{{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.answerfrench') }}</label>
+                    >{{ trans('generic.answerfrench') }}</label>
 
                     <textarea 
                         :id="`answer-${answer.id}-fr`"
@@ -123,7 +123,7 @@
                 class="btn btn-blue btn-sm text-sm ml-auto"
                 @click.prevent="addAnswers"
             >
-                {{ trans('js_pages_questions_questions_components_types_multiplechoice_multiplechoicequestionedit.addmoreanswers') }}...
+                {{ trans('generic.addmoreanswers') }}...
             </button>
         </div>
 

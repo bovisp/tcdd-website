@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center">
         <strong class="text-gray-700 mr-1">
-            {{ trans('js_pages_questions_questions_components_types_questioneditscore.points') }}:
+            {{ trans('generic.points') }}:
         </strong> 
         
         <template v-if="!editingScore">
@@ -10,7 +10,7 @@
                 class="btn btn-text text-sm btn-sm text-blue-500 ml-2"
                 @click.prevent="editScore"
                 v-if="!assessment.locked"
-            >{{ trans('js_pages_questions_questions_components_types_questioneditscore.edit') }}</button>
+            >{{ trans('generic.edit') }}</button>
         </template>
 
         <template v-if="editingScore && !assessment.locked">
@@ -30,12 +30,12 @@
             <button 
                 class="btn btn-blue text-sm btn-sm ml-2"
                 @click.prevent="changeScore"
-            >{{ trans('js_pages_questions_questions_components_types_questioneditscore.change') }}</button>
+            >{{ trans('generic.change') }}</button>
 
             <button 
                 class="btn btn-text text-sm btn-sm ml-2"
                 @click.prevent="cancelEditScore"
-            >{{ trans('js_pages_questions_questions_components_types_questioneditscore.cancel') }}</button>
+            >{{ trans('generic.cancel') }}</button>
         </template>
     </div>
 </template>

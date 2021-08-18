@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center mt-3">
         <strong class="text-gray-700 mr-1">
-            {{ trans('js_pages_questions_questions_components_types_questioneditpagenumber.pagenumber') }}:
+            {{ trans('generic.pagenumber') }}:
         </strong>
 
         <template v-if="!editingPageNumber">
@@ -10,7 +10,7 @@
                 class="btn btn-text text-sm btn-sm text-blue-500 ml-2"
                 @click.prevent="editPageNumber"
                 v-if="!assessment.locked"
-            >{{ trans('js_pages_questions_questions_components_types_questioneditpagenumber.edit') }}</button>
+            >{{ trans('generic.edit') }}</button>
         </template>
 
         <template v-if="editingPageNumber && !assessment.locked">
@@ -26,7 +26,7 @@
                         :value="p"
                         v-for="p in availablePages"
                         :key="p"
-                        v-text="`${trans('js_pages_questions_questions_components_types_questioneditpagenumber.page')} ${p}`"
+                        v-text="`${trans('generic.page')} ${p}`"
                     ></option>
                 </select>
 
@@ -38,12 +38,12 @@
             <button 
                 class="btn btn-blue text-sm btn-sm ml-2"
                 @click.prevent="changePageNumber"
-            >{{ trans('js_pages_questions_questions_components_types_questioneditpagenumber.change') }}</button>
+            >{{ trans('generic.change') }}</button>
 
             <button 
                 class="btn btn-text text-sm btn-sm ml-2"
                 @click.prevent="cancelEditPageNumber"
-            >{{ trans('js_pages_questions_questions_components_types_questioneditpagenumber.cancel') }}</button>
+            >{{ trans('generic.cancel') }}</button>
         </template>
     </div>
 </template>

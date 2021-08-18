@@ -15,7 +15,7 @@
                     class="block text-gray-700 font-bold mb-2"
                     :class="{ 'text-red-500': errors.section_id }"
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.section') }}
+                    {{ trans('generic.section') }}
                 </label>
 
                 <div class="relative">
@@ -55,7 +55,7 @@
                     class="block text-gray-700 font-bold mb-2"
                     :class="{ 'text-red-500': errors.question_category_id }"
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.questioncategory') }}
+                    {{ trans('generic.questioncategory') }}
                 </label>
 
                 <div class="relative">
@@ -95,7 +95,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.nameenglish') }}
+                    {{ trans('generic.nameenglish') }}
                 </label>
 
                 <input 
@@ -121,7 +121,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.namefrench') }}
+                    {{ trans('generic.namefrench') }}
                 </label>
 
                 <input 
@@ -145,7 +145,7 @@
                 <label 
                     class="block text-gray-700 font-bold mb-2" 
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.questiontextenglish') }}
+                    {{ trans('generic.questiontextenglish') }}
                 </label>
 
                 <content-builder 
@@ -159,7 +159,7 @@
                 <label 
                     class="block text-gray-700 font-bold mb-2" 
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.questiontextfrench') }}
+                    {{ trans('generic.questiontextfrench') }}
                 </label>
 
                 <content-builder 
@@ -172,7 +172,7 @@
                     class="block text-gray-700 font-bold mb-2" 
                     :class="{ 'text-red-500': errors.marking_guide_en }"
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.markingguideenglish') }}
+                    {{ trans('generic.markingguideenglish') }}
                 </label>
 
                 <vue-editor 
@@ -191,7 +191,7 @@
                     class="block text-gray-700 font-bold mb-2" 
                     :class="{ 'text-red-500': errors.marking_guide_fr }"
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.markingguidefrench') }}
+                    {{ trans('generic.markingguidefrench') }}
                 </label>
 
                 <vue-editor 
@@ -213,15 +213,15 @@
                     :class="{ 'text-red-500': errors.tags }"
                     for="tags"
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.tags') }}
+                    {{ trans('generic.tags') }}
                 </label>
 
                 <multiselect 
                     v-model="form.tags" 
                     :options="avalaibleTags" 
                     :multiple="true" 
-                    :placeholder="trans('js_pages_questions_questions_questionscreate.searchfortag')" 
-                    :tag-placeholder="trans('js_pages_questions_questions_questionscreate.addasnewtag')"
+                    :placeholder="trans('generic.searchfortag')" 
+                    :tag-placeholder="trans('generic.addasnewtag')"
                     label="name" 
                     track-by="id" 
                     :taggable="true"
@@ -243,7 +243,7 @@
                     class="block text-gray-700 font-bold mb-2"
                     :class="{ 'text-red-500': errors.question_type_id }"
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.questiontype') }}
+                    {{ trans('generic.questiontype') }}
                 </label>
 
                 <div class="relative">
@@ -281,7 +281,7 @@
                 <h3
                     class="text-2xl font-light my-4"
                 >
-                    {{ capitalCase(type) }} {{ trans('js_pages_questions_questions_questionscreate.questionsettings') }}
+                    {{ capitalCase(type) }} {{ trans('generic.questionsettings') }}
                 </h3>
 
                 <component 
@@ -297,7 +297,7 @@
                 v-if="noQuestionType"
             >
                 <div class="alert alert-red">
-                    {{ trans('js_pages_questions_questions_questionscreate.needquestiontype') }}
+                    {{ trans('generic.needquestiontype') }}
                 </div>
             </div>
 
@@ -307,14 +307,14 @@
                 <button 
                     class="btn btn-blue text-sm"
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.addquestion') }}
+                    {{ trans('generic.addquestion') }}
                 </button>
 
                 <button 
                     class="btn btn-text text-sm"
                     @click.prevent="remove"
                 >
-                    {{ trans('js_pages_questions_questions_questionscreate.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </form>
@@ -327,13 +327,13 @@
             cancel-button-text="Cancel"
         >
             <template slot="header">
-                {{ trans('js_pages_questions_questions_questionscreate.add') }} {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionscreate.french') : trans('js_pages_questions_questions_questionscreate.english') }} {{ trans('js_pages_questions_questions_questionscreate.translationtag') }}: {{ tag }}
+                {{ trans('generic.add') }} {{ currentLang === 'en' ? trans('generic.french') : trans('generic.english') }} {{ trans('generic.translationtag') }}: {{ tag }}
             </template>
 
             <template slot="body">
                 <div class="my-4">
-                    {{ trans('js_pages_questions_questions_questionscreate.newtagmessage1') }} {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionscreate.french') : trans('js_pages_questions_questions_questionscreate.english') }} 
-                    {{ trans('js_pages_questions_questions_questionscreate.newtagmessage2') }} '{{ tag }}'. {{ trans('js_pages_questions_questions_questionscreate.newtagmessage3') }}
+                    {{ trans('generic.newtagmessage1') }} {{ currentLang === 'en' ? trans('generic.french') : trans('generic.english') }} 
+                    {{ trans('generic.newtagmessage2') }} '{{ tag }}'. {{ trans('generic.newtagmessage3') }}
 
                     <div
                         class="w-full mb-4"
@@ -343,7 +343,7 @@
                             :class="{ 'text-red-500': errors.name_en || errors.name_fr }"
                             for="name"
                         >
-                            {{ currentLang === 'en' ? trans('js_pages_questions_questions_questionscreate.french') : trans('js_pages_questions_questions_questionscreate.english') }} {{ trans('js_pages_questions_questions_questionscreate.translationfor') }} '{{ tag }}'
+                            {{ currentLang === 'en' ? trans('generic.french') : trans('generic.english') }} {{ trans('generic.translationfor') }} '{{ tag }}'
                         </label>
 
                         <input 

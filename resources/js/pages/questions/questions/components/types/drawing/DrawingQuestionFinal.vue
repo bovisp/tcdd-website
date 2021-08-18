@@ -26,7 +26,7 @@
         >
             <label 
                 class="block text-gray-700 font-bold mb-2"
-            >{{ trans('js_pages_questions_components_types_drawing_drawingquestionfinal.answer') }}</label>
+            >{{ trans('generic.answer') }}</label>
 
             <template v-if="data.data.rich_text">
                 <vue-editor 
