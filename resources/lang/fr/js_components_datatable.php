@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'search' => 'f Search...',
+  'search' => 'Recherche...',
 );

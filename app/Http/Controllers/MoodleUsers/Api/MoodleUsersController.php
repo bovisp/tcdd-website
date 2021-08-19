@@ -74,7 +74,7 @@ class MoodleUsersController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Users successfully added'
+                'message' => __('app_http_controllers_moodleusers_api_moodleusers.store_message')
             ]
         ], 200);
     }

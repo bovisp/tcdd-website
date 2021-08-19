@@ -112,49 +112,6 @@ class AssessmentsController extends Controller
     public function destroy(Assessment $assessment)
     {
         (new DestroyAssessment($assessment))->destroy();
-        // DB::table('assessment_participants')->where('assessment_id', '=', $assessment->id)->delete();
-
-        // DB::table('assessment_editors')->where('assessment_id', '=', $assessment->id)->delete();
-
-        // $assessment->attempts->each->delete();
-
-        // foreach($assessment->pages as $page) {
-        //     $assessmentPageContents = $page->assessmentPageContents;
-
-        //     $assessmentPageContents->each(function ($contentItem) {
-        //         $contentItem->assessmentPageContentItems->each(function ($item) {
-        //             if ($item->type === 'ContentBuilder') {
-        //                 $contentBuilder = ContentBuilder::find($item->model_id);
-        
-        //                 $contentBuilder->parts->each(function ($part) {
-        //                     $type = ContentBuilderType::find($part->content_builder_type_id)->type;
-        
-        //                     $typeClassName = 'App\\' . ucfirst($type) . 'Part';
-        
-        //                     $partType = $typeClassName::wherePartId($part->id)->first();
-        
-        //                     $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst($type);
-        
-        //                     (new $destroyClassName($partType))->delete();
-        
-        //                     $part->delete();
-        //                 });
-        
-        //                 $contentBuilder->delete();
-        //             }
-        //         });
-        //     });
-
-        //     $assessmentPageContents->each(function ($content) {
-        //         $content->assessmentPageContentItems->each->delete();
-        //     });
-
-        //     $assessmentPageContents->each->delete();
-
-        //     $page->delete();
-        // }
-
-        // $assessment->delete();
 
         return response()->json([
             'data' => [

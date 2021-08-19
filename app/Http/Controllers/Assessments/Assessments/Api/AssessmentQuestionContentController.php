@@ -66,7 +66,7 @@ class AssessmentQuestionContentController extends Controller
                         ->first();
 
                     if (!$assessmentPage) {
-                        $fail('This page does not exist.');
+                        $fail(__('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.pagenotexist'));
                     }
                 },
             ]

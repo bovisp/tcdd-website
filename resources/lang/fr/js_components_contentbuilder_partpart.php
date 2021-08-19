@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'deletepart' => 'f Delete part',
-  'areyousure' => 'f Are you sure you want to do this?',
+  'deletepart' => 'Créer une partie de l\'onglet',
+  'areyousure' => 'Vous êtes sûr de vouloir faire ça ?',
 );

@@ -43,7 +43,7 @@ class QuestionTypesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Question type successfully added.'
+                'message' => __('app_http_controllers_questions_types_api_questiontypes.store_message')
             ]
         ], 200);
     }
@@ -71,7 +71,7 @@ class QuestionTypesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Question type successfully updated'
+                'message' => __('app_http_controllers_questions_types_api_questiontypes.update_message')
             ]
         ], 200);
     }

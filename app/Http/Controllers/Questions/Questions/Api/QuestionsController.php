@@ -122,7 +122,7 @@ class QuestionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Question successfully added.'
+                'message' => __('app_http_controllers_questions_api_questions.store_message')
             ]
         ], 200);
     }
@@ -211,7 +211,7 @@ class QuestionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Question successfully updated'
+                'message' => __('app_http_controllers_questions_api_questions.update_message')
             ]
         ], 200);
     }
@@ -221,7 +221,7 @@ class QuestionsController extends Controller
         if ($question->inAssessment()) {
             return response()->json([
                 'data' => [
-                    'message' => 'This question belongs to at least one exam. It cannot be deleted.'
+                    'message' => __('app_http_controllers_questions_api_questions.questioncannotbedeleted')
                 ]
             ], 403);
         }
@@ -260,7 +260,7 @@ class QuestionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Question successfully deleted'
+                'message' => __('app_http_controllers_questions_api_questions.destroy_message')
             ]
         ], 200);
     }

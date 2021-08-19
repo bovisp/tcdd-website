@@ -31,7 +31,7 @@ class SupervisorsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Reporting structure successfully updated'
+                'message' => 'Reporting structure successfully updated.'
             ]
         ], 200);
     }

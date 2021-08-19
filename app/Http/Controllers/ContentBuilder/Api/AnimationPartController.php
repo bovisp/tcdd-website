@@ -19,11 +19,11 @@ class AnimationPartController extends Controller
             'title' => 'nullable|min:3',
             'caption' => 'nullable|min:3'
         ], [
-            'files.required' => 'You need to add images to create this animation.',
-            'content_builder_type_id.required' => 'You need to add the content builder type to this block.',
-            'content_builder_type_id.exists' => 'This content builder type does not exist.',
-            'title.min' => 'The title must be a minumum of 3 characters long.',
-            'caption.min' => 'The content must be a minumum of 3 characters long.'
+            'files.required' => __('app_http_controllers_contentbuilder_api_animationpart.files_required'),
+            'content_builder_type_id.required' => __('app_http_controllers_contentbuilder_api_animationpart.content_builder_type_id_required'),
+            'content_builder_type_id.exists' => __('app_http_controllers_contentbuilder_api_animationpart.content_builder_type_id_exists'),
+            'title.min' => __('app_http_controllers_contentbuilder_api_animationpart.title_min'),
+            'caption.min' => __('app_http_controllers_contentbuilder_api_animationpart.caption_min')
         ]);
 
         $files = [];
@@ -116,9 +116,6 @@ class AnimationPartController extends Controller
         request()->validate([
             'title' => 'nullable|min:3',
             'caption' => 'nullable|min:3'
-        ], [
-            'title.min' => 'The title must be a minumum of 3 characters long.',
-            'caption.min' => 'The content must be a minumum of 3 characters long.'
         ]);
 
         $animationPart = AnimationPart::wherePartId($part->id)->first();

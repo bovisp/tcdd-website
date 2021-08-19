@@ -31,7 +31,7 @@ class UserPermissionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Permissions updated'
+                'message' => __('app_http_controllers_permissions_api_userpermissions.update_message')
             ]
         ], 200);
     }
@@ -64,7 +64,7 @@ class UserPermissionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Users successfully given this permission'
+                'message' => __('app_http_controllers_permissions_api_userpermissions.store_message')
             ]
         ], 200);
     }

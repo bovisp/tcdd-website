@@ -45,7 +45,7 @@ class QuestionCategoriesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Question bank category successfully added.'
+                'message' => __('app_http_controllers_questions_categories_api_questioncategories.store_message')
             ]
         ], 200);
     }
@@ -73,7 +73,7 @@ class QuestionCategoriesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Question bank category successfully updated'
+                'message' => __('app_http_controllers_questions_categories_api_questioncategories.update_message')
             ]
         ], 200);
     }
@@ -85,7 +85,7 @@ class QuestionCategoriesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Question bank category successfully deleted'
+                'message' => __('app_http_controllers_questions_categories_api_questioncategories.destroy_message')
             ]
         ], 200);
     }

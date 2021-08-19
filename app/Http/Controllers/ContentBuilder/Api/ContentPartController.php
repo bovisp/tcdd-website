@@ -18,10 +18,10 @@ class ContentPartController extends Controller
             'content' => 'required|min:8',
             'content_builder_type_id' => 'required|exists:content_builder_types,id'
         ], [
-            'content.required' => 'You need to add content to this block.',
-            'min' => 'You need to add content to this block.',
-            'content_builder_type_id.required' => 'You need to add the content builder type to this block.',
-            'content_builder_type_id.exists' => 'This content builder type does not exist.'
+            'content.required' => __('app_http_controllers_contentbuilder_api_contentpart.content_required'),
+            'min' => __('app_http_controllers_contentbuilder_api_contentpart.min'),
+            'content_builder_type_id.required' => __('app_http_controllers_contentbuilder_api_contentpart.content_builder_type_id_required'),
+            'content_builder_type_id.exists' => __('app_http_controllers_contentbuilder_api_contentpart.content_builder_type_id_exists')
         ]);
 
         if (request('is_tab_section') === false) {
@@ -73,7 +73,7 @@ class ContentPartController extends Controller
         request()->validate([
             'content' => 'required'
         ], [
-            'content.required' => 'You need to add content to this block.'
+            'content.required' => __('app_http_controllers_contentbuilder_api_contentpart.content_required')
         ]);
 
         $contentPart = ContentPart::wherePartId($part->id)->first();

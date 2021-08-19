@@ -2,6 +2,6 @@
 
 return array (
   'pen' => 'f Pen',
-  'eraseallwork' => 'f Erase all work',
-  'eraseconfirm' => 'f Are you sure you want to erase all of your work? This operation cannot be undone.',
+  'eraseallwork' => 'Supprimer tout le travail',
+  'eraseconfirm' => 'Êtes-vous sûr de vouloir supprimer tout votre travail ? Cette opération ne peut être annulée.',
 );

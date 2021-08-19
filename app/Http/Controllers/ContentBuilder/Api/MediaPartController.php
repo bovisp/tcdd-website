@@ -19,11 +19,11 @@ class MediaPartController extends Controller
             'title' => 'nullable|min:3',
             'caption' => 'nullable|min:3'
         ], [
-            'files.required' => 'You need to a media file.',
-            'content_builder_type_id.required' => 'You need to add the content builder type to this block.',
-            'content_builder_type_id.exists' => 'This content builder type does not exist.',
-            'title.min' => 'The title must be a minumum of 3 characters long.',
-            'caption.min' => 'The content must be a minumum of 3 characters long.'
+            'files.required' => __('app_http_controllers_contentbuilder_api_mediapart.files_required'),
+            'content_builder_type_id.required' => __('app_http_controllers_contentbuilder_api_mediapart.content_builder_type_id_required'),
+            'content_builder_type_id.exists' => __('app_http_controllers_contentbuilder_api_mediapart.content_builder_type_id_exists'),
+            'title.min' => __('app_http_controllers_contentbuilder_api_mediapart.title_min'),
+            'caption.min' => __('app_http_controllers_contentbuilder_api_mediapart.caption_min')
         ]);
         
         if (request('is_tab_section') === false) {
@@ -85,8 +85,8 @@ class MediaPartController extends Controller
             'title' => 'nullable|min:3',
             'caption' => 'nullable|min:3'
         ], [
-            'title.min' => 'The title must be a minumum of 3 characters long.',
-            'caption.min' => 'The content must be a minumum of 3 characters long.'
+            'title.min' => __('app_http_controllers_contentbuilder_api_mediapart.title_min'),
+            'caption.min' => __('app_http_controllers_contentbuilder_api_mediapart.caption_min')
         ]);
 
         $mediaPart = MediaPart::wherePartId($part->id)->first();

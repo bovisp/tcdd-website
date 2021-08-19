@@ -15,21 +15,21 @@ class AssessmentQuestionPagesController extends Controller
     {
         $this->middleware(['assessment-edit']);
 
-        // $this->middleware(function ($request, $next) {
-        //     preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
+        $this->middleware(function ($request, $next) {
+            preg_match_all("/\/assessments\/([\d]+)/",request()->url(),$matches);
 
-        //     $assessment = Assessment::find((int) $matches[1][0]);
+            $assessment = Assessment::find((int) $matches[1][0]);
 
-        //     if ($assessment->locked) {
-        //         return response()->json([
-        //             'data' => [
-        //                 'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
-        //             ]
-        //         ], 403);
-        //     }
+            if ($assessment->locked) {
+                return response()->json([
+                    'data' => [
+                        'message' => __('app_http_controllers_assessments_assessments_api_assessmentquestioncontent.cannotlocked')
+                    ]
+                ], 403);
+            }
 
-        //     return $next($request);
-        // })->except(['index']);
+            return $next($request);
+        })->except(['index']);
     }
 
     public function index(Assessment $assessment) {

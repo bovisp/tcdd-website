@@ -21,7 +21,7 @@ class AttemptReviewController extends Controller
             if (!$attempt->show) {
                 return response()->json([
                     'data' => [
-                        'message' => 'You cannot review this assessment.'
+                        'message' => __('app_http_controllers_users_api_attemptreview.cannotreviewassessment')
                     ]
                 ], 403);
             }

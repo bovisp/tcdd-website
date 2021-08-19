@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'ok' => 'f OK',
+  'ok' => 'OK',
 );

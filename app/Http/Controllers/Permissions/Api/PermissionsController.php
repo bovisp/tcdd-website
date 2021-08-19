@@ -33,7 +33,7 @@ class PermissionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Permission successfully added.'
+                'message' => __('app_http_controllers_permissions_api_permissions.store_message')
             ]
         ], 200);
     }
@@ -45,7 +45,7 @@ class PermissionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Permission successfully deleted'
+                'message' => __('app_http_controllers_permissions_api_permissions.destroy_message')
             ]
         ], 200);
     }

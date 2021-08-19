@@ -20,10 +20,10 @@ class TabPartController extends Controller
             'caption' => 'nullable|min:3',
             'content_builder_type_id' => 'required|exists:content_builder_types,id'
         ], [
-            'content_builder_type_id.required' => 'You need to add the content builder type to this block.',
-            'content_builder_type_id.exists' => 'This content builder type does not exist.',
-            'title.min' => 'The title must be a minumum of 3 characters long.',
-            'caption.min' => 'The content must be a minumum of 3 characters long.'
+            'content_builder_type_id.required' => __('app_http_controllers_contentbuilder_api_contentpart.content_builder_type_id_required'),
+            'content_builder_type_id.exists' => __('app_http_controllers_contentbuilder_api_contentpart.content_builder_type_id_exists'),
+            'title.min' => __('app_http_controllers_contentbuilder_api_mediapart.title_min'),
+            'caption.min' => __('app_http_controllers_contentbuilder_api_mediapart.caption_min')
         ]);
 
         $part = Part::create([
@@ -110,14 +110,14 @@ class TabPartController extends Controller
             'tabSections.*.id' => 'required|exists:tab_part_sections,id',
             'tabSections.*.title' => 'required'
         ], [
-            'title.min' => 'The title must be a minumum of 3 characters long.',
-            'caption.min' => 'The content must be a minumum of 3 characters long.',
-            'tabSections.required' => 'There must be at least one tab.',
-            'tabSections.array' => 'There must be at least one tab.',
-            'tabSections.min' => 'There must be at least one tab.',
-            'tabSections.*.id.required' => 'This tab cannot be found in the database.',
-            'tabSections.*.id.exists' => 'This tab cannot be found in the database.',
-            'tabSections.*.title.required' => 'You must include a title for the tab'
+            'title.min' =>  __('app_http_controllers_contentbuilder_api_mediapart.title_min'),
+            'caption.min' => __('app_http_controllers_contentbuilder_api_mediapart.caption_min'),
+            'tabSections.required' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_required'),
+            'tabSections.array' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_array'),
+            'tabSections.min' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_min'),
+            'tabSections.*.id.required' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_id_required'),
+            'tabSections.*.id.exists' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_id_exists'),
+            'tabSections.*.title.required' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_title_required')
         ]);
 
         $tabPart = TabPart::wherePartId($part->id)->first();

@@ -29,7 +29,7 @@ class PasswordChangeController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Password successfully changed'
+                'message' => 'Password successfully changed.'
             ]
         ], 200);
     }

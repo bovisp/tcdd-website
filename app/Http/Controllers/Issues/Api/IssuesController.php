@@ -30,7 +30,7 @@ class IssuesController extends Controller
 
             return response()->json([
                 'data' => [
-                    'message' => 'You cannot update this issue.'
+                    'message' => __('app_http_controllers_issues_api_issues.cannotupdateissue')
                 ]
             ], 403);
         })->only(['update']);
@@ -64,7 +64,7 @@ class IssuesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Issue successfully created'
+                'message' => __('app_http_controllers_issues_api_issues.store_message')
             ]
         ], 200);
     }
@@ -89,7 +89,7 @@ class IssuesController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => 'Issue successfully updated.'
+                'message' => __('app_http_controllers_issues_api_issues.update_message')
             ]
         ], 200);
     }

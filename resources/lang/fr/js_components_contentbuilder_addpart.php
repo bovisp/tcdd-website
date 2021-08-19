@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'new' => 'f New',
-  'pleaseselecttype' => 'f Please select a type',
+  'new' => 'Nouveau',
+  'pleaseselecttype' => 'Veuillez sélectionner un type',
 );
