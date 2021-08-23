@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'new' => 'f New',
+  'new' => 'Nouveau',
   'selecttype' => 'Choisir un type',
 );

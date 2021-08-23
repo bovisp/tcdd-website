@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'createquestiontype' => 'f Create question type',
+  'createquestiontype' => 'Créer un type de question',
 );

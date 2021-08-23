@@ -13,7 +13,7 @@
             :order-key-directions="['asc']"
             :has-text-filter="true"
             :has-event="true"
-            :event-text="trans('js_pages_questions_types_questiontypesindex.edit')"
+            :event-text="trans('generic.edit')"
             event="question-types:edit"
         />
 
@@ -33,7 +33,7 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'name', title: this.trans('js_pages_questions_types_questiontypesindex.edit'), sortable: true },
+                { field: 'name', title: this.trans('generic.name'), sortable: true },
             ]
         }
     },

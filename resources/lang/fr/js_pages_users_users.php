@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'addusers' => 'f Add users',
+  'addusers' => 'Ajouter des usagers',
 );

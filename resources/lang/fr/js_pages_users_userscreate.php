@@ -1,8 +1,8 @@
 <?php
 
 return array (
-  'addusers' => 'f Add users',
-  'registeruseras' => 'f Register users as',
-  'putintosection' => 'f Put into section',
-  'email' => 'f Email',
+  'addusers' => 'Ajouter des usagers',
+  'registeruseras' => 'Enregistrer les utilisateurs en tant que',
+  'putintosection' => 'Mettre dans la section',
+  'email' => 'E-mail',
 );

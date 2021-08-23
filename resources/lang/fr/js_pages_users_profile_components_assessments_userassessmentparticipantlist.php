@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'activeassessments' => 'f Active assessments',
-  'enterexam' => 'f Enter exam',
+  'activeassessments' => 'Évaluations actives',
+  'enterexam' => 'Entrez dans l\'examen',
 );

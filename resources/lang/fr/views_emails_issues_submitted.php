@@ -1,11 +1,11 @@
 <?php
 
 return array (
-  'tcddwebsiteissue' => 'f TCDD Website issue',
-  'hasbeensubmitted' => 'f has been submitted',
-  'hi' => 'f Hi',
-  'thankyouforsubmitting' => 'f Thank you for submitting this issue to us.',
-  'submittingtext' => 'f We apologize for the inconvenience this issue has caused you and your team. We hope to resolve every issue within 1-3 business days.',
-  'issue' => 'f Issue',
-  'dateissued' => 'f Date issued',
+  'tcddwebsiteissue' => 'Problème du site web de la DFPP',
+  'hasbeensubmitted' => 'a été mis(e) à jour',
+  'hi' => 'Salut',
+  'thankyouforsubmitting' => 'Merci de nous avoir soumis ce problème.',
+  'submittingtext' => 'Nous nous excusons pour le trouble que ce problème vous a causé, à vous et à votre équipe. Nous espérons résoudre chaque problème dans un délai de 1 à 3 jours ouvrables.',
+  'issue' => 'Problème',
+  'dateissued' => 'date d\'émission',
 );

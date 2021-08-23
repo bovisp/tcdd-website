@@ -15,7 +15,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    {{ trans('js_pages_questions_types_questiontypescreate.nameenglish') }}
+                    {{ trans('generic.nameenglish') }}
                 </label>
 
                 <input 
@@ -41,7 +41,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    {{ trans('js_pages_questions_types_questiontypescreate.namefrench') }}
+                    {{ trans('generic.namefrench') }}
                 </label>
 
                 <input 
@@ -67,7 +67,7 @@
                     :class="{ 'text-red-500': errors.description_en }"
                     for="description_en"
                 >
-                    {{ trans('js_pages_questions_types_questiontypescreate.descriptionenglish') }}
+                    {{ trans('generic.descriptionenglish') }}
                 </label>
 
                 <textarea 
@@ -93,7 +93,7 @@
                     :class="{ 'text-red-500': errors.description_fr }"
                     for="description_fr"
                 >
-                    {{ trans('js_pages_questions_types_questiontypescreate.descriptionfrench') }}
+                    {{ trans('generic.descriptionfrench') }}
                 </label>
 
                 <textarea 
@@ -124,7 +124,7 @@
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    {{ trans('js_pages_questions_types_questiontypescreate.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </form>

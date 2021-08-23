@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'deletequestion' => 'f Delete question',
-  'deletequestionconfirm1' => 'f Are you sure you want to do this? It is critical that you do not delete questions that are associated with active assessments as this can cause serious errors. Are you sure you want to do this?',
-  'deletequestionconfirm2' => 'f Only do this if you are absolutely sure this is what you want',
+  'deletequestion' => 'Supprimer la question',
+  'deletequestionconfirm1' => 'Êtes-vous sûr de vouloir faire cela ? Il est essentiel de ne pas supprimer les questions associées à des évaluations actives, car cela peut entraîner de graves erreurs. Êtes-vous sûr de vouloir faire cela ?',
+  'deletequestionconfirm2' => 'Ne le faites que si vous êtes absolument sûr que c\'est ce que vous voulez.',
 );

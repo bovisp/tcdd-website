@@ -2,12 +2,12 @@
 
 return array (
   'addparticipants' => 'Ajouter des participants',
-  'addmoreparticipants' => 'f Add more participants',
+  'addmoreparticipants' => 'Ajouter plus de participants',
   'deactivate' => 'Désactiver',
-  'activate' => 'f Activate',
-  'completed' => 'Completed',
+  'activate' => 'Activer',
+  'completed' => 'Complété',
   'nousers' => 'Il n\'y a actuellement aucun utilisateur qui puisse participer à cette évaluation.',
-  'hasbeensuccessfully' => 'f has been successfully',
+  'hasbeensuccessfully' => 'a été avec succès',
   'deactivated' => 'désactivé',
-  'activated' => 'f activated',
+  'activated' => 'activé',
 );

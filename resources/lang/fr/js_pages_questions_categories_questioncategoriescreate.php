@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'newcategory' => 'f New question bank category',
-  'addcategory' => 'f Add question bank category',
+  'newcategory' => 'Nouvelle catégorie de banque de questions',
+  'addcategory' => 'Ajouter une catégorie de banque de questions',
 );

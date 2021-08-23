@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'off' => 'f off',
-  'on' => 'f on',
+  'off' => 'désactivé',
+  'on' => 'au',
   'turnediting' => 'f Turn editing',
 );

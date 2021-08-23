@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'cancelpreviewtext' => 'f The correct answers are highlighted in green. Please click the "Cancel preview" button to finish.',
+  'cancelpreviewtext' => 'Les bonnes réponses sont surlignées en vert. Veuillez cliquer sur le bouton "Annuler l\'aperçu" pour terminer.',
 );

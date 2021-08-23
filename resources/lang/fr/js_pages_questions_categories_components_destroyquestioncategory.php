@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'deletecategory' => 'f Delete question bank category',
-  'deletecategoryconfirm1' => 'f Are you sure you want to do this? All questions associated with this category will be added to the Miscellaneous category.',
-  'deletecategoryconfirm2' => 'f Only do this if you are absolutely sure this is what you want',
+  'deletecategory' => 'Supprimer la catégorie de la banque de questions',
+  'deletecategoryconfirm1' => 'Êtes-vous sûr de vouloir le faire ? Toutes les questions associées à cette catégorie seront ajoutées à la catégorie Divers.',
+  'deletecategoryconfirm2' => 'Ne le faites que si vous êtes absolument sûr que c\'est ce que vous voulez.',
 );

@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'markingguide' => 'f marking guide',
+  'markingguide' => 'guide de marquage',
 );

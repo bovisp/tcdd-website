@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'updatecategory' => 'f Update question bank category',
+  'updatecategory' => 'Mettre à jour la catégorie de la banque de questions',
 );

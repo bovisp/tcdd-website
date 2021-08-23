@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'newquestion' => 'f New question',
+  'newquestion' => 'Nouvelle question',
 );

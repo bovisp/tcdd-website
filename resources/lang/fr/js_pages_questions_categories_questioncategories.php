@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'createcategory' => 'f Create question bank category',
+  'createcategory' => 'Créer une catégorie de banque de questions',
 );

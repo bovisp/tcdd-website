@@ -2,5 +2,5 @@
 
 return array (
   'searcheditors' => 'f Search editors',
-  'createquestion' => 'f Create question',
+  'createquestion' => 'Créer une question',
 );

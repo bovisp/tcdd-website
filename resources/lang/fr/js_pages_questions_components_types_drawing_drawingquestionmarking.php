@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'imagealttext' => 'f Drawing image for answer',
+  'imagealttext' => 'Dessin de l\'image pour la réponse',
 );

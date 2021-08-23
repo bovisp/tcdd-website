@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <h1 class="text-3xl font-bold mb-4">
-            {{ trans('js_pages_questions_types_questiontypesedit.edit') }}: {{ trans('js_pages_questions_types_questiontypesedit.questiontype') }} - {{ questionType.name }}
+            {{ trans('generic.edit') }}: {{ trans('generic.questiontype') }} - {{ questionType.name }}
         </h1>
 
         <form 
@@ -15,7 +15,7 @@
                     :class="{ 'text-red-500': errors.name_en }"
                     for="name_en"
                 >
-                    {{ trans('js_pages_questions_types_questiontypesedit.nameenglish') }}
+                    {{ trans('generic.nameenglish') }}
                 </label>
 
                 <input 
@@ -41,7 +41,7 @@
                     :class="{ 'text-red-500': errors.name_fr }"
                     for="name_fr"
                 >
-                    {{ trans('js_pages_questions_types_questiontypesedit.namefrench') }}
+                    {{ trans('generic.namefrench') }}
                 </label>
 
                 <input 
@@ -67,7 +67,7 @@
                     :class="{ 'text-red-500': errors.description_en }"
                     for="description_en"
                 >
-                    {{ trans('js_pages_questions_types_questiontypesedit.descriptionenglish') }}
+                    {{ trans('generic.descriptionenglish') }}
                 </label>
 
                 <textarea 
@@ -93,7 +93,7 @@
                     :class="{ 'text-red-500': errors.description_fr }"
                     for="description_fr"
                 >
-                    {{ trans('js_pages_questions_types_questiontypesedit.descriptionfrnech') }}
+                    {{ trans('generic.descriptionfrnech') }}
                 </label>
 
                 <textarea 
@@ -124,7 +124,7 @@
                     class="btn btn-text text-sm"
                     @click.prevent="cancel"
                 >
-                    {{ trans('js_pages_questions_types_questiontypesedit.cancel') }}
+                    {{ trans('generic.cancel') }}
                 </button>
             </div>
         </form>

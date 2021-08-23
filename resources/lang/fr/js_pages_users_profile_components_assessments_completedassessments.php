@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'completedassessments' => 'f Completed assessments',
+  'completedassessments' => 'Évaluations complets',
 );

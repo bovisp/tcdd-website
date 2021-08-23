@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'cancelpreviewtext' => 'f Since this question type has to be manually graded, no answer will be displayed in this preview. Please click the "Cancel preview" button to finish.',
+  'cancelpreviewtext' => 'Les bonnes réponses sont surlignées en vert. Veuillez cliquer sur le bouton "Annuler l\'aperçu" pour terminer.',
 );

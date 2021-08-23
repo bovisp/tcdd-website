@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'havebeenlinked' => 'f have been linked to this user.',
-  'no' => 'f No',
+  'havebeenlinked' => 'ont été liés à cet utilisateur.',
+  'no' => 'Non',
 );

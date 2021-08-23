@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'questioncategories' => 'f Question bank categories',
-  'nocategories' => 'f No question bank categories have been created.',
+  'questioncategories' => 'Catégories de banques de questions',
+  'nocategories' => 'Aucune catégorie de banque de questions n\'est créée.',
 );

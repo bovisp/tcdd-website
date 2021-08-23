@@ -1,13 +1,13 @@
 <?php
 
 return array (
-  'reportingstructure' => 'f Reporting Structure',
-  'director' => 'f Director',
-  'manager' => 'f Manager',
-  'employee' => 'f Employee',
-  'intern' => 'f Intern',
-  'student' => 'f Student',
-  'for' => 'f for',
-  'selectrole' => 'f Select role',
-  'pleaseselectrole' => 'f Please select a role.',
+  'reportingstructure' => 'Structure hiérarchique',
+  'director' => 'Directeur/Directrice',
+  'manager' => 'Gestionnaire',
+  'employee' => 'Employé(e)',
+  'intern' => 'Stagiaire',
+  'student' => 'Étudiant',
+  'for' => 'pour',
+  'selectrole' => 'Sélectionnez un rôle',
+  'pleaseselectrole' => 'Veuillez sélectionner un rôle.',
 );
