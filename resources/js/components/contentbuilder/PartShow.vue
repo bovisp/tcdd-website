@@ -105,7 +105,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            contentIds: 'questions/contentIds'
+            contentIds: 'contentIds'
         }),
 
         formatType () {

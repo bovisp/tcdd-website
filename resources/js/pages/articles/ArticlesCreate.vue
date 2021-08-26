@@ -9,6 +9,18 @@
                     v-model="form.title"
                 ></b-input>
             </b-field>
+
+            <b-field>
+                <content-builder 
+                    lang="en"
+                />
+            </b-field>
+            
+            <b-field>
+                <content-builder 
+                    lang="fr"
+                />
+            </b-field>
         </form>
     </div>
 </template>

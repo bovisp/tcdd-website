@@ -1,19 +1,21 @@
 <template>
     <div>
-        <button 
-            class="btn btn-blue btn-sm text-sm w-full mt-6"
+        <b-button
+            type="is-info"
             v-if="showAddButton"
+            size="is-small"
+            expanded
             @click.prevent="addPartModal"
         >
             {{ trans('generic.addpart') }}
-        </button>
-
+        </b-button>
+        
         <div 
             v-if="type && !addingPart"
         >
             <hr class="my-8">
 
-            <h4 class="w-full font-light text-center mb-6 text-2xl">
+            <h4 class="subtitle is-4">
                  {{ trans('js_components_contentbuilder_addpart.new') }} {{ ucfirst(type) }} {{ trans('generic.part') }}
             </h4>
 
@@ -25,60 +27,67 @@
             ></component>
         </div>
 
-        <modal 
-            v-if="addingPart" 
-            @submit="add"
-            @close="cancel"
-            ok-button-text="Submit"
-            cancel-button-text="Cancel"
-            okButtonText="trans('generic.create')"
+        <b-modal
+            v-model="addingPart"
         >
-            <h3 slot="header" class="mb-4">
-                {{ trans('generic.addpart') }}
-            </h3>
+            <div class="modal-card" style="width: auto">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">
+                        {{ trans('generic.addpart') }}
+                    </p>
 
-            <div slot="body">
-                <div class="flex mb-4">
-                    <div class="w-4/12 border border-t-0 border-b-0 border-l-0">
-                        <form>
-                            <div
-                                class="mb-2"
-                                v-for="t in types"
-                                :key="t.id"
-                            >
-                                <label
-                                    :for="t.type"
-                                    @dblclick="add"
+                    <button
+                        type="button"
+                        class="delete"
+                        @click="cancel"/>
+                </header>
+
+                <section class="modal-card-body">
+                    <div class="flex mb-4">
+                        <div class="w-4/12 border border-t-0 border-b-0 border-l-0">
+                            <form>
+                                <div
+                                    class="mb-2"
+                                    v-for="t in types"
+                                    :key="t.id"
                                 >
-                                    <input 
-                                        type="radio" 
-                                        class="form-radio" 
-                                        :id="t.type" 
-                                        :value="t.type"
+                                    <b-radio 
                                         v-model="type"
+                                        name="name"
+                                        :native-value="t.type"
                                         @dblclick="add"
                                     >
+                                        {{ ucfirst(t.type) }}
+                                    </b-radio>
+                                </div>
+                            </form>
+                        </div>
 
-                                    <span class="ml-2">{{ ucfirst(t.type) }}</span>
-                                </label>
-                            </div>
-                        </form>
+                        <div class="w-8/12 px-4">
+                            <p v-if="!description">
+                                {{ trans('js_components_contentbuilder_addpart.pleaseselecttype') }}
+                            </p>
+
+                            <div 
+                                v-else
+                                v-html="description"
+                                class="content overflow-auto"
+                            ></div>
+                        </div>
                     </div>
+                </section>
 
-                    <div class="w-8/12 px-4">
-                        <p v-if="!description">
-                            {{ trans('js_components_contentbuilder_addpart.pleaseselecttype') }}
-                        </p>
-
-                        <div 
-                            v-else
-                            v-html="description"
-                            class="content overflow-auto"
-                        ></div>
-                    </div>
-                </div>
+                <footer class="modal-card-foot">
+                    <b-button
+                        label="Close"
+                        @click.prevent="cancel" />
+                    <b-button
+                        label="Add"
+                        type="is-primary"
+                        @click.prevent="add" />
+                </footer>
             </div>
-        </modal>
+        </b-modal>
     </div>
 </template>
 
@@ -160,8 +169,6 @@ export default {
     },
 
     async mounted () {
-        this.type = ''
-        
         let { data: types } = await axios.get(`${this.urlBase}/api/parts/types`)
 
         this.types = types.data
