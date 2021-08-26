@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Article;
 use App\Section;
 use App\Assessment;
 use App\Traits\HasSupervisors;
@@ -53,6 +54,11 @@ class User extends Authenticatable
         'fullname',
         'role'
     ];
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 
     public function moodleuser()
     {

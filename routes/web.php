@@ -135,3 +135,7 @@ Route::get('/api/parts/{part}', 'ContentBuilder\Api\PartsController@show');
 
 Route::get('/issues', 'Issues\IssuesController@index');
 Route::resource('/api/issues', 'Issues\Api\IssuesController');
+
+Route::get('/blog', 'Articles\ArticlesController@index');
+Route::post('/api/articles/id', 'Articles\Api\ArticlesContentBuilderController@store');
+Route::resource('/api/articles', 'Articles\Api\ArticlesController');

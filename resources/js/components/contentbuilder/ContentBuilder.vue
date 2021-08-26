@@ -2,7 +2,7 @@
     <div class="p-4 border rounded">
         <div class="flex items-center">
             <strong>
-                {{ lang === 'en' ? 'English' : 'French' }}
+                {{ lang === 'en' ? trans('generic.english') : trans('generic.french') }}
             </strong>
 
             <button 

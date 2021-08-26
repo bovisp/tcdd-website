@@ -20,7 +20,7 @@
             <component 
                 :is="`Add${ucfirst(type)}`"
                 :edit-status="editStatus"
-                create-button-text="Create"
+                :create-button-text="trans('generic.create')"
                 :lang="lang"
             ></component>
         </div>

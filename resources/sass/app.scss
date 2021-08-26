@@ -369,4 +369,14 @@ a {
   }
 }
 
+.borderless-input input[type="text"] {
+  box-shadow: none;
+  border: none;
+}
+
+.borderless-input.borderless-input-lg input[type="text"] {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
 @tailwind utilities;

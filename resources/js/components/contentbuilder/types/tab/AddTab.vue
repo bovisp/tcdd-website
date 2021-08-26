@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <!-- <div>
         <div
             class="mb-4"
         >
@@ -86,7 +86,7 @@
             >
                 {{ trans('js_components_contentbuilder_types_tab_addtab.cancel') }}
             </button>
-        </div>
+        </div> -->
     </div>
 </template>
 
