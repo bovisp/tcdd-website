@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="flex"
+        class="flex w-full mt-4"
         :class="[ editing ? 'justify-end' : '' ]"
     >
         <div 
@@ -44,7 +44,6 @@
             v-if="!editStatus && !editing"
         >
             <div
-                v-if="typeof part !== 'undefined' && typeof part.data !== 'undefined'"
                 class="content"
                 v-html="content"
             ></div>
@@ -53,7 +52,7 @@
 </template>
 
 <script>
-import { merge } from 'lodash-es'
+import { merge, isEmpty } from 'lodash-es'
 import { VueEditor, Quill } from 'vue2-editor'
 
 export default {
@@ -96,11 +95,15 @@ export default {
 
     computed: {
         content () {
-            return this.part.data.content
-                .replace(/<p><br><\/p>/g, '')
-                .replace(/<p class="ql-align-justify"><br><\/p>/g, '')
-                .replace(/<p class="ql-align-right"><br><\/p>/g, '')
-                .replace(/<p class="ql-align-left"><br><\/p>/g, '')
+            if (!isEmpty(this.part.data)) {
+                return this.part.data.content
+                    .replace(/<p><br><\/p>/g, '')
+                    .replace(/<p class="ql-align-justify"><br><\/p>/g, '')
+                    .replace(/<p class="ql-align-right"><br><\/p>/g, '')
+                    .replace(/<p class="ql-align-left"><br><\/p>/g, '')
+            }
+
+            return ''
         },
     },
 
@@ -141,7 +144,11 @@ export default {
     },
 
     mounted () {
-        this.part = this.data
+        // if (this.data.hasOwnProperty('content')) {
+            // this.part.data = this.data
+        // } else {
+            this.part = this.data
+        // }
 
         window.events.$on('part:edit', partId => {
             if (this.part.id === partId) {

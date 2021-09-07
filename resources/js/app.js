@@ -41,6 +41,9 @@ Vue.use(Icon)
 Vue.use(Checkbox)
 Vue.use(Radio)
 
+// import Tabs from 'vue-tabs-component';
+// Vue.use(Tabs);
+
 import getUrlBase from './mixins/urlBase'
 import authUser from './mixins/authUser'
 import error from './mixins/errors'

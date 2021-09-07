@@ -42,13 +42,13 @@ class ContentPartController extends Controller
                 'content' => request('content')
             ]);
 
-            if (request()->has('tab_part_section_title')) {
-                $tabSection = TabPartSection::create([
-                    'title' => request('tab_part_section_title'),
-                    'tab_part_id' => request('part_id'),
-                    'content_id' => $content->id,
-                    'type' => 'content'
-                ]);
+            // if (request()->has('tab_part_section_title')) {
+            //     $tabSection = TabPartSection::create([
+            //         'title' => request('tab_part_section_title'),
+            //         'tab_part_id' => request('part_id'),
+            //         'content_id' => $content->id,
+            //         'type' => 'content'
+            //     ]);
     
                 return [
                     'data' => [
@@ -56,15 +56,15 @@ class ContentPartController extends Controller
                         'id' => $content->id,
                         'type' => 'content'
                     ],
-                    'id' => $tabSection->id,
-                    'title' => $tabSection->title
+                    // 'id' => $tabSection->id,
+                    // 'title' => $tabSection->title
                 ];
-            }
+            // }
 
-            return [
-                'content' => $content->content,
-                'id' => $content->id
-            ];
+            // return [
+            //     'content' => $content->content,
+            //     'id' => $content->id
+            // ];
         }
     }
 

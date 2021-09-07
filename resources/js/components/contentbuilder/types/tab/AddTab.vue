@@ -1,4 +1,141 @@
 <template>
+    <div>
+        <form>
+            <b-field>
+                <b-input 
+                    placeholder="Add an optional title..."
+                    size="is-medium"
+                    class="borderless-input borderless-input-md"
+                    v-model="form.title"
+                ></b-input>
+            </b-field>
+
+            <div class="level">
+                <div class="level-left"></div>
+
+                <div class="level-right">
+                    <div class="level-item">
+                        <b-button
+                            type="is-info"
+                            size="is-small"
+                            @click.prevent="addNewTab"
+                        >
+                            Add new tab
+                        </b-button>
+                    </div>
+                </div>
+            </div>
+
+            <b-tabs
+                v-model="activeTab"
+                type="is-boxed"
+                :multiline="true"
+                :animated="false"
+                :destroy-on-hide="true"
+                :key="rerenderKey"
+            >
+                <template v-for="tab in tabs">
+                    <b-tab-item 
+                        :label="tab.label"
+                        :id="tab.id"
+                        :key="tab.id"
+                        :value="tab.id"
+                    >
+                        <template #header>
+                            <span> {{ tab.label }} </span>
+
+                            <b-button 
+                                icon-right="pencil"
+                                type="is-text"
+                                size="is-small"
+                                @click.prevent="editTabTitle(tab)"
+                            ></b-button>
+                        </template>
+
+                        <div class="h-full w-full flex items-center justify-center">
+                            <b-button
+                                type="is-text"
+                                v-if="!tab.hasContent && !isAddPartActive"
+                                @click.prevent="addPart(tab)"
+                            >
+                                Add content to {{ tab.label }}
+                            </b-button>
+
+                            <template v-if="tab.type">
+                                {{ isEmpty(tab.data) }}
+                                <component 
+                                    v-if="isEmpty(tab.data) === true"
+                                    :is="`Add${pascalCase(tab.type)}`"
+                                    :edit-status="false"
+                                    :create-button-text="trans('generic.create')"
+                                    :lang="lang"
+                                    :is-tab-section-part="true"
+                                ></component>
+                                
+                                <component 
+                                    v-else
+                                    :is="`Show${pascalCase(tab.type)}`"
+                                    :edit-status="false"
+                                    :data="tab.data"
+                                ></component>
+                            </template>
+                        </div>
+                    </b-tab-item>
+                </template>
+            </b-tabs>
+        </form>
+
+        <b-modal
+            v-model="isEditModalActive"
+            has-modal-card
+            trap-focus
+            aria-role="dialog"
+            aria-label="Example Modal"
+            aria-modal
+        >
+            <form action="">
+                <div class="modal-card" style="width: auto">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Edit tab</p>
+                        <button
+                            type="button"
+                            class="delete"
+                            @click="closeTabEditModal"
+                        />
+                    </header>
+
+                    <section class="modal-card-body">
+                        <b-field label="Tab title">
+                            <b-input
+                                type="text"
+                                v-model="editTabForm.label"
+                                required
+                            ></b-input>
+                        </b-field>
+                    </section>
+
+                    <footer class="modal-card-foot">
+                        <b-button
+                            label="Cancel"
+                            @click="closeTabEditModal" 
+                        />
+                        <b-button
+                            label="Save"
+                            type="is-primary" 
+                            @click.prevent="updateTab"
+                        />
+                    </footer>
+                </div>
+            </form>
+        </b-modal>
+
+        <add-part-modal 
+            v-if="isAddPartActive"
+            omit-type="tab"
+            @cancel="closeAddPartModal"
+            @add="addPartToTab"
+        />
+    </div>
     <!-- <div>
         <div
             class="mb-4"
@@ -92,8 +229,9 @@
 
 <script>
 import uuid from 'uuid/v4'
-import { find, filter, isEmpty } from 'lodash-es'
+import { find, filter, isEmpty, slice } from 'lodash-es'
 import { mapGetters } from 'vuex'
+import { pascalCase } from 'change-case'
 
 export default {
     props: {
@@ -118,99 +256,201 @@ export default {
                 content_builder_type_id: 5,
                 title: '',
                 caption: '',
-                tabSections: []
+                // tabSections: []
             },
-            addingTabSection: false,
-            order: 1,
-            builderId: null
+            tabs: [{
+                id: uuid(),
+                label: 'New tab',
+                hasContent: false,
+                type: '',
+                data: null
+            }],
+            // addingTabSection: false,
+            // order: 1,
+            builderId: null,
+            activeTab: 0,
+            isEditModalActive: false,
+            editingTab: null,
+            editTabForm: {
+                label: ''
+            },
+            isAddPartActive: false,
+            tabAddPart: null,
+            rerenderKey: 0
         }
     },
 
     computed: {
         ...mapGetters({
-            contentIds: 'questions/contentIds'
-        })
+            contentIds: 'contentIds'
+        }),
+
+        tabLength () {
+            return this.tabs.length
+        }
+    },
+
+    watch: {
+        tabLength () {
+            this.rerenderKey += 1
+        }
     },
 
     methods: {
-        addTabSection () {
-            if (!this.addingTabSection) {
-                this.addingTabSection = true
-            }
+        // addTabSection () {
+        //     if (!this.addingTabSection) {
+        //         this.addingTabSection = true
+        //     }
 
-            this.form.tabSections.push({
+        //     this.form.tabSections.push({
+        //         id: uuid(),
+        //         title: '',
+        //         order: this.order,
+        //         data: {},
+        //         type: ''
+        //     })
+
+        //     this.order += 1
+        // },
+
+        // async store () {
+        //     let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/tab`, {
+        //         content_builder_type_id: this.form.content_builder_type_id,
+        //         title: this.form.title,
+        //         caption: this.form.caption,
+        //         tabSections: this.form.tabSections
+        //     })
+
+        //     window.events.$emit('part:created', {
+        //         data,
+        //         contentBuilderId: this.builderId
+        //     })
+
+        //     this.reset()
+        // },
+
+        // cancel () {
+        //     this.reset()
+        // },
+
+        // async reset () {
+        //     for await (const [index, tab] of this.form.tabSections.entries()) {
+        //         if (isEmpty(tab.data)) {
+        //             await axios.delete(`${this.urlBase}/api/parts/tab-section-parts`, {
+        //                 data: { tab }
+        //             })
+        //         }
+        //     }
+
+        //     window.events.$emit('add-part:cancel', this.builderId)
+        // },
+
+        // cancelAdd (sectionId) {
+        //     this.form.tabSections = filter(this.form.tabSections, section => {
+        //         return sectionId !== section.id
+        //     })
+
+        //     if (this.form.tabSections === 0) {
+        //         this.addingTabSection = false
+        //     }
+        // }
+        slice,
+
+        pascalCase,
+        
+        isEmpty,
+
+        addNewTab () {
+            this.tabs.splice(this.tabs.length, 0, {
                 id: uuid(),
-                title: '',
-                order: this.order,
-                data: {},
-                type: ''
+                label: 'New tab'
             })
 
-            this.order += 1
+            this.activeTab = this.tabs.length - 1
         },
 
-        async store () {
-            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/tab`, {
-                content_builder_type_id: this.form.content_builder_type_id,
-                title: this.form.title,
-                caption: this.form.caption,
-                tabSections: this.form.tabSections
-            })
+        editTabTitle (tab) {
+            this.editingTab = tab
 
-            window.events.$emit('part:created', {
-                data,
-                contentBuilderId: this.builderId
-            })
+            this.editTabForm.label = tab.label
 
-            this.reset()
+            this.isEditModalActive = true
         },
 
-        cancel () {
-            this.reset()
+        closeTabEditModal () {
+            this.editingTab = null
+            this.editTabForm.label = ''
+            this.isEditModalActive = false
         },
 
-        async reset () {
-            for await (const [index, tab] of this.form.tabSections.entries()) {
-                if (isEmpty(tab.data)) {
-                    await axios.delete(`${this.urlBase}/api/parts/tab-section-parts`, {
-                        data: { tab }
-                    })
-                }
-            }
+        updateTab () {
+            let tab = find(this.tabs, tab => tab.id === this.editingTab.id)
 
-            window.events.$emit('add-part:cancel', this.builderId)
+            tab.label = this.editTabForm.label
+
+            this.closeTabEditModal()
         },
 
-        cancelAdd (sectionId) {
-            this.form.tabSections = filter(this.form.tabSections, section => {
-                return sectionId !== section.id
-            })
+        addPartToTab (type) {
+            this.isAddPartActive = false
 
-            if (this.form.tabSections === 0) {
-                this.addingTabSection = false
-            }
+            let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
+
+            tab.hasContent = true
+
+            tab.type = type
+
+            tab.data = null
+        },
+
+        closeAddPartModal () {
+            this.isAddPartActive = false
+
+            this.tabAddPart = null
+        },
+
+        addPart (tab) {
+            this.isAddPartActive = true
+
+            this.tabAddPart = tab
         }
     },
 
     mounted () {
         this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
 
-        window.events.$on('tab-content:section', section => {
-            let sectionToUpdate = find(this.form.tabSections, s => section.id === s.id)
+        window.events.$on('tab-content:created', data => {
+            let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
 
-            if (sectionToUpdate) {
-                sectionToUpdate.title = section.title
-            }
+            tab.data = data
+
+            this.rerenderKey += 1
+
+            // this.tabAddPart = null
         })
 
-        window.events.$on('tab-content:section-data', section => {
-            let sectionToUpdate = find(this.form.tabSections, s => section.id === s.id)
+        // this.tabs[0] = {
+        //     initial: true,
+        //     label: 'Add new tab',
+        //     id: uuid()
+        // }
+
+        // window.events.$on('tab-content:section', section => {
+        //     let sectionToUpdate = find(this.form.tabSections, s => section.id === s.id)
+
+        //     if (sectionToUpdate) {
+        //         sectionToUpdate.title = section.title
+        //     }
+        // })
+
+        // window.events.$on('tab-content:section-data', section => {
+        //     let sectionToUpdate = find(this.form.tabSections, s => section.id === s.id)
             
-            if (sectionToUpdate) {
-                sectionToUpdate.data = section.data
-                sectionToUpdate.type = section.type
-            }
-        })
+        //     if (sectionToUpdate) {
+        //         sectionToUpdate.data = section.data
+        //         sectionToUpdate.type = section.type
+        //     }
+        // })
     }
 }
 </script>

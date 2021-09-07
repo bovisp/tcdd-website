@@ -379,4 +379,9 @@ a {
   font-weight: bold;
 }
 
+.borderless-input.borderless-input-md input[type="text"] {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
 @tailwind utilities;

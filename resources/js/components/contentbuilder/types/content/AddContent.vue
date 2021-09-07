@@ -112,7 +112,7 @@ export default {
 
                 this.cancel()
             } else {
-                this.$emit('tab-part-section-content:created', data)
+                window.events.$emit('tab-content:created', data)
             }
         },
 
