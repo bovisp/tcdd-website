@@ -120,7 +120,7 @@ export default {
             this.form.content = ''
 
             if (this.isTabSectionPart) {
-                this.$emit('tab-content:cancel-add')
+                window.events.$emit('tab-content:cancel-add')
 
                 return
             }

@@ -1,15 +1,6 @@
 <template>
     <div>
         <form>
-            <b-field>
-                <b-input 
-                    placeholder="Add an optional title..."
-                    size="is-medium"
-                    class="borderless-input borderless-input-md"
-                    v-model="form.title"
-                ></b-input>
-            </b-field>
-
             <div class="level">
                 <div class="level-left"></div>
 
@@ -25,6 +16,15 @@
                     </div>
                 </div>
             </div>
+
+            <b-field>
+                <b-input 
+                    placeholder="Add an optional tab title..."
+                    size="is-medium"
+                    class="borderless-input borderless-input-md"
+                    v-model="form.title"
+                ></b-input>
+            </b-field>
 
             <b-tabs
                 v-model="activeTab"
@@ -50,6 +50,21 @@
                                 size="is-small"
                                 @click.prevent="editTabTitle(tab)"
                             ></b-button>
+
+                            <b-button 
+                                icon-right="close"
+                                type="is-text"
+                                size="is-small"
+                                class="has-text-danger"
+                                @click.prevent="$buefy.dialog.confirm({
+                                    title: `Delete tab: ${tab.label}`,
+                                    message: `Are you sure you want to <b>delete</b> the tab: ${tab.label}`,
+                                    confirmText: 'Delete tab',
+                                    type: 'is-danger',
+                                    hasIcon: true,
+                                    onConfirm: () => removeTab(tab)
+                                })"
+                            ></b-button>
                         </template>
 
                         <div class="h-full w-full flex items-center justify-center">
@@ -62,7 +77,6 @@
                             </b-button>
 
                             <template v-if="tab.type">
-                                {{ isEmpty(tab.data) }}
                                 <component 
                                     v-if="isEmpty(tab.data) === true"
                                     :is="`Add${pascalCase(tab.type)}`"
@@ -413,6 +427,18 @@ export default {
             this.isAddPartActive = true
 
             this.tabAddPart = tab
+        },
+
+        async removeTab (tab) {
+            await axios.delete(`${this.urlBase}/api/parts/${tab.type}/${tab.data.data.id}`, {
+                data: {
+                    type: tab.type
+                }
+            })
+
+            this.tabs = filter(this.tabs, t => t.id !== tab.id)
+
+            this.rerenderKey += 1
         }
     },
 
@@ -427,6 +453,16 @@ export default {
             this.rerenderKey += 1
 
             // this.tabAddPart = null
+        })
+
+        window.events.$on('tab-content:cancel-add', () => {
+            let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
+
+            tab.type = ''
+
+            tab.hasContent = false
+
+            this.rerenderKey += 1
         })
 
         // this.tabs[0] = {

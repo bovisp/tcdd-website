@@ -8,6 +8,7 @@ use App\ContentBuilder;
 use App\TabPartSection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Classes\ContentTypes\DestroyContent;
 use App\Http\Resources\ContentBuilder\PartResource;
 
 class ContentPartController extends Controller
@@ -83,5 +84,10 @@ class ContentPartController extends Controller
         ]);
 
         return new PartResource($part);
+    }
+
+    public function destroy(ContentPart $partType)
+    {
+        (new DestroyContent($partType))->delete();
     }
 }

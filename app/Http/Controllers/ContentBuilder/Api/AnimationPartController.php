@@ -7,6 +7,7 @@ use App\AnimationPart;
 use App\ContentBuilder;
 use App\TabPartSection;
 use App\Http\Controllers\Controller;
+use App\Classes\ContentTypes\DestroyAnimation;
 use App\Http\Resources\ContentBuilder\PartResource;
 
 class AnimationPartController extends Controller
@@ -126,5 +127,10 @@ class AnimationPartController extends Controller
         ]);
 
         return new PartResource($part);
+    }
+
+    public function destroy(AnimationPart $partType)
+    {
+        (new DestroyAnimation($partType))->delete();
     }
 }

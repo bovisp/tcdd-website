@@ -384,4 +384,8 @@ a {
   font-weight: bold;
 }
 
+section.tab-content {
+  @apply border-b border-l border-r rounded-b;
+}
+
 @tailwind utilities;
