@@ -3,10 +3,15 @@
         class="flex w-full mt-4"
         :class="[ editing ? 'justify-end' : '' ]"
     >
-        <div 
+        <!-- <div 
             v-if="editing"
             class="my-6"
             :class="editStatus ? 'w-full' : 'w-10/12 bg-gray-100 p-4 rounded'"
+        > -->
+
+        <div 
+            v-if="editing"
+            :class="[ isTabSectionPart ? '' : '' ]"
         >
             <form>
                 <vue-editor 
@@ -19,19 +24,21 @@
                     class="text-xs text-red-500 mt-2"
                 ></p>
 
-                <div 
+                <!-- <div 
                     class="flex my-2"
                     v-if="!editStatus && editing"
-                >
+                > -->
+
+                <div class="flex my-2">
                     <button 
-                        class="btn btn-blue btn-sm text-sm"
+                        class="button is-small is-info"
                         @click.prevent="update"
                     >
                         {{ trans('generic.update') }}
                     </button>
 
                     <button 
-                        class="btn btn-text btn-sm text-sm ml-auto"
+                        class="button is-small is-text has-text-dark ml-auto"
                         @click.prevent="cancel"
                     >
                         {{ trans('generic.cancel') }}
@@ -79,7 +86,12 @@ export default {
             type: Number,
             required: false,
             default: null
-        }
+        },
+        isTabSectionPart: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
     },
 
     data () {
@@ -127,9 +139,9 @@ export default {
 
     methods: {
         async update () {
-            let { data } = await axios.patch(`${this.urlBase}/api/parts/${this.part.id}/content`, this.form)
+            let { data } = await axios.patch(`${this.urlBase}/api/parts/${this.part.data.id}/content`, this.form)
 
-            this.part = data
+            this.part.data = data
 
             this.cancel()
         },
@@ -168,6 +180,14 @@ export default {
             if (error.error.id === this.id) {
                 this.errors = error.error.error
             }
+        })
+
+        window.events.$on('part:force-edit', () => {
+            this.editing = true
+
+            this.part = this.data
+
+            this.form.content = this.part.data.content
         })
     }
 }

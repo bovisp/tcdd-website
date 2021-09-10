@@ -69,7 +69,7 @@ class ContentPartController extends Controller
         }
     }
 
-    public function update(Part $part)
+    public function update(ContentPart $contentPart)
     {
         request()->validate([
             'content' => 'required'
@@ -77,13 +77,11 @@ class ContentPartController extends Controller
             'content.required' => __('app_http_controllers_contentbuilder_api_contentpart.content_required')
         ]);
 
-        $contentPart = ContentPart::wherePartId($part->id)->first();
-
         $contentPart->update([
             'content' => request('content')
         ]);
 
-        return new PartResource($part);
+        return $contentPart;
     }
 
     public function destroy(ContentPart $partType)

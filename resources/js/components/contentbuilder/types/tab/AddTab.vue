@@ -34,7 +34,7 @@
                 :destroy-on-hide="true"
                 :key="rerenderKey"
             >
-                <template v-for="tab in tabs">
+                <template v-for="tab in orderedTabs">
                     <b-tab-item 
                         :label="tab.label"
                         :id="tab.id"
@@ -48,7 +48,7 @@
                                 icon-right="pencil"
                                 type="is-text"
                                 size="is-small"
-                                @click.prevent="editTabTitle(tab)"
+                                @click.prevent="editTab(tab)"
                             ></b-button>
 
                             <b-button 
@@ -56,9 +56,10 @@
                                 type="is-text"
                                 size="is-small"
                                 class="has-text-danger"
+                                :disabled="tabLength < 2"
                                 @click.prevent="$buefy.dialog.confirm({
                                     title: `Delete tab: ${tab.label}`,
-                                    message: `Are you sure you want to <b>delete</b> the tab: ${tab.label}`,
+                                    message: `Are you sure you want to <b>delete</b> the tab: ${tab.label}?`,
                                     confirmText: 'Delete tab',
                                     type: 'is-danger',
                                     hasIcon: true,
@@ -66,6 +67,38 @@
                                 })"
                             ></b-button>
                         </template>
+
+                        <div class="level mb-0" v-if="isEmpty(tab.data) === false && !partEditStatus">
+                            <div class="level-left"></div>
+
+                            <div class="level-right">
+                                <div class="level-item">
+                                    <b-button
+                                        type="is-text"
+                                        size="is-small"
+                                        icon-left="pencil"
+                                        @click.prevent="editPart"
+                                    >Edit {{ tab.type }}</b-button>
+                                </div>
+
+                                <div class="level-item">
+                                    <b-button
+                                        type="is-text"
+                                        class="has-text-danger"
+                                        size="is-small"
+                                        icon-left="close"
+                                        @click.prevent="$buefy.dialog.confirm({
+                                            title: `Delete ${tab.type}`,
+                                            message: `Are you sure you want to <b>delete</b> this ${tab.type}?`,
+                                            confirmText: `Delete ${tab.type}`,
+                                            type: 'is-danger',
+                                            hasIcon: true,
+                                            onConfirm: () => deleteTabContent(tab.type, tab.data)
+                                        })"
+                                    >Delete</b-button>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="h-full w-full flex items-center justify-center">
                             <b-button
@@ -89,8 +122,9 @@
                                 <component 
                                     v-else
                                     :is="`Show${pascalCase(tab.type)}`"
-                                    :edit-status="false"
+                                    :edit-status="partEditStatus"
                                     :data="tab.data"
+                                    :is-tab-section-part="true"
                                 ></component>
                             </template>
                         </div>
@@ -125,6 +159,22 @@
                                 v-model="editTabForm.label"
                                 required
                             ></b-input>
+                        </b-field>
+
+                        <b-field label="Tab order">
+                            <b-select 
+                                v-model="editTabForm.order"
+                                expanded
+                                :disabled="tabLength === 1"
+                            >
+                                <option
+                                    v-for="i in sortedUniq(map(this.tabs, tab => tab.order))"
+                                    :value="i"
+                                    :key="i"
+                                >
+                                    {{ i }}
+                                </option>
+                            </b-select>
                         </b-field>
                     </section>
 
@@ -243,7 +293,7 @@
 
 <script>
 import uuid from 'uuid/v4'
-import { find, filter, isEmpty, slice } from 'lodash-es'
+import { find, filter, isEmpty, slice, map, orderBy, sortedUniq } from 'lodash-es'
 import { mapGetters } from 'vuex'
 import { pascalCase } from 'change-case'
 
@@ -277,6 +327,7 @@ export default {
                 label: 'New tab',
                 hasContent: false,
                 type: '',
+                order: 1,
                 data: null
             }],
             // addingTabSection: false,
@@ -286,11 +337,13 @@ export default {
             isEditModalActive: false,
             editingTab: null,
             editTabForm: {
-                label: ''
+                label: '',
+                order: null
             },
             isAddPartActive: false,
             tabAddPart: null,
-            rerenderKey: 0
+            rerenderKey: 0,
+            partEditStatus: false
         }
     },
 
@@ -301,12 +354,24 @@ export default {
 
         tabLength () {
             return this.tabs.length
+        },
+
+        orderedTabs () {
+            return orderBy(this.tabs, ['order'], ['asc'])
         }
     },
 
     watch: {
         tabLength () {
             this.rerenderKey += 1
+        },
+
+        orderedTabs: {
+            deep: true,
+
+            handler () {
+                this.rerenderKey += 1
+            }
         }
     },
 
@@ -374,19 +439,28 @@ export default {
         
         isEmpty,
 
+        map,
+
+        orderBy,
+
+        sortedUniq,
+
         addNewTab () {
             this.tabs.splice(this.tabs.length, 0, {
                 id: uuid(),
-                label: 'New tab'
+                label: 'New tab',
+                order: this.tabs.length + 1
             })
 
             this.activeTab = this.tabs.length - 1
         },
 
-        editTabTitle (tab) {
+        editTab (tab) {
             this.editingTab = tab
 
             this.editTabForm.label = tab.label
+
+            this.editTabForm.order = tab.order
 
             this.isEditModalActive = true
         },
@@ -401,6 +475,14 @@ export default {
             let tab = find(this.tabs, tab => tab.id === this.editingTab.id)
 
             tab.label = this.editTabForm.label
+
+            if (parseInt(tab.order) !== parseInt(this.editTabForm.order)) {
+                let originalTab = find(this.tabs, tab => parseInt(tab.order) === parseInt(this.editTabForm.order))
+
+                originalTab.order = tab.order
+
+                tab.order = this.editTabForm.order
+            }
 
             this.closeTabEditModal()
         },
@@ -421,6 +503,8 @@ export default {
             this.isAddPartActive = false
 
             this.tabAddPart = null
+
+            this.rerenderKey += 1
         },
 
         addPart (tab) {
@@ -430,13 +514,35 @@ export default {
         },
 
         async removeTab (tab) {
-            await axios.delete(`${this.urlBase}/api/parts/${tab.type}/${tab.data.data.id}`, {
-                data: {
-                    type: tab.type
-                }
-            })
+            if (isEmpty(tab.data) === false) {
+                await axios.delete(`${this.urlBase}/api/parts/${tab.type}/${tab.data.data.id}`, {
+                    data: {
+                        type: tab.type
+                    }
+                })
+            }
 
             this.tabs = filter(this.tabs, t => t.id !== tab.id)
+
+            this.rerenderKey += 1
+        },
+
+        editPart () {
+            this.partEditStatus = true
+
+            window.events.$emit('part:force-edit')
+        },
+
+        async deleteTabContent (type, data) {
+            await axios.delete(`${this.urlBase}/api/parts/${type}/${data.data.id}`)
+
+            let tab = find(this.tabs, tab => tab.data.data.id === data.data.id)
+
+            tab.type = ''
+
+            tab.hasContent = false
+
+            tab.data = null
 
             this.rerenderKey += 1
         }
@@ -456,11 +562,21 @@ export default {
         })
 
         window.events.$on('tab-content:cancel-add', () => {
-            let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
+            if (!this.partEditStatus) {
+                let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
 
-            tab.type = ''
+                tab.type = ''
 
-            tab.hasContent = false
+                tab.hasContent = false
+            }
+
+            this.partEditStatus = false
+
+            this.rerenderKey += 1
+        })
+
+        window.events.$on('part:edit-cancel', partId => {
+            this.partEditStatus = false
 
             this.rerenderKey += 1
         })
