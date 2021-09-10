@@ -40,10 +40,11 @@ class TabPartController extends Controller
 
         foreach (request('tabSections') as $section) {
             TabPartSection::create([
-                'title' => $section['title'],
+                'title' => $section['label'],
                 'tab_part_id' => $tabPart->id,
-                'content_id' => $section['data']['id'],
-                'type' => $section['type']
+                'content_id' => $section['data']['data']['id'],
+                'type' => $section['type'],
+                'order' => (int) $section['order']
             ]);
         }
 

@@ -10,6 +10,7 @@ class TabPartSection extends Model
         'tab_part_id',
         'title',
         'content_id',
-        'type'
+        'type',
+        'order'
     ];
 }

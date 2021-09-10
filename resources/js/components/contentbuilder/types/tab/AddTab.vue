@@ -33,6 +33,7 @@
                 :animated="false"
                 :destroy-on-hide="true"
                 :key="rerenderKey"
+                class="mb-0"
             >
                 <template v-for="tab in orderedTabs">
                     <b-tab-item 
@@ -132,19 +133,27 @@
                 </template>
             </b-tabs>
 
-            <div class="level mb-0">
-                <div class="level-left"></div>
+            <b-field>
+                <b-input 
+                    placeholder="Add an optional tab caption..."
+                    class="borderless-input"
+                    v-model="form.caption"
+                ></b-input>
+            </b-field>
 
-                <div class="level-right">
+            <div class="level mb-0">
+                <div class="level-left">
                     <div class="level-item">
-                        <!-- <b-button
-                            type="is-text"
+                        <b-button
+                            type="is-info"
                             size="is-small"
                             icon-left="pencil"
-                            @click.prevent="editPart"
-                        >Edit {{ tab.type }}</b-button> -->
+                            @click.prevent="store"
+                        >Create tab</b-button>
                     </div>
+                </div>
 
+                <div class="level-right">
                     <div class="level-item">
                         <b-button
                             type="is-text"
@@ -308,21 +317,19 @@ export default {
     },
 
     methods: {
-        // async store () {
-        //     let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/tab`, {
-        //         content_builder_type_id: this.form.content_builder_type_id,
-        //         title: this.form.title,
-        //         caption: this.form.caption,
-        //         tabSections: this.form.tabSections
-        //     })
+        async store () {
+            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/tab`, {
+                content_builder_type_id: this.form.content_builder_type_id,
+                title: this.form.title,
+                caption: this.form.caption,
+                tabSections: this.tabs
+            })
 
-        //     window.events.$emit('part:created', {
-        //         data,
-        //         contentBuilderId: this.builderId
-        //     })
-
-        //     this.reset()
-        // },
+            window.events.$emit('part:created', {
+                data,
+                contentBuilderId: this.builderId
+            })
+        },
 
         slice,
 
@@ -448,7 +455,7 @@ export default {
             }
 
             window.events.$emit('add-part:cancel', this.builderId)
-        },
+        }
     },
 
     mounted () {
