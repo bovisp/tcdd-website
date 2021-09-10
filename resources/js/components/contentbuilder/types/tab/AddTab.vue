@@ -131,6 +131,29 @@
                     </b-tab-item>
                 </template>
             </b-tabs>
+
+            <div class="level mb-0">
+                <div class="level-left"></div>
+
+                <div class="level-right">
+                    <div class="level-item">
+                        <!-- <b-button
+                            type="is-text"
+                            size="is-small"
+                            icon-left="pencil"
+                            @click.prevent="editPart"
+                        >Edit {{ tab.type }}</b-button> -->
+                    </div>
+
+                    <div class="level-item">
+                        <b-button
+                            type="is-text"
+                            size="is-small"
+                            @click.prevent="cancelAddingPart"
+                        >Cancel adding tab</b-button>
+                    </div>
+                </div>
+            </div>
         </form>
 
         <b-modal
@@ -200,95 +223,6 @@
             @add="addPartToTab"
         />
     </div>
-    <!-- <div>
-        <div
-            class="mb-4"
-        >
-            <label 
-                class="block text-gray-700 font-bold mb-2"
-                :class="{ 'text-red-500': errors.title }"
-                for="title"
-            >
-                {{ trans('js_components_contentbuilder_types_tab_addtab.tabparttitle') }}
-            </label>
-
-            <input 
-                type="text" 
-                v-model="form.title"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                id="title"
-                :class="{ 'border-red-500': errors.title }"
-            >
-
-            <p
-                v-if="errors.title"
-                v-text="errors.title[0]"
-                class="text-red-500 text-xs"
-            ></p>
-        </div>
-
-        <div
-            class="mb-4"
-        >
-            <label 
-                class="block text-gray-700 font-bold mb-2"
-                :class="{ 'text-red-500': errors.caption }"
-                for="caption"
-            >
-                {{ trans('js_components_contentbuilder_types_tab_addtab.tabpartcaption') }}
-            </label>
-
-            <textarea 
-                v-model="form.caption"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
-                id="caption"
-                :class="{ 'border-red-500': errors.caption }"
-            ></textarea>
-
-            <p
-                v-if="errors.caption"
-                v-text="errors.caption[0]"
-                class="text-red-500 text-xs"
-            ></p>
-        </div>
-
-        <hr class="my-6">
-
-        <template v-if="addingTabSection">
-            <new-tab-section 
-                v-for="section in form.tabSections"
-                :key="section.id"
-                :data="section"
-                :lang="lang"
-                @canceladd="cancelAdd"
-                :content-builder-id="contentBuilderId"
-            />
-        </template>
-
-        <button 
-            class="btn w-full btn-outline btn-sm text-sm mb-12"
-            @click.prevent="addTabSection"
-        >
-            {{ trans('js_components_contentbuilder_types_tab_addtab.addatab') }}
-        </button>
-
-        <div class="flex">
-            <button 
-                class="btn btn-blue btn-sm text-sm"
-                @click.prevent="store"
-                :disabled="form.tabSections.length === 0"
-            >
-                {{ trans('js_components_contentbuilder_types_tab_addtab.createtabpart') }}
-            </button>
-            
-            <button 
-                class="btn btn-text btn-sm text-sm ml-auto"
-                @click.prevent="cancel"
-            >
-                {{ trans('js_components_contentbuilder_types_tab_addtab.cancel') }}
-            </button>
-        </div> -->
-    </div>
 </template>
 
 <script>
@@ -330,8 +264,6 @@ export default {
                 order: 1,
                 data: null
             }],
-            // addingTabSection: false,
-            // order: 1,
             builderId: null,
             activeTab: 0,
             isEditModalActive: false,
@@ -376,22 +308,6 @@ export default {
     },
 
     methods: {
-        // addTabSection () {
-        //     if (!this.addingTabSection) {
-        //         this.addingTabSection = true
-        //     }
-
-        //     this.form.tabSections.push({
-        //         id: uuid(),
-        //         title: '',
-        //         order: this.order,
-        //         data: {},
-        //         type: ''
-        //     })
-
-        //     this.order += 1
-        // },
-
         // async store () {
         //     let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/tab`, {
         //         content_builder_type_id: this.form.content_builder_type_id,
@@ -408,31 +324,6 @@ export default {
         //     this.reset()
         // },
 
-        // cancel () {
-        //     this.reset()
-        // },
-
-        // async reset () {
-        //     for await (const [index, tab] of this.form.tabSections.entries()) {
-        //         if (isEmpty(tab.data)) {
-        //             await axios.delete(`${this.urlBase}/api/parts/tab-section-parts`, {
-        //                 data: { tab }
-        //             })
-        //         }
-        //     }
-
-        //     window.events.$emit('add-part:cancel', this.builderId)
-        // },
-
-        // cancelAdd (sectionId) {
-        //     this.form.tabSections = filter(this.form.tabSections, section => {
-        //         return sectionId !== section.id
-        //     })
-
-        //     if (this.form.tabSections === 0) {
-        //         this.addingTabSection = false
-        //     }
-        // }
         slice,
 
         pascalCase,
@@ -545,7 +436,19 @@ export default {
             tab.data = null
 
             this.rerenderKey += 1
-        }
+        },
+
+        async cancelAddingPart () {
+            for await (const tab of this.tabs) {
+                if (!isEmpty(tab.data)) {
+                    await axios.delete(`${this.urlBase}/api/parts/tabs/cancel`, {
+                        data: { tab }
+                    })
+                }
+            }
+
+            window.events.$emit('add-part:cancel', this.builderId)
+        },
     },
 
     mounted () {
@@ -580,29 +483,6 @@ export default {
 
             this.rerenderKey += 1
         })
-
-        // this.tabs[0] = {
-        //     initial: true,
-        //     label: 'Add new tab',
-        //     id: uuid()
-        // }
-
-        // window.events.$on('tab-content:section', section => {
-        //     let sectionToUpdate = find(this.form.tabSections, s => section.id === s.id)
-
-        //     if (sectionToUpdate) {
-        //         sectionToUpdate.title = section.title
-        //     }
-        // })
-
-        // window.events.$on('tab-content:section-data', section => {
-        //     let sectionToUpdate = find(this.form.tabSections, s => section.id === s.id)
-            
-        //     if (sectionToUpdate) {
-        //         sectionToUpdate.data = section.data
-        //         sectionToUpdate.type = section.type
-        //     }
-        // })
     }
 }
 </script>

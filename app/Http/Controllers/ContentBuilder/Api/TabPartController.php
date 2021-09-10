@@ -181,4 +181,17 @@ class TabPartController extends Controller
 
         return new PartResource($part);
     }
+
+    public function destroyData()
+    {
+        $typeClassName = 'App\\' . ucfirst(request('tab')['type']) . 'Part';
+
+        $partType = $typeClassName::find(request('tab')['data']['data']['id']);
+
+        $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst(request('tab')['type']);
+
+        (new $destroyClassName($partType))->delete();
+
+        return;
+    }
 }
