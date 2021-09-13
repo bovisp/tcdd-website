@@ -69,7 +69,8 @@ class DuplicateTab
                 'title' => $section->title,
                 'tab_part_id' => $newTabPart->id,
                 'content_id' => $tabPartSectionData['data']->id,
-                'type' => $tabPartSectionData['type']
+                'type' => $tabPartSectionData['type'],
+                'order' =>  $section->order
             ]);
 
             $newTabSection->update([

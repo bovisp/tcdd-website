@@ -53,6 +53,7 @@ class BuildTabData
                 'content_id' => $section->content_id,
                 'type' => $section->type,
                 'title' => $section->title,
+                'order' => $section->order,
                 'content' => [
                     'data' => $builtContent
                 ]

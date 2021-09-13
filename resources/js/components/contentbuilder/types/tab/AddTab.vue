@@ -1,23 +1,7 @@
 <template>
     <div>
         <form>
-            <div class="level">
-                <div class="level-left"></div>
-
-                <div class="level-right">
-                    <div class="level-item">
-                        <b-button
-                            type="is-info"
-                            size="is-small"
-                            @click.prevent="addNewTab"
-                        >
-                            Add new tab
-                        </b-button>
-                    </div>
-                </div>
-            </div>
-
-            <b-field>
+           <b-field>
                 <b-input 
                     placeholder="Add an optional tab title..."
                     size="is-medium"
@@ -35,102 +19,83 @@
                 :key="rerenderKey"
                 class="mb-0"
             >
-                <template v-for="tab in orderedTabs">
-                    <b-tab-item 
-                        :label="tab.label"
-                        :id="tab.id"
-                        :key="tab.id"
-                        :value="tab.id"
-                    >
-                        <template #header>
-                            <span> {{ tab.label }} </span>
+                <b-tab-item 
+                    :label="tab.label"
+                    :id="tab.id"
+                    :key="tab.id"
+                    :value="tab.id"
+                    v-for="tab in orderedTabs"
+                >
+                    <template #header>
+                        <span> {{ tab.label }} </span>
 
-                            <b-button 
-                                icon-right="pencil"
-                                type="is-text"
-                                size="is-small"
-                                @click.prevent="editTab(tab)"
-                            ></b-button>
+                        <b-button 
+                            icon-right="pencil"
+                            type="is-text"
+                            size="is-small"
+                            @click.prevent="editTab(tab)"
+                        ></b-button>
 
-                            <b-button 
-                                icon-right="close"
-                                type="is-text"
-                                size="is-small"
-                                class="has-text-danger"
-                                :disabled="tabLength < 2"
-                                @click.prevent="$buefy.dialog.confirm({
-                                    title: `Delete tab: ${tab.label}`,
-                                    message: `Are you sure you want to <b>delete</b> the tab: ${tab.label}?`,
-                                    confirmText: 'Delete tab',
-                                    type: 'is-danger',
-                                    hasIcon: true,
-                                    onConfirm: () => removeTab(tab)
-                                })"
-                            ></b-button>
+                        <b-button 
+                            icon-right="close"
+                            type="is-text"
+                            size="is-small"
+                            class="has-text-danger"
+                            :disabled="tabLength < 2"
+                            @click.prevent="$buefy.dialog.confirm({
+                                title: `Delete tab: ${tab.label}`,
+                                message: `Are you sure you want to <b>delete</b> the tab: ${tab.label}?`,
+                                confirmText: 'Delete tab',
+                                type: 'is-danger',
+                                hasIcon: true,
+                                onConfirm: () => removeTab(tab)
+                            })"
+                        ></b-button>
+                    </template>
+
+                    <div class="h-full w-full flex items-center justify-center">
+                        <b-button
+                            type="is-text"
+                            v-if="!tab.hasContent && !isAddPartActive"
+                            @click.prevent="addPart(tab)"
+                        >
+                            Add content to {{ tab.label }}
+                        </b-button>
+
+                        <template v-if="tab.type">
+                            <component 
+                                v-if="isEmpty(tab.data) === true"
+                                :is="`Add${pascalCase(tab.type)}`"
+                                :edit-status="false"
+                                :create-button-text="trans('generic.create')"
+                                :lang="lang"
+                                :is-tab-section-part="true"
+                            ></component>
+                            
+                            <component 
+                                v-else
+                                :is="`Show${pascalCase(tab.type)}`"
+                                :edit-status="partEditStatus"
+                                :data="tab.data"
+                                :is-tab-section-part="true"
+                            ></component>
                         </template>
+                    </div>
+                </b-tab-item>
 
-                        <div class="level mb-0" v-if="isEmpty(tab.data) === false && !partEditStatus">
-                            <div class="level-left"></div>
-
-                            <div class="level-right">
-                                <div class="level-item">
-                                    <b-button
-                                        type="is-text"
-                                        size="is-small"
-                                        icon-left="pencil"
-                                        @click.prevent="editPart"
-                                    >Edit {{ tab.type }}</b-button>
-                                </div>
-
-                                <div class="level-item">
-                                    <b-button
-                                        type="is-text"
-                                        class="has-text-danger"
-                                        size="is-small"
-                                        icon-left="close"
-                                        @click.prevent="$buefy.dialog.confirm({
-                                            title: `Delete ${tab.type}`,
-                                            message: `Are you sure you want to <b>delete</b> this ${tab.type}?`,
-                                            confirmText: `Delete ${tab.type}`,
-                                            type: 'is-danger',
-                                            hasIcon: true,
-                                            onConfirm: () => deleteTabContent(tab.type, tab.data)
-                                        })"
-                                    >Delete</b-button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="h-full w-full flex items-center justify-center">
-                            <b-button
-                                type="is-text"
-                                v-if="!tab.hasContent && !isAddPartActive"
-                                @click.prevent="addPart(tab)"
-                            >
-                                Add content to {{ tab.label }}
-                            </b-button>
-
-                            <template v-if="tab.type">
-                                <component 
-                                    v-if="isEmpty(tab.data) === true"
-                                    :is="`Add${pascalCase(tab.type)}`"
-                                    :edit-status="false"
-                                    :create-button-text="trans('generic.create')"
-                                    :lang="lang"
-                                    :is-tab-section-part="true"
-                                ></component>
-                                
-                                <component 
-                                    v-else
-                                    :is="`Show${pascalCase(tab.type)}`"
-                                    :edit-status="partEditStatus"
-                                    :data="tab.data"
-                                    :is-tab-section-part="true"
-                                ></component>
-                            </template>
-                        </div>
-                    </b-tab-item>
-                </template>
+                <b-tab-item
+                    class="p-0"
+                >
+                    <template #header>
+                        <b-button 
+                            icon-right="plus"
+                            type="is-text"
+                            size="is-small"
+                            title="Add new tab"
+                            @click.prevent="addNewTab"
+                        ></b-button>
+                    </template>
+                </b-tab-item>
             </b-tabs>
 
             <b-field>
@@ -284,7 +249,6 @@ export default {
             isAddPartActive: false,
             tabAddPart: null,
             rerenderKey: 0,
-            partEditStatus: false
         }
     },
 
@@ -350,7 +314,9 @@ export default {
                 order: this.tabs.length + 1
             })
 
-            this.activeTab = this.tabs.length - 1
+            this.activeTab = this.tabLength - 1
+
+            this.rerenderKey += 1
         },
 
         editTab (tab) {
@@ -421,26 +387,6 @@ export default {
             }
 
             this.tabs = filter(this.tabs, t => t.id !== tab.id)
-
-            this.rerenderKey += 1
-        },
-
-        editPart () {
-            this.partEditStatus = true
-
-            window.events.$emit('part:force-edit')
-        },
-
-        async deleteTabContent (type, data) {
-            await axios.delete(`${this.urlBase}/api/parts/${type}/${data.data.id}`)
-
-            let tab = find(this.tabs, tab => tab.data.data.id === data.data.id)
-
-            tab.type = ''
-
-            tab.hasContent = false
-
-            tab.data = null
 
             this.rerenderKey += 1
         },
