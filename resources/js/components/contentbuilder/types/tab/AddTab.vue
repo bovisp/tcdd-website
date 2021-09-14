@@ -110,20 +110,6 @@ export default {
     },
 
     methods: {
-        async store () {
-            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/tab`, {
-                content_builder_type_id: this.form.content_builder_type_id,
-                title: this.form.title,
-                caption: this.form.caption,
-                tabSections: this.tabs
-            })
-
-            window.events.$emit('part:created', {
-                data,
-                contentBuilderId: this.builderId
-            })
-        },
-
         slice,
 
         pascalCase,
@@ -146,12 +132,24 @@ export default {
             if (parseInt(payload.tabToEdit.order) !== parseInt(payload.originalOrder)) {
                 let tab = find(this.form.tabs, tab => tab.order === payload.tabToEdit.order && tab.id !== payload.tabToEdit.id)
 
-                console.log(tab)
-
                 tab.order = payload.originalOrder
             }
 
             window.events.$emit('tabs:update-tab-list', this.form.tabs)
+        },
+
+        async store () {
+            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/tab`, {
+                content_builder_type_id: this.form.content_builder_type_id,
+                title: this.form.title,
+                caption: this.form.caption,
+                tabSections: this.tabs
+            })
+
+            window.events.$emit('part:created', {
+                data,
+                contentBuilderId: this.builderId
+            })
         },
 
         addPartToTab (type) {
@@ -206,8 +204,6 @@ export default {
             tab.data = data
 
             this.rerenderKey += 1
-
-            // this.tabAddPart = null
         })
 
         window.events.$on('tab-content:cancel-add', () => {
@@ -231,6 +227,8 @@ export default {
         })
 
         window.events.$on('tabs:update-edited-tab', tab => this.updateTab(tab))
+
+        window.events.$on('tabs:update-tab-list', tabs => this.form.tabs = tabs)
     }
 }
 </script>

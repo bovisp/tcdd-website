@@ -154,6 +154,8 @@ export default {
 
             this.activeTab = 0
 
+            window.events.$emit('tabs:update-tab-list', this.tabs)
+
             this.rerenderKey += 1
         },
 
@@ -173,6 +175,8 @@ export default {
     },
 
     mounted () {
+        window.events.$emit('tabs:update-tab-list', this.tabs)
+
         window.events.$on('tabs:add-part-modal', () => {
             this.addPartModalActive = !this.addPartModalActive
         })
