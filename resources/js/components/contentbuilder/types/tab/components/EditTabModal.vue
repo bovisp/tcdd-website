@@ -92,10 +92,6 @@ export default {
         isEmpty,
 
         closeTabEditModal () {
-            // this.form.label = ''
-
-            // this.form.order = null
-
             this.modalActive = false
         },
 

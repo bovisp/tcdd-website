@@ -47,17 +47,6 @@
                 </div>
             </div>
         </form>
-
-        <edit-tab-modal 
-            :num-tabs="this.form.tabs.length"
-        />
-
-        <add-part-modal 
-            v-if="addPartModalActive"
-            omit-type="tab"
-            @cancel="closeAddPartModal"
-            @add="addPartToTab"
-        />
     </div>
 </template>
 
@@ -91,9 +80,7 @@ export default {
                 caption: '',
                 tabs: []
             },
-            builderId: null,
-            tabAddPart: null,
-            addPartModalActive: false
+            builderId: null
         }
     },
 
@@ -152,32 +139,6 @@ export default {
             })
         },
 
-        addPartToTab (type) {
-            this.isAddPartActive = false
-
-            let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
-
-            tab.hasContent = true
-
-            tab.type = type
-
-            tab.data = null
-        },
-
-        closeAddPartModal () {
-            this.isAddPartActive = false
-
-            this.tabAddPart = null
-
-            this.rerenderKey += 1
-        },
-
-        addPart (tab) {
-            this.isAddPartActive = true
-
-            this.tabAddPart = tab
-        },
-
         async cancelAddingPart () {
             for await (const tab of this.tabs) {
                 if (!isEmpty(tab.data)) {
@@ -197,28 +158,6 @@ export default {
 
     mounted () {
         this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
-
-        window.events.$on('tab-content:created', data => {
-            let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
-
-            tab.data = data
-
-            this.rerenderKey += 1
-        })
-
-        window.events.$on('tab-content:cancel-add', () => {
-            if (!this.partEditStatus) {
-                let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
-
-                tab.type = ''
-
-                tab.hasContent = false
-            }
-
-            this.partEditStatus = false
-
-            this.rerenderKey += 1
-        })
 
         window.events.$on('part:edit-cancel', partId => {
             this.partEditStatus = false
