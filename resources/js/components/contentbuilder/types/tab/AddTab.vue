@@ -51,9 +51,8 @@
 </template>
 
 <script>
-import { find, isEmpty, slice, map, orderBy, sortedUniq } from 'lodash-es'
+import { find, isEmpty } from 'lodash-es'
 import { mapGetters } from 'vuex'
-import { pascalCase } from 'change-case'
 
 export default {
     props: {
@@ -97,17 +96,7 @@ export default {
     },
 
     methods: {
-        slice,
-
-        pascalCase,
-        
         isEmpty,
-
-        map,
-
-        orderBy,
-
-        sortedUniq,
 
         updateTab (payload) {
             let tab = find(this.form.tabs, tab => tab.id === payload.tabToEdit.id)
@@ -140,7 +129,7 @@ export default {
         },
 
         async cancelAddingPart () {
-            for await (const tab of this.tabs) {
+            for await (const tab of this.form.tabs) {
                 if (!isEmpty(tab.data)) {
                     await axios.delete(`${this.urlBase}/api/parts/tabs/cancel`, {
                         data: { tab }
@@ -158,12 +147,6 @@ export default {
 
     mounted () {
         this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
-
-        window.events.$on('part:edit-cancel', partId => {
-            this.partEditStatus = false
-
-            this.rerenderKey += 1
-        })
 
         window.events.$on('tabs:update-edited-tab', tab => this.updateTab(tab))
 

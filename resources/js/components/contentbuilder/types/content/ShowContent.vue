@@ -150,8 +150,6 @@ export default {
             this.editing = false
             
             this.form.content = this.part.data.content
-
-            window.events.$emit('part:edit-cancel', this.part.id)
         },
     },
 
