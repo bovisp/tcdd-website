@@ -182,7 +182,7 @@ export default {
         closeAddPartModal () {
             this.addPartModalActive = false
 
-            this.tabAddPart = null
+            // this.tabAddPart = null
 
             this.rerenderKey += 1
         },
@@ -222,10 +222,27 @@ export default {
 
             this.$emit('tabs:update-tab-count', this.tabs)
         },
+
+        updateTab (payload) {
+            let tab = find(this.tabs, tab => tab.id === payload.tabToEdit.id)
+
+            tab.label = payload.tabToEdit.label
+
+            tab.order = payload.tabToEdit.order
+
+            if (parseInt(payload.tabToEdit.order) !== parseInt(payload.originalOrder)) {
+                let tab = find(this.tabs, tab => tab.order === payload.tabToEdit.order && tab.id !== payload.tabToEdit.id)
+
+                tab.order = payload.originalOrder
+            }
+
+            window.events.$emit('tabs:update-tab-list', this.tabs)
+        },
+
     },
 
     mounted () {
-        window.events.$emit('tabs:update-tab-list', this.tabs)
+        this.$emit('set-tabs', this.tabs)
 
         window.events.$on('tabs:add-part-modal', () => {
             this.addPartModalActive = !this.addPartModalActive
@@ -260,6 +277,8 @@ export default {
 
             this.rerenderKey += 1
         })
+
+        window.events.$on('tabs:update-edited-tab', tab => this.updateTab(tab))
     }
 }
 </script>

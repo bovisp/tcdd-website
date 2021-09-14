@@ -1,28 +1,9 @@
 <template>
     <div>
         <form>
-           <b-field>
-                <b-input 
-                    placeholder="Add an optional tab title..."
-                    size="is-medium"
-                    class="borderless-input borderless-input-md"
-                    v-model="form.title"
-                ></b-input>
-            </b-field>
-
-            <tab-list 
-                :tabs="form.tabs"
+            <edit-tabs 
                 :lang="lang"
-                @tabs:update-tab-count="updateTabs"
             />
-
-            <b-field>
-                <b-input 
-                    placeholder="Add an optional tab caption..."
-                    class="borderless-input"
-                    v-model="form.caption"
-                ></b-input>
-            </b-field>
 
             <div class="level mb-0">
                 <div class="level-left">
@@ -51,7 +32,7 @@
 </template>
 
 <script>
-import { find, isEmpty } from 'lodash-es'
+import { isEmpty } from 'lodash-es'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -60,25 +41,20 @@ export default {
             type: Boolean,
             required: true
         },
-        lang: {
-            type: String,
-            required: true,
-        },
         contentBuilderId: {
             type: Number,
             required: false,
             default: null
+        },
+        lang: {
+            type: String,
+            required: true,
         }
     },
 
     data () {
         return {
-            form: {
-                content_builder_type_id: 5,
-                title: '',
-                caption: '',
-                tabs: []
-            },
+            form: null,
             builderId: null
         }
     },
@@ -96,30 +72,12 @@ export default {
     },
 
     methods: {
-        isEmpty,
-
-        updateTab (payload) {
-            let tab = find(this.form.tabs, tab => tab.id === payload.tabToEdit.id)
-
-            tab.label = payload.tabToEdit.label
-
-            tab.order = payload.tabToEdit.order
-
-            if (parseInt(payload.tabToEdit.order) !== parseInt(payload.originalOrder)) {
-                let tab = find(this.form.tabs, tab => tab.order === payload.tabToEdit.order && tab.id !== payload.tabToEdit.id)
-
-                tab.order = payload.originalOrder
-            }
-
-            window.events.$emit('tabs:update-tab-list', this.form.tabs)
-        },
-
         async store () {
             let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/tab`, {
                 content_builder_type_id: this.form.content_builder_type_id,
                 title: this.form.title,
                 caption: this.form.caption,
-                tabSections: this.tabs
+                tabSections: this.form.tabs
             })
 
             window.events.$emit('part:created', {
@@ -138,19 +96,15 @@ export default {
             }
 
             window.events.$emit('add-part:cancel', this.builderId)
-        },
-
-        updateTabs (tabs) {
-            this.form.tabs = tabs
         }
     },
 
     mounted () {
         this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
 
-        window.events.$on('tabs:update-edited-tab', tab => this.updateTab(tab))
-
         window.events.$on('tabs:update-tab-list', tabs => this.form.tabs = tabs)
+
+        window.events.$on('tabs:update-form', form => this.form = form)
     }
 }
 </script>
