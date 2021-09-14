@@ -10,93 +10,11 @@
                 ></b-input>
             </b-field>
 
-            <b-tabs
-                v-model="activeTab"
-                type="is-boxed"
-                :multiline="true"
-                :animated="false"
-                :destroy-on-hide="true"
-                :key="rerenderKey"
-                class="mb-0"
-            >
-                <b-tab-item 
-                    :label="tab.label"
-                    :id="tab.id"
-                    :key="tab.id"
-                    :value="tab.id"
-                    v-for="tab in orderedTabs"
-                >
-                    <template #header>
-                        <span> {{ tab.label }} </span>
-
-                        <b-button 
-                            icon-right="pencil"
-                            type="is-text"
-                            size="is-small"
-                            @click.prevent="editTab(tab)"
-                        ></b-button>
-
-                        <b-button 
-                            icon-right="close"
-                            type="is-text"
-                            size="is-small"
-                            class="has-text-danger"
-                            :disabled="tabLength < 2"
-                            @click.prevent="$buefy.dialog.confirm({
-                                title: `Delete tab: ${tab.label}`,
-                                message: `Are you sure you want to <b>delete</b> the tab: ${tab.label}?`,
-                                confirmText: 'Delete tab',
-                                type: 'is-danger',
-                                hasIcon: true,
-                                onConfirm: () => removeTab(tab)
-                            })"
-                        ></b-button>
-                    </template>
-
-                    <div class="h-full w-full flex items-center justify-center">
-                        <b-button
-                            type="is-text"
-                            v-if="!tab.hasContent && !isAddPartActive"
-                            @click.prevent="addPart(tab)"
-                        >
-                            Add content to {{ tab.label }}
-                        </b-button>
-
-                        <template v-if="tab.type">
-                            <component 
-                                v-if="isEmpty(tab.data) === true"
-                                :is="`Add${pascalCase(tab.type)}`"
-                                :edit-status="false"
-                                :create-button-text="trans('generic.create')"
-                                :lang="lang"
-                                :is-tab-section-part="true"
-                            ></component>
-                            
-                            <component 
-                                v-else
-                                :is="`Show${pascalCase(tab.type)}`"
-                                :edit-status="partEditStatus"
-                                :data="tab.data"
-                                :is-tab-section-part="true"
-                            ></component>
-                        </template>
-                    </div>
-                </b-tab-item>
-
-                <b-tab-item
-                    class="p-0"
-                >
-                    <template #header>
-                        <b-button 
-                            icon-right="plus"
-                            type="is-text"
-                            size="is-small"
-                            title="Add new tab"
-                            @click.prevent="addNewTab"
-                        ></b-button>
-                    </template>
-                </b-tab-item>
-            </b-tabs>
+            <tab-list 
+                :tabs="form.tabs"
+                :lang="lang"
+                @tabs:update-tab-count="updateTabs"
+            />
 
             <b-field>
                 <b-input 
@@ -130,68 +48,12 @@
             </div>
         </form>
 
-        <b-modal
-            v-model="isEditModalActive"
-            has-modal-card
-            trap-focus
-            aria-role="dialog"
-            aria-label="Example Modal"
-            aria-modal
-        >
-            <form action="">
-                <div class="modal-card" style="width: auto">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">Edit tab</p>
-                        <button
-                            type="button"
-                            class="delete"
-                            @click="closeTabEditModal"
-                        />
-                    </header>
-
-                    <section class="modal-card-body">
-                        <b-field label="Tab title">
-                            <b-input
-                                type="text"
-                                v-model="editTabForm.label"
-                                required
-                            ></b-input>
-                        </b-field>
-
-                        <b-field label="Tab order">
-                            <b-select 
-                                v-model="editTabForm.order"
-                                expanded
-                                :disabled="tabLength === 1"
-                            >
-                                <option
-                                    v-for="i in sortedUniq(map(this.tabs, tab => tab.order))"
-                                    :value="i"
-                                    :key="i"
-                                >
-                                    {{ i }}
-                                </option>
-                            </b-select>
-                        </b-field>
-                    </section>
-
-                    <footer class="modal-card-foot">
-                        <b-button
-                            label="Cancel"
-                            @click="closeTabEditModal" 
-                        />
-                        <b-button
-                            label="Save"
-                            type="is-primary" 
-                            @click.prevent="updateTab"
-                        />
-                    </footer>
-                </div>
-            </form>
-        </b-modal>
+        <edit-tab-modal 
+            :num-tabs="this.form.tabs.length"
+        />
 
         <add-part-modal 
-            v-if="isAddPartActive"
+            v-if="addPartModalActive"
             omit-type="tab"
             @cancel="closeAddPartModal"
             @add="addPartToTab"
@@ -200,8 +62,7 @@
 </template>
 
 <script>
-import uuid from 'uuid/v4'
-import { find, filter, isEmpty, slice, map, orderBy, sortedUniq } from 'lodash-es'
+import { find, isEmpty, slice, map, orderBy, sortedUniq } from 'lodash-es'
 import { mapGetters } from 'vuex'
 import { pascalCase } from 'change-case'
 
@@ -228,55 +89,23 @@ export default {
                 content_builder_type_id: 5,
                 title: '',
                 caption: '',
-                // tabSections: []
+                tabs: []
             },
-            tabs: [{
-                id: uuid(),
-                label: 'New tab',
-                hasContent: false,
-                type: '',
-                order: 1,
-                data: null
-            }],
             builderId: null,
-            activeTab: 0,
-            isEditModalActive: false,
-            editingTab: null,
-            editTabForm: {
-                label: '',
-                order: null
-            },
-            isAddPartActive: false,
             tabAddPart: null,
-            rerenderKey: 0,
+            addPartModalActive: false
         }
     },
 
     computed: {
         ...mapGetters({
             contentIds: 'contentIds'
-        }),
-
-        tabLength () {
-            return this.tabs.length
-        },
-
-        orderedTabs () {
-            return orderBy(this.tabs, ['order'], ['asc'])
-        }
+        })
     },
 
     watch: {
-        tabLength () {
-            this.rerenderKey += 1
-        },
-
-        orderedTabs: {
-            deep: true,
-
-            handler () {
-                this.rerenderKey += 1
-            }
+        isAddPartActive () {
+            window.events.$emit('tabs:add-part-modal')
         }
     },
 
@@ -307,48 +136,22 @@ export default {
 
         sortedUniq,
 
-        addNewTab () {
-            this.tabs.splice(this.tabs.length, 0, {
-                id: uuid(),
-                label: 'New tab',
-                order: this.tabs.length + 1
-            })
+        updateTab (payload) {
+            let tab = find(this.form.tabs, tab => tab.id === payload.tabToEdit.id)
 
-            this.activeTab = this.tabLength - 1
+            tab.label = payload.tabToEdit.label
 
-            this.rerenderKey += 1
-        },
+            tab.order = payload.tabToEdit.order
 
-        editTab (tab) {
-            this.editingTab = tab
+            if (parseInt(payload.tabToEdit.order) !== parseInt(payload.originalOrder)) {
+                let tab = find(this.form.tabs, tab => tab.order === payload.tabToEdit.order && tab.id !== payload.tabToEdit.id)
 
-            this.editTabForm.label = tab.label
+                console.log(tab)
 
-            this.editTabForm.order = tab.order
-
-            this.isEditModalActive = true
-        },
-
-        closeTabEditModal () {
-            this.editingTab = null
-            this.editTabForm.label = ''
-            this.isEditModalActive = false
-        },
-
-        updateTab () {
-            let tab = find(this.tabs, tab => tab.id === this.editingTab.id)
-
-            tab.label = this.editTabForm.label
-
-            if (parseInt(tab.order) !== parseInt(this.editTabForm.order)) {
-                let originalTab = find(this.tabs, tab => parseInt(tab.order) === parseInt(this.editTabForm.order))
-
-                originalTab.order = tab.order
-
-                tab.order = this.editTabForm.order
+                tab.order = payload.originalOrder
             }
 
-            this.closeTabEditModal()
+            window.events.$emit('tabs:update-tab-list', this.form.tabs)
         },
 
         addPartToTab (type) {
@@ -377,20 +180,6 @@ export default {
             this.tabAddPart = tab
         },
 
-        async removeTab (tab) {
-            if (isEmpty(tab.data) === false) {
-                await axios.delete(`${this.urlBase}/api/parts/${tab.type}/${tab.data.data.id}`, {
-                    data: {
-                        type: tab.type
-                    }
-                })
-            }
-
-            this.tabs = filter(this.tabs, t => t.id !== tab.id)
-
-            this.rerenderKey += 1
-        },
-
         async cancelAddingPart () {
             for await (const tab of this.tabs) {
                 if (!isEmpty(tab.data)) {
@@ -401,6 +190,10 @@ export default {
             }
 
             window.events.$emit('add-part:cancel', this.builderId)
+        },
+
+        updateTabs (tabs) {
+            this.form.tabs = tabs
         }
     },
 
@@ -436,6 +229,8 @@ export default {
 
             this.rerenderKey += 1
         })
+
+        window.events.$on('tabs:update-edited-tab', tab => this.updateTab(tab))
     }
 }
 </script>
