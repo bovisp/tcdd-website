@@ -3,43 +3,14 @@
         class="flex flex-col w-full"
         :class="[ editing ? 'items-end' : '' ]"
     >
-        <template v-if="!editing">
-            <p 
-                class="mb-4 text-center font-light w-full text-xl"
-                v-if="typeof part.data !== 'undefined' && part.data.title"
-            >
-                {{ part.data.title }}
-            </p>
-
-            <div class="w-full">
-                <tabs
-                    v-if="typeof part.data !== 'undefined'"
-                >
-                    <tab
-                        v-for="(section, index) in part.data.tabSections"
-                        :key="section.id"
-                        :name="section.title"
-                        :selected="isActive(section.id, index)"
-                    >
-                        <component 
-                            :is="`Show${ucfirst(section.type)}`"
-                            :content-builder-id="contentBuilderId"
-                            :edit-status="false"
-                            :data="section.content"
-                        ></component>
-                    </tab>
-                </tabs>
-            </div>
-
-            <p 
-                class="mb-0 mt-2 text-grey-700 w-3/4 mx-auto"
-                v-if="typeof part.data !== 'undefined' && part.data.caption"
-            >
-                <small>{{ part.data.caption }}</small>
-            </p>
+        <template v-if="!editing && !isEmpty(part)">
+            <component 
+                :is="`Final${ pascalCase(part.builderType.type) }`"
+                :part="part"
+            ></component>
         </template>
 
-        <div
+        <!-- <div
             v-else
             class="w-10/12 my-6 bg-gray-100 p-4"
         >
@@ -146,14 +117,15 @@
                     {{ trans('js_components_contentbuilder_types_tab_showtab.cancel') }}
                 </button>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
 import ucfirst from '../../../../helpers/ucfirst'
 import uuid from 'uuid/v4'
-import { map, findIndex, forEach, filter, indexOf } from 'lodash-es'
+import { map, findIndex, forEach, filter, indexOf, isEmpty } from 'lodash-es'
+import { pascalCase } from 'change-case'
 
 export default {
     props: {
@@ -202,6 +174,10 @@ export default {
 
     methods: {
         ucfirst,
+
+        pascalCase,
+
+        isEmpty,
 
         addTabSection () {
             if (!this.addingTabSection) {

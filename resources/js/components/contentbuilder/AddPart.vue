@@ -15,10 +15,6 @@
         >
             <hr class="my-8">
 
-            <!-- <h4 class="subtitle is-4">
-                 {{ trans('js_components_contentbuilder_addpart.new') }} {{ ucfirst(type) }} {{ trans('generic.part') }}
-            </h4> -->
-
             <component 
                 :is="`Add${ucfirst(type)}`"
                 :edit-status="editStatus"
@@ -103,6 +99,8 @@ export default {
 
             this.type = ''
         })
+
+        window.events.$on('part:created', () => this.cancel())
     }
 }
 </script>
