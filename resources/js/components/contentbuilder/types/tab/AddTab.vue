@@ -65,12 +65,6 @@ export default {
         })
     },
 
-    watch: {
-        isAddPartActive () {
-            window.events.$emit('tabs:add-part-modal')
-        }
-    },
-
     methods: {
         async store () {
             let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/tab`, {

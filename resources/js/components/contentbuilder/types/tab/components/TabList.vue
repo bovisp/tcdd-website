@@ -11,9 +11,7 @@
         >
             <b-tab-item 
                 :label="tab.label"
-                :id="tab.id"
                 :key="tab.id"
-                :value="tab.id"
                 v-for="tab in orderedTabs"
             >
                 <template #header>
@@ -54,7 +52,7 @@
 
                     <template v-if="tab.type">
                         <component 
-                            v-if="isEmpty(tab.data) === true"
+                            v-if="isEmpty(tab.content) === true"
                             :is="`Add${pascalCase(tab.type)}`"
                             :edit-status="false"
                             :create-button-text="trans('generic.create')"
@@ -66,7 +64,7 @@
                             v-else
                             :is="`Show${pascalCase(tab.type)}`"
                             :edit-status="partEditStatus"
-                            :data="tab.data"
+                            :data="tab.content"
                             :is-tab-section-part="true"
                         ></component>
                     </template>
@@ -112,6 +110,10 @@ export default {
             type: String,
             required: true,
         },
+        tabList: {
+            type: Array,
+            required: false
+        }
     },
 
     data () {
@@ -123,7 +125,7 @@ export default {
                 hasContent: false,
                 type: '',
                 order: 1,
-                data: null
+                content: null
             }],
             editingTab: null,
             isEditModalActive: false,
@@ -140,7 +142,9 @@ export default {
         },
 
         tabLength () {
-            return this.tabs.length
+            // if (!isEmpty(this.tabs)) {
+                return this.tabs.length
+            // }
         }
     },
 
@@ -150,6 +154,18 @@ export default {
 
             handler () {
                 this.rerenderKey += 1
+            }
+        },
+
+        tabList: {
+            deep: true,
+
+            handler () {
+                if (this.tabList.length) {
+                    this.tabs = this.tabList
+
+                    this.rerenderKey += 1
+                }
             }
         }
     },
@@ -226,17 +242,19 @@ export default {
         updateTab (payload) {
             let tab = find(this.tabs, tab => tab.id === payload.tabToEdit.id)
 
-            tab.label = payload.tabToEdit.label
+            if (tab) {
+                tab.label = payload.tabToEdit.label
 
-            tab.order = payload.tabToEdit.order
+                tab.order = payload.tabToEdit.order
 
-            if (parseInt(payload.tabToEdit.order) !== parseInt(payload.originalOrder)) {
-                let tab = find(this.tabs, tab => tab.order === payload.tabToEdit.order && tab.id !== payload.tabToEdit.id)
+                if (parseInt(payload.tabToEdit.order) !== parseInt(payload.originalOrder)) {
+                    let tab = find(this.tabs, tab => tab.order === payload.tabToEdit.order && tab.id !== payload.tabToEdit.id)
 
-                tab.order = payload.originalOrder
+                    tab.order = payload.originalOrder
+                }
+
+                window.events.$emit('tabs:update-tab-list', this.tabs)
             }
-
-            window.events.$emit('tabs:update-tab-list', this.tabs)
         },
 
     },
@@ -257,11 +275,13 @@ export default {
         window.events.$on('tab-content:created', data => {
             let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
 
-            tab.data = data
+            if (tab) {
+                tab.content = data
 
-            window.events.$emit('tabs:update-tab-list', this.tabs)
+                window.events.$emit('tabs:update-tab-list', this.tabs)
 
-            this.rerenderKey += 1
+                this.rerenderKey += 1
+            }
         })
 
         window.events.$on('tab-content:cancel-add', () => {

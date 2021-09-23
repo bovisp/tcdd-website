@@ -10,7 +10,7 @@
         </b-field>
 
         <tab-list 
-            :tabs="form.tabs"
+            :tab-list="form.tabs"
             :lang="lang"
             @tabs:update-tab-count="updateTabs"
             @set-tabs="setTabs"
@@ -27,11 +27,22 @@
 </template>
 
 <script>
+import { isEmpty } from 'lodash-es'
+
 export default {
     props: {
         lang: {
             type: String,
             required: true,
+        },
+        contentBuilderId: {
+            type: Number,
+            required: false,
+            default: null
+        },
+        data: {
+            type: Object,
+            required: false
         }
     },
 
@@ -67,6 +78,14 @@ export default {
     },
 
     mounted () {
+        if (!isEmpty(this.data)) {
+            this.form.title = this.data.title
+
+            this.form.caption = this.data.caption
+
+            this.form.tabs = this.data.tabSections
+        }
+
         window.events.$on('tabs:update-tab-list', tabs => this.form.tabs = tabs)
     }
 }

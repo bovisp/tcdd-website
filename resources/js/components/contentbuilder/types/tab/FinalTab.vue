@@ -15,7 +15,7 @@
             :destroy-on-hide="true"
         >
             <b-tab-item 
-                :label="tab.title"
+                :label="tab.label"
                 :key="tab.id"
                 v-for="tab in orderedTabs"
             >

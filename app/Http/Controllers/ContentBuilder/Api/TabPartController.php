@@ -42,7 +42,7 @@ class TabPartController extends Controller
             TabPartSection::create([
                 'title' => $section['label'],
                 'tab_part_id' => $tabPart->id,
-                'content_id' => $section['data']['data']['id'],
+                'content_id' => $section['content']['data']['id'],
                 'type' => $section['type'],
                 'order' => (int) $section['order']
             ]);
@@ -187,7 +187,7 @@ class TabPartController extends Controller
     {
         $typeClassName = 'App\\' . ucfirst(request('tab')['type']) . 'Part';
 
-        $partType = $typeClassName::find(request('tab')['data']['data']['id']);
+        $partType = $typeClassName::find(request('tab')['content']['data']['id']);
 
         $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst(request('tab')['type']);
 

@@ -82,6 +82,10 @@ export default {
     watch: {
         editing () {
             window.events.$emit('series:edit', this.contentBuilderId)
+
+            if (this.editing === false) {
+                window.events.$emit('turn-editing-off')
+            }
         },
 
         async contentIds () {
