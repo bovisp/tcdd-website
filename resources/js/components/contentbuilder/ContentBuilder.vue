@@ -23,7 +23,7 @@
 
             <draggable
                 :list="parts"
-                handle='.fa-arrows-alt'
+                handle='.mdi-arrow-all'
                 @start="drag = true"
                 @end="drag = false"
                 @change="update"

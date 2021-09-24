@@ -5,7 +5,7 @@
                 :lang="lang"
             />
 
-            <div class="level mb-0">
+            <div class="level mb-0 mt-2">
                 <div class="level-left">
                     <div class="level-item">
                         <b-button
