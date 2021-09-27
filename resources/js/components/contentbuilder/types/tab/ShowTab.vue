@@ -74,6 +74,26 @@ export default {
         }
     },
 
+    watch: {
+        errors: {
+            deep: true,
+
+            handler () {
+                forIn(this.errors, (value, key) => {
+                    if (key.includes('tabSections')) {
+                        this.$buefy.dialog.alert({
+                            title: 'Error',
+                            message: value[0],
+                            type: 'is-danger',
+                            ariaRole: 'alertdialog',
+                            ariaModal: true
+                        })
+                    }
+                })
+            }
+        }
+    },
+
     methods: {
         isEmpty,
 

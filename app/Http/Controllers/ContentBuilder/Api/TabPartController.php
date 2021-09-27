@@ -18,7 +18,15 @@ class TabPartController extends Controller
         request()->validate([
             'title' => 'nullable|min:3',
             'caption' => 'nullable|min:3',
-            'content_builder_type_id' => 'required|exists:content_builder_types,id'
+            'content_builder_type_id' => 'required|exists:content_builder_types,id',
+            'tabSections' => 'required|array|min:1',
+            'tabSections.*' => [
+                function ($attribute, $value, $fail) {
+                    if (empty($value['content'])) {
+                        $fail('You must add some content to the tab: ' . $value['label'] . '');
+                    }
+                },
+            ]
         ], [
             'content_builder_type_id.required' => __('app_http_controllers_contentbuilder_api_contentpart.content_builder_type_id_required'),
             'content_builder_type_id.exists' => __('app_http_controllers_contentbuilder_api_contentpart.content_builder_type_id_exists'),
@@ -56,7 +64,14 @@ class TabPartController extends Controller
         request()->validate([
             'title' => 'nullable|min:3',
             'caption' => 'nullable|min:3',
-            'tabs' => 'required|array|min:1'
+            'tabs' =>'required|array|min:1',
+            'tabs.*' => [
+                function ($attribute, $value, $fail) {
+                    if (empty($value['content_id'])) {
+                        $fail('You must add some content to the tab: ' . $value['label'] . '');
+                    }
+                },
+            ]
         ], [
             'title.min' =>  __('app_http_controllers_contentbuilder_api_mediapart.title_min'),
             'caption.min' => __('app_http_controllers_contentbuilder_api_mediapart.caption_min'),

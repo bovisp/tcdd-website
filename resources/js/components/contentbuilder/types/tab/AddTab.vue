@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { isEmpty } from 'lodash-es'
+import { isEmpty, forIn } from 'lodash-es'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -63,6 +63,26 @@ export default {
         ...mapGetters({
             contentIds: 'contentIds'
         })
+    },
+
+    watch: {
+        errors: {
+            deep: true,
+
+            handler () {
+                forIn(this.errors, (value, key) => {
+                    if (key.includes('tabSections')) {
+                        this.$buefy.dialog.alert({
+                            title: 'Error',
+                            message: value[0],
+                            type: 'is-danger',
+                            ariaRole: 'alertdialog',
+                            ariaModal: true
+                        })
+                    }
+                })
+            }
+        }
     },
 
     methods: {
