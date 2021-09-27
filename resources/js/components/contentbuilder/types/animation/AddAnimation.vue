@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w-full">
         <div
             class="mb-4"
         >
@@ -156,7 +156,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            contentIds: 'questions/contentIds'
+            contentIds: 'contentIds'
         })
     },
 
@@ -192,7 +192,7 @@ export default {
             this.form.caption = ''
 
             if (this.isTabSectionPart) {
-                this.$emit('tab-content:cancel-add')
+                window.events.$emit('tab-content:cancel-add')
 
                 return
             }

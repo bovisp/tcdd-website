@@ -369,4 +369,24 @@ a {
   }
 }
 
+.borderless-input input[type="text"] {
+  box-shadow: none;
+  border: none;
+  font-size: 1rem;
+}
+
+.borderless-input.borderless-input-lg input[type="text"] {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.borderless-input.borderless-input-md input[type="text"] {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+section.tab-content {
+  @apply border-b border-l border-r rounded-b;
+}
+
 @tailwind utilities;

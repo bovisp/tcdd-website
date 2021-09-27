@@ -125,13 +125,18 @@ Route::get('/api/content-builder/{contentBuilder}', 'ContentBuilder\Api\ContentB
 Route::patch('api/content-builder/{contentBuilder}/change-order', 'ContentBuilder\Api\ContentBuilderController@reorder');
 
 Route::get('/api/parts/types', 'ContentBuilderTypes\Api\ContentBuilderTypesController@index');
-Route::patch('/api/parts/{part}/content', 'ContentBuilder\Api\ContentPartController@update');
+Route::patch('/api/parts/{contentPart}/content', 'ContentBuilder\Api\ContentPartController@update');
 Route::patch('/api/parts/{part}/animation', 'ContentBuilder\Api\AnimationPartController@update');
 Route::patch('/api/parts/{part}/media', 'ContentBuilder\Api\MediaPartController@update');
 Route::patch('/api/parts/{part}/tab', 'ContentBuilder\Api\TabPartController@update');
-Route::delete('/api/parts/tab-section-parts', 'ContentBuilder\Api\PartsController@destroyTabSectionPart');
+Route::delete('/api/parts/tabs/cancel', 'ContentBuilder\Api\TabPartController@destroyData');
+Route::delete('/api/parts/content/{partType}', 'ContentBuilder\Api\ContentPartController@destroy');
 Route::delete('/api/parts/{part}', 'ContentBuilder\Api\PartsController@destroy');
 Route::get('/api/parts/{part}', 'ContentBuilder\Api\PartsController@show');
 
 Route::get('/issues', 'Issues\IssuesController@index');
 Route::resource('/api/issues', 'Issues\Api\IssuesController');
+
+Route::get('/blog', 'Articles\ArticlesController@index');
+Route::post('/api/articles/id', 'Articles\Api\ArticlesContentBuilderController@store');
+Route::resource('/api/articles', 'Articles\Api\ArticlesController');

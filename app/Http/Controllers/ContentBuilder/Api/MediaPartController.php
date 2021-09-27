@@ -7,6 +7,7 @@ use App\MediaPart;
 use App\ContentBuilder;
 use App\TabPartSection;
 use App\Http\Controllers\Controller;
+use App\Classes\ContentTypes\DestroyMedia;
 use App\Http\Resources\ContentBuilder\PartResource;
 
 class MediaPartController extends Controller
@@ -97,5 +98,10 @@ class MediaPartController extends Controller
         ]);
 
         return new PartResource($part);
+    }
+
+    public function destroy(MediaPart $partType)
+    {
+        (new DestroyMedia($partType))->delete();
     }
 }

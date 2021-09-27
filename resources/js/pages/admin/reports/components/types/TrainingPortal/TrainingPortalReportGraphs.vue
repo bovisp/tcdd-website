@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import Plotly from 'plotly.js-dist'
-import { map, trimEnd } from 'lodash-es'
+// import Plotly from 'plotly.js-dist'
+// import { map, trimEnd } from 'lodash-es'
 
 export default {
     props: {

@@ -1,40 +1,48 @@
 <template>
-    <div class="p-4 border rounded">
-        <div class="flex items-center">
-            <strong>
-                {{ lang === 'en' ? 'English' : 'French' }}
-            </strong>
+    <div class="card">
+        <div class="card-content">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                         <strong>
+                            {{ lang === 'en' ? trans('generic.english') : trans('generic.french') }}
+                        </strong>
+                    </div>
+                </div>
 
-            <button 
-                class="btn btn-sm text-sm ml-auto"
-                :class="editingClasses"
-                @click.prevent="editing = !editing"
+                <div class="level-right">
+                    <b-button
+                        :type="editing ? 'is-danger' : 'is-info'"
+                        @click.prevent="editing = !editing"
+                        size="is-small"
+                    >
+                        {{ trans('js_components_contentbuilder_contentbuilder.turnediting') }} {{ editing ? trans('js_components_contentbuilder_contentbuilder.off') : trans('js_components_contentbuilder_contentbuilder.on') }}
+                    </b-button>
+                </div>
+            </div>
+
+            <draggable
+                :list="parts"
+                handle='.mdi-arrow-all'
+                @start="drag = true"
+                @end="drag = false"
+                @change="update"
             >
-                {{ trans('js_components_contentbuilder_contentbuilder.turnediting') }} {{ editing ? trans('js_components_contentbuilder_contentbuilder.off') : trans('js_components_contentbuilder_contentbuilder.on') }}
-            </button>
-        </div>
+                <part-show 
+                    v-for="part in parts"
+                    :key="part.id"
+                    :data="part"
+                    :editing-on="editing"
+                    :lang="lang"
+                />
+            </draggable>
 
-        <draggable
-            :list="parts"
-            handle='.fa-arrows-alt'
-            @start="drag = true"
-            @end="drag = false"
-            @change="update"
-        >
-            <part-show 
-                v-for="part in parts"
-                :key="part.id"
-                :data="part"
-                :editing-on="editing"
+            <add-part
+                v-if="editing"
+                :edit-status="editing"
                 :lang="lang"
             />
-        </draggable>
-
-        <add-part
-            v-if="editing"
-            :edit-status="editing"
-            :lang="lang"
-        />
+        </div>
     </div>
 </template>
 
@@ -59,7 +67,6 @@ export default {
         return {
             editing: false,
             parts: [],
-            form: {},
             addPart: false,
             editing: false,
             contentBuilderId: null
@@ -68,26 +75,27 @@ export default {
 
     computed: {
         ...mapGetters({
-            questionId: 'questions/tempId',
-            contentIds: 'questions/contentIds'
-        }),
-
-        editingClasses () {
-            return this.editing ? 'btn-red' : 'btn-blue'
-        }
+            contentIds: 'contentIds'
+        })
     },
 
     watch: {
         editing () {
             window.events.$emit('series:edit', this.contentBuilderId)
+
+            if (this.editing === false) {
+                window.events.$emit('turn-editing-off')
+            }
         },
 
         async contentIds () {
-            let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}`)
+            if (this.contentIds !== null) {
+                let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}`)
 
-            this.parts = data.data.parts
+                this.parts = data.data.parts
 
-            this.contentBuilderId = data.data.id
+                this.contentBuilderId = data.data.id
+            }
         }
     },
 

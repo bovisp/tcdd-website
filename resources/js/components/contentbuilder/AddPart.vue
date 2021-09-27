@@ -1,90 +1,38 @@
 <template>
     <div>
-        <button 
-            class="btn btn-blue btn-sm text-sm w-full mt-6"
+        <b-button
+            type="is-info"
             v-if="showAddButton"
+            size="is-small"
+            expanded
             @click.prevent="addPartModal"
         >
             {{ trans('generic.addpart') }}
-        </button>
-
+        </b-button>
+        
         <div 
             v-if="type && !addingPart"
         >
             <hr class="my-8">
 
-            <h4 class="w-full font-light text-center mb-6 text-2xl">
-                 {{ trans('js_components_contentbuilder_addpart.new') }} {{ ucfirst(type) }} {{ trans('generic.part') }}
-            </h4>
-
             <component 
                 :is="`Add${ucfirst(type)}`"
                 :edit-status="editStatus"
-                create-button-text="Create"
+                :create-button-text="trans('generic.create')"
                 :lang="lang"
             ></component>
         </div>
 
-        <modal 
-            v-if="addingPart" 
-            @submit="add"
-            @close="cancel"
-            ok-button-text="Submit"
-            cancel-button-text="Cancel"
-            okButtonText="trans('generic.create')"
-        >
-            <h3 slot="header" class="mb-4">
-                {{ trans('generic.addpart') }}
-            </h3>
-
-            <div slot="body">
-                <div class="flex mb-4">
-                    <div class="w-4/12 border border-t-0 border-b-0 border-l-0">
-                        <form>
-                            <div
-                                class="mb-2"
-                                v-for="t in types"
-                                :key="t.id"
-                            >
-                                <label
-                                    :for="t.type"
-                                    @dblclick="add"
-                                >
-                                    <input 
-                                        type="radio" 
-                                        class="form-radio" 
-                                        :id="t.type" 
-                                        :value="t.type"
-                                        v-model="type"
-                                        @dblclick="add"
-                                    >
-
-                                    <span class="ml-2">{{ ucfirst(t.type) }}</span>
-                                </label>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="w-8/12 px-4">
-                        <p v-if="!description">
-                            {{ trans('js_components_contentbuilder_addpart.pleaseselecttype') }}
-                        </p>
-
-                        <div 
-                            v-else
-                            v-html="description"
-                            class="content overflow-auto"
-                        ></div>
-                    </div>
-                </div>
-            </div>
-        </modal>
+        <add-part-modal 
+            v-if="addingPart"
+            @cancel="cancel"
+            @add="add"
+        />
     </div>
 </template>
 
 <script>
 import ucfirst from '../../helpers/ucfirst'
-import { find } from 'lodash-es'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -111,7 +59,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            contentIds: 'questions/contentIds'
+            contentIds: 'contentIds'
         }),
 
         showAddButton () {
@@ -119,24 +67,12 @@ export default {
         }
     },
 
-    watch: {
-        type () {
-            if (!this.type && this.addingPart) {
-                return
-            }
-            
-            let type = find(this.types, t => this.type === t.type)
-
-            if (type) {
-                this.description = type.description
-            }
-        }
-    },
-
     methods: {
         ucfirst,
 
-        add () {
+        add (type) {
+            this.type = type
+
             this.addingPart = false
 
             this.showButton = false
@@ -151,8 +87,6 @@ export default {
         cancel () {
             this.type = ''
 
-            this.description = ''
-
             this.addingPart = false
 
             this.showButton = true
@@ -160,17 +94,13 @@ export default {
     },
 
     async mounted () {
-        this.type = ''
-        
-        let { data: types } = await axios.get(`${this.urlBase}/api/parts/types`)
-
-        this.types = types.data
-
         window.events.$on('add-part:cancel', () => {
             this.showButton = true
 
             this.type = ''
         })
+
+        window.events.$on('part:created', () => this.cancel())
     }
 }
 </script>

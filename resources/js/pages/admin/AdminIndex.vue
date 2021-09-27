@@ -108,5 +108,17 @@
                 </a>
             </li>
         </ul>
+
+        <h2 class="font-normal text-3xl mb-2">
+            Blog
+        </h2>
+
+        <ul class="ml-2 mb-6">
+             <li>
+                <a :href="`${urlBase}/blog`">
+                    Blog
+                </a>
+            </li>
+        </ul>
     </div>
 </template>

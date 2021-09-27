@@ -8,6 +8,7 @@ use App\ContentBuilder;
 use App\TabPartSection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Classes\ContentTypes\DestroyContent;
 use App\Http\Resources\ContentBuilder\PartResource;
 
 class ContentPartController extends Controller
@@ -42,13 +43,13 @@ class ContentPartController extends Controller
                 'content' => request('content')
             ]);
 
-            if (request()->has('tab_part_section_title')) {
-                $tabSection = TabPartSection::create([
-                    'title' => request('tab_part_section_title'),
-                    'tab_part_id' => request('part_id'),
-                    'content_id' => $content->id,
-                    'type' => 'content'
-                ]);
+            // if (request()->has('tab_part_section_title')) {
+            //     $tabSection = TabPartSection::create([
+            //         'title' => request('tab_part_section_title'),
+            //         'tab_part_id' => request('part_id'),
+            //         'content_id' => $content->id,
+            //         'type' => 'content'
+            //     ]);
     
                 return [
                     'data' => [
@@ -56,19 +57,19 @@ class ContentPartController extends Controller
                         'id' => $content->id,
                         'type' => 'content'
                     ],
-                    'id' => $tabSection->id,
-                    'title' => $tabSection->title
+                    // 'id' => $tabSection->id,
+                    // 'title' => $tabSection->title
                 ];
-            }
+            // }
 
-            return [
-                'content' => $content->content,
-                'id' => $content->id
-            ];
+            // return [
+            //     'content' => $content->content,
+            //     'id' => $content->id
+            // ];
         }
     }
 
-    public function update(Part $part)
+    public function update(ContentPart $contentPart)
     {
         request()->validate([
             'content' => 'required'
@@ -76,12 +77,15 @@ class ContentPartController extends Controller
             'content.required' => __('app_http_controllers_contentbuilder_api_contentpart.content_required')
         ]);
 
-        $contentPart = ContentPart::wherePartId($part->id)->first();
-
         $contentPart->update([
             'content' => request('content')
         ]);
 
-        return new PartResource($part);
+        return $contentPart;
+    }
+
+    public function destroy(ContentPart $partType)
+    {
+        (new DestroyContent($partType))->delete();
     }
 }

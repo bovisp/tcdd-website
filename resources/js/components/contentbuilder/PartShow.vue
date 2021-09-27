@@ -1,5 +1,8 @@
 <template>
-    <div class="flex my-4">
+    <div 
+        class="flex my-4"
+        :class="[ editing ? 'justify-end' : '' ]"
+    >
         <div 
             :class="[ editingTurnedOn && !editing ? 'w-2/12 flex items-start' : 'hidden' ]"
         >
@@ -27,7 +30,7 @@
         </div>
         
         <div
-            :class="[ editingTurnedOn && !editing ? 'w-10/12 pl-4' : 'w-full' ]"
+            :class="[ !editingTurnedOn ? 'w-full' : 'w-10/12' ]"
             v-if="typeof part !== 'undefined' && typeof part.builderType !== 'undefined'" 
         >
             <component 
@@ -105,7 +108,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            contentIds: 'questions/contentIds'
+            contentIds: 'contentIds'
         }),
 
         formatType () {
@@ -148,6 +151,10 @@ export default {
                 this.editingTurnedOn = !this.editingTurnedOn
             }
         })
+
+        window.events.$on('turn-editing-off', () => this.editing = false)
+
+        window.events.$on('part:edit-cancel', () => this.editing = false)
 
         window.events.$on('part:edit-cancel', partId => {
             if (partId === this.part.id) {

@@ -15,7 +15,7 @@
 
             <div class="flex">
                 <button 
-                    class="btn btn-sm text-sm"
+                    class="button is-small is-info"
                     :class="createButtonClasses"
                     @click.prevent="store"
                 >
@@ -23,7 +23,7 @@
                 </button>
                 
                 <button 
-                    class="btn btn-text ml-auto btn-sm text-sm"
+                    class="button is-text is-small ml-auto"
                     @click.prevent="cancel"
                 >
                     {{ trans('generic.cancel') }}
@@ -96,7 +96,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            contentIds: 'questions/contentIds'
+            contentIds: 'contentIds'
         })
     },
 
@@ -112,7 +112,7 @@ export default {
 
                 this.cancel()
             } else {
-                this.$emit('tab-part-section-content:created', data)
+                window.events.$emit('tab-content:created', data)
             }
         },
 
@@ -120,7 +120,7 @@ export default {
             this.form.content = ''
 
             if (this.isTabSectionPart) {
-                this.$emit('tab-content:cancel-add')
+                window.events.$emit('tab-content:cancel-add')
 
                 return
             }

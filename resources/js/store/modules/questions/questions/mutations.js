@@ -8,8 +8,6 @@ export const SET_QUESTION = (state, question) => state.question = question
 
 export const SET_TEMPORARY_ID = (state, questionId) => state.tempId = questionId
 
-export const SET_CONTENT_ID = (state, contentBuilderId) => state.contentIds = contentBuilderId
-
 export const SET_QUESTION_TYPE_DATA = (state, data) => state.questionTypeData = data
 
 export const SET_TEST_QUESTION_DATA = (state) => {

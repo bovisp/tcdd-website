@@ -18,7 +18,15 @@ class TabPartController extends Controller
         request()->validate([
             'title' => 'nullable|min:3',
             'caption' => 'nullable|min:3',
-            'content_builder_type_id' => 'required|exists:content_builder_types,id'
+            'content_builder_type_id' => 'required|exists:content_builder_types,id',
+            'tabSections' => 'required|array|min:1',
+            'tabSections.*' => [
+                function ($attribute, $value, $fail) {
+                    if (empty($value['content'])) {
+                        $fail('You must add some content to the tab: ' . $value['label'] . '');
+                    }
+                },
+            ]
         ], [
             'content_builder_type_id.required' => __('app_http_controllers_contentbuilder_api_contentpart.content_builder_type_id_required'),
             'content_builder_type_id.exists' => __('app_http_controllers_contentbuilder_api_contentpart.content_builder_type_id_exists'),
@@ -40,10 +48,11 @@ class TabPartController extends Controller
 
         foreach (request('tabSections') as $section) {
             TabPartSection::create([
-                'title' => $section['title'],
+                'title' => $section['label'],
                 'tab_part_id' => $tabPart->id,
-                'content_id' => $section['data']['id'],
-                'type' => $section['type']
+                'content_id' => $section['content']['data']['id'],
+                'type' => $section['type'],
+                'order' => (int) $section['order']
             ]);
         }
 
@@ -52,72 +61,23 @@ class TabPartController extends Controller
 
     public function update(Part $part)
     {
-        $sectionDataErrors = [];
-
-        foreach (request('tabSections') as $key => $sectionData) {
-            if ($sectionData['data']['type'] === 'content' && is_int($sectionData['id'])) {
-                $validator = Validator::make($sectionData['data'], [
-                    'content' => 'required'
-                ]);
-
-                if ($validator->fails()) {
-                    $sectionDataErrors['tabSections.' . $key . '.data'] = [
-                        'id' => $sectionData['data']['id'],
-                        'error' => $validator->messages()->toArray()
-                    ];
-                }
-            }
-
-            if ($sectionData['data']['type'] === 'animation' && is_int($sectionData['id'])) {
-                $validator = Validator::make($sectionData['data'], [
-                    'title' => 'nullable|min:3',
-                    'caption' => 'nullable|min:3'
-                ]);
-
-                if ($validator->fails()) {
-                    $sectionDataErrors['tabSections.' . $key . '.data'] = [
-                        'id' => $sectionData['data']['id'],
-                        'error' => $validator->messages()->toArray()
-                    ];
-                }
-            }
-
-            if ($sectionData['data']['type'] === 'media' && is_int($sectionData['id'])) {
-                $validator = Validator::make($sectionData['data'], [
-                    'title' => 'nullable|min:3',
-                    'caption' => 'nullable|min:3'
-                ]);
-
-                if ($validator->fails()) {
-                    $sectionDataErrors['tabSections.' . $key . '.data'] = [
-                        'id' => $sectionData['data']['id'],
-                        'error' => $validator->messages()->toArray()
-                    ];
-                }
-            }
-        }
-
-        if (count($sectionDataErrors)) {
-            return response()->json([
-                'errors' => $sectionDataErrors
-            ], 422);
-        }
-
         request()->validate([
             'title' => 'nullable|min:3',
             'caption' => 'nullable|min:3',
-            'tabSections' => 'required|array|min:1',
-            'tabSections.*.id' => 'required|exists:tab_part_sections,id',
-            'tabSections.*.title' => 'required'
+            'tabs' =>'required|array|min:1',
+            'tabs.*' => [
+                function ($attribute, $value, $fail) {
+                    if (empty($value['content_id'])) {
+                        $fail('You must add some content to the tab: ' . $value['label'] . '');
+                    }
+                },
+            ]
         ], [
             'title.min' =>  __('app_http_controllers_contentbuilder_api_mediapart.title_min'),
             'caption.min' => __('app_http_controllers_contentbuilder_api_mediapart.caption_min'),
-            'tabSections.required' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_required'),
-            'tabSections.array' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_array'),
-            'tabSections.min' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_min'),
-            'tabSections.*.id.required' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_id_required'),
-            'tabSections.*.id.exists' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_id_exists'),
-            'tabSections.*.title.required' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_title_required')
+            'tabs.required' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_required'),
+            'tabs.array' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_array'),
+            'tabs.min' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_min'),
         ]);
 
         $tabPart = TabPart::wherePartId($part->id)->first();
@@ -131,38 +91,42 @@ class TabPartController extends Controller
 
         $tabSectionIdsFromRequest = array_map(function ($section) {
             return $section['id'];
-        }, request('tabSections'));
+        }, request('tabs'));
 
         $tabSectionsToBeDeleted = array_diff($tabSectionIds, $tabSectionIdsFromRequest);
 
         $tabSectionsToBeUpdated = array_intersect($tabSectionIds, $tabSectionIdsFromRequest);
 
+        $tabSectionsToBeAdded = array_filter(request('tabs'), function ($tab) {
+            return !is_numeric($tab['id']);
+        });
+
         foreach ($tabSectionsToBeUpdated as $sectionId) {
             $section = TabPartSection::find($sectionId);
 
             $section->update([
-                'title' => Arr::first(request('tabSections'), function ($value, $key) use ($sectionId) {
+                'title' => Arr::first(request('tabs'), function ($value, $key) use ($sectionId) {
                     return $value['id'] === $sectionId;
-                })['title']
+                })['label']
             ]);
 
             $contentClass = 'App\\' . ucfirst($section->type) . 'Part';
 
             $contentModel = $contentClass::find($section->content_id);
 
-            $arrayItem = Arr::first(request('tabSections'), function ($value, $key) use ($sectionId) {
+            $arrayItem = Arr::first(request('tabs'), function ($value, $key) use ($sectionId) {
                 return $value['id'] === $sectionId;
             });
 
-            if ($arrayItem['data']['type'] === 'animation') {
-                $arrayItem['data']['images'] = serialize($arrayItem['data']['images']);
+            if ($arrayItem['type'] === 'animation') {
+                $arrayItem['content']['data']['images'] = serialize($arrayItem['content']['data']['images']);
             }
 
-            if ($arrayItem['data']['type'] === 'media') {
-                $arrayItem['data']['filename'] = serialize($arrayItem['data']['filename']);
+            if ($arrayItem['type'] === 'media') {
+                $arrayItem['content']['data']['filename'] = serialize($arrayItem['content']['data']['filename']);
             }
 
-            $contentModel->update($arrayItem['data']);
+            $contentModel->update($arrayItem['content']['data']);
         }
 
         foreach ($tabSectionsToBeDeleted as $sectionId) {
@@ -179,6 +143,29 @@ class TabPartController extends Controller
             $section->delete();
         }
 
+        foreach ($tabSectionsToBeAdded as $tab) {
+            TabPartSection::create([
+                'title' => $tab['label'],
+                'tab_part_id' => $tabPart->id,
+                'content_id' => $tab['content']['data']['id'],
+                'type' => $tab['type'],
+                'order' => (int) $tab['order']
+            ]);
+        }
+
         return new PartResource($part);
+    }
+
+    public function destroyData()
+    {
+        $typeClassName = 'App\\' . ucfirst(request('tab')['type']) . 'Part';
+
+        $partType = $typeClassName::find(request('tab')['content']['data']['id']);
+
+        $destroyClassName = 'App\Classes\ContentTypes\Destroy' . ucfirst(request('tab')['type']);
+
+        (new $destroyClassName($partType))->delete();
+
+        return;
     }
 }

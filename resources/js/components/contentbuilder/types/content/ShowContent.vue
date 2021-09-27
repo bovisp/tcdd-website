@@ -1,12 +1,17 @@
 <template>
     <div 
-        class="flex"
+        class="flex w-full mt-4"
         :class="[ editing ? 'justify-end' : '' ]"
     >
-        <div 
+        <!-- <div 
             v-if="editing"
             class="my-6"
             :class="editStatus ? 'w-full' : 'w-10/12 bg-gray-100 p-4 rounded'"
+        > -->
+
+        <div 
+            v-if="editing"
+            :class="[ isTabSectionPart ? '' : '' ]"
         >
             <form>
                 <vue-editor 
@@ -19,19 +24,21 @@
                     class="text-xs text-red-500 mt-2"
                 ></p>
 
-                <div 
+                <!-- <div 
                     class="flex my-2"
                     v-if="!editStatus && editing"
-                >
+                > -->
+
+                <div class="flex my-2">
                     <button 
-                        class="btn btn-blue btn-sm text-sm"
+                        class="button is-small is-info"
                         @click.prevent="update"
                     >
                         {{ trans('generic.update') }}
                     </button>
 
                     <button 
-                        class="btn btn-text btn-sm text-sm ml-auto"
+                        class="button is-small is-text has-text-dark ml-auto"
                         @click.prevent="cancel"
                     >
                         {{ trans('generic.cancel') }}
@@ -44,7 +51,6 @@
             v-if="!editStatus && !editing"
         >
             <div
-                v-if="typeof part !== 'undefined' && typeof part.data !== 'undefined'"
                 class="content"
                 v-html="content"
             ></div>
@@ -53,7 +59,7 @@
 </template>
 
 <script>
-import { merge } from 'lodash-es'
+import { merge, isEmpty } from 'lodash-es'
 import { VueEditor, Quill } from 'vue2-editor'
 
 export default {
@@ -80,7 +86,12 @@ export default {
             type: Number,
             required: false,
             default: null
-        }
+        },
+        isTabSectionPart: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
     },
 
     data () {
@@ -96,11 +107,15 @@ export default {
 
     computed: {
         content () {
-            return this.part.data.content
-                .replace(/<p><br><\/p>/g, '')
-                .replace(/<p class="ql-align-justify"><br><\/p>/g, '')
-                .replace(/<p class="ql-align-right"><br><\/p>/g, '')
-                .replace(/<p class="ql-align-left"><br><\/p>/g, '')
+            if (!isEmpty(this.part.data)) {
+                return this.part.data.content
+                    .replace(/<p><br><\/p>/g, '')
+                    .replace(/<p class="ql-align-justify"><br><\/p>/g, '')
+                    .replace(/<p class="ql-align-right"><br><\/p>/g, '')
+                    .replace(/<p class="ql-align-left"><br><\/p>/g, '')
+            }
+
+            return ''
         },
     },
 
@@ -124,9 +139,9 @@ export default {
 
     methods: {
         async update () {
-            let { data } = await axios.patch(`${this.urlBase}/api/parts/${this.part.id}/content`, this.form)
+            let { data } = await axios.patch(`${this.urlBase}/api/parts/${this.part.data.id}/content`, this.form)
 
-            this.part = data
+            this.part.data = data
 
             this.cancel()
         },
@@ -135,13 +150,15 @@ export default {
             this.editing = false
             
             this.form.content = this.part.data.content
-
-            window.events.$emit('part:edit-cancel', this.part.id)
         },
     },
 
     mounted () {
-        this.part = this.data
+        // if (this.data.hasOwnProperty('content')) {
+            // this.part.data = this.data
+        // } else {
+            this.part = this.data
+        // }
 
         window.events.$on('part:edit', partId => {
             if (this.part.id === partId) {
@@ -161,6 +178,14 @@ export default {
             if (error.error.id === this.id) {
                 this.errors = error.error.error
             }
+        })
+
+        window.events.$on('part:force-edit', () => {
+            this.editing = true
+
+            this.part = this.data
+
+            this.form.content = this.part.data.content
         })
     }
 }

@@ -27,7 +27,7 @@ export const createId = async ({ commit }) => {
 
     await commit('SET_TEMPORARY_ID', data.questionId)
 
-    await commit('SET_CONTENT_ID', data.contentBuilderId)
+    await commit('SET_CONTENT_ID', data.contentBuilderId, { root: true })
 }
 
 export const removeTempIds = async ({ commit }, questionId) => {
