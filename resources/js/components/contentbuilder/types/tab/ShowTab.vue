@@ -42,9 +42,7 @@
 </template>
 
 <script>
-import ucfirst from '../../../../helpers/ucfirst'
-import uuid from 'uuid/v4'
-import { map, findIndex, forEach, filter, indexOf, isEmpty, isNumber } from 'lodash-es'
+import { filter, isEmpty, isNumber } from 'lodash-es'
 import { pascalCase } from 'change-case'
 
 export default {
@@ -71,26 +69,6 @@ export default {
             builderId: null,
             part: null,
             editing: false
-        }
-    },
-
-    watch: {
-        errors: {
-            deep: true,
-
-            handler () {
-                forIn(this.errors, (value, key) => {
-                    if (key.includes('tabSections')) {
-                        this.$buefy.dialog.alert({
-                            title: 'Error',
-                            message: value[0],
-                            type: 'is-danger',
-                            ariaRole: 'alertdialog',
-                            ariaModal: true
-                        })
-                    }
-                })
-            }
         }
     },
 

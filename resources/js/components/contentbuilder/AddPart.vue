@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="add-part-section">
         <b-button
             type="is-info"
             v-if="showAddButton"
@@ -34,6 +34,7 @@
 <script>
 import ucfirst from '../../helpers/ucfirst'
 import { mapGetters } from 'vuex'
+import VueScrollTo from 'vue-scrollto'
 
 export default {
     props: {
@@ -76,6 +77,8 @@ export default {
             this.addingPart = false
 
             this.showButton = false
+
+            VueScrollTo.scrollTo('#add-part-section')
         },
 
         addPartModal () {

@@ -1,38 +1,22 @@
 <template>
-    <div 
-        class="flex w-full mt-4"
-        :class="[ editing ? 'justify-end' : '' ]"
-    >
-        <!-- <div 
-            v-if="editing"
-            class="my-6"
-            :class="editStatus ? 'w-full' : 'w-10/12 bg-gray-100 p-4 rounded'"
-        > -->
+    <div v-if="!isEmpty(part)">
+        <template v-if="!editing && !isEmpty(part)">
+            <component 
+                :is="`Final${ pascalCase(part.builderType.type) }`"
+                :part="part"
+            ></component>
+        </template>
 
-        <div 
-            v-if="editing"
-            :class="[ isTabSectionPart ? '' : '' ]"
-        >
+        <div v-if="editing">
             <form>
-                <vue-editor 
-                    v-model="form.content"
-                ></vue-editor>
-
-                <p
-                    v-if="errors.content"
-                    v-text="errors.content[0]"
-                    class="text-xs text-red-500 mt-2"
-                ></p>
-
-                <!-- <div 
-                    class="flex my-2"
-                    v-if="!editStatus && editing"
-                > -->
+                <edit-content 
+                    :data="data"
+                />
 
                 <div class="flex my-2">
                     <button 
                         class="button is-small is-info"
-                        @click.prevent="update"
+                        @click.prevent="update('content')"
                     >
                         {{ trans('generic.update') }}
                     </button>
@@ -46,147 +30,45 @@
                 </div>
             </form>
         </div>
-        
-        <template
-            v-if="!editStatus && !editing"
-        >
-            <div
-                class="content"
-                v-html="content"
-            ></div>
-        </template>
     </div>
 </template>
 
 <script>
-import { merge, isEmpty } from 'lodash-es'
-import { VueEditor, Quill } from 'vue2-editor'
+import { pascalCase } from 'change-case'
+import { isEmpty } from 'lodash-es'
+import updateContentBuilder from '../../../../mixins/updateContentBuilder'
 
 export default {
-    components: {
-        VueEditor
-    },
-
-    props: {
-        data: {
-            type: Object,
-            required: true
-        },
-        editStatus: {
-            type: Boolean,
-            required: false,
-            default: false
-        },
-        id: {
-            type: Number,
-            required: false,
-            default: null
-        },
-        contentBuilderId: {
-            type: Number,
-            required: false,
-            default: null
-        },
-        isTabSectionPart: {
-            type: Boolean,
-            required: false,
-            default: false
-        },
-    },
+    mixins: [
+        updateContentBuilder
+    ],
 
     data () {
         return {
-            part: {},
-            editingTurnedOn: false,
-            editing: false,
             form: {
                 content: ''
             }
         }
     },
 
-    computed: {
-        content () {
-            if (!isEmpty(this.part.data)) {
-                return this.part.data.content
-                    .replace(/<p><br><\/p>/g, '')
-                    .replace(/<p class="ql-align-justify"><br><\/p>/g, '')
-                    .replace(/<p class="ql-align-right"><br><\/p>/g, '')
-                    .replace(/<p class="ql-align-left"><br><\/p>/g, '')
-            }
-
-            return ''
-        },
-    },
-
-    watch: {
-        editingTurnedOn () {
-            if (this.editingTurnedOn === false) {
-                this.editing = false
-            }
-        },
-
-        form: {
-            deep: true,
-
-            handler () {
-                this.$emit('edited', merge(this.form, {
-                    id: this.id
-                }))
-            }
-        }
-    },
-
     methods: {
-        async update () {
-            let { data } = await axios.patch(`${this.urlBase}/api/parts/${this.part.data.id}/content`, this.form)
+        pascalCase,
 
-            this.part.data = data
-
-            this.cancel()
-        },
+        isEmpty,
 
         cancel () {
             this.editing = false
             
-            this.form.content = this.part.data.content
+            window.events.$emit('part:edit-cancel')
         },
+
+        setContent () {
+            this.form.content = this.part.data.content
+        }
     },
 
     mounted () {
-        // if (this.data.hasOwnProperty('content')) {
-            // this.part.data = this.data
-        // } else {
-            this.part = this.data
-        // }
-
-        window.events.$on('part:edit', partId => {
-            if (this.part.id === partId) {
-                this.editing = true
-                this.form.content = this.part.data.content
-            }
-        })
-
-        if (this.editStatus) {
-            this.editing = true
-            this.form.content = this.part.data.content
-        }
-
-        window.events.$on('series:edit', () => this.editingTurnedOn = !this.editingTurnedOn)
-
-        window.events.$on('tab-content:errors-data', error => {
-            if (error.error.id === this.id) {
-                this.errors = error.error.error
-            }
-        })
-
-        window.events.$on('part:force-edit', () => {
-            this.editing = true
-
-            this.part = this.data
-
-            this.form.content = this.part.data.content
-        })
+        window.events.$on('content:update-form', content => this.form.content = content)
     }
 }
 </script>

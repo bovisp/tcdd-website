@@ -20,6 +20,7 @@ class BuildContentData
 
         return [
             'content' => $data->content,
+            'id' => $data->id,
             'type' => 'content'
         ];
     }
