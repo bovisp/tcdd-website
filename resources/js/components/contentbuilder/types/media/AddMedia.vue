@@ -59,13 +59,19 @@ export default {
 
     methods: {
         async cancel () {
+            await this.removeFile()
+
+            this.genericCancel()
+        },
+
+        async removeFile () {
             await axios.delete(`${this.urlBase}/uploads`, {
                 data: {
                     files: this.form.filename
                 }
             })
 
-            this.genericCancel()
+            this.form.filename = []
         }
     },
 
@@ -75,6 +81,12 @@ export default {
                 file: file['file'],
                 original: file['original']
             })
+        })
+
+        window.events.$on('media:remove', file => {
+            if (this.form.filename[0].file === file) {
+                this.removeFile()
+            }
         })
     }
 }

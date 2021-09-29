@@ -16,6 +16,15 @@
                 type="video/mp4"
             >
         </video>
+
+        <div class="flex w-full mt-2">
+            <b-button
+                type="is-text"
+                size="is-small"
+                class="has-text-danger ml-auto"
+                @click.prevent="remove"
+            >Delete file</b-button>
+        </div>
     </div>
 </template>
 
@@ -31,7 +40,11 @@ export default {
     },
 
     methods: {
-        fileExtension
+        fileExtension,
+
+        remove () {
+            window.events.$emit('media:remove', this.file[0].file)
+        }
     }
 }
 </script>
