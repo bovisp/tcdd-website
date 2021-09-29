@@ -1,28 +1,11 @@
 <template>
     <div>
-        <form>
-            
-            <edit-content />
+        <edit-content />
 
-            <div class="flex">
-                <b-button 
-                    size="is-small"
-                    type="is-info"
-                    @click.prevent="store('content')"
-                >
-                    Create
-                </b-button>
-                
-                <b-button 
-                    size=" is-small"
-                    type="is-text"
-                    class="ml-auto"
-                    @click.prevent="cancel"
-                >
-                    {{ trans('generic.cancel') }}
-                </b-button>
-            </div>
-        </form>
+        <store-buttons 
+            @store="store('content')"
+            @cancel="cancel"
+        />
     </div>
 </template>
 
