@@ -14,12 +14,20 @@ class ContentBuilderController extends Controller
     }
 
     public function reorder(ContentBuilder $contentBuilder)
-    {      
-        foreach(request('parts') as $part) {
-            Part::find($part['id'])->update([
-                'sort_order' => $part['sort_order']
-            ]);
-        }
+    {   
+        $moved = Part::find(request('moved'));
+
+        $replacement = Part::where('content_builder_id', '=', $contentBuilder->id)
+            ->where('sort_order', '=', request('newOrderNumber'))
+            ->first();
+
+        $moved->update([
+            'sort_order' => request('newOrderNumber')
+        ]);
+
+        $replacement->update([
+            'sort_order' => request('oldOrderNumber')
+        ]);
 
         return new ContentBuilderResource($contentBuilder);
     }

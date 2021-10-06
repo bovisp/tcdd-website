@@ -29,7 +29,7 @@
                 handle='.mdi-arrow-all'
                 @start="drag = true"
                 @end="drag = false"
-                @change="update"
+                @change="changeOrder"
             >
                 <part-show 
                     v-for="part in orderedParts"
@@ -70,22 +70,15 @@ export default {
     methods: {
         ...mapActions({
             setContentBuilder: 'contentbuilder/setContentBuilder',
-            updateEditStatus: 'contentbuilder/updateEditStatus'
+            updateEditStatus: 'contentbuilder/updateEditStatus',
+            changePartOrder: 'contentbuilder/changePartOrder'
         }),
 
-        update (e) {
-            // map(this.parts, (part, index) => part.sort_order = index + 1)
-
-            // axios.patch(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}/change-order`, {
-            //     parts: map(this.parts, part => {
-            //         return {
-            //             id: part.id,
-            //             sort_order: part.sort_order
-            //         }
-            //     })
-            // }).then(({data}) => {
-            //     this.parts = data.data.parts
-            // })
+        changeOrder(event) {
+            this.changePartOrder({
+                id: this.currentContentBuilder.id,
+                event
+            })
         }
     },
 

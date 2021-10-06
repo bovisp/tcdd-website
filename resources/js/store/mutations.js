@@ -10,6 +10,12 @@ export const UPDATE_EDIT_STATUS = (state, contentBuilderId) => {
     let contentBuilder = find(state.contentBuilder, builder => builder.id === contentBuilderId)
 
     contentBuilder.editing = !contentBuilder.editing
+
+    if (!contentBuilder.editing) {
+        for (const part of contentBuilder.parts) {
+            part.editingPart = false
+        }
+    }
 }
 
 export const ADD_NEW_FORM = (state, payload) => {
@@ -83,9 +89,15 @@ export const UPDATE_PART = (state, {data, payload}) => {
 
     let part = find(contentBuilder.parts, part => part.id === payload.partId)
 
-    console.log(part)
-
     part = Object.assign(part, data)
+}
+
+export const CANCEL_EDITING_PART = (state, payload) => {
+    let contentBuilder = find(state.contentBuilder, builder => builder.id === payload.id)
+
+    let part = find(contentBuilder.parts, part => part.id === payload.partId)
+
+    part.editingPart = false
 }
 
 export const DESTROY_PART = (state, payload) => {
@@ -96,4 +108,10 @@ export const DESTROY_PART = (state, payload) => {
     contentBuilder.parts.splice(index, 1)
 
     window.events.$emit('part:hide-delete-part-confirm')
+}
+
+export const CHANGE_PART_ORDER = (state, {parts, payload}) => {
+    let contentBuilder = find(state.contentBuilder, builder => builder.id === payload.id)
+
+    contentBuilder.parts = parts
 }

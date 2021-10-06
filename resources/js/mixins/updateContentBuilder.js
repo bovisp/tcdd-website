@@ -22,7 +22,8 @@ export default {
 
     methods: {
         ...mapActions({
-            update: 'contentbuilder/updatePart'
+            update: 'contentbuilder/updatePart',
+            cancelEditingPart: 'contentbuilder/cancelEditingPart'
         }),
 
         pascalCase,

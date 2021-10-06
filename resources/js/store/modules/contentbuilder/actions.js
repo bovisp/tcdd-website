@@ -1,4 +1,4 @@
-import { forEach } from 'lodash-es'
+import { forEach, map } from 'lodash-es'
 
 export const setContentBuilder = async ({ commit }, contentBuilderId) => {
     let { data } = await axios.get(`${urlBase}/api/content-builder/${contentBuilderId}`)
@@ -50,6 +50,10 @@ export const updatePart = async ({commit, rootState}, payload) => {
     })
 }
 
+export const cancelEditingPart = async({commit}, payload) => {
+    await commit('CANCEL_EDITING_PART', payload, { root: true })
+}
+
 export const destroyPart = async ({rootState, commit}, payload) => {
     
     await axios.delete(`${urlBase}/api/parts/${payload.partId}`, {
@@ -59,4 +63,18 @@ export const destroyPart = async ({rootState, commit}, payload) => {
     })
 
     await commit('DESTROY_PART', payload, { root: true })
+}
+
+export const changePartOrder = async ({rootState, commit}, payload) => {
+    forEach(rootState.contentBuilder, async builder => {
+        if (builder.id === payload.id) {
+            let { data } = await axios.patch(`${urlBase}/api/content-builder/${builder.id}/change-order`, {
+                moved: payload.event.moved.element.id,
+                newOrderNumber: payload.event.moved.newIndex + 1,
+                oldOrderNumber: payload.event.moved.oldIndex + 1
+            })
+
+            await commit('CHANGE_PART_ORDER', {parts: data.data.parts, payload}, { root: true })
+        }
+    })
 }
