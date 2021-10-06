@@ -23,6 +23,7 @@ import questions from './modules/questions/questions'
 import issues from './modules/issues'
 import assessment from './modules/assessments/assessment'
 import articles from './modules/articles'
+import contentbuilder from './modules/contentbuilder'
 
 export default new Vuex.Store({
 	state, 
@@ -44,6 +45,7 @@ export default new Vuex.Store({
 		questions,
 		issues,
 		assessment,
-		articles
+		articles,
+		contentbuilder
 	} 
 })

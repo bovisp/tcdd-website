@@ -17,6 +17,8 @@ class ContentBuilderResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'editing' => false,
+            'lang' => $this->language,
             'parts' => PartResource::collection($this->parts)
         ];
     }

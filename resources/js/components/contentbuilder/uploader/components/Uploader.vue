@@ -81,7 +81,6 @@ export default {
             )
 
             if (progress === 100) {
-                console.log('here')
                 window.events.$emit('uploader:complete')
             }
 

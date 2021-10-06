@@ -1,50 +1,28 @@
-import { mapGetters } from 'vuex'
+import contentBuilderData from './contentBuilder'
+import { mapActions } from 'vuex'
 
 export default {
+    mixins: [
+        contentBuilderData
+    ],
+    
     props: {
         isTabSectionPart: {
             type: Boolean,
             required: false,
             default: false
         },
-        lang: {
+        type: {
             type: String,
-            required: true,
-        },
-        contentBuilderId: {
-            type: Number,
-            required: false,
-            default: null
+            required: true
         }
-    },
-
-    data () {
-        return {
-            builderId: null
-        }
-    },
-
-    computed: {
-        ...mapGetters({
-            contentIds: 'contentIds'
-        })
     },
 
     methods: {
-        async store (type) {
-            let { data } = await axios.post(`${this.urlBase}/api/content-builder/${this.builderId}/${type}`, this.form)
-
-            if (!this.isTabSectionPart) {
-                window.events.$emit('part:created', {
-                    data,
-                    contentBuilderId: this.builderId
-                })
-
-                this.cancel()
-            } else {
-                window.events.$emit('tab-content:created', data)
-            }
-        },
+        ...mapActions({
+            addNewPart: 'contentbuilder/addNewPart',
+            createPart : 'contentbuilder/createPart'
+        }),
 
         genericCancel () {
             if (this.isTabSectionPart) {
@@ -53,11 +31,16 @@ export default {
                 return
             }
 
-            window.events.$emit('add-part:cancel', this.builderId)
+            window.events.$emit('part:add-cancel')
         }
     },
 
     mounted () {
-        this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
+        this.addNewPart({
+            type: this.type,
+            id: this.id,
+            isTabSectionPart: this.isTabSectionPart
+        })
+        // window.events.$on('content:update-form', content => this.form.content = content)
     }
 }

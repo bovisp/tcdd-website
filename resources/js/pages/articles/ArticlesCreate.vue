@@ -10,23 +10,26 @@
                 ></b-input>
             </b-field>
 
-            <b-field>
-                <content-builder 
-                    lang="en"
-                />
-            </b-field>
-            
-            <b-field>
-                <content-builder 
-                    lang="fr"
-                />
-            </b-field>
+            <template v-if="!isEmpty(article)">
+                <b-field>
+                    <content-builder 
+                        :id="article.contentBuilder.en"
+                    />
+                </b-field>
+                
+                <b-field>
+                    <content-builder 
+                        :id="article.contentBuilder.fr"
+                    />
+                </b-field>
+            </template>
         </form>
     </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { isEmpty } from 'lodash-es'
 
 export default {
     data () {
@@ -37,7 +40,15 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters({
+            article: 'articles/article'
+        })
+    },
+
     methods: {
+        isEmpty,
+
         ...mapActions({
             createTempArticle: 'articles/createTempArticle'
         })

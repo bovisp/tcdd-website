@@ -15,8 +15,14 @@
 <script>
 import { VueEditor, Quill } from 'vue2-editor'
 import { isEmpty } from 'lodash-es'
+import contentBuilderData from '../../../../../mixins/contentBuilder'
+import { mapActions } from 'vuex'
 
 export default {
+    mixins: [
+        contentBuilderData
+    ],
+
     components: {
         VueEditor
     },
@@ -25,6 +31,10 @@ export default {
         data: {
             type: Object,
             required: false
+        },
+        id: {
+            type: Number,
+            required: true
         }
     },
 
@@ -36,8 +46,31 @@ export default {
     
     watch: {
         content () {
-            window.events.$emit('content:update-form', this.content)
+            if (isEmpty(this.data)) {
+                this.updateNewForm({
+                    currentContentBuilder: this.currentContentBuilder,
+                    payload: {
+                        content: this.content
+                    }
+                })
+            } else {
+                this.updateEditForm({
+                    currentContentBuilder: this.currentContentBuilder,
+                    partDataId: this.data.data.id,
+                    type: this.data.builderType.type,
+                    payload: {
+                        content: this.content
+                    }
+                })
+            }
         }
+    },
+
+    methods: {
+        ...mapActions({
+            updateNewForm: 'contentbuilder/updateNewForm',
+            updateEditForm: 'contentbuilder/updateEditForm'
+        })
     },
 
     mounted () {

@@ -1,9 +1,14 @@
 <template>
     <div>
-        <edit-content />
+        <edit-content 
+            :id="currentContentBuilder.id"
+        />
 
         <store-buttons 
-            @store="store('content')"
+            @store="store({
+                type: 'content',
+                id: currentContentBuilder.id
+            })"
             @cancel="cancel"
         />
     </div>
@@ -17,26 +22,14 @@ export default {
         storeContentBuilder
     ],
 
-    data () {
-        return {
-            form: {
-                content: '',
-                content_builder_type_id: 2,
-                is_tab_section: this.isTabSectionPart
-            }
-        }
-    },
-
     methods: {
         cancel () {
-            this.form.content = ''
-
             this.genericCancel()
-        }
-    },
+        },
 
-    mounted () {
-        window.events.$on('content:update-form', content => this.form.content = content)
+        store (payload) {
+            this.createPart(payload)
+        }
     }
 }
 </script>

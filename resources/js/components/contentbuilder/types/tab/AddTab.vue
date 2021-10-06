@@ -116,9 +116,9 @@ export default {
     mounted () {
         this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
 
-        window.events.$on('tabs:update-tab-list', tabs => this.form.tabs = tabs)
+        // window.events.$on('tabs:update-tab-list', tabs => this.form.tabs = tabs)
 
-        window.events.$on('tabs:update-form', form => this.form = form)
+        // window.events.$on('tabs:update-form', form => this.form = form)
     }
 }
 </script>

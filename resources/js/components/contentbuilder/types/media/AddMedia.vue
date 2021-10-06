@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w-full">
         <b-field>
             <b-input 
                 placeholder="Add an optional title..."
@@ -11,6 +11,7 @@
 
         <edit-media 
             :file="form.filename"
+            :adding="adding"
         />
 
         <b-field class="mt-2">
@@ -29,7 +30,6 @@
 </template>
 
 <script>
-import { isEmpty } from 'lodash-es'
 import storeContentBuilder from '../../../../mixins/storeContentBuilder'
 
 export default {
@@ -39,6 +39,7 @@ export default {
 
     data () {
         return {
+            adding: true,
             form: {
                 content_builder_type_id: 4,
                 filename: [],
@@ -49,17 +50,11 @@ export default {
         }
     },
 
-    watch: {
-        'form.filename' () {
-            if (!isEmpty(this.form.filename)) {
-                console.log(this.form.filename)
-            }
-        }
-    },
-
     methods: {
         async cancel () {
             await this.removeFile()
+
+            this.adding = false
 
             this.genericCancel()
         },
@@ -77,15 +72,17 @@ export default {
 
     mounted () {
         window.events.$on('uploads:file', file => {
-            this.form.filename.push({
-                file: file['file'],
-                original: file['original']
-            })
+            if (this.adding) {
+                this.form.filename.push({
+                    file: file['file'],
+                    original: file['original']
+                })
+            }
         })
 
         window.events.$on('media:remove', file => {
-            if (this.form.filename[0].file === file) {
-                this.removeFile()
+            if (this.adding && this.form.filename[0].file === file) {
+                this.form.filename = []
             }
         })
     }

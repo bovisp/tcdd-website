@@ -49,38 +49,22 @@ class MediaPartController extends Controller
                 'caption' => request('caption')
             ]);
 
-            if (request()->has('tab_part_section_title')) {
-                
-                $tabSection = TabPartSection::create([
-                    'title' => request('tab_part_section_title'),
-                    'tab_part_id' => request('part_id'),
-                    'content_id' => $media->id,
-                    'type' => 'media'
-                ]);
-    
-                return [
-                    'data' => [
-                        'filename' => unserialize($media->filename),
-                        'id' => $media->id,
-                        'title' => $media->title,
-                        'caption' => $media->caption,
-                        'type' => 'media'
-                    ],
-                    'id' => $tabSection->id,
-                    'title' => $tabSection->title
-                ];
-            }
-
             return [
-                'filename' => unserialize($media->filename),
-                'title' => $media->title,
-                'caption' => $media->caption,
-                'id' => $media->id
+                'data' => [
+                    'filename' => unserialize($media->filename),
+                    'id' => $media->id,
+                    'title' => $media->title,
+                    'caption' => $media->caption,
+                    'type' => 'media'
+                ],
+                'builderType' => [
+                    'type' => 'media'
+                ]
             ];
         }
     }
 
-    public function update(Part $part)
+    public function update(MediaPart $mediaPart)
     {
         request()->validate([
             'title' => 'nullable|min:3',
@@ -90,14 +74,13 @@ class MediaPartController extends Controller
             'caption.min' => __('app_http_controllers_contentbuilder_api_mediapart.caption_min')
         ]);
 
-        $mediaPart = MediaPart::wherePartId($part->id)->first();
-
         $mediaPart->update([
             'title' => request('title'),
-            'caption' => request('caption')
+            'caption' => request('caption'),
+            'filename' => serialize(request('filename')),
         ]);
 
-        return new PartResource($part);
+        return new PartResource(Part::find($mediaPart->part_id));
     }
 
     public function destroy(MediaPart $partType)

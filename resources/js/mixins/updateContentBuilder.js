@@ -1,18 +1,17 @@
+import { pascalCase } from 'change-case'
+import { isEmpty } from 'lodash-es'
+import contentBuilderData from './contentBuilder'
+import { mapActions } from 'vuex'
+
 export default {
+    mixins: [
+        contentBuilderData
+    ],
+    
     props: {
         data: {
             type: Object,
             required: true
-        },
-        editStatus: {
-            type: Boolean,
-            required: false,
-            default: false
-        },
-        contentBuilderId: {
-            type: Number,
-            required: false,
-            default: null
         },
         isTabSectionPart: {
             type: Boolean,
@@ -21,42 +20,13 @@ export default {
         },
     },
 
-    data () {
-        return {
-            part: {},
-            editing: false
-        }
-    },
-
     methods: {
-        async update (type) {
-            let { data } = await axios.patch(`${this.urlBase}/api/parts/${this.part.data.id}/${type}`, this.form)
+        ...mapActions({
+            update: 'contentbuilder/updatePart'
+        }),
 
-            this.part.data = data
+        pascalCase,
 
-            this.cancel()
-        }
-    },
-
-    mounted () {
-        this.part = this.data
-
-        window.events.$on('turn-editing-off', () => {
-            this.cancel()
-        })
-
-        window.events.$on('part:edit', partId => {
-            if (this.part.id === partId) {
-                this.editing = true
-
-                this.setContent()
-            }
-        })
-
-        if (this.editStatus) {
-            this.editing = true
-
-            this.setContent()
-        }
+        isEmpty
     }
 }

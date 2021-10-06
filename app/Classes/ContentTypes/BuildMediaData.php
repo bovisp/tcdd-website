@@ -22,7 +22,8 @@ class BuildMediaData
             'filename' => unserialize($data->filename),
             'title' => $data->title,
             'caption' => $data->caption,
-            'type' => 'media'
+            'type' => 'media',
+            'id' => $data->id
         ];
     }
 }

@@ -56,7 +56,10 @@ class BuildTabData
                 'order' => $section->order,
                 'hasContent' => true,
                 'content' => [
-                    'data' => $builtContent
+                    'data' => $builtContent,
+                    'builderType' => [
+                        'type' => $section->type
+                    ]
                 ]
             ];
         }

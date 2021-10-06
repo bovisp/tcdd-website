@@ -142,9 +142,7 @@ export default {
         },
 
         tabLength () {
-            // if (!isEmpty(this.tabs)) {
-                return this.tabs.length
-            // }
+            return this.tabs.length
         }
     },
 
@@ -198,9 +196,7 @@ export default {
         closeAddPartModal () {
             this.addPartModalActive = false
 
-            // this.tabAddPart = null
-
-            this.rerenderKey += 1
+           this.rerenderKey += 1
         },
 
         editTab (tab) {
@@ -239,24 +235,23 @@ export default {
             this.$emit('tabs:update-tab-count', this.tabs)
         },
 
-        updateTab (payload) {
-            let tab = find(this.tabs, tab => tab.id === payload.tabToEdit.id)
+        async updateTab (payload) {
+            for await (let tab of this.tabs) {
+                if (tab.id === payload.tabToEdit.id) {
+                    tab.label = payload.tabToEdit.label
 
-            if (tab) {
-                tab.label = payload.tabToEdit.label
+                    tab.order = payload.tabToEdit.order
 
-                tab.order = payload.tabToEdit.order
+                    if (parseInt(payload.tabToEdit.order) !== parseInt(payload.originalOrder)) {
+                        let tab = find(this.tabs, tab => tab.order === payload.tabToEdit.order && tab.id !== payload.tabToEdit.id)
 
-                if (parseInt(payload.tabToEdit.order) !== parseInt(payload.originalOrder)) {
-                    let tab = find(this.tabs, tab => tab.order === payload.tabToEdit.order && tab.id !== payload.tabToEdit.id)
+                        tab.order = payload.originalOrder
+                    }
 
-                    tab.order = payload.originalOrder
+                    window.events.$emit('tabs:update-tab-list', this.tabs)
                 }
-
-                window.events.$emit('tabs:update-tab-list', this.tabs)
             }
-        },
-
+        }
     },
 
     mounted () {
@@ -272,15 +267,15 @@ export default {
             this.rerenderKey += 1
         })
 
-        window.events.$on('tab-content:created', data => {
-            let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
+        window.events.$on('tab-content:created', async data => {
+            for await (let tab of this.tabs) {
+                if (tab.id === this.tabAddPart.id) {
+                    tab.content = data
 
-            if (tab) {
-                tab.content = data
+                    window.events.$emit('tabs:update-tab-list', this.tabs)
 
-                window.events.$emit('tabs:update-tab-list', this.tabs)
-
-                this.rerenderKey += 1
+                    this.rerenderKey += 1
+                }
             }
         })
 

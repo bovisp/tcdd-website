@@ -16,10 +16,10 @@
             <hr class="my-8">
 
             <component 
-                :is="`Add${ucfirst(type)}`"
-                :edit-status="editStatus"
+                :is="`Add${pascalCase(type)}`"
                 :create-button-text="trans('generic.create')"
-                :lang="lang"
+                :id="currentContentBuilder.id"
+                :type="type"
             ></component>
         </div>
 
@@ -32,21 +32,14 @@
 </template>
 
 <script>
-import ucfirst from '../../helpers/ucfirst'
-import { mapGetters } from 'vuex'
+import { pascalCase } from 'change-case'
 import VueScrollTo from 'vue-scrollto'
+import contentBuilderData from '../../mixins/contentBuilder'
 
 export default {
-    props: {
-        editStatus: {
-            type: Boolean,
-            required: true
-        },
-        lang: {
-            type: String,
-            required: true
-        }
-    },
+    mixins: [
+        contentBuilderData
+    ],
 
     data () {
         return {
@@ -59,17 +52,13 @@ export default {
     },
 
     computed: {
-        ...mapGetters({
-            contentIds: 'contentIds'
-        }),
-
         showAddButton () {
             return !this.addingPart && this.showButton
         }
     },
 
     methods: {
-        ucfirst,
+        pascalCase,
 
         add (type) {
             this.type = type
@@ -97,13 +86,13 @@ export default {
     },
 
     async mounted () {
-        window.events.$on('add-part:cancel', () => {
+        window.events.$on('part:add-cancel', () => {
             this.showButton = true
 
             this.type = ''
         })
 
-        window.events.$on('part:created', () => this.cancel())
+        // window.events.$on('part:created', () => this.cancel())
     }
 }
 </script>

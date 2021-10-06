@@ -18,6 +18,7 @@ class PartResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'editingPart' => false,
             'builderType' => $this->contentBuilderType,
             'sort_order' => $this->sort_order,
             'data' => (new $className($this->resource))->getData()

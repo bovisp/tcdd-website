@@ -1,8 +1,10 @@
 <template>
     <div>
-        <div v-if="file.length">
+        <div v-if="files.length">
             <media-display 
-                :file="file"
+                :file="files"
+                :editing="editing"
+                :adding="adding"
             />
         </div>
 
@@ -44,7 +46,41 @@ export default {
         file: {
             type: Array,
             required: false
+        },
+        editing: {
+            type: Boolean,
+            required: false
+        },
+        adding: {
+            type: Boolean,
+            required: false
+        },
+        partId: {
+            type: Number,
+            required: false
         }
+    },
+
+    data () {
+        return {
+            files: []
+        }
+    },
+
+    mounted () {
+        this.files = this.file
+
+        window.events.$on('media:remove', file => {
+            if (this.files[0].file === file) {
+                this.files = []
+            }
+        })
+
+        window.events.$on('uploads:file', file => {
+            if (!this.files.length && (this.editing || this.adding)) {
+                this.files.push(file)
+            }
+        })
     }
 }
 </script>

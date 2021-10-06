@@ -1,10 +1,10 @@
 <template>
     <div 
         class="flex my-4"
-        :class="[ editing ? 'justify-end' : '' ]"
+        :class="[ data.editingPart ? 'justify-end' : '' ]"
     >
         <div 
-            :class="[ editingTurnedOn && !editing ? 'w-2/12 flex items-start' : 'hidden' ]"
+            :class="[ editing && !data.editingPart ? 'w-2/12 flex items-start' : 'hidden' ]"
         >
             <b-icon 
                 class="ml-auto cursor-move mt-3"
@@ -16,7 +16,10 @@
                 type="is-text"
                 size="is-medium"
                 :title="`${trans('generic.edit')} ${noCase(trans('generic.content'))}`"
-                @click.prevent="edit"
+                @click.prevent="edit({
+                    id,
+                    partId: data.id
+                })"
             ></b-button>
 
             <b-button
@@ -30,21 +33,24 @@
         </div>
         
         <div
-            :class="[ !editingTurnedOn ? 'w-full' : 'w-10/12' ]"
-            v-if="typeof part !== 'undefined' && typeof part.builderType !== 'undefined'" 
+            :class="[ !editing ? 'w-full' : 'w-10/12' ]"
+            v-if="typeof data !== 'undefined' && typeof data.builderType !== 'undefined'" 
         >
             <component 
-                :is="`Show${formatType}`"
-                :content-builder-id="builderId"
-                :data="part"
-                :lang="lang"
+                :is="`Show${pascalCase(data.builderType.type)}`"
+                :id="id"
+                :data="data"
             ></component>
         </div>
 
         <modal 
             v-if="showModal" 
             cancel-button-text="Cancel"
-            @submit="destroy"
+            @submit="destroy({
+                partId: data.id,
+                type: data.builderType.type,
+                id
+            })"
             ok-button-text="Delete"
             @close="showModal = false"
         >
@@ -60,110 +66,41 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { noCase } from 'change-case'
+import { noCase, pascalCase } from 'change-case'
+import contentBuilderData from '../../mixins/contentBuilder'
+import { mapActions } from 'vuex'
 
 export default {
+    mixins: [
+        contentBuilderData
+    ],
+
     props: {
         data: {
             type: Object,
             required: true
-        },
-        editingOn: {
-            type: Boolean,
-            required: false,
-            default: false
-        },
-        lang: {
-            type: String,
-            required: true
-        },
-        contentBuilderId: {
-            type: Number,
-            required: false,
-            default: null
         }
     },
 
     data () {
         return {
-            editing: false,
-            editingTurnedOn: false,
-            form: {
-                content: ''
-            },
-            part: {},
-            showModal: false,
-            builderId: null
-        }
-    },
-
-    watch: {
-        editingTurnedOn () {
-            if (this.editingTurnedOn === false) {
-                this.editing = false
-            }
-        }
-    },
-
-    computed: {
-        ...mapGetters({
-            contentIds: 'contentIds'
-        }),
-
-        formatType () {
-            return this.part.builderType.type.charAt(0).toUpperCase() + this.part.builderType.type.slice(1)
+            showModal: false
         }
     },
 
     methods: {
+        ...mapActions({
+            edit: 'contentbuilder/editPart',
+            destroy: 'contentbuilder/destroyPart'
+        }),
+
         noCase,
 
-        async destroy () {
-            let { data } = await axios.delete(`${this.urlBase}/api/parts/${this.part.id}`, {
-                data: {
-                    type: this.part.builderType.type
-                }
-            })
-
-            this.showModal = false
-
-            window.events.$emit('part:deleted', {
-                part: this.part.id,
-                contentBuilderId: this.builderId
-            })
-        },
-
-        edit () {
-            this.editing = true
-
-            window.events.$emit('part:edit', this.part.id)
-        }
+        pascalCase
     },
 
     mounted () {
-        this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
-
-        this.part = this.data
-
-        window.events.$on('series:edit', contentBuilderId => {
-            if (contentBuilderId === this.builderId) {
-                this.editingTurnedOn = !this.editingTurnedOn
-            }
-        })
-
-        window.events.$on('turn-editing-off', () => this.editing = false)
-
-        window.events.$on('part:edit-cancel', () => this.editing = false)
-
-        window.events.$on('part:edit-cancel', partId => {
-            if (partId === this.part.id) {
-                this.editing = false
-                this.editingTurnedOn = true
-            }
-        })
-
-        this.editingTurnedOn = this.editingOn
+        window.events.$on('part:hide-delete-part-confirm', () => this.showModal = false)
     }
 }
 </script>

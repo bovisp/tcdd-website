@@ -1,41 +1,38 @@
 <template>
-    <div v-if="!isEmpty(part)">
-        <template v-if="!editing && !isEmpty(part)">
+    <div 
+        v-if="!isEmpty(data)"
+        class="w-full"
+    >
+        <template v-if="!data.editingPart">
             <component 
-                :is="`Final${ pascalCase(part.builderType.type) }`"
-                :part="part"
+                :is="`Final${pascalCase(data.builderType.type) }`"
+                :data="data"
+                :id="id"
             ></component>
         </template>
 
-        <div v-if="editing">
+        <div v-if="data.editingPart">
             <form>
                 <edit-content 
                     :data="data"
+                    :id="id"
                 />
 
-                <div class="flex my-2">
-                    <button 
-                        class="button is-small is-info"
-                        @click.prevent="update('content')"
-                    >
-                        {{ trans('generic.update') }}
-                    </button>
-
-                    <button 
-                        class="button is-small is-text has-text-dark ml-auto"
-                        @click.prevent="cancel"
-                    >
-                        {{ trans('generic.cancel') }}
-                    </button>
-                </div>
+                <update-buttons 
+                    @update="update({
+                        type: 'content',
+                        id: currentContentBuilder.id,
+                        partDataId: data.data.id,
+                        partId: data.id
+                    })"
+                    @cancel="cancel"
+                />
             </form>
         </div>
     </div>
 </template>
 
 <script>
-import { pascalCase } from 'change-case'
-import { isEmpty } from 'lodash-es'
 import updateContentBuilder from '../../../../mixins/updateContentBuilder'
 
 export default {
@@ -43,32 +40,13 @@ export default {
         updateContentBuilder
     ],
 
-    data () {
-        return {
-            form: {
-                content: ''
-            }
-        }
-    },
-
     methods: {
-        pascalCase,
-
-        isEmpty,
-
         cancel () {
-            this.editing = false
-            
-            window.events.$emit('part:edit-cancel')
-        },
-
-        setContent () {
-            this.form.content = this.part.data.content
+            this.cancelEditingPart({
+                id: this.id,
+                partId: this.data.id
+            })
         }
-    },
-
-    mounted () {
-        window.events.$on('content:update-form', content => this.form.content = content)
     }
 }
 </script>

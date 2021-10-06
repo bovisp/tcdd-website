@@ -57,15 +57,16 @@ export default {
         }
     },
 
-    watch: {
-        form: {
-            deep: true,
+    // watch: {
+    //     form: {
+    //         deep: true,
 
-            handler () {
-                window.events.$emit('tabs:update-form', this.form)
-            }
-        }
-    },
+    //         handler () {
+    //             console.log(this.form)
+    //             window.events.$emit('tabs:update-form', this.form)
+    //         }
+    //     }
+    // },
 
     methods: {
         setTabs (tabs) {
@@ -86,7 +87,7 @@ export default {
             this.form.tabs = this.data.tabSections
         }
 
-        window.events.$on('tabs:update-tab-list', tabs => this.form.tabs = tabs)
+        // window.events.$on('tabs:update-tab-list', tabs => this.form.tabs = tabs)
     }
 }
 </script>

@@ -17,7 +17,10 @@
             >
         </video>
 
-        <div class="flex w-full mt-2">
+        <div 
+            v-if="editing || adding"
+            class="flex w-full mt-2"
+        >
             <b-button
                 type="is-text"
                 size="is-small"
@@ -35,6 +38,14 @@ export default {
     props: {
         file: {
             type: Array,
+            required: false
+        },
+        editing: {
+            type: Boolean,
+            required: false
+        },
+        adding: {
+            type: Boolean,
             required: false
         }
     },

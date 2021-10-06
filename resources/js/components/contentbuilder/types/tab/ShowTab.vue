@@ -107,6 +107,8 @@ export default {
     mounted () {
         this.part = this.data
 
+        this.form = this.data.data
+
         this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
 
         window.events.$on('tabs:update-tab-list', tabs => this.form.tabs = tabs)

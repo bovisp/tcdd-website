@@ -67,7 +67,7 @@ class TabPartController extends Controller
             'tabs' =>'required|array|min:1',
             'tabs.*' => [
                 function ($attribute, $value, $fail) {
-                    if (empty($value['content_id'])) {
+                    if (empty($value['content'])) {
                         $fail('You must add some content to the tab: ' . $value['label'] . '');
                     }
                 },
