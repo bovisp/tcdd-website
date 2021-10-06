@@ -28,6 +28,17 @@ export const ADD_NEW_FORM = (state, payload) => {
                 content_builder_type_id: 2,
                 is_tab_section: payload.isTabSectionPart
             }
+
+            break
+        case 'tab':
+            contentBuilder.new = {
+                caption: '',
+                title: '',
+                content_builder_type_id: 5,
+                tabs: []
+            }
+
+            break
     }
 }
 
@@ -49,7 +60,16 @@ export const UPDATE_EDIT_FORM = (state, payload) => {
         return
     }
 
-    editObj.payload = payload.payload   
+    if (!payload.partial) {
+        editObj.payload = payload.payload
+
+        return
+    }
+
+
+    for (const [key, value] of Object.entries(payload.payload)) {
+        builder.new.payload[key] = value
+    }   
 }
 
 export const UPDATE_NEW_FORM = (state, payload) => {

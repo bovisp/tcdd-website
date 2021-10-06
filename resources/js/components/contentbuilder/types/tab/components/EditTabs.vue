@@ -10,10 +10,8 @@
         </b-field>
 
         <tab-list 
-            :tab-list="form.tabs"
-            :lang="lang"
-            @tabs:update-tab-count="updateTabs"
-            @set-tabs="setTabs"
+            :id="currentContentBuilder.id"
+            :data="data"
         />
 
         <b-field>
@@ -27,19 +25,16 @@
 </template>
 
 <script>
+import contentBuilderData from '../../../../../mixins/contentBuilder'
 import { isEmpty } from 'lodash-es'
+import { mapActions } from 'vuex'
 
 export default {
+    mixins: [
+        contentBuilderData
+    ],
+
     props: {
-        lang: {
-            type: String,
-            required: true,
-        },
-        contentBuilderId: {
-            type: Number,
-            required: false,
-            default: null
-        },
         data: {
             type: Object,
             required: false
@@ -49,45 +44,47 @@ export default {
     data () {
         return {
             form: {
-                content_builder_type_id: 5,
                 title: '',
-                caption: '',
-                tabs: []
+                caption: ''
             }
         }
     },
 
-    // watch: {
-    //     form: {
-    //         deep: true,
+    watch: {
+        form: {
+            deep: true,
 
-    //         handler () {
-    //             console.log(this.form)
-    //             window.events.$emit('tabs:update-form', this.form)
-    //         }
-    //     }
-    // },
-
-    methods: {
-        setTabs (tabs) {
-            this.form.tabs = tabs
-        },
-
-        updateTabs (tabs) {
-            this.form.tabs = tabs
+            handler () {
+                if (isEmpty(this.data)) {
+                    this.updateNewForm({
+                        currentContentBuilder: this.currentContentBuilder,
+                        partial: true,
+                        payload: {
+                            caption: this.form.caption,
+                            title: this.form.title
+                        }
+                    })
+                } else {
+                    this.updateEditForm({
+                        currentContentBuilder: this.currentContentBuilder,
+                        partial: true,
+                        partDataId: this.data.data.id,
+                        type: this.data.builderType.type,
+                        payload: {
+                            caption: this.form.caption,
+                            title: this.form.title
+                        }
+                    })
+                }
+            }
         }
     },
-
-    mounted () {
-        if (!isEmpty(this.data)) {
-            this.form.title = this.data.title
-
-            this.form.caption = this.data.caption
-
-            this.form.tabs = this.data.tabSections
-        }
-
-        // window.events.$on('tabs:update-tab-list', tabs => this.form.tabs = tabs)
+    
+    methods: {
+        ...mapActions({
+            updateNewForm: 'contentbuilder/updateNewForm',
+            updateEditForm: 'contentbuilder/updateEditForm'
+        })
     }
 }
 </script>

@@ -1,4 +1,4 @@
-import { forEach, map } from 'lodash-es'
+import { forEach, isEmpty } from 'lodash-es'
 
 export const setContentBuilder = async ({ commit }, contentBuilderId) => {
     let { data } = await axios.get(`${urlBase}/api/content-builder/${contentBuilderId}`)
@@ -75,6 +75,22 @@ export const changePartOrder = async ({rootState, commit}, payload) => {
             })
 
             await commit('CHANGE_PART_ORDER', {parts: data.data.parts, payload}, { root: true })
+        }
+    })
+}
+
+export const cancelAddingTab = async ({rootState, commit}) => {
+    forEach(rootState.contentBuilder, async builder => {
+        if (builder.id === payload.id) {
+            for await (const tab of builder.new.payload.tabs) {
+                if (!isEmpty(tab.data)) {
+                    await axios.delete(`${urlBase}/api/parts/tabs/cancel`, {
+                        data: { tab }
+                    })
+                }
+            }
+
+            window.events.$emit('part:add-cancel')
         }
     })
 }

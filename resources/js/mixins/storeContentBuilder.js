@@ -41,6 +41,5 @@ export default {
             id: this.id,
             isTabSectionPart: this.isTabSectionPart
         })
-        // window.events.$on('content:update-form', content => this.form.content = content)
     }
 }

@@ -31,10 +31,6 @@ export default {
         data: {
             type: Object,
             required: false
-        },
-        id: {
-            type: Number,
-            required: true
         }
     },
 
