@@ -17,7 +17,6 @@
 
             <component 
                 :is="`Add${pascalCase(type)}`"
-                :create-button-text="trans('generic.create')"
                 :id="currentContentBuilder.id"
                 :type="type"
             ></component>

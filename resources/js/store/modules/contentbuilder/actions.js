@@ -25,9 +25,11 @@ export const updateEditForm = async ({ commit }, payload) => {
 export const createPart = async ({rootState, commit}, payload) => {
     forEach(rootState.contentBuilder, async builder => {
         if (builder.id === payload.id) {
-            let { data } = await axios.post(`${urlBase}/api/content-builder/${payload.id}/${payload.type}`, builder.new)
+            let form = payload.isTabSectionPart ? builder.new.tabs[builder.new.activeTab].data : builder.new
 
-            await commit('ADD_PART', {data, id: payload.id}, { root: true })
+            let { data } = await axios.post(`${urlBase}/api/content-builder/${payload.id}/${payload.type}`, form)
+
+            await commit('ADD_PART', {data, id: payload.id, isTabSectionPart: payload.isTabSectionPart}, { root: true })
         }
     })
 }
@@ -79,11 +81,11 @@ export const changePartOrder = async ({rootState, commit}, payload) => {
     })
 }
 
-export const cancelAddingTab = async ({rootState, commit}) => {
+export const cancelAddingTab = async ({rootState, commit}, payload) => {
     forEach(rootState.contentBuilder, async builder => {
         if (builder.id === payload.id) {
-            for await (const tab of builder.new.payload.tabs) {
-                if (!isEmpty(tab.data)) {
+            for await (const tab of builder.new.tabs) {
+                if (!isEmpty(tab.content)) {
                     await axios.delete(`${urlBase}/api/parts/tabs/cancel`, {
                         data: { tab }
                     })
@@ -93,4 +95,8 @@ export const cancelAddingTab = async ({rootState, commit}) => {
             window.events.$emit('part:add-cancel')
         }
     })
+}
+
+export const updateActiveTab = async ({commit}, payload) => {
+    await commit('UPDATE_ACTIVE_TAB', payload, { root: true })
 }

@@ -2,12 +2,14 @@
     <div>
         <edit-content 
             :id="currentContentBuilder.id"
+            :is-tab-section-part="isTabSectionPart"
         />
 
         <store-buttons 
             @store="store({
                 type: 'content',
-                id: currentContentBuilder.id
+                id: currentContentBuilder.id,
+                isTabSectionPart
             })"
             @cancel="cancel"
         />
@@ -25,6 +27,8 @@ export default {
     methods: {
         cancel () {
             this.genericCancel()
+
+            window.events.$emit('tabs:cancel-add-part')
         },
 
         store (payload) {

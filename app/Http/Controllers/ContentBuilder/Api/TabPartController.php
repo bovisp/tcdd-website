@@ -19,8 +19,8 @@ class TabPartController extends Controller
             'title' => 'nullable|min:3',
             'caption' => 'nullable|min:3',
             'content_builder_type_id' => 'required|exists:content_builder_types,id',
-            'tabSections' => 'required|array|min:1',
-            'tabSections.*' => [
+            'tabs' => 'required|array|min:1',
+            'tabs.*' => [
                 function ($attribute, $value, $fail) {
                     if (empty($value['content'])) {
                         $fail('You must add some content to the tab: ' . $value['label'] . '');
@@ -46,7 +46,7 @@ class TabPartController extends Controller
             'caption' => request('caption')
         ]);
 
-        foreach (request('tabSections') as $section) {
+        foreach (request('tabs') as $section) {
             TabPartSection::create([
                 'title' => $section['label'],
                 'tab_part_id' => $tabPart->id,

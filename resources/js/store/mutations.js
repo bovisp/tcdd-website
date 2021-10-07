@@ -23,10 +23,16 @@ export const ADD_NEW_FORM = (state, payload) => {
 
     switch (payload.type) {
         case 'content':
-            contentBuilder.new = {
+            let newObj = {
                 content: '',
                 content_builder_type_id: 2,
                 is_tab_section: payload.isTabSectionPart
+            }
+
+            if (payload.isTabSectionPart) {
+                contentBuilder.new.tabs[contentBuilder.new.activeTab].data = newObj
+            } else {
+                contentBuilder.new = newObj
             }
 
             break
@@ -35,6 +41,7 @@ export const ADD_NEW_FORM = (state, payload) => {
                 caption: '',
                 title: '',
                 content_builder_type_id: 5,
+                activeTab: 0,
                 tabs: []
             }
 
@@ -75,8 +82,16 @@ export const UPDATE_EDIT_FORM = (state, payload) => {
 export const UPDATE_NEW_FORM = (state, payload) => {
     forEach(state.contentBuilder, async builder => {
         if (builder.id === payload.currentContentBuilder.id) {
+            if (!payload.isTabSectionPart) {
+                for await (const [key, value] of Object.entries(payload.payload)) {
+                    builder.new[key] = value
+                }
+
+                return
+            }
+
             for await (const [key, value] of Object.entries(payload.payload)) {
-                builder.new[key] = value
+                builder.new.tabs[builder.new.activeTab].data[key] = value
             }
         }
     })
@@ -85,14 +100,14 @@ export const UPDATE_NEW_FORM = (state, payload) => {
 export const ADD_PART =  (state, payload) => {
     let contentBuilder = find(state.contentBuilder, builder => builder.id === payload.id)
 
-    if (!contentBuilder.new.isTabSectionPart) {
+    if (!payload.isTabSectionPart) {
         contentBuilder.parts.push(merge(payload.data, {editingPart:false}))
 
         contentBuilder.new = null
 
         window.events.$emit('part:add-cancel')
     } else {
-        // window.events.$emit('tab-content:created', data)
+        window.events.$emit('tabs:add-new-part', payload.data)
     }
 }
 
@@ -134,4 +149,12 @@ export const CHANGE_PART_ORDER = (state, {parts, payload}) => {
     let contentBuilder = find(state.contentBuilder, builder => builder.id === payload.id)
 
     contentBuilder.parts = parts
+}
+
+export const UPDATE_ACTIVE_TAB = (state, payload) => {
+    let contentBuilder = find(state.contentBuilder, builder => builder.id === payload.currentContentBuilder.id)
+    
+    if (payload.adding) {
+        contentBuilder.new.activeTab = payload.activeTab
+    }
 }

@@ -7,8 +7,9 @@
 
             <store-buttons 
                 @store="store({
-                    type: 'content',
-                    id: currentContentBuilder.id
+                    type: 'tab',
+                    id: currentContentBuilder.id,
+                    isTabSectionPart
                 })"
                 @cancel="cancelAddingTab({
                     id: currentContentBuilder.id
@@ -51,7 +52,11 @@ export default {
     methods: {
         ...mapActions({
             cancelAddingTab: 'contentbuilder/cancelAddingTab'
-        })
+        }),
+
+        store (payload) {
+            this.createPart(payload)
+        }
     }
 }
 </script>

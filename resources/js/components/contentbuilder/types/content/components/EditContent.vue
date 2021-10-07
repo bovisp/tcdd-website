@@ -31,6 +31,11 @@ export default {
         data: {
             type: Object,
             required: false
+        },
+        isTabSectionPart: {
+            type: Boolean,
+            required: false,
+            default: false
         }
     },
 
@@ -45,6 +50,7 @@ export default {
             if (isEmpty(this.data)) {
                 this.updateNewForm({
                     currentContentBuilder: this.currentContentBuilder,
+                    isTabSectionPart: this.isTabSectionPart,
                     payload: {
                         content: this.content
                     }

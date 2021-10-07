@@ -54,16 +54,15 @@
                         <component 
                             v-if="isEmpty(tab.content) === true"
                             :is="`Add${pascalCase(tab.type)}`"
-                            :edit-status="false"
-                            :create-button-text="trans('generic.create')"
-                            :lang="lang"
+                            :id="currentContentBuilder.id"
+                            :type="tab.type"
                             :is-tab-section-part="true"
                         ></component>
                         
                         <component 
                             v-else
                             :is="`Show${pascalCase(tab.type)}`"
-                            :edit-status="partEditStatus"
+                            :id="currentContentBuilder.id"
                             :data="tab.content"
                             :is-tab-section-part="true"
                         ></component>
@@ -90,12 +89,12 @@
             :num-tabs="tabLength"
         />
 
-        <!-- <add-part-modal 
+        <add-part-modal 
             v-if="addPartModalActive"
             omit-type="tab"
             @cancel="closeAddPartModal"
             @add="addPartToTab"
-        /> -->
+        />
     </div>
 </template>
 
@@ -124,7 +123,8 @@ export default {
             rerenderKey: 0,
             tabs: [],
             addPartModalActive: false,
-            editingTab: {}
+            editingTab: {},
+            tabAddPart: {}
         }
     },
 
@@ -148,7 +148,8 @@ export default {
                         currentContentBuilder: this.currentContentBuilder,
                         partial: true,
                         payload: {
-                            tabs: this.tabs
+                            tabs: this.tabs,
+                            activeTab: this.activeTab
                         }
                     })
                 }
@@ -162,12 +163,23 @@ export default {
                 this.rerenderKey += 1
             }
         },
+
+        activeTab () {
+            if (isEmpty(this.data)) {
+                this.updateActiveTab({
+                    adding: true,
+                    currentContentBuilder: this.currentContentBuilder,
+                    activeTab: this.activeTab
+                })
+            }
+        }
     },
 
     methods: {
         ...mapActions({
             updateNewForm: 'contentbuilder/updateNewForm',
-            updateEditForm: 'contentbuilder/updateEditForm'
+            updateEditForm: 'contentbuilder/updateEditForm',
+            updateActiveTab: 'contentbuilder/updateActiveTab'
         }),
 
         isEmpty,
@@ -205,6 +217,32 @@ export default {
 
             this.rerenderKey += 1
         },
+
+        addPart (tab) {
+            this.addPartModalActive = true
+
+            this.tabAddPart = tab
+
+            this.rerenderKey += 1
+        },
+
+        addPartToTab (type) {
+            this.addPartModalActive = false
+
+            let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
+
+            tab.hasContent = true
+
+            tab.type = type
+
+            tab.data = null
+        },
+
+        closeAddPartModal () {
+            this.addPartModalActive = false
+
+           this.rerenderKey += 1
+        }
     },
 
     mounted () {
@@ -220,6 +258,32 @@ export default {
         }
 
         window.events.$on('tabs:update-edited-tab', tab => this.updateTab(tab))
+
+        window.events.$on('tabs:cancel-add-part', () => {
+            if (!this.partEditStatus) {
+                let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
+
+                tab.type = ''
+
+                tab.hasContent = false
+            }
+
+            this.partEditStatus = false
+
+            this.rerenderKey += 1
+        })
+
+        window.events.$on('tabs:add-new-part', async data => {
+            for await (let [index, tab] of Object.entries(this.tabs)) {
+                if (tab.id === this.tabAddPart.id) {
+                    tab.content = data
+
+                    delete tab.data
+
+                    this.rerenderKey += 1
+                }
+            }
+        })
     },
 
     // data () {

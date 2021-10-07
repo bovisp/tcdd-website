@@ -26,7 +26,7 @@ export default {
 
         genericCancel () {
             if (this.isTabSectionPart) {
-                window.events.$emit('tab-content:cancel-add')
+                window.events.$emit('tabs:cancel-add-part')
 
                 return
             }
