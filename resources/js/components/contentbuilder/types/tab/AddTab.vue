@@ -35,7 +35,7 @@ export default {
 
             handler () {
                 forIn(this.errors, (value, key) => {
-                    if (key.includes('tabSections')) {
+                    if (key.includes('tabs')) {
                         this.$buefy.dialog.alert({
                             title: 'Error',
                             message: value[0],

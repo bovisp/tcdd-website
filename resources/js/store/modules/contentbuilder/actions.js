@@ -1,4 +1,4 @@
-import { forEach, isEmpty } from 'lodash-es'
+import { forEach, isEmpty, find } from 'lodash-es'
 
 export const setContentBuilder = async ({ commit }, contentBuilderId) => {
     let { data } = await axios.get(`${urlBase}/api/content-builder/${contentBuilderId}`)
@@ -25,7 +25,19 @@ export const updateEditForm = async ({ commit }, payload) => {
 export const createPart = async ({rootState, commit}, payload) => {
     forEach(rootState.contentBuilder, async builder => {
         if (builder.id === payload.id) {
-            let form = payload.isTabSectionPart ? builder.new.tabs[builder.new.activeTab].data : builder.new
+            let form = {}
+
+            if (payload.isTabSectionPart && builder.new) {
+                form = builder.new.tabs[builder.new.activeTab].data
+            } else if (payload.isTabSectionPart && !builder.new) {
+                let editingPart = find(builder.edit, part => {
+                    return part.partDataId === payload.tabPartDataId
+                })
+
+                form = editingPart.payload.tabs[editingPart.payload.activeTab].data
+            } else {
+                form = builder.new
+            }
 
             let { data } = await axios.post(`${urlBase}/api/content-builder/${payload.id}/${payload.type}`, form)
 
@@ -43,8 +55,10 @@ export const updatePart = async ({commit, rootState}, payload) => {
         if (builder.id === payload.id) {
             forEach(builder.edit, async part => {
                 if (part.partDataId === payload.partDataId) {
+                    console.log(part.payload)
                     let { data } = await axios.patch(`${urlBase}/api/parts/${payload.partDataId}/${payload.type}`, part.payload)
-
+                    
+                    console.log(data)
                     await commit('UPDATE_PART', {data, payload}, { root: true })
                 }
             })

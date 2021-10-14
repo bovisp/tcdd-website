@@ -36,6 +36,10 @@ export default {
             type: Boolean,
             required: false,
             default: false
+        },
+        tabPartDataId: {
+            type: Number,
+            required: false
         }
     },
 
@@ -50,6 +54,7 @@ export default {
             if (isEmpty(this.data)) {
                 this.updateNewForm({
                     currentContentBuilder: this.currentContentBuilder,
+                    tabPartDataId: this.tabPartDataId,
                     isTabSectionPart: this.isTabSectionPart,
                     payload: {
                         content: this.content
@@ -59,6 +64,7 @@ export default {
                 this.updateEditForm({
                     currentContentBuilder: this.currentContentBuilder,
                     partDataId: this.data.data.id,
+                    tabPartDataId: this.tabPartDataId,
                     type: this.data.builderType.type,
                     payload: {
                         content: this.content

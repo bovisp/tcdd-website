@@ -59,7 +59,7 @@ class TabPartController extends Controller
         return new PartResource($part);
     }
 
-    public function update(Part $part)
+    public function update(TabPart $tabPart)
     {
         request()->validate([
             'title' => 'nullable|min:3',
@@ -79,8 +79,6 @@ class TabPartController extends Controller
             'tabs.array' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_array'),
             'tabs.min' => __('app_http_controllers_contentbuilder_api_tabpart.tabSections_min'),
         ]);
-
-        $tabPart = TabPart::wherePartId($part->id)->first();
 
         $tabPart->update([
             'title' => request('title'),
@@ -107,7 +105,10 @@ class TabPartController extends Controller
             $section->update([
                 'title' => Arr::first(request('tabs'), function ($value, $key) use ($sectionId) {
                     return $value['id'] === $sectionId;
-                })['label']
+                })['label'],
+                'order' => Arr::first(request('tabs'), function ($value, $key) use ($sectionId) {
+                    return $value['id'] === $sectionId;
+                })['order']
             ]);
 
             $contentClass = 'App\\' . ucfirst($section->type) . 'Part';
@@ -153,7 +154,7 @@ class TabPartController extends Controller
             ]);
         }
 
-        return new PartResource($part);
+        return new PartResource(Part::find($tabPart->part_id));
     }
 
     public function destroyData()

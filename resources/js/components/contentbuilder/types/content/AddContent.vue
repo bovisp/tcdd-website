@@ -3,13 +3,15 @@
         <edit-content 
             :id="currentContentBuilder.id"
             :is-tab-section-part="isTabSectionPart"
+            :tab-part-data-id="tabPartDataId"
         />
 
         <store-buttons 
             @store="store({
                 type: 'content',
                 id: currentContentBuilder.id,
-                isTabSectionPart
+                isTabSectionPart,
+                tabPartDataId
             })"
             @cancel="cancel"
         />

@@ -85,6 +85,14 @@ export default {
             updateNewForm: 'contentbuilder/updateNewForm',
             updateEditForm: 'contentbuilder/updateEditForm'
         })
+    },
+
+    mounted () {
+        if (!isEmpty(this.data)) {
+            this.form.caption = this.data.data.caption
+
+            this.form.title = this.data.data.title
+        }
     }
 }
 </script>

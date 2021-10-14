@@ -68,7 +68,7 @@ class BuildTabData
             'id' => $data->id,
             'title' => $data->title,
             'caption' => $data->caption,
-            'tabSections' => array_values(Arr::sort($sections, function ($value) {
+            'tabs' => array_values(Arr::sort($sections, function ($value) {
                 return $value['content']['data']['date'];
             }))
         ];

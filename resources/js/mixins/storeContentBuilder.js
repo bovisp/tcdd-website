@@ -15,6 +15,11 @@ export default {
         type: {
             type: String,
             required: true
+        },
+        tabPartDataId: {
+            type: Number,
+            required: false,
+            default: null
         }
     },
 
@@ -39,7 +44,8 @@ export default {
         this.addNewPart({
             type: this.type,
             id: this.id,
-            isTabSectionPart: this.isTabSectionPart
+            isTabSectionPart: this.isTabSectionPart,
+            tabPartDataId: this.tabPartDataId
         })
     }
 }

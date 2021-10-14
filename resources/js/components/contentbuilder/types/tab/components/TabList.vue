@@ -55,6 +55,7 @@
                             v-if="isEmpty(tab.content) === true"
                             :is="`Add${pascalCase(tab.type)}`"
                             :id="currentContentBuilder.id"
+                            :tab-part-data-id="data ? data.data.id : null"
                             :type="tab.type"
                             :is-tab-section-part="true"
                         ></component>
@@ -148,7 +149,17 @@ export default {
                         currentContentBuilder: this.currentContentBuilder,
                         partial: true,
                         payload: {
-                            tabs: this.tabs,
+                            tabs: this.orderedTabs,
+                            activeTab: this.activeTab
+                        }
+                    })
+                } else {
+                    this.updateEditForm({
+                        currentContentBuilder: this.currentContentBuilder,
+                        partDataId: this.data.data.id,
+                        type: this.data.builderType.type,
+                        payload: {
+                            tabs: this.orderedTabs,
                             activeTab: this.activeTab
                         }
                     })
@@ -171,6 +182,16 @@ export default {
                     currentContentBuilder: this.currentContentBuilder,
                     activeTab: this.activeTab
                 })
+            } else {
+                this.updateEditForm({
+                    currentContentBuilder: this.currentContentBuilder,
+                    adding: false,
+                    partDataId: this.data.data.id,
+                    payload: {
+                        tabs: this.orderedTabs,
+                        activeTab: this.activeTab
+                    }
+                })
             }
         }
     },
@@ -191,6 +212,7 @@ export default {
         },
 
         async updateTab (payload) {
+            console.log(payload)
             for await (let tab of this.tabs) {
                 if (tab.id === payload.tabToEdit.id) {
                     tab.label = payload.tabToEdit.label
@@ -242,7 +264,27 @@ export default {
             this.addPartModalActive = false
 
            this.rerenderKey += 1
-        }
+        },
+
+        async removeTab (tab) {
+            if (isEmpty(tab.data) === false) {
+                await axios.delete(`${this.urlBase}/api/parts/${tab.type}/${tab.data.data.id}`, {
+                    data: {
+                        type: tab.type
+                    }
+                })
+            }
+
+            this.tabs = orderBy(filter(this.tabs, t => t.id !== tab.id), ['order'], ['asc'])
+
+            for await (const [index, value] of Object.entries(this.tabs)) {
+                this.tabs[index].order = parseInt(index) + 1
+            }
+
+            this.activeTab = 0
+
+            this.rerenderKey += 1
+        },
     },
 
     mounted () {
@@ -255,6 +297,8 @@ export default {
                 order: 1,
                 content: null
             })
+        } else {
+            this.tabs = this.data.data.tabs
         }
 
         window.events.$on('tabs:update-edited-tab', tab => this.updateTab(tab))
@@ -284,176 +328,6 @@ export default {
                 }
             }
         })
-    },
-
-    // data () {
-    //     return {
-    //         rerenderKey: 0,
-    //         tabs: [{
-    //             id: uuid(),
-    //             label: 'New tab',
-    //             hasContent: false,
-    //             type: '',
-    //             order: 1,
-    //             content: null
-    //         }],
-    //         editingTab: null,
-    //         isEditModalActive: false,
-    //         activeTab: 0,
-    //         addPartModalActive: false,
-    //         tabAddPart: null,
-    //         partEditStatus: false
-    //     }
-    // },
-
-    // watch: {
-    //     orderedTabs: {
-    //         deep: true,
-
-    //         handler () {
-    //             this.rerenderKey += 1
-    //         }
-    //     },
-
-    //     tabList: {
-    //         deep: true,
-
-    //         handler () {
-    //             if (this.tabList.length) {
-    //                 this.tabs = this.tabList
-
-    //                 this.rerenderKey += 1
-    //             }
-    //         }
-    //     }
-    // },
-
-    // methods: {
-    //     isEmpty,
-
-    //     pascalCase,
-
-    //     addPart (tab) {
-    //         this.addPartModalActive = true
-
-    //         this.tabAddPart = tab
-
-    //         this.rerenderKey += 1
-    //     },
-
-    //     addPartToTab (type) {
-    //         this.addPartModalActive = false
-
-    //         let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
-
-    //         tab.hasContent = true
-
-    //         tab.type = type
-
-    //         tab.data = null
-    //     },
-
-    //     closeAddPartModal () {
-    //         this.addPartModalActive = false
-
-    //        this.rerenderKey += 1
-    //     },
-
-    //     editTab (tab) {
-    //         window.events.$emit('tabs:edit-tab', tab)
-    //     },
-
-    //     async removeTab (tab) {
-    //         if (isEmpty(tab.data) === false) {
-    //             await axios.delete(`${this.urlBase}/api/parts/${tab.type}/${tab.data.data.id}`, {
-    //                 data: {
-    //                     type: tab.type
-    //                 }
-    //             })
-    //         }
-
-    //         this.tabs = filter(this.tabs, t => t.id !== tab.id)
-
-    //         this.activeTab = 0
-
-    //         window.events.$emit('tabs:update-tab-list', this.tabs)
-
-    //         this.rerenderKey += 1
-    //     },
-
-    //     addNewTab () {
-    //         this.tabs.splice(this.tabs.length, 0, {
-    //             id: uuid(),
-    //             label: 'New tab',
-    //             order: this.tabs.length + 1
-    //         })
-
-    //         this.activeTab = this.tabLength - 1
-
-    //         this.rerenderKey += 1
-
-    //         this.$emit('tabs:update-tab-count', this.tabs)
-    //     },
-
-    //     async updateTab (payload) {
-    //         for await (let tab of this.tabs) {
-    //             if (tab.id === payload.tabToEdit.id) {
-    //                 tab.label = payload.tabToEdit.label
-
-    //                 tab.order = payload.tabToEdit.order
-
-    //                 if (parseInt(payload.tabToEdit.order) !== parseInt(payload.originalOrder)) {
-    //                     let tab = find(this.tabs, tab => tab.order === payload.tabToEdit.order && tab.id !== payload.tabToEdit.id)
-
-    //                     tab.order = payload.originalOrder
-    //                 }
-
-    //                 window.events.$emit('tabs:update-tab-list', this.tabs)
-    //             }
-    //         }
-    //     }
-    // },
-
-    // mounted () {
-    //     this.$emit('set-tabs', this.tabs)
-
-    //     window.events.$on('tabs:add-part-modal', () => {
-    //         this.addPartModalActive = !this.addPartModalActive
-    //     })
-
-    //     window.events.$on('tabs:update-tab-list', tabs => {
-    //         this.tabs = tabs
-
-    //         this.rerenderKey += 1
-    //     })
-
-    //     window.events.$on('tab-content:created', async data => {
-    //         for await (let tab of this.tabs) {
-    //             if (tab.id === this.tabAddPart.id) {
-    //                 tab.content = data
-
-    //                 window.events.$emit('tabs:update-tab-list', this.tabs)
-
-    //                 this.rerenderKey += 1
-    //             }
-    //         }
-    //     })
-
-    //     window.events.$on('tab-content:cancel-add', () => {
-    //         if (!this.partEditStatus) {
-    //             let tab = find(this.tabs, tab => tab.id === this.tabAddPart.id)
-
-    //             tab.type = ''
-
-    //             tab.hasContent = false
-    //         }
-
-    //         this.partEditStatus = false
-
-    //         this.rerenderKey += 1
-    //     })
-
-    //     window.events.$on('tabs:update-edited-tab', tab => this.updateTab(tab))
-    // }
+    }
 }
 </script>

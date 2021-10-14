@@ -2,9 +2,9 @@
     <div class="my-4">
         <p 
             class="mb-4 text-center font-light w-full text-xl"
-            v-if="typeof part.data !== 'undefined' && part.data.title"
+            v-if="typeof data.data !== 'undefined' && data.data.title"
         >
-            {{ part.data.title }}
+            {{ data.data.title }}
         </p>
 
         <b-tabs
@@ -21,8 +21,7 @@
             >
                 <component 
                     :is="`Show${pascalCase(tab.type)}`"
-                    :content-builder-id="contentBuilderId"
-                    :edit-status="false"
+                    :id="id"
                     :data="tab.content"
                 ></component>
             </b-tab-item>
@@ -30,28 +29,27 @@
 
         <p 
             class="mb-0 mt-2 text-grey-700 w-3/4 mx-auto"
-            v-if="typeof part.data !== 'undefined' && part.data.caption"
+            v-if="typeof data.data !== 'undefined' && data.data.caption"
         >
-            <small>{{ part.data.caption }}</small>
+            <small>{{ data.data.caption }}</small>
         </p>
     </div>
 </template>
 
 <script>
-import ucfirst from '../../../../helpers/ucfirst'
 import { orderBy } from 'lodash-es'
 import { pascalCase } from 'change-case'
+import contentBuilderData from '../../../../mixins/contentBuilder'
 
 export default {
+    mixins: [
+        contentBuilderData
+    ],
+
     props: {
-        part: {
+        data: {
             type: Object,
             required: true
-        },
-        contentBuilderId: {
-            type: Number,
-            required: false,
-            default: null
         }
     },
 
@@ -63,22 +61,12 @@ export default {
 
     computed: {
         orderedTabs () {
-            return orderBy(this.part.data.tabSections, ['order'], ['asc'])
+            return orderBy(this.data.data.tabs, ['order'], ['asc'])
         }
     },
 
     methods: {
-        ucfirst,
-
-        pascalCase,
-
-        isActive (sectionId, index) {
-            if (this.tabClicked === null && index === 0) {
-                return true
-            }
-
-            return this.tabClicked === index
-        }
+        pascalCase
     }
 }
 </script>

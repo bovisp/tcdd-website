@@ -29,8 +29,14 @@ export const ADD_NEW_FORM = (state, payload) => {
                 is_tab_section: payload.isTabSectionPart
             }
 
-            if (payload.isTabSectionPart) {
+            if (payload.isTabSectionPart && contentBuilder.new) {
                 contentBuilder.new.tabs[contentBuilder.new.activeTab].data = newObj
+            } else if (payload.isTabSectionPart && !contentBuilder.new) {
+                let editingPart = find(contentBuilder.edit, part => {
+                    return part.partDataId === payload.tabPartDataId
+                })
+
+                editingPart.payload.tabs[editingPart.payload.activeTab].data = newObj
             } else {
                 contentBuilder.new = newObj
             }
@@ -75,7 +81,7 @@ export const UPDATE_EDIT_FORM = (state, payload) => {
 
 
     for (const [key, value] of Object.entries(payload.payload)) {
-        builder.new.payload[key] = value
+        editObj.payload[key] = value
     }   
 }
 
@@ -86,12 +92,18 @@ export const UPDATE_NEW_FORM = (state, payload) => {
                 for await (const [key, value] of Object.entries(payload.payload)) {
                     builder.new[key] = value
                 }
+            } else if (payload.isTabSectionPart && builder.new) {
+                for await (const [key, value] of Object.entries(payload.payload)) {
+                    builder.new.tabs[builder.new.activeTab].data[key] = value
+                }
+            } else {
+                let editingPart = find(builder.edit, part => {
+                    return part.partDataId === payload.tabPartDataId
+                })
 
-                return
-            }
-
-            for await (const [key, value] of Object.entries(payload.payload)) {
-                builder.new.tabs[builder.new.activeTab].data[key] = value
+                for await (const [key, value] of Object.entries(payload.payload)) {
+                    editingPart.payload.tabs[editingPart.payload.activeTab].data[key] = value
+                }
             }
         }
     })

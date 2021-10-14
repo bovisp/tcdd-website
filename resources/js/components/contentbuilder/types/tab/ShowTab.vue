@@ -1,42 +1,30 @@
 <template>
     <div 
-        v-if="!isEmpty(part)"
+        v-if="!isEmpty(data)"
     >
-        <template v-if="!editing && !isEmpty(part)">
+        <template v-if="!data.editingPart && !isEmpty(data)">
             <component 
-                :is="`Final${ pascalCase(part.builderType.type) }`"
-                :part="part"
+                :is="`Final${ pascalCase(data.builderType.type) }`"
+                :data="data"
+                :id="id"
             ></component>
         </template>
 
         <template v-else>
             <edit-tabs 
-                :lang="lang"
-                :data="part.data"
+                :data="data"
+                :id="id"
             />
 
-            <div class="level mt-2">
-                <div class="level-left">
-                    <div class="level-item">
-                        <b-button
-                            type="is-info"
-                            size="is-small"
-                            icon-left="pencil"
-                            @click.prevent="update"
-                        >Update tab</b-button>
-                    </div>
-                </div>
-
-                <div class="level-right">
-                    <div class="level-item">
-                        <b-button
-                            type="is-text"
-                            size="is-small"
-                            @click.prevent="cancelUpdatingTab"
-                        >Cancel updating tab</b-button>
-                    </div>
-                </div>
-            </div>
+            <update-buttons 
+                @update="update({
+                    type: 'tab',
+                    id: currentContentBuilder.id,
+                    partDataId: data.data.id,
+                    partId: data.id
+                })"
+                @cancel="cancel"
+            />
         </template>
     </div>
 </template>
@@ -44,47 +32,23 @@
 <script>
 import { filter, isEmpty, isNumber } from 'lodash-es'
 import { pascalCase } from 'change-case'
+import updateContentBuilder from '../../../../mixins/updateContentBuilder'
 
 export default {
-    props: {
-        contentBuilderId: {
-            type: Number,
-            required: false,
-            default: null
-        },
-        lang: {
-            type: String,
-            required: false,
-            default: ''
-        },
-        data: {
-            type: Object,
-            required: true
-        },
-    },
-
-    data () {
-        return {
-            form: null,
-            builderId: null,
-            part: null,
-            editing: false
-        }
-    },
+    mixins: [
+        updateContentBuilder
+    ],
 
     methods: {
         isEmpty,
 
         pascalCase,
 
-        async update () {
-            let { data } = await axios.patch(`${this.urlBase}/api/parts/${this.part.id}/tab`, this.form)
-
-            this.part = data
-
-            this.editing = false
-
-            window.events.$emit('part:edit-cancel')
+        cancel () {
+            this.cancelEditingPart({
+                id: this.id,
+                partId: this.data.id
+            })
         },
 
         async cancelUpdatingTab () {
@@ -102,28 +66,6 @@ export default {
 
             window.events.$emit('part:edit-cancel')
         }
-    },
-
-    mounted () {
-        this.part = this.data
-
-        this.form = this.data.data
-
-        this.builderId = this.contentBuilderId ? this.contentBuilderId : this.contentIds[this.lang]
-
-        window.events.$on('tabs:update-tab-list', tabs => this.form.tabs = tabs)
-
-        window.events.$on('tabs:update-form', form => this.form = form)
-
-        window.events.$on('part:edit', partId => {
-            if (this.part.id === partId) {
-                this.editing = true
-            }
-        })
-
-        window.events.$on('turn-editing-off', async () => {
-            await this.cancelUpdatingTab()
-        })
     }
 }
 </script>
