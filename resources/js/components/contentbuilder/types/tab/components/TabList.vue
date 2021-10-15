@@ -212,7 +212,6 @@ export default {
         },
 
         async updateTab (payload) {
-            console.log(payload)
             for await (let tab of this.tabs) {
                 if (tab.id === payload.tabToEdit.id) {
                     tab.label = payload.tabToEdit.label

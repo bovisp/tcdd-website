@@ -55,10 +55,8 @@ export const updatePart = async ({commit, rootState}, payload) => {
         if (builder.id === payload.id) {
             forEach(builder.edit, async part => {
                 if (part.partDataId === payload.partDataId) {
-                    console.log(part.payload)
                     let { data } = await axios.patch(`${urlBase}/api/parts/${payload.partDataId}/${payload.type}`, part.payload)
                     
-                    console.log(data)
                     await commit('UPDATE_PART', {data, payload}, { root: true })
                 }
             })
@@ -95,7 +93,7 @@ export const changePartOrder = async ({rootState, commit}, payload) => {
     })
 }
 
-export const cancelAddingTab = async ({rootState, commit}, payload) => {
+export const cancelAddingTab = async ({rootState}, payload) => {
     forEach(rootState.contentBuilder, async builder => {
         if (builder.id === payload.id) {
             for await (const tab of builder.new.tabs) {
@@ -108,6 +106,12 @@ export const cancelAddingTab = async ({rootState, commit}, payload) => {
 
             window.events.$emit('part:add-cancel')
         }
+    })
+}
+
+export const removeFile = async ({}, files) => {
+    await axios.delete(`${urlBase}/uploads`, {
+        data: { files }
     })
 }
 

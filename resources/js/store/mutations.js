@@ -23,22 +23,45 @@ export const ADD_NEW_FORM = (state, payload) => {
 
     switch (payload.type) {
         case 'content':
-            let newObj = {
+            let newContentObj = {
                 content: '',
                 content_builder_type_id: 2,
                 is_tab_section: payload.isTabSectionPart
             }
 
             if (payload.isTabSectionPart && contentBuilder.new) {
-                contentBuilder.new.tabs[contentBuilder.new.activeTab].data = newObj
+                contentBuilder.new.tabs[contentBuilder.new.activeTab].data = newContentObj
             } else if (payload.isTabSectionPart && !contentBuilder.new) {
                 let editingPart = find(contentBuilder.edit, part => {
                     return part.partDataId === payload.tabPartDataId
                 })
 
-                editingPart.payload.tabs[editingPart.payload.activeTab].data = newObj
+                editingPart.payload.tabs[editingPart.payload.activeTab].data = newContentObj
             } else {
-                contentBuilder.new = newObj
+                contentBuilder.new = newContentObj
+            }
+
+            break
+
+        case 'media':
+            let newMediaObj = {
+                title: '',
+                caption: '',
+                filename: [],
+                content_builder_type_id: 4,
+                is_tab_section: payload.isTabSectionPart
+            }
+
+            if (payload.isTabSectionPart && contentBuilder.new) {
+                contentBuilder.new.tabs[contentBuilder.new.activeTab].data = newMediaObj
+            } else if (payload.isTabSectionPart && !contentBuilder.new) {
+                let editingPart = find(contentBuilder.edit, part => {
+                    return part.partDataId === payload.tabPartDataId
+                })
+
+                editingPart.payload.tabs[editingPart.payload.activeTab].data = newMediaObj
+            } else {
+                contentBuilder.new = newMediaObj
             }
 
             break

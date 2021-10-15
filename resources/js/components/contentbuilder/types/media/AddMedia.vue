@@ -10,8 +10,9 @@
         </b-field>
 
         <edit-media 
-            :file="form.filename"
-            :adding="adding"
+            :id="currentContentBuilder.id"
+            :is-tab-section-part="isTabSectionPart"
+            :tab-part-data-id="tabPartDataId"
         />
 
         <b-field class="mt-2">
@@ -23,7 +24,12 @@
         </b-field>
 
         <store-buttons 
-            @store="store('media')"
+             @store="store({
+                type: 'media',
+                id: currentContentBuilder.id,
+                isTabSectionPart,
+                tabPartDataId
+            })"
             @cancel="cancel"
         />
     </div>
@@ -31,6 +37,7 @@
 
 <script>
 import storeContentBuilder from '../../../../mixins/storeContentBuilder'
+import { mapActions } from 'vuex'
 
 export default {
     mixins: [
@@ -39,52 +46,29 @@ export default {
 
     data () {
         return {
-            adding: true,
             form: {
-                content_builder_type_id: 4,
-                filename: [],
                 title: '',
-                caption: '',
-                is_tab_section: this.isTabSectionPart
-            },
+                caption: ''
+            }
         }
     },
 
     methods: {
-        async cancel () {
-            await this.removeFile()
+        ...mapActions({
+            removeFile: 'contentbuilder/removeFile'
+        }),
 
-            this.adding = false
-
-            this.genericCancel()
+        store (payload) {
+            this.createPart(payload)
         },
 
-        async removeFile () {
-            await axios.delete(`${this.urlBase}/uploads`, {
-                data: {
-                    files: this.form.filename
-                }
-            })
+        async cancel () {
+            await this.removeFile(this.currentContentBuilder.new.filename)
 
-            this.form.filename = []
+            this.genericCancel()
+
+            window.events.$emit('tabs:cancel-add-part')
         }
-    },
-
-    mounted () {
-        window.events.$on('uploads:file', file => {
-            if (this.adding) {
-                this.form.filename.push({
-                    file: file['file'],
-                    original: file['original']
-                })
-            }
-        })
-
-        window.events.$on('media:remove', file => {
-            if (this.adding && this.form.filename[0].file === file) {
-                this.form.filename = []
-            }
-        })
     }
 }
 </script>

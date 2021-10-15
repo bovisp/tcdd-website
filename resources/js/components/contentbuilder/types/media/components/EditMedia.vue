@@ -3,8 +3,8 @@
         <div v-if="files.length">
             <media-display 
                 :file="files"
-                :editing="editing"
-                :adding="adding"
+                :data="data"
+                :id="currentContentBuilder.id"
             />
         </div>
 
@@ -41,43 +41,74 @@
 </template>
 
 <script>
+import contentBuilderData from '../../../../../mixins/contentBuilder'
+import { isEmpty } from 'lodash-es'
+import { mapActions } from 'vuex'
+
 export default {
+    mixins: [
+        contentBuilderData
+    ],
+
     props: {
-        file: {
-            type: Array,
-            required: false
-        },
-        editing: {
-            type: Boolean,
-            required: false
-        },
-        adding: {
-            type: Boolean,
-            required: false
-        },
-        partId: {
-            type: Number,
+        data: {
+            type: Object,
             required: false
         }
     },
 
     data () {
         return {
-            files: []
+            files: [],
         }
     },
 
-    mounted () {
-        this.files = this.file
+    watch: {
+        files: {
+            deep: true,
 
-        window.events.$on('media:remove', file => {
+            handler () {
+                if (isEmpty(this.data)) {
+                    this.updateNewForm({
+                        currentContentBuilder: this.currentContentBuilder,
+                        partial: true,
+                        payload: {
+                            filename: this.files
+                        }
+                    })
+                } else {
+                    this.updateEditForm({
+                        currentContentBuilder: this.currentContentBuilder,
+                        partDataId: this.data.data.id,
+                        type: this.data.builderType.type,
+                        payload: {
+                            filename: this.files
+                        }
+                    })
+                }
+            }
+        },
+    },
+
+    methods: {
+        ...mapActions({
+            updateNewForm: 'contentbuilder/updateNewForm',
+            updateEditForm: 'contentbuilder/updateEditForm',
+            removeFile: 'contentbuilder/removeFile'
+        })
+    },
+
+    mounted () {
+        window.events.$on('media:remove', async file => {
             if (this.files[0].file === file) {
+                await this.removeFile(this.files)
+                
                 this.files = []
             }
         })
 
         window.events.$on('uploads:file', file => {
-            if (!this.files.length && (this.editing || this.adding)) {
+            if (!this.files.length && (this.currentContentBuilder.new || this.data.editingPart)) {
                 this.files.push(file)
             }
         })

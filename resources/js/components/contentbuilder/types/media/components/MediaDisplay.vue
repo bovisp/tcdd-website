@@ -18,7 +18,7 @@
         </video>
 
         <div 
-            v-if="editing || adding"
+            v-if="currentContentBuilder.new || data.editingPart"
             class="flex w-full mt-2"
         >
             <b-button
@@ -33,19 +33,20 @@
 
 <script>
 import fileExtension from '../../../../../helpers/fileExtension'
+import contentBuilderData from '../../../../../mixins/contentBuilder'
 
 export default {
+    mixins: [
+        contentBuilderData
+    ],
+
     props: {
         file: {
             type: Array,
             required: false
         },
-        editing: {
-            type: Boolean,
-            required: false
-        },
-        adding: {
-            type: Boolean,
+        data: {
+            type: Object,
             required: false
         }
     },
