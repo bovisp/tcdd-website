@@ -38,6 +38,7 @@
 <script>
 import storeContentBuilder from '../../../../mixins/storeContentBuilder'
 import { mapActions } from 'vuex'
+import { forIn } from 'lodash-es'
 
 export default {
     mixins: [
@@ -53,9 +54,45 @@ export default {
         }
     },
 
+    watch: {
+        form: {
+            deep: true,
+
+            handler () {
+                this.updateNewForm({
+                    currentContentBuilder: this.currentContentBuilder,
+                    partial: true,
+                    payload: {
+                        title: this.form.title,
+                        caption: this.form.caption
+                    }
+                })
+            }
+        },
+
+        errors: {
+            deep: true,
+
+            handler () {
+                forIn(this.errors, (value, key) => {
+                    if (key.includes('filename')) {
+                        this.$buefy.dialog.alert({
+                            title: 'Error',
+                            message: 'You need to add a file first.',
+                            type: 'is-danger',
+                            ariaRole: 'alertdialog',
+                            ariaModal: true
+                        })
+                    }
+                })
+            }
+        }
+    },
+
     methods: {
         ...mapActions({
-            removeFile: 'contentbuilder/removeFile'
+            removeFile: 'contentbuilder/removeFile',
+            updateNewForm: 'contentbuilder/updateNewForm'
         }),
 
         store (payload) {

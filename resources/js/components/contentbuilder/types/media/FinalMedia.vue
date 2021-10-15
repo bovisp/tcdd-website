@@ -2,39 +2,41 @@
     <div class="my-4">
         <p 
             class="mb-4 text-center font-light w-full text-xl"
-            v-if="typeof part.data !== 'undefined' && part.data.title"
+            v-if="typeof data.data !== 'undefined' && data.data.title"
         >
-            {{ part.data.title }}
+            {{ data.data.title }}
         </p>
 
-        <div v-if="part.data">
+        <div v-if="data.data">
             <media-display 
-                :file="part.data.filename"
+                :file="data.data.filename"
+                :data="data"
+                :id="currentContentBuilder.id"
             />
         </div>
 
         <p 
             class="mb-0 mt-2 text-gray-700 w-3/4 mx-auto"
-            v-if="typeof part.data !== 'undefined' && part.data.caption"
+            v-if="typeof data.data !== 'undefined' && data.data.caption"
         >
-            <small>{{ part.data.caption }}</small>
+            <small>{{ data.data.caption }}</small>
         </p>
     </div>
 </template>
 
 <script>
-import fileExtension from '../../../../helpers/fileExtension'
+import contentBuilderData from '../../../../mixins/contentBuilder'
 
 export default {
+    mixins: [
+        contentBuilderData
+    ],
+
     props: {
-        part: {
+        data: {
             type: Object,
-            required: true
+            required: false
         }
     },
-
-    methods: {
-        fileExtension
-    }
 }
 </script>

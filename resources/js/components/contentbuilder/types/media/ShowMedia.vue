@@ -1,13 +1,14 @@
 <template>
-    <div v-if="!isEmpty(part)">
-        <template v-if="!editing && !isEmpty(part)">
+    <div v-if="!isEmpty(data)">
+        <template v-if="!data.editingPart && !isEmpty(data)">
             <component 
-                :is="`Final${ pascalCase(part.builderType.type) }`"
-                :part="part"
+                :is="`Final${ pascalCase(data.builderType.type) }`"
+                :data="data"
+                :id="id"
             ></component>
         </template>
 
-        <div v-if="editing">
+        <div v-if="data.editingPart">
             <form>
                 <b-field>
                     <b-input 
@@ -19,9 +20,8 @@
                 </b-field>
 
                 <edit-media 
-                    :file="form.filename"
-                    :editing="editing"
-                    :partId="part.data.id"
+                    :data="data"
+                    :id="id"
                 />
 
                 <b-field class="mt-2">
@@ -34,7 +34,12 @@
 
                 <div class="mt-2">
                     <update-buttons 
-                        @update="update('media')"
+                         @update="update({
+                            type: 'media',
+                            id: currentContentBuilder.id,
+                            partDataId: data.data.id,
+                            partId: data.id
+                        })"
                         @cancel="cancel"
                     />
                 </div>
@@ -45,6 +50,8 @@
 
 <script>
 import updateContentBuilder from '../../../../mixins/updateContentBuilder'
+import { mapActions } from 'vuex'
+import { isEmpty, forIn } from 'lodash-es'
 
 export default {
     mixins: [
@@ -55,58 +62,67 @@ export default {
         return {
             form: {
                 title: '',
-                caption: '',
-                filename: []
+                caption: ''
+            }
+        }
+    },
+
+    watch: {
+        form: {
+            deep: true,
+
+            handler () {
+                this.updateEditForm({
+                    currentContentBuilder: this.currentContentBuilder,
+                    partDataId: this.data.data.id,
+                    type: this.data.builderType.type,
+                    partial: true,
+                    payload: {
+                        title: this.form.title,
+                        caption: this.form.caption
+                    }
+                })
+            }
+        },
+        errors: {
+            deep: true,
+
+            handler () {
+                forIn(this.errors, (value, key) => {
+                    if (key.includes('filename')) {
+                        this.$buefy.dialog.alert({
+                            title: 'Error',
+                            message: 'You need to add a file first.',
+                            type: 'is-danger',
+                            ariaRole: 'alertdialog',
+                            ariaModal: true
+                        })
+                    }
+                })
             }
         }
     },
 
     methods: {
-        setContent () {
-            this.form.title = this.part.data.title
-
-            this.form.caption = this.part.data.caption
-
-            this.form.filename = this.part.data.filename
-        },
+        ...mapActions({
+            removeFile: 'contentbuilder/removeFile',
+            updateEditForm: 'contentbuilder/updateEditForm'
+        }),
 
         cancel () {
-            this.editing = false
-
-            window.events.$emit('part:edit-cancel')
-        },
-
-        async removeFile () {
-            await axios.delete(`${this.urlBase}/uploads`, {
-                data: {
-                    files: this.form.filename
-                }
+            this.cancelEditingPart({
+                id: this.id,
+                partId: this.data.id
             })
-
-            this.form.filename = []
         }
     },
 
     mounted () {
-        window.events.$on('uploads:file', file => {
-            if (this.editing) {
-                this.form.filename.push({
-                    file: file['file'],
-                    original: file['original']
-                })
+        if (!isEmpty(this.data)) {
+            this.form.caption = this.data.data.caption
 
-                window.events.$emit('media:replace', {
-                    file,
-                    partId: this.part.data.id
-                })
-            }
-        })
-
-        window.events.$on('media:remove', file => {
-            if (this.editing && this.form.filename[0].file === file) {
-                this.removeFile()
-            }
-        })
+            this.form.title = this.data.data.title
+        }
     }
 }
 </script>

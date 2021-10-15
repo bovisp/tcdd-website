@@ -81,6 +81,7 @@ export default {
                         currentContentBuilder: this.currentContentBuilder,
                         partDataId: this.data.data.id,
                         type: this.data.builderType.type,
+                        partial: true,
                         payload: {
                             filename: this.files
                         }
@@ -99,17 +100,31 @@ export default {
     },
 
     mounted () {
+        if (!isEmpty(this.data)) {
+            this.files = this.data.data.filename
+        }
+
         window.events.$on('media:remove', async file => {
-            if (this.files[0].file === file) {
-                await this.removeFile(this.files)
-                
-                this.files = []
+            if (typeof this.files !== 'undefined') {
+                if (this.files[0].file === file) {
+                    await this.removeFile(this.files)
+                    
+                    this.files = []
+                }
             }
         })
 
         window.events.$on('uploads:file', file => {
-            if (!this.files.length && (this.currentContentBuilder.new || this.data.editingPart)) {
-                this.files.push(file)
+            if (this.data) {
+                if (!this.files.length && this.data.editingPart) {
+                    this.files.push(file)
+
+                    return
+                }
+            }
+
+            if (!this.files.length && this.currentContentBuilder.new) {
+                    this.files.push(file)
             }
         })
     }
