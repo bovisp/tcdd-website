@@ -3,9 +3,11 @@
         <form>
             <edit-tabs 
                 :id="currentContentBuilder.id"
+                @tabs:toggle-save-button="showCreateButton = !showCreateButton"
             />
 
             <store-buttons 
+                :show-create-button="showCreateButton"
                 @store="store({
                     type: 'tab',
                     id: currentContentBuilder.id,
@@ -28,6 +30,12 @@ export default {
     mixins: [
         storeContentBuilder
     ],
+
+    data () {
+        return {
+            showCreateButton: false
+        }
+    },
 
     watch: {
         errors: {
@@ -57,6 +65,10 @@ export default {
         store (payload) {
             this.createPart(payload)
         }
+    },
+
+    mounted () {
+        window.events.$emit('tabs:toggle-save-button')
     }
 }
 </script>

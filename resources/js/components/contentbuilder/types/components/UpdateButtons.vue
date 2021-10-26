@@ -4,6 +4,7 @@
             type="is-info"
             size="is-small"
             @click.prevent="$emit('update')"
+            v-if="showUpdateButton"
         >
             Update
         </b-button>
@@ -18,3 +19,15 @@
         </b-button>
     </div>
 </template>
+
+<script>
+export default {
+    props: {
+        showUpdateButton: {
+            type: Boolean,
+            required: false,
+            default: true
+        }
+    }
+}
+</script>

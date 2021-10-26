@@ -1,10 +1,17 @@
 <template>
     <div>
-        <div v-if="files.length">
+        <b-field>
+            <b-input 
+                placeholder="Add an optional title..."
+                size="is-medium"
+                class="borderless-input borderless-input-md"
+                v-model="form.title"
+            ></b-input>
+        </b-field>
+
+        <div v-if="form.files.length">
             <media-display 
-                :file="files"
-                :data="data"
-                :id="currentContentBuilder.id"
+                :file="form.files"
             />
         </div>
 
@@ -37,6 +44,14 @@
                 />
             </div>
         </div>
+
+        <b-field class="mt-2">
+            <b-input 
+                placeholder="Add an optional caption..."
+                class="borderless-input"
+                v-model="form.caption"
+            ></b-input>
+        </b-field>
     </div>
 </template>
 
@@ -54,17 +69,31 @@ export default {
         data: {
             type: Object,
             required: false
+        },
+        isTabSectionPart: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        tabPartDataId: {
+            type: Number,
+            required: false,
+            default: null
         }
     },
 
     data () {
         return {
-            files: [],
+            form: {
+                files: [],
+                title: '',
+                caption: ''
+            }
         }
     },
 
     watch: {
-        files: {
+        form: {
             deep: true,
 
             handler () {
@@ -72,18 +101,24 @@ export default {
                     this.updateNewForm({
                         currentContentBuilder: this.currentContentBuilder,
                         partial: true,
+                        tabPartDataId: this.tabPartDataId,
+                        isTabSectionPart: this.isTabSectionPart,
                         payload: {
-                            filename: this.files
+                            filename: this.form.files,
+                            title: this.form.title,
+                            caption: this.form.caption
                         }
                     })
                 } else {
                     this.updateEditForm({
                         currentContentBuilder: this.currentContentBuilder,
                         partDataId: this.data.data.id,
+                        tabPartDataId: this.tabPartDataId,
                         type: this.data.builderType.type,
-                        partial: true,
                         payload: {
-                            filename: this.files
+                            filename: this.form.files,
+                            title: this.form.title,
+                            caption: this.form.caption
                         }
                     })
                 }
@@ -101,30 +136,42 @@ export default {
 
     mounted () {
         if (!isEmpty(this.data)) {
-            this.files = this.data.data.filename
+            this.form.files = this.data.data.filename
+
+            this.form.title = this.data.data.title
+
+            this.form.caption = this.data.data.caption
         }
 
         window.events.$on('media:remove', async file => {
-            if (typeof this.files !== 'undefined') {
-                if (this.files[0].file === file) {
-                    await this.removeFile(this.files)
+            if (typeof this.form.files !== 'undefined') {
+                if (this.form.files[0].file === file) {
+                    await this.removeFile(this.form.files)
                     
-                    this.files = []
+                    this.form.files = []
                 }
             }
         })
 
         window.events.$on('uploads:file', file => {
             if (this.data) {
-                if (!this.files.length && this.data.editingPart) {
-                    this.files.push(file)
+                if (!this.form.files.length && this.data.editingPart) {
+                    this.form.files.push(file)
 
                     return
                 }
             }
 
-            if (!this.files.length && this.currentContentBuilder.new) {
-                    this.files.push(file)
+            if (!this.form.files.length && this.currentContentBuilder.new) {
+                    this.form.files.push(file)
+
+                    return
+            }
+
+            if (!this.form.files.length && this.isTabSectionPart) {
+                this.form.files.push(file)
+
+                return
             }
         })
     }

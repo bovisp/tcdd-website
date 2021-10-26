@@ -5,6 +5,7 @@
             v-if="showAddButton"
             size="is-small"
             expanded
+            outlined
             @click.prevent="addPartModal"
         >
             {{ trans('generic.addpart') }}
@@ -13,8 +14,6 @@
         <div 
             v-if="type && !addingPart"
         >
-            <hr class="my-8">
-
             <component 
                 :is="`Add${pascalCase(type)}`"
                 :id="currentContentBuilder.id"

@@ -73,6 +73,7 @@
 
             <b-tab-item
                 class="p-0"
+                v-if="showAddTabButton"
             >
                 <template #header>
                     <b-button 
@@ -115,6 +116,10 @@ export default {
         data: {
             type: Object,
             required: false
+        },
+        showAddTabButton: {
+            type: Boolean,
+            required: true
         }
     },
 

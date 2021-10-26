@@ -1,6 +1,8 @@
 <template>
     <div>
-        <b-field>
+        <b-field
+            v-if="!displaySaveButton"
+        >
             <b-input 
                 placeholder="Add an optional tab title..."
                 size="is-medium"
@@ -9,12 +11,40 @@
             ></b-input>
         </b-field>
 
+        <div 
+            class="flex"
+            v-if="!displaySaveButton || (!isEmpty(data) && data.editingPart && !displaySaveButton)"
+        >
+            <b-button
+                type="is-text"
+                size="is-small"
+                class="ml-auto"
+                @click.prevent="toggleSaveButton"
+            >Edit tabs</b-button>
+        </div>
+
         <tab-list 
             :id="currentContentBuilder.id"
             :data="data"
+            :show-add-tab-button="displaySaveButton"
         />
 
-        <b-field>
+        <b-field
+            class="mt-3 mb-5"
+        >
+            <b-button
+                type="is-info"
+                size="is-small"
+                expanded
+                @click.prevent="toggleSaveButton"
+                v-if="displaySaveButton"
+            >Save tabs</b-button>
+        </b-field>
+
+        <b-field
+            v-if="!displaySaveButton"
+            class="mb-3"
+        >
             <b-input 
                 placeholder="Add an optional tab caption..."
                 class="borderless-input"
@@ -46,7 +76,8 @@ export default {
             form: {
                 title: '',
                 caption: ''
-            }
+            },
+            displaySaveButton: true
         }
     },
 
@@ -84,7 +115,17 @@ export default {
         ...mapActions({
             updateNewForm: 'contentbuilder/updateNewForm',
             updateEditForm: 'contentbuilder/updateEditForm'
-        })
+        }),
+
+        isEmpty,
+
+        toggleSaveButton () {
+            this.displaySaveButton = !this.displaySaveButton
+
+            this.$emit('tabs:toggle-save-button')
+
+            this.$emit('tabs:toggle-update-button')
+        }
     },
 
     mounted () {

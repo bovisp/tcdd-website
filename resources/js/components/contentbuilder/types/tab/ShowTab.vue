@@ -14,9 +14,11 @@
             <edit-tabs 
                 :data="data"
                 :id="id"
+                @tabs:toggle-update-button="showUpdateButton = !showUpdateButton"
             />
 
             <update-buttons 
+                :show-update-button="showUpdateButton"
                 @update="update({
                     type: 'tab',
                     id: currentContentBuilder.id,
@@ -38,6 +40,12 @@ export default {
     mixins: [
         updateContentBuilder
     ],
+
+    data () {
+        return {
+            showUpdateButton: false
+        }
+    },
 
     methods: {
         isEmpty,

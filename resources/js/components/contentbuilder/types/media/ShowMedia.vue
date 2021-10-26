@@ -10,27 +10,10 @@
 
         <div v-if="data.editingPart">
             <form>
-                <b-field>
-                    <b-input 
-                        placeholder="Add an optional title..."
-                        size="is-medium"
-                        class="borderless-input borderless-input-md"
-                        v-model="form.title"
-                    ></b-input>
-                </b-field>
-
                 <edit-media 
                     :data="data"
                     :id="id"
                 />
-
-                <b-field class="mt-2">
-                    <b-input 
-                        placeholder="Add an optional caption..."
-                        class="borderless-input"
-                        v-model="form.caption"
-                    ></b-input>
-                </b-field>
 
                 <div class="mt-2">
                     <update-buttons 
@@ -51,39 +34,14 @@
 <script>
 import updateContentBuilder from '../../../../mixins/updateContentBuilder'
 import { mapActions } from 'vuex'
-import { isEmpty, forIn } from 'lodash-es'
+import { forIn } from 'lodash-es'
 
 export default {
     mixins: [
         updateContentBuilder
     ],
 
-    data () {
-        return {
-            form: {
-                title: '',
-                caption: ''
-            }
-        }
-    },
-
     watch: {
-        form: {
-            deep: true,
-
-            handler () {
-                this.updateEditForm({
-                    currentContentBuilder: this.currentContentBuilder,
-                    partDataId: this.data.data.id,
-                    type: this.data.builderType.type,
-                    partial: true,
-                    payload: {
-                        title: this.form.title,
-                        caption: this.form.caption
-                    }
-                })
-            }
-        },
         errors: {
             deep: true,
 
@@ -114,14 +72,6 @@ export default {
                 id: this.id,
                 partId: this.data.id
             })
-        }
-    },
-
-    mounted () {
-        if (!isEmpty(this.data)) {
-            this.form.caption = this.data.data.caption
-
-            this.form.title = this.data.data.title
         }
     }
 }

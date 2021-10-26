@@ -1,4 +1,4 @@
-import { find, forEach, merge, findIndex } from 'lodash-es'
+import { find, forEach, merge, findIndex, remove } from 'lodash-es'
 
 export const setErrors = (state, payload) => state.errors = payload
 
@@ -47,7 +47,7 @@ export const ADD_NEW_FORM = (state, payload) => {
             let newMediaObj = {
                 title: '',
                 caption: '',
-                filename: [],
+                filename: null,
                 content_builder_type_id: 4,
                 is_tab_section: payload.isTabSectionPart
             }
@@ -117,7 +117,11 @@ export const UPDATE_NEW_FORM = (state, payload) => {
                 }
             } else if (payload.isTabSectionPart && builder.new) {
                 for await (const [key, value] of Object.entries(payload.payload)) {
-                    builder.new.tabs[builder.new.activeTab].data[key] = value
+                    if (typeof value === 'object') {
+                        builder.new.tabs[builder.new.activeTab].data[key] = Object.assign(value)
+                    } else {
+                        builder.new.tabs[builder.new.activeTab].data[key] = value
+                    }
                 }
             } else {
                 let editingPart = find(builder.edit, part => {
@@ -125,7 +129,12 @@ export const UPDATE_NEW_FORM = (state, payload) => {
                 })
 
                 for await (const [key, value] of Object.entries(payload.payload)) {
-                    editingPart.payload.tabs[editingPart.payload.activeTab].data[key] = value
+                    if (typeof value === 'object') {
+                        editingPart.payload.tabs[editingPart.payload.activeTab].data[key] = Object.assign(value)
+                    } else {
+                        editingPart.payload.tabs[editingPart.payload.activeTab].data[key] = value
+                    }
+                    
                 }
             }
         }
@@ -158,6 +167,8 @@ export const UPDATE_PART = (state, {data, payload}) => {
     let contentBuilder = find(state.contentBuilder, builder => builder.id === payload.id)
 
     let part = find(contentBuilder.parts, part => part.id === payload.partId)
+
+    remove(contentBuilder.edit, part => part.partDataId === payload.partId)
 
     part = Object.assign(part, data)
 }

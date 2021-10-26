@@ -4,6 +4,7 @@
             type="is-info"
             size="is-small"
             @click.prevent="$emit('store')"
+            v-if="showCreateButton"
         >
             Create
         </b-button>
@@ -18,3 +19,15 @@
         </b-button>
     </div>
 </template>
+
+<script>
+export default {
+    props: {
+        showCreateButton: {
+            type: Boolean,
+            required: false,
+            default: true
+        }
+    }
+}
+</script>

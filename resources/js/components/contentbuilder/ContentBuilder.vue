@@ -39,10 +39,13 @@
                 />
             </draggable>
 
-            <add-part
-                v-if="editing"
-                :id="currentContentBuilder.id"
-            />
+            <template v-if="editing">
+                <hr class="my-4">
+
+                <add-part
+                    :id="currentContentBuilder.id"
+                />
+            </template>
         </div>
     </div>
 </template>

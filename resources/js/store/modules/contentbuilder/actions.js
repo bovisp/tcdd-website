@@ -42,6 +42,13 @@ export const createPart = async ({rootState, commit}, payload) => {
             let { data } = await axios.post(`${urlBase}/api/content-builder/${payload.id}/${payload.type}`, form)
 
             await commit('ADD_PART', {data, id: payload.id, isTabSectionPart: payload.isTabSectionPart}, { root: true })
+
+            if ((data.data.type === 'media' || data.data.type === 'animation') && payload.isTabSectionPart) {
+                window.events.$emit('remove-delete-button', {
+                    id: data.data.id,
+                    type: data.data.type
+                })
+            }
         }
     })
 }
