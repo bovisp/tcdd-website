@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { filter, isEmpty, isNumber } from 'lodash-es'
+import { filter, isEmpty, isNumber, forIn } from 'lodash-es'
 import { pascalCase } from 'change-case'
 import updateContentBuilder from '../../../../mixins/updateContentBuilder'
 
@@ -44,6 +44,26 @@ export default {
     data () {
         return {
             showUpdateButton: false
+        }
+    },
+
+    watch: {
+        errors: {
+            deep: true,
+
+            handler () {
+                forIn(this.errors, (value, key) => {
+                    if (key.includes('tabs')) {
+                        this.$buefy.dialog.alert({
+                            title: 'Error',
+                            message: value[0],
+                            type: 'is-danger',
+                            ariaRole: 'alertdialog',
+                            ariaModal: true
+                        })
+                    }
+                })
+            }
         }
     },
 
