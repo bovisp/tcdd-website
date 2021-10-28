@@ -65,6 +65,28 @@ export const ADD_NEW_FORM = (state, payload) => {
             }
 
             break
+        case 'animation':
+            let newAnimationObj = {
+                title: '',
+                caption: '',
+                files: null,
+                content_builder_type_id: 3,
+                is_tab_section: payload.isTabSectionPart
+            }
+
+            if (payload.isTabSectionPart && contentBuilder.new) {
+                contentBuilder.new.tabs[contentBuilder.new.activeTab].data = newAnimationObj
+            } else if (payload.isTabSectionPart && !contentBuilder.new) {
+                let editingPart = find(contentBuilder.edit, part => {
+                    return part.partDataId === payload.tabPartDataId
+                })
+
+                editingPart.payload.tabs[editingPart.payload.activeTab].data = newAnimationObj
+            } else {
+                contentBuilder.new = newAnimationObj
+            }
+
+            break
         case 'tab':
             contentBuilder.new = {
                 caption: '',

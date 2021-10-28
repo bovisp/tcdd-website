@@ -81,52 +81,34 @@ class AnimationPartController extends Controller
                 'caption' => request('caption')
             ]);
 
-            if (request()->has('tab_part_section_title')) {
-                
-                $tabSection = TabPartSection::create([
-                    'title' => request('tab_part_section_title'),
-                    'tab_part_id' => request('part_id'),
-                    'content_id' => $animation->id,
-                    'type' => 'animation'
-                ]);
-    
-                return [
-                    'data' => [
-                        'images' => unserialize($animation->images),
-                        'id' => $animation->id,
-                        'title' => $animation->title,
-                        'caption' => $animation->caption,
-                        'type' => 'animation'
-                    ],
-                    'id' => $tabSection->id,
-                    'title' => $tabSection->title
-                ];
-            }
-
             return [
-                'images' => unserialize($animation->images),
-                'title' => $animation->title,
-                'caption' => $animation->caption,
-                'id' => $animation->id
+                'data' => [
+                    'images' => $files,
+                    'id' => $animation->id,
+                    'title' => $animation->title,
+                    'caption' => $animation->caption,
+                    'type' => 'animation'
+                ],
+                'builderType' => [
+                    'type' => 'animation'
+                ]
             ];
         }
     }
 
-    public function update(Part $part)
+    public function update(AnimationPart $animationPart)
     {
         request()->validate([
             'title' => 'nullable|min:3',
             'caption' => 'nullable|min:3'
         ]);
 
-        $animationPart = AnimationPart::wherePartId($part->id)->first();
-
         $animationPart->update([
             'title' => request('title'),
             'caption' => request('caption')
         ]);
 
-        return new PartResource($part);
+        return new PartResource(Part::find($animationPart->part_id));
     }
 
     public function destroy(AnimationPart $partType)

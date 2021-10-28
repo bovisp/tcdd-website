@@ -126,7 +126,7 @@ Route::patch('api/content-builder/{contentBuilder}/change-order', 'ContentBuilde
 
 Route::get('/api/parts/types', 'ContentBuilderTypes\Api\ContentBuilderTypesController@index');
 Route::patch('/api/parts/{contentPart}/content', 'ContentBuilder\Api\ContentPartController@update');
-Route::patch('/api/parts/{part}/animation', 'ContentBuilder\Api\AnimationPartController@update');
+Route::patch('/api/parts/{animationPart}/animation', 'ContentBuilder\Api\AnimationPartController@update');
 Route::patch('/api/parts/{mediaPart}/media', 'ContentBuilder\Api\MediaPartController@update');
 Route::patch('/api/parts/{tabPart}/tab', 'ContentBuilder\Api\TabPartController@update');
 Route::delete('/api/parts/tabs/cancel', 'ContentBuilder\Api\TabPartController@destroyData');

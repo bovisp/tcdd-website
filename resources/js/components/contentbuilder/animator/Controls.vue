@@ -1,42 +1,34 @@
 <template>
   <div class="flex justify-center mt-6">
-    <button 
-      class="btn btn-outline mx-2 text-gray-700"
+    <b-button 
+      class="mx-2"
+      icon-right="skip-backward"
       @click.prevent="$emit('start')"
-    >
-      <i class="fas fa-fast-backward"></i>
-    </button>
+    ></b-button>
 
-    <button 
-      class="btn btn-outline mx-2 text-gray-700"
+    <b-button 
+      class="mx-2"
+      icon-right="skip-previous"
       @click.prevent="$emit('backward')"
-    >
-      <i class="fas fa-backward"></i>
-    </button>
+    ></b-button>
 
-    <button 
-      class="btn btn-outline mx-2 text-gray-700"
+    <b-button 
+      class="mx-2"
+      :icon-right="playState"
       @click.prevent="togglePlay"
-    >
-      <i 
-        class="fas"
-        :class="playState"
-      ></i>
-    </button>
+    ></b-button>
 
-    <button 
-      class="btn btn-outline mx-2 text-gray-700"
+    <b-button 
+      class="mx-2"
+      icon-right="skip-next"
       @click.prevent="$emit('forward')"
-    >
-      <i class="fas fa-forward"></i>
-    </button>
+    ></b-button>
 
-    <button 
-      class="btn btn-outline mx-2 text-gray-700"
+    <b-button 
+      class="mx-2"
+      icon-right="skip-forward"
       @click.prevent="$emit('end')"
-    >
-      <i class="fas fa-fast-forward"></i>
-    </button>
+    ></b-button>
   </div>
 </template>
 
@@ -44,13 +36,13 @@
 export default {
   data () {
     return {
-      playState: 'fa-play'
+      playState: 'play'
     }
   },
 
   methods: {
     togglePlay () {
-      this.playState = this.playState === 'fa-play' ? 'fa-pause' : 'fa-play'
+      this.playState = this.playState === 'play' ? 'pause' : 'play'
 
       this.$emit('playpause', {state: this.playState})
     }

@@ -22,7 +22,8 @@ class BuildAnimationData
             'images' => unserialize($data->images),
             'title' => $data->title,
             'caption' => $data->caption,
-            'type' => 'animation'
+            'type' => 'animation',
+            'id' => $data->id,
         ];
     }
 }

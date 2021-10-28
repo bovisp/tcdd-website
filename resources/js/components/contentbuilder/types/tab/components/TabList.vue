@@ -22,6 +22,7 @@
                         type="is-text"
                         size="is-small"
                         @click.prevent="editTab(tab)"
+                        :disabled="!showAddTabButton"
                     ></b-button>
 
                     <b-button 
@@ -29,7 +30,7 @@
                         type="is-text"
                         size="is-small"
                         class="has-text-danger"
-                        :disabled="tabLength < 2"
+                        :disabled="tabLength < 2 || !showAddTabButton"
                         @click.prevent="$buefy.dialog.confirm({
                             title: `Delete tab: ${tab.label}`,
                             message: `Are you sure you want to <b>delete</b> the tab: ${tab.label}?`,

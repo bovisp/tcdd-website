@@ -27,13 +27,12 @@
 </template>
 
 <script>
-import Controls from './Controls'
 import { orderBy, findIndex } from 'lodash-es'
 
 export default {
   props: {
-    data: {
-        type: Object,
+    files: {
+        type: Array,
         required: true
     },
     standalone: {
@@ -48,10 +47,6 @@ export default {
     }
   },
 
-  components: {
-    Controls
-  },
-
   data () {
     return {
       part: [],
@@ -61,7 +56,7 @@ export default {
   },
 
   watch: {
-      data () {
+      files () {
         this.init()
       }
   },
@@ -92,7 +87,7 @@ export default {
     },
 
     playpause ({state}) {
-      if (state === 'fa-pause') {
+      if (state === 'pause') {
         this.handle = setInterval(() => {
           this.switchImage()
         }, 500)
@@ -134,18 +129,14 @@ export default {
     },
 
     init () {
-      if (typeof this.data.data !== 'undefined') {
-        this.part = orderBy(this.data.data.images, ['order'], ['asc'])
+      this.part = orderBy(this.files, ['order'], ['asc'])
 
-        this.image = this.part[0]
-      }
+      this.image = this.part[0]
     }
   },
 
   mounted () {
-      if (typeof this.data.data !== 'undefined') {
-        this.init()
-      }
+      this.init()
 
       window.events.$on('part:edit-cancel', () => {
         this.init()
