@@ -4,10 +4,10 @@
         :class="[ data.editingPart ? 'justify-end' : '' ]"
     >
         <div 
-            :class="[ editing && !data.editingPart ? 'w-2/12 flex items-start' : 'hidden' ]"
+            :class="[ editing && !data.editingPart ? 'w-3/12 flex flex-col 2xl:flex-row items-end 2xl:items-start' : 'hidden' ]"
         >
             <b-icon 
-                class="ml-auto cursor-move mt-3"
+                class="ml-auto cursor-move mt-3 mr-2"
                 icon="arrow-all"
             ></b-icon>
 
@@ -33,7 +33,7 @@
         </div>
         
         <div
-            :class="[ !editing ? 'w-full' : 'w-10/12' ]"
+            :class="[ !editing ? 'w-full' : 'w-9/12' ]"
             v-if="typeof data !== 'undefined' && typeof data.builderType !== 'undefined'" 
         >
             <component 

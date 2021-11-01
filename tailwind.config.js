@@ -3,7 +3,8 @@ module.exports = {
     screens: {
       'md': '640px',
       'lg': '768px',
-      'xl': '1024px'
+      'xl': '1024px',
+      '2xl': '1400px'
     },
     extend: {},
     zIndex: {
