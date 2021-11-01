@@ -65,6 +65,8 @@ export const updatePart = async ({commit, rootState}, payload) => {
                     let { data } = await axios.patch(`${urlBase}/api/parts/${payload.partDataId}/${payload.type}`, part.payload)
                     
                     await commit('UPDATE_PART', {data, payload}, { root: true })
+
+                    window.events.$emit('part:reset-update-button')
                 }
             })
         }

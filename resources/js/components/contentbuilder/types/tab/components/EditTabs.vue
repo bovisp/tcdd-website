@@ -11,22 +11,11 @@
             ></b-input>
         </b-field>
 
-        <div 
-            class="flex"
-            v-if="!displaySaveButton || (!isEmpty(data) && data.editingPart && !displaySaveButton)"
-        >
-            <b-button
-                type="is-text"
-                size="is-small"
-                class="ml-auto"
-                @click.prevent="toggleSaveButton"
-            >Edit tabs</b-button>
-        </div>
-
         <tab-list 
             :id="currentContentBuilder.id"
             :data="data"
             :show-add-tab-button="displaySaveButton"
+            @update-button-status="toggleSaveButton"
         />
 
         <b-field

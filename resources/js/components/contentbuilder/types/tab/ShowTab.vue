@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { filter, isEmpty, isNumber, forIn } from 'lodash-es'
+import { filter, isEmpty, isNumber, forIn, remove, isInteger, has } from 'lodash-es'
 import { pascalCase } from 'change-case'
 import updateContentBuilder from '../../../../mixins/updateContentBuilder'
 
@@ -72,8 +72,26 @@ export default {
 
         pascalCase,
 
-        cancel () {
-            this.cancelEditingPart({
+        async cancel () {
+            let destroyKeys = []
+
+            for await (const [key, tab] of Object.entries(this.data.data.tabs)) {
+                if (!isInteger(tab.id)) {
+                    if (has(tab, 'content')) {
+                        await axios.delete(`${this.urlBase}/api/parts/tabs/cancel`, {
+                            data: { tab }
+                        })
+                    }
+
+                    destroyKeys.push(parseInt(key))
+                }
+            }
+
+            for (var i = destroyKeys.length -1; i >= 0; i--) {
+                this.data.data.tabs.splice(destroyKeys[i],1);
+            }
+
+            await this.cancelEditingPart({
                 id: this.id,
                 partId: this.data.id
             })
@@ -94,6 +112,10 @@ export default {
 
             window.events.$emit('part:edit-cancel')
         }
+    },
+
+    mounted () {
+        window.events.$on('part:reset-update-button', () => this.showUpdateButton = false)
     }
 }
 </script>

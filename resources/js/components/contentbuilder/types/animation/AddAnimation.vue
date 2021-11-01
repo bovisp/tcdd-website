@@ -59,7 +59,9 @@ export default {
         },
 
         async cancel () {
-            await this.removeFile(this.currentContentBuilder.new.files)
+            if (this.currentContentBuilder.new.files) {
+                await this.removeFile(this.currentContentBuilder.new.files)
+            }
 
             this.genericCancel()
 

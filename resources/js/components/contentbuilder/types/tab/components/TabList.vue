@@ -74,7 +74,7 @@
 
             <b-tab-item
                 class="p-0"
-                v-if="showAddTabButton"
+                v-if="addButton"
             >
                 <template #header>
                     <b-button 
@@ -84,6 +84,20 @@
                         title="Add new tab"
                         @click.prevent="addNewTab"
                     ></b-button>
+                </template>
+            </b-tab-item>
+
+            <b-tab-item
+                class="p-0"
+                v-if="!addButton || (!isEmpty(data) && data.editingPart && !addButton)"
+            >
+                <template #header>
+                     <b-button
+                        type="is-text"
+                        size="is-small"
+                        class="ml-auto"
+                        @click.prevent="toggleAddButton"
+                    >Edit tabs</b-button>
                 </template>
             </b-tab-item>
         </b-tabs>
@@ -131,7 +145,8 @@ export default {
             tabs: [],
             addPartModalActive: false,
             editingTab: {},
-            tabAddPart: {}
+            tabAddPart: {},
+            addButton: false
         }
     },
 
@@ -199,6 +214,10 @@ export default {
                     }
                 })
             }
+        },
+
+        showAddTabButton () {
+            this.addButton = this.showAddTabButton
         }
     },
 
@@ -212,6 +231,14 @@ export default {
         isEmpty,
 
         pascalCase,
+
+        toggleAddButton () {
+            this.addButton = !this.addButton
+
+            this.rerenderKey += 1
+
+            this.$emit('update-button-status')
+        },
 
         editTab (tab) {
             window.events.$emit('tabs:edit-tab', tab)
@@ -293,6 +320,8 @@ export default {
     },
 
     mounted () {
+        this.addButton = this.showAddTabButton
+
         if (isEmpty(this.data)) {
             this.tabs.push({
                 id: uuid(),
