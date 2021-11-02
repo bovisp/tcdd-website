@@ -1,6 +1,7 @@
 <template>
     <b-modal
         v-model="addingPart"
+        @close="$emit('cancel')"
     >
         <div class="modal-card" style="width: auto">
             <header class="modal-card-head">
