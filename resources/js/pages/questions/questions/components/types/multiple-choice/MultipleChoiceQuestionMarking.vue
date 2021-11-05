@@ -10,15 +10,19 @@
                 <span
                     class="mr-2 w-4"
                 >
-                    <i 
-                        class="fas fa-check fa-sm text-green-500"
+                    <b-icon 
+                        class="text-green-500"
+                        icon="check"
+                        size="is-small"
                         v-if="answeredCorrectly(a.id)"
-                    ></i>
+                    ></b-icon>
 
-                    <i 
-                        class="fas fa-times fa-sm text-red-500"
+                    <b-icon 
+                        class="text-red-500"
+                        icon="close"
+                        size="is-small"
                         v-if="answeredIncorrectly(a.id)"
-                    ></i>
+                    ></b-icon>
                 </span>
 
                 <span 

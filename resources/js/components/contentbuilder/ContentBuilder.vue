@@ -89,46 +89,4 @@ export default {
         await this.setContentBuilder(this.id)
     }
 }
-
-//     methods: {
-//         update (e) {
-//             map(this.parts, (part, index) => part.sort_order = index + 1)
-
-//             axios.patch(`${this.urlBase}/api/content-builder/${this.contentIds[this.lang]}/change-order`, {
-//                 parts: map(this.parts, part => {
-//                     return {
-//                         id: part.id,
-//                         sort_order: part.sort_order
-//                     }
-//                 })
-//             }).then(({data}) => {
-//                 this.parts = data.data.parts
-//             })
-//         }
-//     },
-
-//     async mounted () {
-//         window.events.$on('add-part:cancel', contentBuilderId => {
-//             if (contentBuilderId === this.contentBuilderId) {
-//                 this.addPart = false
-//             }
-//         })
-
-//         window.events.$on('add-part:reload', parts => {
-//             this.parts = parts
-//         })
-
-//         window.events.$on('part:deleted', payload => {
-//             if (payload.contentBuilderId === this.contentBuilderId) {
-//                 this.parts = filter(this.parts, part => part.id !== payload.part)
-//             }
-//         })
-
-//         window.events.$on('part:created', payload => {
-//             if (payload.contentBuilderId === this.contentBuilderId) {
-//                 this.parts.push(payload.data)
-//             }
-//         })
-//     }
-// }
 </script>

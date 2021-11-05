@@ -46,6 +46,7 @@ class AssessmentAnswersResource extends JsonResource
                     'parts' => PartResource::collection(
                         $question['model']->contentBuilder->where('language', '=', app()->getLocale())->first()->parts
                     ),
+                    'content_builder_id' => $question['model']->contentBuilder->where('language', '=', app()->getLocale())->first()->id,
                     'answers' => $type === 'multiple_choice' ? MultipleChoiceQuestion::whereQuestionId($question['model']->id)->first()->answers : null
                 ];
             })

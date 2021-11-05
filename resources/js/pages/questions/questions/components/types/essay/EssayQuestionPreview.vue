@@ -18,7 +18,8 @@
                 v-for="part in orderBy(parts, ['sort_order'], ['asc'])"
                 :key="part.id"
                 :is="`Final${ ucfirst(part.builderType.type) }`"
-                :part="part"
+                :id="id"
+                :data="part"
             ></component>
         </template>
 
@@ -44,12 +45,13 @@
             </template>
         </div>
 
-        <div 
-            class="alert alert-blue mt-4"
+        <b-message 
+            type="is-info"
             v-if="submitting"
+            class="mt-4"
         >
             {{ trans('js_pages_questions_questions_components_types_essay_essayquestionpreview.cancelpreviewtext') }}
-        </div>
+        </b-message>
 
         <div class="flex w-full mt-4">
             <button 
@@ -57,14 +59,14 @@
                 @click.prevent="submitting = true"
                 v-if="!submitting"
             >
-                {{ trans('js_pages_questions_questions_components_types_essay_essayquestionpreview.cancelpreviewtext') }}
+                {{ trans('generic.submit') }}
             </button>
 
             <button 
                 class="btn btn-text btn-sm text-sm ml-auto"
                 @click.prevent="cancel"
             >
-                {{ trans('generic.submit') }}
+                {{ trans('generic.cancelpreview') }}
             </button>
         </div>
     </div>
@@ -82,7 +84,7 @@ export default {
     },
 
     props: {
-        contentId: {
+        id: {
             type: Number,
             required: true
         }
@@ -124,7 +126,7 @@ export default {
     },
 
     async mounted () {
-        let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.contentId}`)
+        let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.id}`)
 
         this.parts = data.data.parts
 

@@ -2,6 +2,7 @@
     <div 
         class="flex my-4"
         :class="[ data.editingPart ? 'justify-end' : '' ]"
+        :id="`part-${data.id}`"
     >
         <div 
             :class="[ editing && !data.editingPart ? 'w-3/12 flex flex-col 2xl:flex-row items-end 2xl:items-start' : 'hidden' ]"

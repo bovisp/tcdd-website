@@ -78,7 +78,7 @@ export default {
         }),
 
         cancel () {
-            this.contentType = null
+            this.contentType = ''
 
             this.adding = false
 
@@ -88,6 +88,11 @@ export default {
 
     mounted () {
         window.events.$on('assessment:question-added', () => {
+            this.contentType = null
+            this.adding = false
+        })
+
+        window.events.$on('assessment:content-added', () => {
             this.contentType = null
             this.adding = false
         })

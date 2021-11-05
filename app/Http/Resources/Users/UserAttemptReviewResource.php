@@ -36,6 +36,7 @@ class UserAttemptReviewResource extends JsonResource
                 'score' => $question['assessment_content']->assessmentPageContentItems[0]->question_score,
                 'number' => $question['assessment_content']->assessmentPageContentItems[0]->question_number,
                 'text' => PartResource::collection($question['model']->contentBuilder->where('language', '=', app()->getLocale())->first()->parts),
+                'content_builder_id' => $question['model']->contentBuilder->where('language', '=', app()->getLocale())->first()->id,
                 'answer' => $answers['question_' . $question['model']->id],
                 'answers' => $question['model']->questionType->code === 'multiple_choice' ? MultipleChoiceQuestion::whereQuestionId($question['model']->id)->first()->answers : null,
                 'type' => $question['model']->questionType->code,

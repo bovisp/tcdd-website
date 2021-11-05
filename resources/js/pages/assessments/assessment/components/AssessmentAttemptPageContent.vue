@@ -6,7 +6,8 @@
                     v-for="part in orderBy(parts, ['sort_order'], ['asc'])"
                     :key="part.id"
                     :is="`Final${ ucfirst(part.builderType.type) }`"
-                    :part="part"
+                    :id="contentBuilderForLang.model_id"
+                    :data="part"
                 ></component>
             </div>
         </template>
@@ -35,7 +36,8 @@ export default {
 
     data () {
         return {
-            parts: []
+            parts: [],
+            contentBuilderForLang: null
         }
     },
 
@@ -47,9 +49,9 @@ export default {
 
     async mounted () {
         if (this.content.items[0].type === 'ContentBuilder') {
-            let contentBuilderForLang = find(this.content.items, ['lang', this.currentLang])
+            this.contentBuilderForLang = find(this.content.items, ['lang', this.currentLang])
 
-            let { data } = await axios.get(`${this.urlBase}/api/content-builder/${contentBuilderForLang.model_id}`)
+            let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.contentBuilderForLang.model_id}`)
             
             this.parts = data.data.parts
         }

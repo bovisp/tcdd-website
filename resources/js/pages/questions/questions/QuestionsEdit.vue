@@ -111,7 +111,7 @@
             >
                 <component 
                     :is="`${pascalCase(question.type)}QuestionPreview`"
-                    :content-id="question.contentBuilder[currentLang]"
+                    :id="question.contentBuilder[currentLang]"
                     @question-preview:cancel="cancelPreview"
                 ></component>
             </div>

@@ -2,16 +2,14 @@
     <div>
         <template v-if="data">
             <div class="mb-6">
-                <assessment-page-content-builder 
-                    :content-builder-id="data.contentBuilderItemEn.content.id"
-                    lang="en"
+                <content-builder 
+                    :id="data.contentBuilderItemEn.content.id"
                 />
             </div>
             
             <div>
-                <assessment-page-content-builder 
-                    :content-builder-id="data.contentBuilderItemFr.content.id"
-                    lang="fr"
+                <content-builder 
+                    :id="data.contentBuilderItemFr.content.id"
                 />
             </div>
         </template>

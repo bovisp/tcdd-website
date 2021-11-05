@@ -8,7 +8,8 @@
                 v-for="part in orderBy(data.data.parts, ['sort_order'], ['asc'])"
                 :key="part.id"
                 :is="`Final${ pascalCase(part.builderType.type) }`"
-                :part="part"
+                :id="data.content_builder_id"
+                :data="part"
             ></component>
         </div>
 

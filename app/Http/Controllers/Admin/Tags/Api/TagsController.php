@@ -10,7 +10,8 @@ class TagsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['role:administrator'])->except(['index']);
+        // dd('here');
+        $this->middleware(['role:administrator|employee', 'permission:manage assessments'])->except(['index']);
     }
 
     public function index()

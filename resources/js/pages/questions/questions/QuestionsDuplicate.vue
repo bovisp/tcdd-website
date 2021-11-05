@@ -180,7 +180,7 @@
 
                 <template v-if="contentIdsChanged || tempIdChanged">
                     <content-builder 
-                        lang="en"
+                        :id="tempId.contentBuilder.en"
                     />
                 </template>
             </div>
@@ -198,7 +198,7 @@
 
                 <template v-if="contentIdsChanged || tempIdChanged">
                     <content-builder 
-                        lang="fr"
+                        :id="tempId.contentBuilder.fr"
                     />
                 </template>
             </div>
@@ -356,7 +356,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import ucfirst from '../../../helpers/ucfirst'
-import { map } from'lodash-es'
 import { capitalCase, pascalCase } from 'change-case'
 
 export default {
@@ -393,18 +392,18 @@ export default {
             sections: 'sections/sections',
             questionCategories: 'questionCategories/questionCategories',
             questionTypeData: 'questions/questionTypeData',
-            contentIds: 'questions/contentIds',
             tempId: 'questions/tempId',
         })
     },
 
     watch: {
-        contentIds () {
-            this.contentIdsChanged = true
-        },
+        tempId: {
+            deep: true,
 
-        tempId () {
-            this.tempIdChanged = true
+            handler () {
+                this.tempIdChanged = true
+                this.contentIdsChanged = true
+            }
         }
     },
 
@@ -422,13 +421,13 @@ export default {
         }),
         
         async store () {
-            let { data } = await axios.put(`${this.urlBase}/api/questions/${this.question.id}`, this.form)
+            await axios.put(`${this.urlBase}/api/questions/${this.question.id}`, this.form)
 
             window.location.href = `${this.urlBase}/questions`
         },
 
         async cancel () {
-            let { data } = await axios.delete(`${this.urlBase}/api/questions/${this.question.id}`)
+            await axios.delete(`${this.urlBase}/api/questions/${this.question.id}`)
 
             window.location.href = `${this.urlBase}/questions`
         },

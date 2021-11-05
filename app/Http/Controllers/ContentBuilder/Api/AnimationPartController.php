@@ -17,8 +17,8 @@ class AnimationPartController extends Controller
         request()->validate([
             'files' => 'required',
             'content_builder_type_id' => 'required|exists:content_builder_types,id',
-            'title' => 'nullable|min:3',
-            'caption' => 'nullable|min:3'
+            'title' => 'nullable',
+            'caption' => 'nullable'
         ], [
             'files.required' => __('app_http_controllers_contentbuilder_api_animationpart.files_required'),
             'content_builder_type_id.required' => __('app_http_controllers_contentbuilder_api_animationpart.content_builder_type_id_required'),
@@ -99,8 +99,8 @@ class AnimationPartController extends Controller
     public function update(AnimationPart $animationPart)
     {
         request()->validate([
-            'title' => 'nullable|min:3',
-            'caption' => 'nullable|min:3'
+            'title' => 'nullable',
+            'caption' => 'nullable'
         ]);
 
         $animationPart->update([
