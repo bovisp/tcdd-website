@@ -86,7 +86,8 @@
             :message="errors.description_en ? errors.description_en[0] : ''"
         >
             <content-builder 
-                lang="en"
+                v-if="!isEmpty(question)"
+                :id="question.contentBuilder.en"
             />
         </b-field>
 
@@ -96,7 +97,8 @@
             :message="errors.description_fr ? errors.description_fr[0] : ''"
         >
             <content-builder 
-                lang="fr"
+                v-if="!isEmpty(question)"
+                :id="question.contentBuilder.fr"
             />
         </b-field>
 
@@ -217,6 +219,7 @@ import Multiselect from 'vue-multiselect'
 import { mapGetters } from 'vuex'
 import setObject from '../../../helpers/setObject'
 import { noCase, capitalCase, pascalCase } from 'change-case'
+import { isEmpty } from 'lodash-es'
 
 export default {
     components: {
@@ -273,6 +276,8 @@ export default {
         capitalCase, 
         
         pascalCase,
+
+        isEmpty,
 
         tagModal (tag) {
             this.tag = tag

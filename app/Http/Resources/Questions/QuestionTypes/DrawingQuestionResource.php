@@ -31,6 +31,7 @@ class DrawingQuestionResource extends JsonResource
                 'id' => $this->id,
                 'name' => $this->name,
                 'type' => $this->questionType->code,
+                'content_builder_id' => ContentBuilder::find($contentBuilderId)->id,
                 'data' => [
                     'drawing_options' => unserialize($questionData->drawing_options),
                     'rich_text' => $questionData->rich_text ? true : false,

@@ -1,56 +1,59 @@
 <template>
-    <div class="flex">
-        <div class="flex flex-col items-center">
-            <p class="font-medium">
-                {{ trans('js_components_draw.pen') }}
-            </p>
+    <div class="flex justify-center">
+        <div class="flex">
+            <div class="flex flex-col items-center mr-3">
+                <p class="font-medium">
+                    {{ trans('js_components_draw.pen') }}
+                </p>
 
-            <v-swatches
-                v-model="strokeColor"
-                :swatches="penColors"
-                row-length="3"
-                show-border
-                popover-x="right"
-            ></v-swatches>
+                <v-swatches
+                    v-model="strokeColor"
+                    :swatches="penColors"
+                    row-length="3"
+                    show-border
+                    popover-x="right"
+                ></v-swatches>
 
-            <b-button 
-                icon-right="eraser"
-                class="mb-1"
-                @click.prevent="isEraser = true"
-                :title="trans('generic.erasertool')"
-            />
+                <b-button 
+                    icon-right="eraser"
+                    class="mb-1"
+                    @click.prevent="isEraser = true"
+                    :title="trans('generic.erasertool')"
+                />
 
-            <b-button 
-                @click.prevent="clearCanvasConfirm"
-                icon-right="delete"
-                :title="trans('js_components_draw.eraseallwork')"
-            />
+                <b-button 
+                    @click.prevent="clearCanvasConfirm"
+                    icon-right="delete"
+                    :title="trans('js_components_draw.eraseallwork')"
+                />
+            </div>
+
+            <canvas 
+                :id="`canvas${canvasId}`"
+                ref="canvas"
+                class="border-2"
+                @mousedown="startPainting" 
+                @mouseup="finishedPainting"
+                @mousemove="draw"
+            ></canvas>
+
+            <modal 
+                v-show="modalActive"
+                ok-button-text="OK"
+                cancel-button-text="Cancel"
+                @close="close"
+                @submit="clearCanvas"
+            >
+                <template slot="body">
+                    <div class="my-4">
+                        <p class="text-red-500">
+                            {{ trans('js_components_draw.eraseconfirm') }}
+                        </p>
+                    </div>
+                </template>
+            </modal>
+
         </div>
-
-        <canvas 
-            :id="`canvas${canvasId}`"
-            ref="canvas"
-            class="border-2 mx-auto"
-            @mousedown="startPainting" 
-            @mouseup="finishedPainting"
-            @mousemove="draw"
-        ></canvas>
-
-        <modal 
-            v-show="modalActive"
-            ok-button-text="OK"
-            cancel-button-text="Cancel"
-            @close="close"
-            @submit="clearCanvas"
-        >
-            <template slot="body">
-                <div class="my-4">
-                    <p class="text-red-500">
-                        {{ trans('js_components_draw.eraseconfirm') }}
-                    </p>
-                </div>
-            </template>
-        </modal>
     </div>
 </template>
 

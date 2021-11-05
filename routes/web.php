@@ -70,7 +70,7 @@ Route::post('/api/assessments/{assessment}/page/{page}/add-question', 'Assessmen
 Route::post('/api/assessments/{assessment}/page/{page}/add-content', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@addContent');
 Route::delete('/api/assessments/{assessment}/page/content/{content}', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@destroy');
 Route::delete('/api/assessments/{assessment}/page/{page}/content', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@destroyTempItem');
-Route::patch('/api/assessment/{assessment}/page/{page}/change-order', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@reorder');
+Route::patch('/api/assessments/{assessment}/page/{page}/change-order', 'Assessments\Assessments\Api\AssessmentQuestionPageContentController@reorder');
 Route::patch('/api/assessments/{assessment}/questions/{item}/change-score', 'Assessments\Assessments\Api\AssessmentQuestionContentController@changeScore');
 Route::patch('/api/assessments/{assessment}/questions/{item}/change-page', 'Assessments\Assessments\Api\AssessmentQuestionContentController@changePage');
 Route::get('/api/assessments/{assessment}/attempts/{attemptId}', 'Assessments\Assessments\Api\AssessmentAttemptsController@show');

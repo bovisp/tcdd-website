@@ -108,7 +108,8 @@
                     v-for="part in orderBy(question.parts, ['sort_order'], ['asc'])"
                     :key="part.id"
                     :is="`Final${ pascalCase(part.builderType.type) }`"
-                    :part="part"
+                    :data="part"
+                    :id="question.content_builder_id"
                 ></component>
 
                 <h2 class="mb-4 font-medium text-lg">

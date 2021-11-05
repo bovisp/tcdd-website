@@ -149,7 +149,8 @@
                 </label>
 
                 <content-builder 
-                    lang="en"
+                    v-if="!isEmpty(questionId)"
+                    :id="questionId.contentBuilderId.en"
                 />
             </div>
 
@@ -163,7 +164,8 @@
                 </label>
 
                 <content-builder 
-                    lang="fr"
+                    v-if="!isEmpty(questionId)"
+                    :id="questionId.contentBuilderId.fr"
                 />
             </div>
 
@@ -370,7 +372,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import { VueEditor, Quill } from 'vue2-editor'
-import { find } from 'lodash-es'
+import { find, isEmpty} from 'lodash-es'
 import ucfirst from '../../../helpers/ucfirst'
 import { capitalCase, pascalCase } from 'change-case'
 
@@ -427,6 +429,8 @@ export default {
 
         ucfirst,
 
+        isEmpty,
+
         ...mapActions({
             fetchSections: 'sections/fetch',
             fetchTags: 'tags/fetch',
@@ -437,7 +441,7 @@ export default {
         }),
 
         async remove () {
-            let { data } = await axios.delete(`${this.urlBase}/api/questions/${this.questionId}`)
+            let { data } = await axios.delete(`${this.urlBase}/api/questions/${this.questionId.questionId}`)
 
             this.cancel()
         },
@@ -455,7 +459,7 @@ export default {
             this.question_type_id = null
             this.type = ''
 
-            await this.removeTempIds(this.questionId)
+            await this.removeTempIds(this.questionId.questionId)
         },
 
         async store () {
@@ -518,9 +522,9 @@ export default {
         await this.fetchQuestionCategories()
         await this.fetchQuestionTypes()
 
-        this.form.id = this.questionId
+        this.form.id = this.questionId.questionId
 
-        window.events.$on('questions:temporary-id', questionId => this.questionId = questionId)
+        window.events.$on('questions:temporary-id', questionId => this.questionId.questionId = questionId)
     }
 }
 </script>

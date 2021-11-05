@@ -18,7 +18,8 @@
                 v-for="part in orderBy(parts, ['sort_order'], ['asc'])"
                 :key="part.id"
                 :is="`Final${ pascalCase(part.builderType.type) }`"
-                :part="part"
+                :id="id"
+                :data="part"
             ></component>
         </template>
 
@@ -35,15 +36,19 @@
                             v-if="submitting"
                             class="mr-2 w-4"
                         >
-                            <i 
-                                class="fas fa-check fa-sm text-green-500"
+                            <b-icon 
+                                class="text-green-500"
+                                icon="check"
+                                size="is-small"
                                 v-if="answeredCorrectly(answer.id)"
-                            ></i>
+                            ></b-icon>
 
-                            <i 
-                                class="fas fa-times fa-sm text-red-500"
+                            <b-icon 
+                                class="text-red-500"
+                                icon="close"
+                                size="is-small"
                                 v-if="answeredIncorrectly(answer.id)"
-                            ></i>
+                            ></b-icon>
                         </span>
 
                         <input 
@@ -94,7 +99,7 @@ import { pascalCase } from 'change-case'
 
 export default {
     props: {
-        contentId: {
+        id: {
             type: Number,
             required: true
         }
@@ -162,7 +167,7 @@ export default {
     },
 
     async mounted () {
-        let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.contentId}`)
+        let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.id}`)
 
         this.parts = data.data.parts
 

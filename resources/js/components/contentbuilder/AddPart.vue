@@ -89,8 +89,6 @@ export default {
 
             this.type = ''
         })
-
-        // window.events.$on('part:created', () => this.cancel())
     }
 }
 </script>

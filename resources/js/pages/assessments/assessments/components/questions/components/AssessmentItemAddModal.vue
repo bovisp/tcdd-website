@@ -6,6 +6,7 @@
         aria-role="dialog"
         aria-label="Example Modal"
         aria-modal
+        @close="cancel"
     >
         <div class="modal-card">
             <header class="modal-card-head">
@@ -107,7 +108,7 @@ export default {
         },
 
         async destroy () {
-            let { data } = await axios.delete(`${this.urlBase}/api/assessments/${this.assessment.id}/page/${this.page.id}/content`, {
+            await axios.delete(`${this.urlBase}/api/assessments/${this.assessment.id}/page/${this.page.id}/content`, {
                 data: {
                     type: this.type,
                     data: this.data

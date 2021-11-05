@@ -41,7 +41,6 @@ export default {
             fetchAvailableEditors: 'questions/fetchAvailableEditors',
             fetchSections: 'sections/fetch',
             fetchQuestionCategories: 'questionCategories/fetch',
-            setContentBuilderIds: 'questions/setContentBuilderIds',
             fetchTags: 'tags/fetch',
             fetchQuestionTypeData: 'questions/fetchQuestionTypeData',
             fetchQuestion: 'questions/setEdit'
@@ -66,7 +65,6 @@ export default {
             await this.fetchAvailableEditors(question.id)
             await this.fetchSections()
             await this.fetchQuestionCategories()
-            await this.setContentBuilderIds(question.contentBuilder)
             await this.fetchTags()
             await this.fetchQuestionTypeData(question.id)
         })

@@ -1,4 +1,5 @@
 import { forEach, isEmpty, find } from 'lodash-es'
+import VueScrollTo from 'vue-scrollto'
 
 export const setContentBuilder = async ({ commit }, contentBuilderId) => {
     let { data } = await axios.get(`${urlBase}/api/content-builder/${contentBuilderId}`)
@@ -43,12 +44,7 @@ export const createPart = async ({rootState, commit}, payload) => {
 
             await commit('ADD_PART', {data, id: payload.id, isTabSectionPart: payload.isTabSectionPart}, { root: true })
 
-            if ((data.data.type === 'media' || data.data.type === 'animation') && payload.isTabSectionPart) {
-                window.events.$emit('remove-delete-button', {
-                    id: data.data.id,
-                    type: data.data.type
-                })
-            }
+            VueScrollTo.scrollTo(`#part-${data.id}`)
         }
     })
 }

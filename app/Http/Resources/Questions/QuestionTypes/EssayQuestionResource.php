@@ -31,6 +31,7 @@ class EssayQuestionResource extends JsonResource
                 'id' => $this->id,
                 'name' => $this->name,
                 'type' => $this->questionType->code,
+                'content_builder_id' => ContentBuilder::find($contentBuilderId)->id,
                 'data' => [
                     'rich_text' => $questionData->rich_text,
                     'parts' => PartResource::collection(ContentBuilder::find($contentBuilderId)->parts)

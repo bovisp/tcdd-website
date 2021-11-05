@@ -25,19 +25,11 @@ export const setEdit = async ({ commit }, questionId) => {
 export const createId = async ({ commit }) => {
     let { data } = await axios.post(`${urlBase}/api/questions/id`)
 
-    await commit('SET_TEMPORARY_ID', data.questionId)
-
-    await commit('SET_CONTENT_ID', data.contentBuilderId, { root: true })
+    await commit('SET_TEMPORARY_ID', data)
 }
 
 export const removeTempIds = async ({ commit }, questionId) => {
     await commit('SET_TEMPORARY_ID', null)
-
-    await commit('SET_CONTENT_ID', null)
-}
-
-export const setContentBuilderIds = async ({commit}, contentBuilderIds) => {
-    await commit('SET_CONTENT_ID', contentBuilderIds)
 }
 
 export const fetchQuestionTypeData = async ({commit}, questionId) => {
@@ -54,7 +46,9 @@ export const duplicateQuestion = async ({commit, state}) => {
     let { data } = await axios.post(`${urlBase}/api/questions/${state.question.id}/duplicate`)
 
     await commit('SET_DUPLICATE_QUESTION_DATA', data)
-    await commit('SET_TEMPORARY_ID', data.questionId)
-    await commit('SET_CONTENT_ID', data.contentBuilder)
+    await commit('SET_TEMPORARY_ID', {
+        questionId: data.questionId,
+        contentBuilder: data.contentBuilder
+    })
     await commit('SET_DUPLICATE_QUESTION_TYPE_DATA', data.questionData)
 }

@@ -11,7 +11,6 @@
             <media-display 
                 :file="data.data.filename"
                 :data="data"
-                :id="currentContentBuilder.id"
             />
         </div>
 

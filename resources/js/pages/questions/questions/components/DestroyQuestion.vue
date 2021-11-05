@@ -11,6 +11,8 @@
             v-show="modalActive"
             @close="close"
             @submit="destroy"
+            :okButtonText="trans('generic.delete')"
+            :cancelButtonText="trans('generic.cancel')"
         >
             <template slot="header">
                 Delete question: {{ question.name }}

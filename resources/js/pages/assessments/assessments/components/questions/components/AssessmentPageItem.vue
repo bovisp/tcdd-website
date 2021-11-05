@@ -1,6 +1,6 @@
 <template>
     <div class="flex w-full">
-        <div class="w-2/12 flex items-start">
+        <div class="w-2/12 flex flex-col xl:flex-row items-end xl:items-start xl:justify-end">
             <b-icon
                 icon="arrow-all"
                 class="drag-item mt-3"
@@ -38,12 +38,14 @@
         <div class="w-10/12">
             <template v-if="data.type === 'ContentBuilder'">
                 <div class="mb-6">
-                    <assessment-page-content-builder 
+                    <b-field
                         v-for="item in orderBy(data.items, ['id'], ['asc'])"
                         :key="item.id"
-                        :content-builder-id="item.id"
-                        :lang="item.lang"
-                    />
+                    >
+                        <content-builder 
+                            :id="item.id"
+                        />
+                    </b-field>
                 </div>
             </template>
 
@@ -139,7 +141,6 @@ export default {
                 await this.fetchAvailableEditors(this.question.id)
                 await this.fetchSections()
                 await this.fetchQuestionCategories()
-                await this.setContentBuilderIds(this.question.contentBuilder)
                 await this.fetchTags()
                 await this.fetchQuestionTypeData(this.question.id)
             }
@@ -153,7 +154,6 @@ export default {
             fetchAvailableEditors: 'questions/fetchAvailableEditors',
             fetchSections: 'sections/fetch',
             fetchQuestionCategories: 'questionCategories/fetch',
-            setContentBuilderIds: 'questions/setContentBuilderIds',
             fetchTags: 'tags/fetch',
             fetchQuestionTypeData: 'questions/fetchQuestionTypeData',
         }),

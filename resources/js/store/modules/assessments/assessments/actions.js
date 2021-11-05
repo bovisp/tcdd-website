@@ -27,6 +27,8 @@ export const fetchPage = async ({ state, commit }, page) => {
 
     await commit('SET_PAGE', data.data)
 
+    await commit('SET_CURRENT_PAGE_SCORE')
+
     await commit('SET_TOTAL_SCORE', data.data.total_score)
 }
 
@@ -67,7 +69,7 @@ export const addContentToPage = async ({ state }) => {
 }
 
 export const changeCurrentPageItemOrder = async ({ state, commit }, payload) => {
-    await axios.patch(`${urlBase}/api/assessment/${state.assessment.id}/page/${state.page.id}/change-order`, payload)
+    await axios.patch(`${urlBase}/api/assessments/${state.assessment.id}/page/${state.page.id}/change-order`, payload)
 }
 
 export const deleteAssessmentPageItem = async ({ state }, itemId) => {

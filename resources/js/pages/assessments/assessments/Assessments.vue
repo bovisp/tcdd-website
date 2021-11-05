@@ -27,7 +27,7 @@
             
             
             <div 
-                class="column is-two-thirds"
+                class="column is-three-fourths"
                 v-if="updating"
             >
                 <assessments-edit />

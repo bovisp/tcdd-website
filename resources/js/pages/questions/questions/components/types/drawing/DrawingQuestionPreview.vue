@@ -17,8 +17,9 @@
             <component 
                 v-for="part in orderBy(parts, ['sort_order'], ['asc'])"
                 :key="part.id"
+                :id="id"
                 :is="`Final${ ucfirst(part.builderType.type) }`"
-                :part="part"
+                :data="part"
             ></component>
         </template>
 
@@ -50,12 +51,13 @@
             </template>
         </div>
 
-        <div 
-            class="alert alert-blue mt-4"
+        <b-message 
+            type="is-info"
+            class="mt-4"
             v-if="submitting"
         >
             {{ trans('js_pages_questions_components_types_drawing_drawingquestionpreview.cancelpreviewtext') }}
-        </div>
+        </b-message>
 
         <div class="flex w-full mt-4">
             <button 
@@ -88,7 +90,7 @@ export default {
     },
 
     props: {
-        contentId: {
+        id: {
             type: Number,
             required: true
         }
@@ -153,7 +155,7 @@ export default {
     },
 
     async mounted () {
-        let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.contentId}`)
+        let { data } = await axios.get(`${this.urlBase}/api/content-builder/${this.id}`)
 
         this.parts = data.data.parts
 
