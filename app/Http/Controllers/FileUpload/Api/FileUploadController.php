@@ -28,7 +28,7 @@ class FileUploadController extends Controller
         );
 
         return  [
-            'file' => '/storage/entries/' . auth()->id() . '/' . $uniqId . '.' . $upload->getClientOriginalExtension(),
+            'file' => '/storage/entries/' . auth()->id() . '/' . $uniqId . '.' . strtolower($upload->getClientOriginalExtension()),
             'original' => $upload->getClientOriginalName()
         ];
     }
