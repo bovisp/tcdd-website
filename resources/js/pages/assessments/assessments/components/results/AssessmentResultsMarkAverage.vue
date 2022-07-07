@@ -52,7 +52,7 @@ export default {
 
             this.assessmentAttempts[attemptIndex]['marks'][markIndex]['mark'] = payload.score
 
-            this.averageQuestionScore = this.average()
+            this.averageQuestionScore = await this.average()
         })
     }
 }
