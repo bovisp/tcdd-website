@@ -25,7 +25,7 @@ class AssessmentShowResource extends JsonResource
             'name_fr' => $this->getTranslation('name', 'fr'),
             'description' => $this->description,
             'description_en' => $this->getTranslation('description', 'en'),
-            'description_fr' => $this->getTranslation('description', 'en'),
+            'description_fr' => $this->getTranslation('description', 'fr'),
             'completion_time' => $this->completion_time,
             'assessment_type_id' => $this->assessment_type_id,
             'assessmentType' => $this->assessmentType,

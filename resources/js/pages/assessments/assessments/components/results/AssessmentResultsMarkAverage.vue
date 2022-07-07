@@ -53,6 +53,8 @@ export default {
             this.assessmentAttempts[attemptIndex]['marks'][markIndex]['mark'] = payload.score
 
             this.averageQuestionScore = await this.average()
+
+            console.log(this.averageQuestionScore)
         })
     }
 }
