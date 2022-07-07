@@ -22,7 +22,12 @@ class DuplicateAssessmentController extends Controller
 
         $newAssessment->name = [
             'en' => $assessment->getTranslation('name', 'en') . ' (Copy)',
-            'fr' => $assessment->getTranslation('name', 'en') . ' (Copy)'
+            'fr' => $assessment->getTranslation('name', 'fr') . ' (Copy)'
+        ];
+
+        $newAssessment->description = [
+            'en' => $assessment->getTranslation('description', 'en') . ' (Copy)',
+            'fr' => $assessment->getTranslation('description', 'fr') . ' (Copy)'
         ];
 
         $newAssessment->locked = 0;
