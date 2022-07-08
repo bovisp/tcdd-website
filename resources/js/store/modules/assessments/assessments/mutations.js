@@ -104,3 +104,11 @@ export const SET_DUPLICATION_STATUS = (state, status) => {
 }
 
 export const UPDATE_PAGE_NUMBER = (state, increment) => state.assessment.pages += increment
+
+export const REMOVE_ATTEMPT_ANSWERS = (state) => {
+    state.attemptAnswers = []
+}
+
+export const REMOVE_ATTEMPTS = (state) => {
+    state.attempts = []
+}

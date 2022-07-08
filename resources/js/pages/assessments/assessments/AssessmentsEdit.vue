@@ -49,9 +49,7 @@
             </b-tab-item>
 
             <b-tab-item :label="trans('generic.settings')">
-                <assessment-edit-form
-                    @assessments:duplicate="duplicate"
-                />
+                <assessment-edit-form />
             </b-tab-item>
 
             <b-tab-item 
@@ -130,12 +128,6 @@ export default {
         }),
 
         dayjs,
-
-        duplicate (form) {
-            this.duplicating = true
-
-            this.duplicateForm = form
-        },
 
         back () {
             window.events.$emit('assessments:edit-cancel')

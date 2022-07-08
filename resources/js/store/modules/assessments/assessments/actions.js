@@ -93,6 +93,10 @@ export const duplicateAssessment = async ({ state, commit, dispatch }, form) => 
 
     await commit('SET_ASSESSMENT', assessment.data)
 
+    await commit('REMOVE_ATTEMPT_ANSWERS')
+
+    await commit('REMOVE_ATTEMPTS')
+
     await commit('SET_DUPLICATION_STATUS', true)
 
     return
