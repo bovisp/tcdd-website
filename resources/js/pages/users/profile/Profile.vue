@@ -80,6 +80,7 @@ export default {
 
         Echo.private(`user.${this.userId}.assessment_activated`)
             .listen('AddAssessmentToProfilePage', async (e) => {
+                console.log("activated")
                 await this.fetch(this.userId)
             })
 
