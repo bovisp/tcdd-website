@@ -55,15 +55,24 @@ export default {
         this.averagePercentage = await this.getAveragePercentage()
 
         window.events.$on('assessment:results-mark-table', async payload => {
-            let attemptIndex = findIndex(this.assessmentAttempts, attempt => attempt.id === payload.attempt.id)
+            // let attemptIndex = findIndex(this.assessmentAttempts, attempt => attempt.id === payload.attempt.id)
             
-            let markIndex = findIndex(this.assessmentAttempts[attemptIndex].marks, mark => mark.id === payload.mark.id)
+            // let markIndex = findIndex(this.assessmentAttempts[attemptIndex].marks, mark => mark.id === payload.mark.id)
 
-            this.assessmentAttempts[attemptIndex]['marks'][markIndex]['mark'] = payload.score
+            // this.assessmentAttempts[attemptIndex]['marks'][markIndex]['mark'] = payload.score
+            this.assessmentAttempts = payload.attempts
 
-            this.averageTotal = this.getAverageTotal()
+            this.averageTotal = await this.getAverageTotal()
 
-            this.averagePercentage = this.getAveragePercentage()
+            this.averagePercentage = await this.getAveragePercentage()
+        })
+
+        window.events.$on('assessments:recalculate-average', async (attempts) => {
+            this.assessmentAttempts = attempts
+
+            this.averageTotal = await this.getAverageTotal()
+
+            this.averagePercentage = await this.getAveragePercentage()
         })
     }
 }

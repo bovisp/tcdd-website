@@ -59,7 +59,7 @@ export default {
 
                 this.assessmentAttempt.marks[index].mark = payload.score
 
-               this.total = this.totalScore()
+                this.total = this.totalScore()
             }
         })
     }

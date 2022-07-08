@@ -20,6 +20,7 @@ class AssessmentParticipantsActivationController extends Controller
     {
         $participant = DB::table('assessment_participants')
             ->where('participant_id', $user->id)
+            ->where('assessment_id', $assessment->id)
             ->get()
             ->first();
 
@@ -33,6 +34,7 @@ class AssessmentParticipantsActivationController extends Controller
 
         DB::table('assessment_participants')
             ->where('participant_id', $user->id)
+            ->where('assessment_id', $assessment->id)
             ->update([
                 'activated' => $participant->activated ? 0 : 1,
             ]);

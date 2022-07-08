@@ -28,7 +28,7 @@ class AssessmentAttemptController extends Controller
                 })
                 ->first();
 
-            $attempt = AssessmentAttempt::whereAssessmentParticipantId($participantActive->id)->first();
+            $attempt = AssessmentAttempt::whereAssessmentParticipantId($participantActive->pivot->id)->first();
 
             if ($attempt) {
                 abort(403, __('app_http_controllers_assessments_assessment_api_assessmentattempt.notauthorizedexam'));

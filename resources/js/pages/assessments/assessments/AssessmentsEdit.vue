@@ -148,6 +148,8 @@ export default {
                 await this.fetchAttempt(e.attemptId)
 
                 await this.fetchParticipantAnswer(e.attemptId)
+
+                window.events.$emit('assessments:recalculate-average', this.attemptAnswers)
             })
 
         Echo.private(`assessment.${this.assessment.id}.attempting`)

@@ -98,7 +98,9 @@ export default {
 
     computed: {
         ...mapGetters({
-            participantAnswer: 'assessments/participantAnswer'
+            participantAnswer: 'assessments/participantAnswer',
+            assessmentAttempts: 'assessments/participantAnswer',
+            assessmentAnswers: 'assessments/attemptAnswers'
         }),
 
         hasExistingScore () {
@@ -150,7 +152,8 @@ export default {
             window.events.$emit('assessment:results-mark-table', {
                 attempt: this.participantAnswer,
                 mark: this.mark,
-                score: parseFloat(this.score)
+                score: parseFloat(this.score),
+                attempts: this.assessmentAnswers
             })
         }
     },

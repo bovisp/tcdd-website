@@ -6,6 +6,7 @@
 
 <script>
 import { reduce, find, findIndex } from 'lodash-es'
+import { mapGetters } from 'vuex'
 
 export default {
     props: {
@@ -25,6 +26,10 @@ export default {
             averageQuestionScore: null
         }
     },
+
+    ...mapGetters({
+        assessment: 'assessments/assessment',
+    }),
 
     methods: {
         average () {
@@ -46,15 +51,21 @@ export default {
         this.averageQuestionScore = this.average()
 
         window.events.$on('assessment:results-mark-table', async payload => {
-            let attemptIndex = findIndex(this.assessmentAttempts, attempt => attempt.id === payload.attempt.id)
+            // let attemptIndex = findIndex(this.assessmentAttempts, attempt => attempt.id === payload.attempt.id)
             
-            let markIndex = findIndex(this.assessmentAttempts[attemptIndex].marks, mark => mark.id === payload.mark.id)
+            // let markIndex = findIndex(this.assessmentAttempts[attemptIndex].marks, mark => mark.id === payload.mark.id)
 
-            this.assessmentAttempts[attemptIndex]['marks'][markIndex]['mark'] = payload.score
+            // this.assessmentAttempts[attemptIndex]['marks'][markIndex]['mark'] = payload.score
+            console.log(payload)
+            this.assessmentAttempts = payload.attempts
 
             this.averageQuestionScore = await this.average()
+        })
 
-            console.log(this.averageQuestionScore)
+        window.events.$on('assessments:recalculate-average', async (attempts) => {
+            this.assessmentAttempts = attempts
+
+            this.averageQuestionScore = await this.average()
         })
     }
 }
