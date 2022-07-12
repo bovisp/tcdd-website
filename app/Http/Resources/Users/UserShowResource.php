@@ -22,7 +22,7 @@ class UserShowResource extends JsonResource
             ->pluck('id')
             ->toArray();
 
-        $markedAssessments = AssessmentAttempt::whereAssessmentParticipantId($assessmentParticipantIds)
+        $markedAssessments = AssessmentAttempt::whereIn('assessment_participant_id', $assessmentParticipantIds)
             ->wherePublished(1)
             ->get();
 
