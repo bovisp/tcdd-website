@@ -172,7 +172,9 @@ export default {
         }),
 
         attemptsMarkingCompleted () {
-            return filter(this.attemptAnswers, attempt => attempt.marked).length === this.assessment.participants.length
+            if (this.attemptAnswers.length && this.assessment.participants.length){
+                return filter(this.attemptAnswers, attempt => attempt.marked).length === this.assessment.participants.length
+            }
         }
     },
 

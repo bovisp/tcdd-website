@@ -18,7 +18,8 @@
             v-for="part in orderBy(questionMarkingObj.question.parts, ['sort_order'], ['asc'])"
             :key="part.id"
             :is="`Final${ pascalCase(part.builderType.type) }`"
-            :part="part"
+            :data="part"
+            :id="questionMarkingObj.question.content_builder_id"
         ></component>
 
         <assessment-marking-guide 
@@ -90,10 +91,6 @@ export default {
         orderBy,
 
         pascalCase
-    },
-
-    mounted () {
-        // 
     }
 }
 </script>

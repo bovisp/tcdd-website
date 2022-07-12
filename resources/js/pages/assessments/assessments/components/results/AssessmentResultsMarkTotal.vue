@@ -53,14 +53,23 @@ export default {
 
         this.total = this.totalScore()
 
-        window.events.$on('assessment:results-mark-table', payload => {
-            if (payload.attempt.id === this.assessmentAttempt.id) {
-                let index = findIndex(this.assessmentAttempt.marks, mark => mark.id === payload.mark.id)
+        window.events.$on('assessment:results-mark-table', async payload => {
+            if (!payload.attempt) {
+                for await (const attempt of payload.attempts) {
+                    if (attempt.id === this.assessmentAttempt.id) {
+                        this.assessmentAttempt = attempt
+                    }
+                }
+            } else {
+                if (payload.attempt.id === this.assessmentAttempt.id) {
+                    // let index = findIndex(this.assessmentAttempt.marks, mark => mark.id === payload.mark.id)
 
-                this.assessmentAttempt.marks[index].mark = payload.score
-
-                this.total = this.totalScore()
+                    // this.assessmentAttempt.marks[index].mark = payload.score
+                    this.assessmentAttempt = payload.attempt
+                }
             }
+
+            this.total = this.totalScore()
         })
     }
 }

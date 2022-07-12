@@ -56,7 +56,6 @@ export default {
             // let markIndex = findIndex(this.assessmentAttempts[attemptIndex].marks, mark => mark.id === payload.mark.id)
 
             // this.assessmentAttempts[attemptIndex]['marks'][markIndex]['mark'] = payload.score
-            console.log(payload)
             this.assessmentAttempts = payload.attempts
 
             this.averageQuestionScore = await this.average()
