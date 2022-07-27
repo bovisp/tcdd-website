@@ -2,5 +2,5 @@
 
 return array (
   'searcheditors' => 'Search editors',
-  'editquestion' => 'Edit question',
+  'editquestion' => 'Save changes',
 );

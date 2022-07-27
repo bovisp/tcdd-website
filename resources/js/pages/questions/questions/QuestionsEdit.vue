@@ -34,9 +34,7 @@
                     {{ trans('generic.edit') }}: {{ trans('generic.question') }} - {{ question.name }}
                 </h1>
 
-                <form 
-                    @submit.prevent="update"
-                >
+                <form>
                     <questions-edit-form 
                         :question="question"
                         @question:form-updated="updateForm"
@@ -47,34 +45,40 @@
                     <div
                         class="w-full"
                     >
-                        <button 
-                            class="btn btn-blue text-sm"
+                        <b-button 
+                            type="is-info"
+                            size="is-small"
+                            @click.prevent="update"
                         >
                             {{ trans('js_pages_questions_questions_questionsedit.editquestion') }}
-                        </button>
+                        </b-button>
 
-                        <button 
-                            class="btn btn-text text-sm"
+                        <b-button 
+                            type="is-text"
+                            size="is-small"
                             @click.prevent="cancel"
                         >
                             {{ trans('generic.cancel') }}
-                        </button>
+                        </b-button>
 
-                        <button 
-                            class="btn btn-text text-sm"
+                        <b-button 
+                            type="is-text"
+                            size="is-small"
                             @click.prevent="preview"
                             v-scroll-to="'#preview-pane'"
+                            :disabled="hidePreview"
                         >
                             {{ trans('generic.preview') }}
-                        </button>
+                        </b-button>
 
-                        <button 
-                            class="btn btn-text text-sm"
+                        <b-button 
+                            type="is-text"
+                            size="is-small"
                             @click.prevent="duplicate"
                             v-scroll-to="'#duplicate-pane'"
                         >
                             {{ trans('generic.duplicate') }}
-                        </button>
+                        </b-button>
                     </div>
                 </form>
 
@@ -129,7 +133,8 @@ export default {
         return {
             form: null,
             previewing: false,
-            duplicating: false
+            duplicating: false,
+            hidePreview: false
         }
     },
 
@@ -143,6 +148,16 @@ export default {
         previewing () {
             if (this.previewing === false) {
                 window.events.$emit('content-builder:reload')
+            }
+        },
+
+        form: {
+            deep: true,
+
+            handler (newVal, oldVal) {
+                if (oldVal) {
+                    this.hidePreview = true
+                }
             }
         }
     },
@@ -191,14 +206,32 @@ export default {
         async update () {
            let { data } = await axios.put(`${this.urlBase}/api/questions/${this.question.id}`, this.form)
 
-            this.cancel()
+            this.form.name_en = ''
+            this.form.name_fr = ''
+            this.form.section_id = null
+            this.form.question_category_id = null
+            this.form.tags = []
+            this.form.editors = []
+            this.form.marking_guide_en = ''
+            this.form.marking_guide_fr = ''
+            this.form.question_type_data = {}
 
             this.$toasted.success(data.data.message)
+
+            setTimeout(() => {
+                window.location.href = `${this.urlBase}/questions?id=${this.question.id}`
+            }, 1500)
         },
 
         updateForm (form) {
             this.form = form
         }
+    },
+
+    mounted () {
+        window.events.$on('contentbuilder:editing', () => {
+            this.hidePreview = true
+        })
     }
 }
 </script>

@@ -45,9 +45,31 @@ export default {
             fetchQuestionTypeData: 'questions/fetchQuestionTypeData',
             fetchQuestion: 'questions/setEdit'
         }),
+
+        async fetch (questionId) {
+            await this.fetchQuestion(questionId)
+            await this.fetchAvailableEditors(questionId)
+            await this.fetchSections()
+            await this.fetchQuestionCategories()
+            await this.fetchTags()
+            await this.fetchQuestionTypeData(questionId)
+        }
     },
 
     mounted () {
+        const queryString = window.location.search
+        const urlParams = new URLSearchParams(queryString)
+
+        if (urlParams.get('id')) {
+            let questionId = urlParams.get('id')
+
+            window.history.pushState({}, "", "/questions");
+
+            this.updating = true
+
+            this.fetch(parseInt(questionId))
+        }
+
         window.events.$on('questions:edit', () => {
             this.updating = true
         })

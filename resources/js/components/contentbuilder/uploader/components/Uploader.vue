@@ -27,7 +27,8 @@
 import options from '../options'
 import states from '../states'
 import { get, map, reduce, filter } from 'lodash-es'
-import uuid from 'uuid/v4'
+// import uuid from 'uuid/v4'
+import {v4 as uuidv4} from 'uuid';
 
 export default {
     props: {
@@ -150,7 +151,7 @@ export default {
         handleFilesChosen (files) {
             this.uploads.push(...Array.from(files).map(file => {
                 return {
-                    id: uuid(),
+                    id: v4(),
                     progress: 0,
                     uploading: false,
                     complete: false,

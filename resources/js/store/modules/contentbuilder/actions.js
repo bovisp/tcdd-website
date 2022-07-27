@@ -9,6 +9,8 @@ export const setContentBuilder = async ({ commit }, contentBuilderId) => {
 
 export const updateEditStatus = async ({ commit }, contentBuilderId) => {
     await commit('UPDATE_EDIT_STATUS', contentBuilderId, { root:true })
+
+    window.events.$emit('contentbuilder:editing')
 }
 
 export const addNewPart = async ({ commit }, payload) => {
