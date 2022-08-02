@@ -116,7 +116,6 @@
 </template>
 
 <script>
-// import uuid from 'uuid/v4'
 import {v4 as uuidv4} from 'uuid';
 import { pascalCase } from 'change-case'
 import { filter, isEmpty, orderBy, find } from 'lodash-es'
@@ -263,7 +262,7 @@ export default {
 
         addNewTab () {
             this.tabs.splice(this.tabs.length, 0, {
-                id: v4(),
+                id: uuidv4(),
                 label: 'New tab',
                 order: this.tabs.length + 1
             })
