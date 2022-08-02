@@ -63,7 +63,7 @@ export default {
         if (urlParams.get('id')) {
             let questionId = urlParams.get('id')
 
-            window.history.pushState({}, "", "/questions");
+            window.history.pushState({}, "", `${this.urlBase}/questions`);
 
             this.updating = true
 
