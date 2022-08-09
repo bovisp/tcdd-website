@@ -12,7 +12,7 @@
             class="block mx-auto max-w-full h-auto"
         >
             <source 
-                :src="file[0].file"
+                :src="`${urlBase}${file[0].file}`"
                 type="video/mp4"
             >
         </video>

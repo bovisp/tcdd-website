@@ -94,21 +94,6 @@
             </ul>
         </template>
 
-        <h2 
-            class="font-normal text-3xl mb-2"
-            v-if="hasRole(['administrator'])"
-        >
-            {{ trans('generic.reports') }}
-        </h2>
-
-        <ul class="ml-2 mb-6">
-             <li>
-                <a :href="`${urlBase}/admin/reports`">
-                    {{ trans('js_pages_admin_adminindex.viewsandcompletionmetrics') }}
-                </a>
-            </li>
-        </ul>
-
         <h2 class="font-normal text-3xl mb-2">
             Blog
         </h2>
