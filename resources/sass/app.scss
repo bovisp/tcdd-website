@@ -389,4 +389,8 @@ section.tab-content {
   @apply border-b border-l border-r rounded-b;
 }
 
+.form-radio, .form-checkbox {
+  border-color: #363636;
+}
+
 @tailwind utilities;
