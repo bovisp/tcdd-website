@@ -122,7 +122,7 @@ class QuestionsController extends Controller
         return response()->json([
             'data' => [
                 'type' => 'success',
-                'message' => __('app_http_controllers_questions_api_questions.store_message')
+                'message' => __('app_http_controllers_questions_questions_api_questions.store_message')
             ]
         ], 200);
     }

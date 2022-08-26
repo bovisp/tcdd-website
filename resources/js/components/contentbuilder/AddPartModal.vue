@@ -30,7 +30,7 @@
                                     :native-value="t.type"
                                     @dblclick="$emit('add', type)"
                                 >
-                                    {{ ucfirst(t.type) }}
+                                    {{ t.name }}
                                 </b-radio>
                             </div>
                         </form>

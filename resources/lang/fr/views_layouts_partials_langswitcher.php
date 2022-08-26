@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'english' => 'f English',
-  'french' => 'f French',
+  'english' => 'Anglais',
+  'french' => 'Français',
 );

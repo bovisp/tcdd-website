@@ -40,19 +40,19 @@
                     type="is-text"
                     class="is-small has-text-danger"
                     @click.prevent="$buefy.dialog.confirm({
-                        title: 'Remove instructor',
-                        message: 'Are you sure you want to <b>remove</b> this instructor?',
-                        confirmText: 'Remove',
+                        title: trans('js_pages_assessments_assessments_components_instructors_assessmentinstructorsindex.removeinstructor'),
+                        message: trans('js_pages_assessments_assessments_components_instructors_assessmentinstructorsindex.removeinstructorconfirm'),
+                        confirmText: trans('generic.remove'),
                         type: 'is-danger',
                         hasIcon: true,
                         onConfirm: () => destroy(props.row.pivot)
                     })"
-                >Remove</b-button>
+                >{{ trans('generic.remove') }}</b-button>
             </b-table-column>
 
             <template #empty>
                 <b-message type="is-info">
-                    There are no instructors associated with this assessment.
+                    {{ trans('js_pages_assessments_assessments_components_instructors_assessmentinstructorsindex.nousers') }}.
                 </b-message>
             </template>
         </b-table>

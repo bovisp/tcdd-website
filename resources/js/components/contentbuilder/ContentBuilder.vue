@@ -19,7 +19,7 @@
                         @click.prevent="updateEditStatus(id)"
                         size="is-small"
                     >
-                        {{ trans('js_components_contentbuilder_contentbuilder.turnediting') }} {{ editing ? trans('js_components_contentbuilder_contentbuilder.off') : trans('js_components_contentbuilder_contentbuilder.on') }}
+                        {{ editing ? trans('js_components_contentbuilder_contentbuilder.turneditingoff') : trans('js_components_contentbuilder_contentbuilder.turneditingon') }}
                     </b-button>
                 </div>
             </div>

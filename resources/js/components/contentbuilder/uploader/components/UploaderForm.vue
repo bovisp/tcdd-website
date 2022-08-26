@@ -19,23 +19,23 @@
         <template v-if="draggingCount">
             <div v-if="allUploaded">
                 <div class="text-grey-700">
-                    Drop here to upload or <span class="text-blue-400">choose {{ pluralize('file', options.maxFiles) }}</span>
+                    {{ trans('js_components_uploader.drophere1') }} <span class="text-blue-400">{{ trans('js_components_uploader.drophere2') }}{{ frenchFiles }} {{ pluralize(trans('js_components_uploader.files'), options.maxFiles) }}</span>
                     <template v-if="options.maxFiles === 1">
-                        </br><span class="text-red-400 text-sm">You may only upload one file.</span>
+                        </br><span class="text-red-400 text-sm">{{ trans('js_components_uploader.upoloadonefile') }}.</span>
                     </template>
                 </div>
             </div>
             
             <div v-else>
-                Nearly there. Let go to upload <span class="font-bold">{{ draggingCount }}</span> items!
+                {{ trans('js_components_uploader.nearlythere') }} <span class="font-bold">{{ draggingCount }}</span> {{ pluralize(trans('js_components_uploader.item'), options.maxFiles) }}!
             </div>
         </template>
 
         <template v-else>
            <div class="text-grey-700">
-                Drop here to upload or <span class="text-blue-400">choose {{ pluralize('file', options.maxFiles) }}</span>
+                {{ trans('js_components_uploader.drophere1') }} <span class="text-blue-400">{{ trans('js_components_uploader.drophere2') }}{{ frenchFiles }} {{ pluralize(trans('js_components_uploader.files'), options.maxFiles) }}</span>
                 <template v-if="options.maxFiles === 1">
-                    </br><span class="text-red-400 text-sm">You may only upload one file.</span>
+                    </br><span class="text-red-400 text-sm">{{ trans('js_components_uploader.upoloadonefile') }}.</span>
                 </template>
             </div>
         </template>
@@ -60,6 +60,20 @@ export default {
             dragging: false,
             draggingCount: 0,
             allUploaded: false
+        }
+    },
+
+    computed: {
+        frenchFiles () {
+            if (this.currentLang === 'en') {
+                return ''
+            }
+
+            if (this.currentLang === 'fr' && this.options.maxFiles === 1) {
+                return ' un'
+            }
+
+            return ' des'
         }
     },
 

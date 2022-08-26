@@ -2,7 +2,7 @@
     <div>
         <b-field>
             <b-input 
-                placeholder="Add an optional title..."
+                :placeholder="trans('js_components_contentbuilder_generic.addoptionaltitle')"
                 size="is-medium"
                 class="borderless-input borderless-input-md"
                 v-model="form.title"
@@ -47,7 +47,7 @@
 
         <b-field class="mt-2">
             <b-input 
-                placeholder="Add an optional caption..."
+                :placeholder="trans('js_components_contentbuilder_generic.addoptionalcaption')"
                 class="borderless-input"
                 v-model="form.caption"
             ></b-input>

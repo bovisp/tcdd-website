@@ -4,7 +4,7 @@
 <div class="flex justify-center mt-32">
     <div class="w-full lg:w-1/2 shadow-lg rounded border border-gray-100 p-6">
         <div class="text-3xl mb-4">
-            {{ __('Login') }}
+            {{ __('auth.login') }}
         </div>
 
         <form method="POST" action="{{ route('login') }}">
@@ -14,7 +14,7 @@
                 <label 
                     for="email" 
                     class="block text-gray-700 font-bold mb-2"
-                >{{ __('E-Mail Address') }}</label>
+                >{{ __('auth.email') }}</label>
 
                 <input 
                     id="email" 
@@ -38,7 +38,7 @@
                 <label 
                     for="password" 
                     class="block text-gray-700 font-bold mb-2"
-                >{{ __('Password') }}</label>
+                >{{ __('auth.password') }}</label>
 
                 <input 
                     id="password" 
@@ -60,18 +60,18 @@
                 <input  type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                 <label  for="remember">
-                    {{ __('Remember Me') }}
+                    {{ __('auth.rememberme') }}
                 </label>
             </div>
 
             <div>
                 <button type="submit" class="btn btn-blue">
-                    {{ __('Login') }}
+                    {{ __('auth.login') }}
                 </button>
 
                 @if (Route::has('password.request'))
                     <a class="btn btn-text" href="{{ route('password.request') }}">
-                        {{ __('Forgot Your Password?') }}
+                        {{ __('auth.forgotyourpassword?') }}
                     </a>
                 @endif
             </div>

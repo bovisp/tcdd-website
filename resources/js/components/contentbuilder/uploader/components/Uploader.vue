@@ -7,8 +7,8 @@
         />
 
         <div class="mb-4 flex justify-between px-4 text-gray-700 text-sm">
-            <span>{{ this.uploads.length }} uploads ({{ currentUploadCount }} in progress) / {{ completedUploadCount }} complete</span>
-            <span>{{ overallProgress }}% complete</span>
+            <span>{{ this.uploads.length }} {{ trans('js_components_uploader.uploads') }} ({{ currentUploadCount }} {{ trans('js_components_uploader.inprogress') }}) / {{ completedUploadCount }} {{ trans('js_components_uploader.complete') }}</span>
+            <span>{{ overallProgress }}% {{ trans('js_components_uploader.complete') }}</span>
         </div>
 
         <uploader-file

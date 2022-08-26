@@ -17,7 +17,8 @@ class ContentBuilderTypeResource extends JsonResource
         return [
             'type' => $this->type,
             'id' => $this->id,
-            'description' => $this->description
+            'description' => $this->description,
+            'name' => $this->name,
         ];
     }
 }

@@ -2,7 +2,7 @@
     <div>
         <b-field>
             <b-input 
-                placeholder="Add an optional title..."
+                :placeholder="trans('js_components_contentbuilder_generic.addoptionaltitle')"
                 size="is-medium"
                 class="borderless-input borderless-input-md"
                 v-model="form.title"
@@ -33,7 +33,7 @@
                                 type="is-text"
                                 class="is-text-info"
                                 @click.prevent="animationSaved = true"
-                            >Save animation</b-button>
+                            >{{ trans('js_components_contentbuilder_types_animation.saveanimation') }}</b-button>
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                                 type="is-text"
                                 class="has-text-info"
                                 @click.prevent="animationSaved = true"
-                            >Save animation</b-button>
+                            >{{ trans('js_components_contentbuilder_types_animation.saveanimation') }}n</b-button>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
 
         <b-field class="mt-2">
             <b-input 
-                placeholder="Add an optional caption..."
+                :placeholder="trans('js_components_contentbuilder_generic.addoptionalcaption')"
                 class="borderless-input"
                 v-model="form.caption"
             ></b-input>

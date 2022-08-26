@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'recall' => 'Rappel',
-  'publish' => 'Publier',
+  'recall' => 'Rappel all results',
+  'publish' => 'Publier all results',
 );

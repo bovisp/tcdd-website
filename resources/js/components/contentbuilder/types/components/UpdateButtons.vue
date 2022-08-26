@@ -6,7 +6,7 @@
             @click.prevent="$emit('update')"
             v-if="showUpdateButton"
         >
-            Update
+            {{ trans('generic.update') }}
         </b-button>
         
         <b-button 

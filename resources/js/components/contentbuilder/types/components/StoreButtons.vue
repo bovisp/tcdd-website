@@ -6,7 +6,7 @@
             @click.prevent="$emit('store')"
             v-if="showCreateButton"
         >
-            Create
+            {{ trans('generic.create') }}
         </b-button>
         
         <b-button 

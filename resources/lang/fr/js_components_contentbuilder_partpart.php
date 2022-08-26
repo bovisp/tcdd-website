@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'deletepart' => 'Créer une partie de l\'onglet',
+  'deletepart' => 'Supprimer la partie',
   'areyousure' => 'Vous êtes sûr de vouloir faire ça ?',
 );

@@ -52,8 +52,8 @@
 
         <modal 
             v-show="modalActive"
-            ok-button-text="Start"
-            cancel-button-text="Cancel"
+            :ok-button-text="trans('generic.start')"
+            :cancel-button-text="trans('generic.cancel')"
             @close="close"
             @submit="confirm"
         >

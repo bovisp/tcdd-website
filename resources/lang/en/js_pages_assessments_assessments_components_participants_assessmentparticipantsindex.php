@@ -10,4 +10,8 @@ return array (
   'deactivated' => 'deactivated',
   'hasbeensuccessfully' => 'has been successfully',
   'addparticipants' => 'Add participants',
+  'inprogress' => 'In progress',
+  'removeparticipant' => 'Remove participant',
+  'removeparticipantconfirm' => 'Are you sure you want to remove this participant?',
+  'activationupdated' => 'Activation successfully updated',
 );

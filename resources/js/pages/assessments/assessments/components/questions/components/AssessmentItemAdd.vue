@@ -61,13 +61,13 @@ export default {
         types () {
             if (this.assessment.locked) {
                 return [
-                    { code: 'content', name: this.trans('generic.content') }
+                    { code: 'content', name: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentpicker.explanitorycontent') }
                 ]
             }
 
             return [
                 { code: 'question', name: this.trans('generic.question') },
-                { code: 'content', name: this.trans('generic.content') }
+                { code: 'content', name: this.trans('js_pages_assessments_assessments_components_questions_components_assessmentquestionscontentpicker.explanitorycontent') }
             ]
         }
     },

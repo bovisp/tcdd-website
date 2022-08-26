@@ -56,19 +56,19 @@
                     class="is-small has-text-danger"
                     :disabled="inExam(props.row.pivot.id)"
                     @click.prevent="$buefy.dialog.confirm({
-                        title: 'Remove participant',
-                        message: 'Are you sure you want to <b>remove</b> this participant?',
-                        confirmText: 'Remove',
+                        title: trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.removeparticipant'),
+                        message: trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.removeparticipantconfirm'),
+                        confirmText: trans('generic.remove'),
                         type: 'is-danger',
                         hasIcon: true,
                         onConfirm: () => destroy(props.row.pivot)
                     })"
-                >Remove</b-button>
+                >{{ trans('generic.remove') }}</b-button>
             </b-table-column>
 
             <template #empty>
                 <b-message type="is-info">
-                    There are no participants associated with this assessment.
+                    {{ trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.nousers') }}.
                 </b-message>
             </template>
         </b-table>
@@ -98,18 +98,18 @@ export default {
             let attempt = find(this.assessment.attempts, attempt => attempt.assessment_participant_id === participantId)
   
             if (participant.pivot.activated && !attempt) {
-                return 'Deactivate'
+                return this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.deactivate')
             }
 
             if (participant.pivot.activated && !attempt.completed) {
-                return 'In progress'
+                return this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.inprogress')
             }
 
             if (attempt && attempt.completed) {
-                return 'Completed'
+                return this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.completed')
             }
 
-            return 'Activate'
+            return this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.activate')
         },
 
         inExam (participantId) {
@@ -120,7 +120,7 @@ export default {
             await this.activateParticipant(userId)
 
             this.$buefy.toast.open({
-                message: 'Activation successfully updated',
+                message: this.trans('js_pages_assessments_assessments_components_participants_assessmentparticipantsindex.activationupdated'),
                 type: 'is-success'
             })
         },

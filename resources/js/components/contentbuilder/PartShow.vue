@@ -46,13 +46,13 @@
 
         <modal 
             v-if="showModal" 
-            cancel-button-text="Cancel"
+            :cancel-button-text="trans('generic.delete')"
             @submit="destroy({
                 partId: data.id,
                 type: data.builderType.type,
                 id
             })"
-            ok-button-text="Delete"
+            :ok-button-text="trans('generic.delete')"
             @close="showModal = false"
         >
             <h3 slot="header" class="mb-4">

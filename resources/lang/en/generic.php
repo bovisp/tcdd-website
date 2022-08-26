@@ -117,4 +117,6 @@ return array (
   'role' => 'Role',
   'sections' => 'Sections',
   'true' => 'true',
+  'remove' => 'Remove',
+  'start' => 'Start',
 );

@@ -42,16 +42,16 @@
 
             <div class="text-gray-700 align-baseline">
                 <small>
-                    <template v-if="state === states.WAITING">Waiting</template>
+                    <template v-if="state === states.WAITING">{{ trans('js_components_uploader.waiting') }}</template>
 
-                    <template v-if="state === states.COMPLETE">Complete</template>
+                    <template v-if="state === states.COMPLETE">{{ trans('js_components_uploader.complete') }}</template>
 
-                    <template v-if="state === states.FAILED">Upload failed</template>
+                    <template v-if="state === states.FAILED">{{ trans('js_components_uploader.uploadfailed') }}</template>
 
-                    <template v-if="state === states.CANCELLED">Upload cancelled</template>
+                    <template v-if="state === states.CANCELLED">{{ trans('js_components_uploader.uploadcancelled') }}</template>
 
                     <template v-if="state === states.UNSUPPORTED">
-                        <span class="text-red-500">Sorry, this file type isn't supported</span>
+                        <span class="text-red-500">{{ trans('js_components_uploader.notsupported') }}</span>
                     </template>
 
                     <template v-if="state === states.UPLOADING">
@@ -59,7 +59,7 @@
                             href="#"
                             class="text-blue-400"
                             @click.prevent="cancel"
-                        >Cancel</a>
+                        >{{ trans('generic.cancel') }}</a>
                     </template>
                 </small>
             </div>

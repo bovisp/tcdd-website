@@ -3,5 +3,5 @@
 return array (
   'addcontent' => 'Add content',
   'choosetype' => 'Choose a type',
-  'explanitorycontent' => 'Explanitory content',
+  'explanitorycontent' => 'Explanatory content',
 );

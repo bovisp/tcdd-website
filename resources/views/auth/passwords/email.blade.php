@@ -4,7 +4,7 @@
 <div class="flex justify-center mt-32">
     <div class="w-full lg:w-1/2 shadow-lg rounded border border-gray-100 p-6">
         <div class="text-3xl mb-4">
-            {{ __('Reset Password') }}
+            {{ __('auth.resetpassword') }}
         </div>
 
         @if (session('status'))
@@ -20,7 +20,7 @@
                 <label 
                     for="email" 
                     class="block text-gray-700 font-bold mb-2"
-                >{{ __('E-Mail Address') }}</label>
+                >{{ __('auth.email') }}</label>
 
                 <input 
                     id="email" 
@@ -41,7 +41,7 @@
             </div>
 
             <button type="submit" class="btn btn-blue">
-                {{ __('Send Password Reset Link') }}
+                {{ __('auth.sendpasswordreset') }}
             </button>
         </form>
     </div>

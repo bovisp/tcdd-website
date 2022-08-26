@@ -6,4 +6,5 @@ return array (
   'addatab' => 'Add a tab',
   'createtabpart' => 'Create tab part',
   'cancel' => 'Cancel',
+  'savetabs' => 'Save tabs',
 );

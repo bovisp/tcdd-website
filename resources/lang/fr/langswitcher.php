@@ -1,5 +1,5 @@
 <?php
 
 return array (
-  'switch_to' => 'g Switch to:',
+  'switch_to' => 'Passez à:',
 );

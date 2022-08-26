@@ -28,7 +28,7 @@
                         class="btn btn-text text-blue-700"
                         @click.prevent="goToQuestion(question)"
                     >
-                        Go to question
+                        {{ trans('js_pages_assessments_assessment_components_assessmentattemptreview.gotoquestion') }}
                     </button>
                 </td>
             </tr>

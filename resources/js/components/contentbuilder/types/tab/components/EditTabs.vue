@@ -4,7 +4,7 @@
             v-if="!displaySaveButton"
         >
             <b-input 
-                placeholder="Add an optional tab title..."
+                :placeholder="trans('js_components_contentbuilder_generic.addoptionaltitle')"
                 size="is-medium"
                 class="borderless-input borderless-input-md"
                 v-model="form.title"
@@ -27,7 +27,7 @@
                 expanded
                 @click.prevent="toggleSaveButton"
                 v-if="displaySaveButton"
-            >Save tabs</b-button>
+            >{{ trans('js_components_contentbuilder_types_tab_addtab.savetabs') }}</b-button>
         </b-field>
 
         <b-field
@@ -35,7 +35,7 @@
             class="mb-3"
         >
             <b-input 
-                placeholder="Add an optional tab caption..."
+                :placeholder="trans('js_components_contentbuilder_generic.addoptionalcaption')"
                 class="borderless-input"
                 v-model="form.caption"
             ></b-input>

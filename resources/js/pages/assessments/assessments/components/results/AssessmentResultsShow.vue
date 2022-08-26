@@ -4,7 +4,7 @@
         :class="showing ? 'btn-red' : 'btn-text'"
         @click.prevent="status"
     >
-        {{ showing ? trans('js_pages_assessments_assessments_components_results_assessmentresultsshow.recall') : trans('js_pages_assessments_assessments_components_results_assessmentresultsshow.publish') }} results
+        {{ showing ? trans('js_pages_assessments_assessments_components_results_assessmentresultsshow.recall') : trans('js_pages_assessments_assessments_components_results_assessmentresultsshow.publish') }}
     </button>
 </template>
 
