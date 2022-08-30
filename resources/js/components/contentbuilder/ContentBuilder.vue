@@ -86,6 +86,7 @@ export default {
     },
 
     async mounted () {
+        console.log(this.id)
         await this.setContentBuilder(this.id)
     }
 }

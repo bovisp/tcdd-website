@@ -201,6 +201,7 @@ export default {
             this.form.marking_guide_en = ''
             this.form.marking_guide_fr = ''
             this.form.question_type_data = {}
+            this.form.contentBuilder = {}
         },
 
         async update () {

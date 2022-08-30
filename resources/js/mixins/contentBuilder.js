@@ -9,6 +9,12 @@ export default {
         }
     },
 
+    watch: {
+        async id () {
+            await this.setContentBuilder(this.id)
+        }
+    },
+
     computed: {
         ...mapGetters({
             contentBuilder: 'contentBuilder'
