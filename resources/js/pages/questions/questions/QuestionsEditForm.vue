@@ -143,7 +143,7 @@
 
         <hr class="my-6">
 
-        <template v-if="question.type">
+        <template v-if="questionTypeData.name">
             <h3 class="subtitle is-4">
                 {{ capitalCase(questionTypeData.name) }} {{ trans('generic.questionsettings') }}
             </h3>
