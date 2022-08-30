@@ -145,7 +145,7 @@
 
         <template v-if="question.type">
             <h3 class="subtitle is-4">
-                {{ capitalCase(question.type) }} {{ trans('generic.questionsettings') }}
+                {{ capitalCase(questionTypeData.name) }} {{ trans('generic.questionsettings') }}
             </h3>
         </template>
 

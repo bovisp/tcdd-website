@@ -55,7 +55,8 @@ class QuestionTypeDataResource extends JsonResource
 
         return [
             'data' => $questionTypeData,
-            'type' => $questionType->code
+            'type' => $questionType->code,
+            'name' => $questionType->name
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
 return array (
-  'searcheditors' => 'f Search editors',
+  'searcheditors' => 'Recherchez un éditeur pour ajouter',
   'editquestion' => 'Modifier la question',
 );
