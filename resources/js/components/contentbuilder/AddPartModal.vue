@@ -21,7 +21,7 @@
                         <form>
                             <div
                                 class="mb-2"
-                                v-for="t in types"
+                                v-for="t in filter(types, t => t.visible)"
                                 :key="t.id"
                             >
                                 <b-radio 
@@ -100,7 +100,9 @@ export default {
     },
 
     methods: {
-        ucfirst
+        ucfirst,
+
+        filter
     },
 
     async mounted () {

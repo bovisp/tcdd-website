@@ -1,5 +1,6 @@
-const mix = require('laravel-mix')
-const tailwindcss = require('tailwindcss')
+let mix = require('laravel-mix')
+// const tailwindcss = require('tailwindcss')
+require('mix-tailwindcss');
 require("dotenv").config()
 require('laravel-mix-purgecss')
 
@@ -14,13 +15,21 @@ require('laravel-mix-purgecss')
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/js/app.js', 'public/js').vue({ version: 2 })
    .sass('resources/sass/app.scss', 'public/css')
+   .tailwind()
+   // .options({
+   //    processCssUrls: false,
+   //    postCss:  [
+   //       tailwindcss('./tailwind.config.js')
+   //    ]
+   // })
    .options({
-      processCssUrls: false,
-      postCss:  [
-         tailwindcss('./tailwind.config.js')
-      ]
+      postCss: [require('tailwindcss')]
+    })
+   .purgeCss({
+      enabled: mix.inProduction(),
    })
+   .version()
    // .purgeCss()
    .disableNotifications()

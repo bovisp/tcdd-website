@@ -19,6 +19,7 @@ class ContentBuilderTypeResource extends JsonResource
             'id' => $this->id,
             'description' => $this->description,
             'name' => $this->name,
+            'visible' => $this->visible
         ];
     }
 }
