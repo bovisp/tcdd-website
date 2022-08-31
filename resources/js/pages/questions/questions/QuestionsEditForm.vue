@@ -218,12 +218,14 @@
 import Multiselect from 'vue-multiselect'
 import { mapGetters } from 'vuex'
 import setObject from '../../../helpers/setObject'
+import { VueEditor, Quill } from 'vue2-editor'
 import { noCase, capitalCase, pascalCase } from 'change-case'
 import { isEmpty } from 'lodash-es'
 
 export default {
     components: {
-        Multiselect
+        Multiselect,
+        VueEditor
     },
 
     props: {

@@ -25,9 +25,9 @@ export default {
     data() {
         return {
             columns: [
-                { field: 'categoryName', title: trans('generic.category'), sortable: true },
-                { field: 'name', title: trans('generic.name'), sortable: true },
-                { field: 'languageName', title: trans('generic.language'), sortable: true }
+                { field: 'categoryName', title: this.trans('generic.category'), sortable: true },
+                { field: 'name', title: this.trans('generic.name'), sortable: true },
+                { field: 'languageName', title: this.trans('generic.language'), sortable: true }
             ]
         }
     },

@@ -61,11 +61,11 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { Draggable } from 'vuedraggable'
+import Draggable from 'vuedraggable'
 import { orderBy } from 'lodash-es'
 
 export default {
-    componets: {
+    components: {
         Draggable
     },
 
