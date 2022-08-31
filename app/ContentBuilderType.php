@@ -13,7 +13,8 @@ class ContentBuilderType extends Model
 
     protected $fillable = [
         'description',
-        'name'
+        'name',
+        'visible'
     ];
 
     public function toArray()
