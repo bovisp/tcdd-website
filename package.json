@@ -1,25 +1,26 @@
 {
     "private": true,
     "scripts": {
+        "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
+        "prod": "npm run production",
         "production": "mix --production"
     },
     "devDependencies": {
         "@tailwindcss/custom-forms": "^0.2.1",
         "axios": "^0.19",
         "cross-env": "^7.0",
-        "laravel-mix": "^6.0",
-        "laravel-mix-purgecss": "^6.0",
-        "mix-tailwindcss": "^1.3.0",
+        "laravel-mix": "^6.0.49",
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.20.1",
         "sass-loader": "^8.0.0",
         "vue": "^2.5.17",
-        "vue-loader": "15.9.8",
-        "vue-template-compiler": "^2.6.10"
+        "vue-loader": "^15.9.8",
+        "vue-template-compiler": "^2.6.10",
+        "webpack-cli": "^4.10.0"
     },
     "dependencies": {
         "buefy": "^0.9.21",

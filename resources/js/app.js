@@ -5,7 +5,7 @@ import 'core-js/es/symbol/iterator'
 
 import './helpers/interceptors'
 
-import Vue from 'vue'
+window.Vue = require('vue')
 window.events = new Vue()
 
 import { 
@@ -72,6 +72,7 @@ window.events.$on('errors-general', error => {
 })
 
 import store from './store'
+import Vue from 'vue'
 
 const files = require.context('./', true, /\.vue$/i)
 files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
