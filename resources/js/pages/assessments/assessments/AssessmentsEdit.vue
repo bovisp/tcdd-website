@@ -131,15 +131,23 @@ export default {
 
         back () {
             window.events.$emit('assessments:edit-cancel')
+        },
+
+        async getData (assessmentId) {
+            let loading = this.$buefy.loading.open()
+
+            await this.fetchAssessment(this.assessment.id)
+
+            await this.fetchAttempts()
+
+            await this.fetchParticipantAnswers()
+
+            loading.close()
         }
     },
 
     async mounted () {
-        await this.fetchAssessment(this.assessment.id)
-
-        await this.fetchAttempts()
-
-        await this.fetchParticipantAnswers()
+        await this.getData(this.assessment.id)
 
         Echo.private(`assessment.${this.assessment.id}`)
             .listen('AssessmentCompleted', async (e) => {

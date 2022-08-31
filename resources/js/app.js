@@ -22,7 +22,8 @@ import {
     Message,
     Dialog,
     Checkbox,
-    Radio
+    Radio,
+    Loading
 } from 'buefy'
 import 'buefy/dist/buefy.css'
 
@@ -40,6 +41,7 @@ Vue.use(Dialog)
 Vue.use(Icon)
 Vue.use(Checkbox)
 Vue.use(Radio)
+Vue.use(Loading)
 
 // import Tabs from 'vue-tabs-component';
 // Vue.use(Tabs);
