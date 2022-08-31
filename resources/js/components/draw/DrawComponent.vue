@@ -34,6 +34,7 @@
                 class="border-2"
                 @mousedown="startPainting" 
                 @mouseup="finishedPainting"
+                @mouseout="finishedPainting"
                 @mousemove="draw"
             ></canvas>
 
@@ -133,6 +134,10 @@ export default {
             }
         },
 
+        enterCanvas (e) {
+            this.ctx.beginPath()
+        },
+
         getClientOffset (e) {
             const { pageX, pageY } = e
 
@@ -152,6 +157,7 @@ export default {
         },
 
         finishedPainting() {
+            console.log('here')
             this.painting = false
 
             if (this.questionId) {
