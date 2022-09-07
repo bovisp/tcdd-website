@@ -184,15 +184,18 @@
 
                         <b-field 
                             :label="trans('generic.nameenglish')"
-                            :type="errors.name_en || errors.name_fr ? 'is-danger' : ''"
+                            :type="modalAddTag && (errors.name_en || errors.name_fr) ? 'is-danger' : ''"
                         >
                             <b-input v-model="tagTranslation"></b-input>
 
-                            <p
-                                v-if="errors.name_en || errors.name_fr"
-                                v-text="currentLang === 'en' ? errors.name_en[0] : errors.name_fr[0]"
-                                class="text-red-500 text-sm"
-                            ></p>
+                            <div
+                                v-if="modalAddTag && (errors.name_en || errors.name_fr)"
+                            >
+                                <p
+                                    v-text="currentLang === 'en' ? errors.name_en[0] : errors.name_fr[0]"
+                                    class="text-red-500 text-sm"
+                                ></p>
+                            </div>
                         </b-field>
                     </section>
 

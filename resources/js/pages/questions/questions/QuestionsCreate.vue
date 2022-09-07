@@ -342,7 +342,7 @@
                     >
                         <label 
                             class="block text-gray-700 font-bold mb-2" 
-                            :class="{ 'text-red-500': errors.name_en || errors.name_fr }"
+                            :class="{ 'text-red-500': modalAddTag && (errors.name_en || errors.name_fr) }"
                             for="name"
                         >
                             {{ currentLang === 'en' ? trans('generic.french') : trans('generic.english') }} {{ trans('generic.translationfor') }} '{{ tag }}'
@@ -353,14 +353,17 @@
                             v-model="tagTranslation"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-auto"
                             id="name"
-                            :class="{ 'border-red-500': errors.name_en || errors.name_fr }"
+                            :class="{ 'border-red-500': modalAddTag && (errors.name_en || errors.name_fr) }"
                         >
 
-                        <p
-                            v-if="errors.name_en || errors.name_fr"
-                            v-text="currentLang === 'en' ? errors.name_en[0] : errors.name_fr[0]"
-                            class="text-red-500 text-sm"
-                        ></p>
+                        <div
+                            v-if="modalAddTag && (errors.name_en || errors.name_fr)"
+                        >
+                            <p
+                                v-text="currentLang === 'en' ? errors.name_en[0] : errors.name_fr[0]"
+                                class="text-red-500 text-sm"
+                            ></p>
+                        </div>
                     </div>
                 </div>
             </template>
