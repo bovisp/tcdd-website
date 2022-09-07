@@ -119,4 +119,5 @@ return array (
   'true' => 'true',
   'remove' => 'Remove',
   'start' => 'Start',
+  'homepage' => 'Home',
 );

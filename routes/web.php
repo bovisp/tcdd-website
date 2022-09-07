@@ -119,7 +119,7 @@ Route::post('/api/content-builder/{contentBuilder}/content', 'ContentBuilder\Api
 Route::post('/api/content-builder/{contentBuilder}/animation', 'ContentBuilder\Api\AnimationPartController@store');
 Route::post('/api/content-builder/{contentBuilder}/media', 'ContentBuilder\Api\MediaPartController@store');
 Route::post('/api/content-builder/{contentBuilder}/tab', 'ContentBuilder\Api\TabPartController@store');
-Route::get('/api/content-builder/{contentBuilder}', 'ContentBuilder\Api\ContentBuilderController@index');\
+Route::get('/api/content-builder/{contentBuilder}', 'ContentBuilder\Api\ContentBuilderController@index');
 Route::patch('api/content-builder/{contentBuilder}/change-order', 'ContentBuilder\Api\ContentBuilderController@reorder');
 
 Route::get('/api/parts/types', 'ContentBuilderTypes\Api\ContentBuilderTypesController@index');

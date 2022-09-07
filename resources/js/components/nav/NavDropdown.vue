@@ -13,13 +13,17 @@
         ></button>
 
         <div 
-            class="absolute z-20 right-0 bg-white flex flex-col rounded shadow-md border border-gray-200 py-3 w-64"
-            style="top: 50px;"
+            class="absolute z-20 right-0 bg-white flex flex-col rounded shadow-md border border-gray-200 py-1 w-64"
             v-if="isOpen"
         >
-            <span class="pb-2 px-3">{{ trans('usermenu.loggedInAs') }}: <a :href="`${urlBase}/users/${me.id}`"><strong>{{ me.fullname }}</strong></a></span>  
+            <span class="pb-2 px-3">{{ trans('usermenu.loggedInAs') }}: <strong>{{ me.fullname }}</strong></span>  
 
-            <hr class="border-t border-gray-300">
+            <hr class="border-t border-gray-300 my-0">
+
+            <a 
+                :href="`${urlBase}`"
+                class="text-gray-900 py-2 px-3"
+            >{{ trans('generic.homepage') }}</a>
 
             <template v-if="hasRole(['administrator', 'director', 'manager', 'employee'])">
                 <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/admin`">{{ trans('usermenu.adminSection') }}</a>
@@ -27,7 +31,7 @@
 
             <a class="text-gray-900 py-2 px-3" :href="`${urlBase}/issues`">{{ trans('usermenu.submitAnIssue') }}</a>
 
-            <hr class="border-t border-gray-300">
+            <hr class="border-t border-gray-300 my-0">
 
             <a 
                 href="#"

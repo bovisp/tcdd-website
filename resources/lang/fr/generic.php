@@ -119,4 +119,5 @@ return array (
   'true' => 'vrai',
   'remove' => 'Enlever',
   'start' => 'Commencer',
+  'homepage' => 'page d\'accueil',
 );
