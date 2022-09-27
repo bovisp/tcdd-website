@@ -16,7 +16,7 @@
             cancel-button-text="Cancel"
         >
             <template slot="header">
-                <span v-if="parseInt(attempt.time_remaining === 10)">
+                <span v-if="parseInt(attempt.time_remaining) === 10">
                     {{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.tenminute') }}
                 </span>
 
