@@ -52,6 +52,8 @@ export const deactivateParticipant = async ({ state }) => {
 
 export const changePage = async ({ commit }, page) => {
     await commit('SET_CURRENT_PAGE', page)
+
+    window.events.$emit('assessment:page-changed')
 }
 
 export const getTotalScore = async ({ state, commit }) => {

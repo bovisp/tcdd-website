@@ -1,6 +1,7 @@
 <template>
     <div v-if="attempt"
         class="mt-8"
+        id="assessment-page-top"
     >
         <div class="flex items-center">
             <h1 
@@ -79,6 +80,10 @@ export default {
                 await this.checkTimeRemaining()
             }, 60000)
         }
+
+        window.events.$on('assessment:page-changed', () => {
+            this.$scrollTo('#assessment-page-top')
+        })
     }
 }
 </script>
