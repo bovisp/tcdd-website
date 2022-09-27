@@ -83,6 +83,8 @@ export default {
     },
 
     async mounted () {
+        let loading = this.$buefy.loading.open()
+
         await this.fetchReviewData()
 
         forEach(this.attemptReview.questions, question => {
@@ -90,6 +92,8 @@ export default {
                 this.setInconpleteQuestions(true)    
             }
         })
+
+        loading.close()
     }
 }
 </script>
