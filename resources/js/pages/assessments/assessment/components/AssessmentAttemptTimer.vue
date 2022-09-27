@@ -16,12 +16,20 @@
             cancel-button-text="Cancel"
         >
             <template slot="header">
-                {{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.twominute') }}
+                <span v-if="parseInt(attempt.time_remaining === 10)">
+                    {{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.tenminute') }}
+                </span>
+
+                <span v-else>
+                    {{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.twominute') }}
+                </span>
             </template>
 
             <template slot="body">
                 <div class="my-4">
-                    {{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.twominutetext') }}
+                    {{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.youhavelessthan1') }} 
+                    {{ attempt.time_remaining }} 
+                    {{ trans('js_pages_assessments_assessment_components_assessmentattempttimer.youhavelessthan2') }}
                 </div>
             </template>
         </modal>
@@ -59,6 +67,12 @@ export default {
         setInterval(() => {
            if (parseInt(this.attempt.time_remaining) <= 5) {
                 this.warningClass = true
+            }
+
+            if (parseInt(this.attempt.time_remaining) === 10) {
+                if (!this.hasConfirmed) {
+                    this.modalActive = true
+                }
             }
 
             if (parseInt(this.attempt.time_remaining) === 2) {
