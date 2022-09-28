@@ -254,19 +254,20 @@ export default {
     async mounted () {
         await this.fetchSections()
         await this.fetchTypes()
-        await this.populateForm()
+        // await this.populateForm()
 
-        let emptyProps = []
+        // let emptyProps = []
 
         for (let prop in this.form) {
-            if (!this.form[prop]) {
-                this.form[prop] = this.assessment[prop]
-                console.log(`assessment: ${this.assessment[prop]} and form ${this.form[prop]} `)
-            }
+            // if (!this.form[prop]) {
+                this.form[prop] = this.$store.state.assessments.assessment[prop]
+                // console.log(`assessment: ${this.assessment[prop]} and form ${this.form[prop]} `)
+            // }
         }
 
         // console.log(emptyProps)
-        console.log(this.form)
+        // console.log(this.form)
+        // console.log(this.$store.state.assessments.assessment)
     }
 }
 </script>
