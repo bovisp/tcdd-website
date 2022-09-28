@@ -267,7 +267,7 @@ export default {
 
         // console.log(emptyProps)
         // console.log(this.form)
-        // console.log(this.$store.state.assessments.assessment)
+        console.log(this.$store.state.assessments.assessment)
     }
 }
 </script>
