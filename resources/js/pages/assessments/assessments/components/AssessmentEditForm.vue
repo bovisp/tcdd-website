@@ -248,6 +248,8 @@ export default {
             this.form.section_id = this.assessment.section_id
             this.form.assessment_type_id = this.assessment.assessment_type_id
             this.form.completion_time = this.assessment.completion_time
+
+            console.log(this.form)
         }
     },
 
