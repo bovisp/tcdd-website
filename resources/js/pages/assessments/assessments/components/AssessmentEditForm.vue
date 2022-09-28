@@ -260,7 +260,7 @@ export default {
 
         for (let prop in this.form) {
             if (!this.form[prop]) {
-                emptyProps.push(prop)
+                this.form[prop] = this.assessment[prop]
             }
         }
 
