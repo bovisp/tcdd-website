@@ -9,14 +9,6 @@ export const getMissingProp = async ({ commit, state }, missingProp) => {
     })
 
     return prop
-
-    // await commit('SET_MISSING', assessments.data)
-
-    // if (!isEmpty(state.assessment)) {
-    //     commit('SET_ASSESSMENT', find(assessments.data, p => p.id === state.assessment.id))
-    // }
-
-    // return
 }
 
 export const fetch = async ({ commit, state }) => {

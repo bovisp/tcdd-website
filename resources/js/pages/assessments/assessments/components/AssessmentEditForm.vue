@@ -257,20 +257,11 @@ export default {
         await this.fetchTypes()
         await this.populateForm()
 
-        // let emptyProps = []
-
         for (let prop in this.form) {
             if (!this.form[prop]) {
-                // this.form[prop] = this.$store.state.assessments.assessment[prop]
-                // console.log(`assessment: ${this.assessment[prop]} and form ${this.form[prop]} `)
-                // console.log(prop)
                 this.form[prop] = await this.getMissingProp(prop)
             }
         }
-
-        // console.log(emptyProps)
-        // console.log(this.form)
-        // console.log(this.$store.state.assessments.assessment)
     }
 }
 </script>

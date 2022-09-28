@@ -35,6 +35,14 @@ class AssessmentsController extends Controller
 
     public function getMissingProp(Assessment $assessment, $prop)
     {
+        if ($prop === 'description_en') {
+            return $assessment->getTranslation('description', 'en');
+        }
+
+        if ($prop === 'description_fr') {
+            return $assessment->getTranslation('description', 'fr');
+        }
+
         return $assessment[$prop];
     }
 
