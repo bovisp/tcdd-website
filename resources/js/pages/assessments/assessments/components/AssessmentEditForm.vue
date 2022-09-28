@@ -261,10 +261,11 @@ export default {
         for (let prop in this.form) {
             if (!this.form[prop]) {
                 this.form[prop] = this.assessment[prop]
+                console.log(`assessment: ${this.assessment[prop]} and form ${this.form[prop]}`)
             }
         }
 
-        console.log(emptyProps)
+        // console.log(emptyProps)
         console.log(this.form)
     }
 }
