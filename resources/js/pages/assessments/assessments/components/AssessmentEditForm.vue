@@ -249,7 +249,15 @@ export default {
             this.form.assessment_type_id = this.assessment.assessment_type_id
             this.form.completion_time = this.assessment.completion_time
 
-            console.log(this.form)
+            let emptyProps = []
+
+            for (let prop in this.form) {
+                if (this.form[prop] === 'undefined') {
+                    emptyProps.push(prop)
+                }
+            }
+
+            console.log(emptyProps)
         }
     },
 
