@@ -255,7 +255,7 @@ export default {
         await this.fetchSections()
         await this.fetchTypes()
 
-        this.populateForm()
+        await this.populateForm()
     }
 }
 </script>
