@@ -265,6 +265,7 @@ export default {
         }
 
         console.log(emptyProps)
+        console.log(this.form)
     }
 }
 </script>
