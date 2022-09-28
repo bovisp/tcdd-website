@@ -189,7 +189,8 @@ export default {
             fetchSections: 'sections/fetch',
             fetchTypes: 'assessmentTypes/fetch',
             duplicateAssessment: 'assessments/duplicateAssessment',
-            setAssessment: 'assessments/setEdit'
+            setAssessment: 'assessments/setEdit',
+            getMissingProp: 'assessments/getMissingProp'
         }),
 
         ...mapMutations({
@@ -262,7 +263,8 @@ export default {
             if (!this.form[prop]) {
                 // this.form[prop] = this.$store.state.assessments.assessment[prop]
                 // console.log(`assessment: ${this.assessment[prop]} and form ${this.form[prop]} `)
-                console.log(prop)
+                // console.log(prop)
+                this.form[prop] = await this.getMissingProp(prop)
             }
         }
 

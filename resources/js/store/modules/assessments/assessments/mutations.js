@@ -4,6 +4,8 @@ export const SET_ASSESSMENTS = (state, assessments) => state.assessments = asses
 
 export const SET_ASSESSMENT = (state, assessment) => state.assessment = assessment
 
+export const SET_MISSING_PROP = (state, data) => state.assessment[data.propName] = data.updatedProp
+
 export const SET_PAGE = (state, page) => state.page = page
 
 export const SET_CURRENT_PAGE_SCORE = async (state) => {

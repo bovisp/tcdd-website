@@ -1,5 +1,24 @@
 import { isEmpty, find, map, filter } from 'lodash-es'
 
+export const getMissingProp = async ({ commit, state }, missingProp) => {
+    let { data: prop } = await axios.get(`${urlBase}/api/assessments/${state.assessment.id}/missingprop/${missingProp}`)
+
+    await commit('SET_MISSING_PROP', {
+        updatedProp: prop.data,
+        propName: missingProp
+    })
+
+    return prop
+
+    // await commit('SET_MISSING', assessments.data)
+
+    // if (!isEmpty(state.assessment)) {
+    //     commit('SET_ASSESSMENT', find(assessments.data, p => p.id === state.assessment.id))
+    // }
+
+    // return
+}
+
 export const fetch = async ({ commit, state }) => {
     let { data: assessments } = await axios.get(`${urlBase}/api/assessments`)
 

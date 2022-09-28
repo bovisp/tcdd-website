@@ -33,6 +33,11 @@ class AssessmentsController extends Controller
         );
     }
 
+    public function getMissingProp(Assessment $assessment, $prop)
+    {
+        return $assessment[$prop];
+    }
+
     public function show(Assessment $assessment)
     {
         return new AssessmentShowResource($assessment);

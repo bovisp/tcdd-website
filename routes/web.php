@@ -56,6 +56,7 @@ Route::delete('/api/assessments/{assessment}/participants', 'Assessments\Assessm
 Route::get('/api/assessments/{assessment}/participants/create', 'Assessments\Assessments\Api\AssessmentParticipantsController@create');
 Route::post('/api/assessments/{assessment}/participants', 'Assessments\Assessments\Api\AssessmentParticipantsController@store');
 Route::patch('/api/assessments/{assessment}/participants/activate/{user}', 'Assessments\Assessments\Api\AssessmentParticipantsActivationController@update');
+Route::get('/api/assessments/{assessment}/missingprop/{prop}', 'Assessments\Assessments\Api\AssessmentsController@getMissingProp');
 
 Route::post('/api/assessments/{assessment}/page', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@store');
 Route::delete('/api/assessments/{assessment}/page/{page}', 'Assessments\Assessments\Api\AssessmentQuestionPagesController@destroy');
